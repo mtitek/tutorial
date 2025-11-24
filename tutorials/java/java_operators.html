@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Operators Explained | MTI TEK</title>
+<meta name="description" content="Learn about Java operators including arithmetic, bitwise, relational, conditional, and precedence rules with clear examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Operators Explained | MTI TEK" />
+<meta property="og:description" content="Learn about Java operators including arithmetic, bitwise, relational, conditional, and precedence rules with clear examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/java_operators.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Operators Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn about Java operators including arithmetic, bitwise, relational, conditional, and precedence rules with clear examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/java_operators.php",
+        "description": "Learn about Java operators including arithmetic, bitwise, relational, conditional, and precedence rules with clear examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/java_operators.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Java Operators</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_2">Simple Assignment Operator</a></li>
+<li><a href="#sec_id_3">Arithmetic Operators</a></li>
+<li><a href="#sec_id_4">Unary Operators</a></li>
+<li><a href="#sec_id_5">Equality and Relational Operators</a></li>
+<li><a href="#sec_id_6">Conditional Operators</a></li>
+<li><a href="#sec_id_7">Bitwise Operators</a></li>
+<li><a href="#sec_id_8">Bit Shift Operators</a></li>
+<li><a href="#sec_id_9">Type Comparison Operator</a></li>
+<li><a href="#sec_id_10">Operator Precedence</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Simple Assignment Operator</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+=       // Simple assignment operator</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Arithmetic Operators</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
++       // Additive operator (also used for strings concatenation)
+-       // Subtraction operator
+*       // Multiplication operator
+/       // Division operator
+%       // Remainder operator (Modulo operator)</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Unary Operators</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
++       // Unary plus operator; indicates positive value
+-       // Unary minus operator; negates an expression
+
+++      // Increment operator; increments a value by 1
+--      // Decrement operator; decrements a value by 1
+
+!       // Logical complement operator; inverts the value of a boolean</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Equality and Relational Operators</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+==      // Equal to
+!=      // Not equal to
+
+&gt;       // Greater than
+&gt;=      // Greater than or equal to
+
+&lt;        // Less than
+&lt;=       // Less than or equal to</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Conditional Operators</span>
+<div class="tutorialSectionTextDiv1">
+Short-circuit evaluation: means that the right hand side of the expression won't be evaluated if it isn't necessary.<br />
+<pre class="java-code">
+&amp;&amp;      // Conditional-AND (short-circuit evaluation)
+||      // Conditional-OR (short-circuit evaluation)
+?:      // Ternary (shorthand for if-then-else statement)</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Bitwise Operators</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+~       // Unary bitwise complement
+
+&amp;       // Bitwise AND (always evaluate both sides)
+|       // Bitwise inclusive OR (always evaluate both sides)
+
+^       // Bitwise exclusive OR (always evaluate both sides)</pre>
+<ul class="ul_square_1">
+<li>
+Unary bitwise complement:<br />
+<pre class="java-code">
+final byte b1 = 0;      //  0: (0) 0000000
+final byte b1_ = ~b1;   // -1: (1) 1111111
+final byte b1__ = ~b1_; //  0: (0) 0000000
+
+final byte b2 = 1;      //  1: (0) 0000001
+final byte b2_ = ~b2;   // -2: (1) 1111110
+final byte b2__ = ~b2_; //  1: (0) 0000001
+
+final byte b3 = 127;    //  127: (0) 1111111
+final byte b3_ = ~b3;   // -128: (1) 0000000
+final byte b3__ = ~b3_; //  127: (0) 1111111</pre>
+</li>
+<li>
+Bitwise AND:<br />
+<pre class="java-code">
+System.out.println("1 &amp; 1: " + (1 &amp; 1)); // output: 1 &amp; 1: 1
+System.out.println("1 &amp; 0: " + (1 &amp; 0)); // output: 1 &amp; 0: 0
+System.out.println("0 &amp; 1: " + (0 &amp; 1)); // output: 0 &amp; 1: 0
+System.out.println("0 &amp; 0: " + (0 &amp; 0)); // output: 0 &amp; 0: 0</pre>
+</li>
+<li>
+Bitwise inclusive OR:<br />
+<pre class="java-code">
+System.out.println("1 | 1: " + (1 | 1)); // output: 1 | 1: 1
+System.out.println("1 | 0: " + (1 | 0)); // output: 1 | 0: 1
+System.out.println("0 | 1: " + (0 | 1)); // output: 0 | 1: 1
+System.out.println("0 | 0: " + (0 | 0)); // output: 0 | 0: 0</pre>
+</li>
+<li>
+Bitwise exclusive OR:<br />
+<pre class="java-code">
+System.out.println("1 ^ 1: " + (1 ^ 1)); // output: 1 ^ 1: 0
+System.out.println("1 ^ 0: " + (1 ^ 0)); // output: 1 ^ 0: 1
+System.out.println("0 ^ 1: " + (0 ^ 1)); // output: 0 ^ 1: 1
+System.out.println("0 ^ 0: " + (0 ^ 0)); // output: 0 ^ 0: 0</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Bit Shift Operators</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+&lt;&lt;        // Left shift
+&lt;&lt;=       // Left shift assignment
+
+&gt;&gt;        // Signed right shift
+&gt;&gt;=       // Signed right shift assignment
+
+&gt;&gt;&gt;       // Unsigned right shift
+&gt;&gt;&gt;=      // Unsigned right shift assignment</pre>
+<ul class="ul_square_1">
+<li>
+<h5>&lt;&lt; left shift</h5>
+Shifts left by n positions.<br />
+Fills with 0s from right.<br />
+<pre class="java-code">
+final byte b1 = 1;         // 1: (0) 0000001
+final byte b1_ = b1 &lt;&lt; 1;  // 2: (0) 0000010
+final byte b1__ = b1 &lt;&lt; 2; // 4: (0) 0000100</pre>
+<pre class="java-code">
+final byte b1 = -1;        // -1: (1) 1111111
+final byte b1_ = b1 &lt;&lt; 1;  // -2: (1) 1111110
+final byte b1__ = b1 &lt;&lt; 2; // -4: (1) 1111100</pre>
+</li>
+<li>
+<h5>&lt;&lt;= Left shift assignment</h5>
+<pre class="java-code">
+final int b1 = 1;
+b1 &lt;&lt;= 1; // Equivalent to: b1 = b1 &lt;&lt; 1;</pre>
+</li>
+<li>
+<h5>&gt;&gt; Signed right shift</h5>
+Shifts right by n positions.<br />
+Preserves the sign bit.<br />
+For positive numbers, fills with 0s from left.<br />
+For negative numbers, fills with 1s from left.<br />
+<pre class="java-code">
+final byte b1 = 1;        // 1: (0) 0000001
+final byte b1_ = b1 &gt;&gt; 1; // 0: (0) 0000000
+
+final byte b2 = 2;        // 2: (0) 0000010
+final byte b2_ = b2 &gt;&gt; 1; // 1: (0) 0000001
+
+final byte b3 = 4;        // 4: (0) 0000100
+final byte b3_ = b3 &gt;&gt; 1; // 2: (0) 0000010</pre>
+<pre class="java-code">
+final byte b1 = -2;       // -2: (1) 1111110
+final byte b1_ = b1 &gt;&gt; 1; // -1: (1) 1111111
+
+final byte b2 = -4;       // -4: (1) 1111100
+final byte b2_ = b2 &gt;&gt; 1; // -2: (1) 1111110
+
+final byte b3 = -8;       // -8: (1) 1111000
+final byte b3_ = b3 &gt;&gt; 1; // -4: (1) 1111100</pre>
+</li>
+<li>
+<h5>&gt;&gt;= Signed right shift assignment</h5>
+<pre class="java-code">
+final int b1 = 1;
+b1 &gt;&gt;= 1; // Equivalent to: b1 = b1 &gt;&gt; 1;</pre>
+</li>
+<li>
+<h5>&gt;&gt;&gt; Unsigned right shift</h5>
+Shifts right by n positions.<br />
+Fills with 0s from left.<br />
+<pre class="java-code">
+final byte b1 = 8;          // 1: (0) 0001000
+final byte b1_ = b1 &gt;&gt;&gt; 1;  // 2: (0) 0000100
+final byte b1__ = b1 &gt;&gt;&gt; 2; // 4: (0) 0000010</pre>
+<pre class="java-code">
+final int b2 = -8;         // 1: (1) 1111111111111111111111111111000
+final int b2_ = b2 &gt;&gt;&gt; 1;  // 2147483644: (0) 1111111111111111111111111111100
+final int b2__ = b2 &gt;&gt;&gt; 2; // 1073741822: (0) 0111111111111111111111111111110</pre>
+</li>
+<li>
+<h5>&gt;&gt;&gt;= Unsigned right shift assignment</h5>
+<pre class="java-code">
+final int b1 = 1;
+b1 &gt;&gt;&gt;= 1; // Equivalent to: b1 = b1 &gt;&gt;&gt; 1;</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Type Comparison Operator</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+instanceof // Compares an object to a specified type</pre>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Operator Precedence</span>
+<div class="tutorialSectionTextDiv1">
+Associativity "Left to right": <code class="code1">x = a / b * c</code> can be written <code class="code1">x = (a / b) * c</code><br />
+Associativity "Right to left": <code class="code1">a += b -= c</code> can be written <code class="code1">a += (b -= c)</code><br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1">Operator</th>
+<th class="cssth1">Description</th>
+<th class="cssth1">Associativity</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">[]</code><br>
+<code class="code1">.</code><br>
+<code class="code1">()</code>
+</td>
+<td class="csstd1">
+Array element access<br>
+Object member access<br>
+Method call
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">++</code><br>
+<code class="code1">--</code><br>
+</td>
+<td class="csstd1">
+Post increment<br>
+Post decrement
+</td>
+<td class="csstd1"></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">!</code><br>
+<code class="code1">~</code><br>
+<code class="code1">++</code><br>
+<code class="code1">--</code><br>
+<code class="code1">+</code><br>
+<code class="code1">-</code><br>
+<code class="code1">()</code><br>
+<code class="code1">new</code>
+</td>
+<td class="csstd1">
+Logical NOT<br>
+Bitwise NOT<br>
+Pre increment<br>
+Pre decrement<br>
+Unary plus<br>
+Unary minus<br>
+Cast<br>
+Instantiation
+</td>
+<td class="csstd1">Right to left</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">*</code><br>
+<code class="code1">/</code><br>
+<code class="code1">%</code>
+</td>
+<td class="csstd1">
+Multiplication<br>
+Division<br>
+Remainder
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">+</code><br>
+<code class="code1">-</code><br>
+<code class="code1">+</code>
+</td>
+<td class="csstd1">
+Additive<br>
+Subtraction<br>
+String concatenation
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">&lt;&lt;</code><br>
+<code class="code1">&gt;&gt;</code><br>
+<code class="code1">&gt;&gt;&gt;</code>
+</td>
+<td class="csstd1">
+Signed left shift<br>
+Signed right shift<br>
+Unsigned right shift
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">&lt;</code><br>
+<code class="code1">&lt;=</code><br>
+<code class="code1">&gt;</code><br>
+<code class="code1">&gt;=</code><br>
+<code class="code1">instanceof</code>
+</td>
+<td class="csstd1">
+Less than<br>
+Less than or equal to<br>
+Greater than<br>
+Greater than or equal to<br>
+Type Comparison<br>
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">==</code><br>
+<code class="code1">!=</code>
+</td>
+<td class="csstd1">
+Equal to<br />
+Not equal to
+</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">&amp;</code></td>
+<td class="csstd1">Bitwise AND</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">^</code></td>
+<td class="csstd1">Bitwise XOR</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">|</code></td>
+<td class="csstd1">Bitwise OR</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">&amp;&amp;</code></td>
+<td class="csstd1">Conditional AND</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">||</code></td>
+<td class="csstd1">Conditional OR</td>
+<td class="csstd1">Left to right</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">?:</code></td>
+<td class="csstd1">Ternary</td>
+<td class="csstd1">Right to left</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+<code class="code1">=</code><br>
+<code class="code1">+=</code><br>
+<code class="code1">-=</code><br>
+<code class="code1">*=</code><br>
+<code class="code1">/=</code><br>
+<code class="code1">%=</code><br>
+<code class="code1">&amp;=</code><br>
+<code class="code1">|=</code><br>
+<code class="code1">^=</code><br>
+<code class="code1">&lt;&lt;=</code><br>
+<code class="code1">&gt;&gt;=</code><br>
+<code class="code1">&gt;&gt;&gt;=</code>
+</td>
+<td class="csstd1">
+</td>
+<td class="csstd1">Right to left</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

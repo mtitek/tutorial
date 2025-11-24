@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Naming Conventions: Rules &amp; Best Practices Explained | MTI TEK</title>
+<meta name="description" content="Learn Java naming conventions for identifiers, and source files. Understand rules, best practices, and code consistency." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Naming Conventions: Rules &amp; Best Practices Explained | MTI TEK" />
+<meta property="og:description" content="Learn Java naming conventions for identifiers, and source files. Understand rules, best practices, and code consistency." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/javaNamingStandards.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Naming Conventions: Rules &amp; Best Practices Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn Java naming conventions for identifiers, and source files. Understand rules, best practices, and code consistency." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/javaNamingStandards.php",
+        "description": "Learn Java naming conventions for identifiers, and source files. Understand rules, best practices, and code consistency.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/javaNamingStandards.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Naming Conventions</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Identifier Naming Rules</a></li>
+<li><a href="#sec_id_2">Identifier Naming Conventions (Java code conventions)</a></li>
+<li><a href="#sec_id_3">JavaBeans Property Naming Conventions</a></li>
+<li><a href="#sec_id_4">Java Source File Rules</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Identifier Naming Rules</span>
+<div class="tutorialSectionTextDiv1">
+An identifier is a name that refers to a type, a variable, or a method.<br />
+<ul class="ul_square_1">
+<li>
+The first letter of the identifier's name must be:
+<ul class="ul_circle_1">
+<li>a letter (<b>[A-Z|a-z] or a Unicode character</b>),</li>
+<li>a currency symbol (<b>$</b>),</li>
+<li>or an underscore (<b>_</b>).<br /></li>
+</ul>
+<br />
+Example variable names:<br />
+<pre class="java-code">
+int c;
+int $;
+char \u0061; // \u0061 : a</pre>
+<pre class="java-code">
+int _; // Not allowed with Java 11</pre>
+</li>
+<li>
+The first letter of the identifier can be followed by:
+<ul class="ul_circle_1">
+<li>a combination of letters,</li>
+<li>digits,</li>
+<li>the currency symbol (<b>$</b>),</li>
+<li>and the underscore character (<b>_</b>).<br /></li>
+</ul>
+<br />
+Example variable names:<br />
+<pre class="java-code">
+int cb3$_;
+int $c1$_;
+int _a2$_;
+char c\u0061;</pre>
+</li>
+<li>
+Identifier names cannot contain spaces or symbols like "<b>+</b>" or "<b>©</b>".<br />
+<br />
+</li>
+<li>
+Identifier names cannot use <a href="javaKeywords.php">Java keywords</a> such as "<code class="code1">public</code>", "<code class="code1">static</code>", "<code class="code1">void</code>", etc.<br />
+<br />
+</li>
+<li>
+Identifier names are case-sensitive (<code class="code1">intVar</code> is different from <code class="code1">INTVAR</code>).<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Identifier Naming Conventions (Java code conventions)</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Class names:<br />
+The first letter of each word in the class name should be uppercase.<br />
+Class names should be nouns (example: <code class="code1">GenericServlet</code>).<br />
+<br />
+</li>
+<li>
+Interface names:<br />
+The first letter of each word in the interface name should be uppercase.<br />
+Interface names should be adjectives (example: <code class="code1">Serializable</code>).<br />
+<br />
+</li>
+<li>
+Variable names:<br />
+The first letter should be lowercase, and then each following word should start with an uppercase letter (example: <code class="code1">servletName</code>).<br />
+<br />
+</li>
+<li>
+Method names:<br />
+The first letter should be lowercase, and then each following word should start with an uppercase letter (example: <code class="code1">getServletName</code>).<br />
+Method names should follow the <b>verb-noun</b> format.<br />
+<br />
+</li>
+<li>
+Constant names:<br />
+Constant names should be written in uppercase.<br />
+Words in the constant name should be separated by underscores (example: <code class="code1">SC_NOT_FOUND</code>).<br />
+Constants should be declared using the modifiers
+<code class="code1">public</code>,
+<code class="code1">final</code>,
+and <code class="code1">static</code>.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">JavaBeans Property Naming Conventions</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Getter (accessor) names should start with "<b>get</b>" (example: <code class="code1">getValue</code>).<br />
+Boolean properties can have getter names that start with "<b>is</b>" (example: <code class="code1">isValid</code>).<br />
+<br />
+</li>
+<li>
+Setter (mutator) names should start with "<b>set</b>" (example: <code class="code1">setValue</code>).<br />
+<br />
+</li>
+<li>
+Getter and setter declarations must use the <code class="code1">public</code> keyword.<br />
+<br />
+</li>
+<li>
+A getter must not take any parameters
+and the return type must match the type of the property it represents:
+<code class="code1">PROPERTY_TYPE getPROPERTY_NAME()</code>.<br />
+<br />
+</li>
+<li>
+A setter must return <code class="code1">void</code>
+and must have a parameter that matches the type of the property it represents:
+<code class="code1">void setPROPERTY_NAME(PROPERTY_TYPE PROPERTY_NAME)</code>.<br />
+</li>
+</ul>
+<br />
+<b>Example:&nbsp; </b><code class="code1">/general/src/ca/mtitek/javabeans/MyJavaBean.java</code><br />
+<pre class="java-code">
+package com.mtitek.javabeans;
+
+public class MyJavaBean {
+    Double value;
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Java Source File Rules</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Java source files must have the <code class="code1">.java</code> extension.<br />
+<br />
+</li>
+<li>
+A source file can have only one <code class="code1">public</code> class declaration.<br />
+In other words, a source file can have multiple class declarations but only one class can be public.<br />
+<br />
+</li>
+<li>
+If the source file contains one public class, then the file name must match that class name.<br />
+If the source file contains multiple class definitions, then the file name must match the name of the public class.<br />
+If the source file contains no public class, the file name can be different from the names of the classes inside it.<br />
+<br />
+</li>
+<li>
+The file name must be unique within a package, as well as the names of the classes defined in each file.<br />
+<br />
+</li>
+<li>
+If the source file is part of a package, then the code must explicitly use the <code class="code1">package</code> keyword to specify that package.<br />
+The package declaration must be the first line of code (excluding comments and blank lines).<br />
+<br />
+</li>
+<li>
+The source file code may use the <code class="code1">import</code> keyword to specify dependencies on external classes.<br />
+<code class="code1">import</code> statements should come right after the <code class="code1">package</code> statement (excluding comments and blank lines).<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

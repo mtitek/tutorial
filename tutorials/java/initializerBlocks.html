@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Initializer Blocks Explained: Static &amp; Instance Blocks with Examples | MTI TEK</title>
+<meta name="description" content="Learn how Java initializer blocks work, including static and instance blocks. Understand execution order with clear examples and practical code demos." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Initializer Blocks Explained: Static &amp; Instance Blocks with Examples | MTI TEK" />
+<meta property="og:description" content="Learn how Java initializer blocks work, including static and instance blocks. Understand execution order with clear examples and practical code demos." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/initializerBlocks.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Initializer Blocks Explained: Static &amp; Instance Blocks with Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how Java initializer blocks work, including static and instance blocks. Understand execution order with clear examples and practical code demos." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/initializerBlocks.php",
+        "description": "Learn how Java initializer blocks work, including static and instance blocks. Understand execution order with clear examples and practical code demos.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/initializerBlocks.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Initializer Blocks</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Initializer Blocks</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Initializer Blocks</span>
+<div class="tutorialSectionTextDiv1">
+You can write initializer blocks that will be executed when the class is loaded into memory (static initializer blocks)
+or when an instance of the class is created (instance initializer blocks).<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Static initializer blocks:<br />
+<pre class="java-code">
+class ClassA {
+    // static initialization block
+    static {
+        System.out.println("static initialization block (1)");
+    }
+}</pre>
+A static initializer block is a block of code placed between curly braces "<b>{}</b>", with the opening brace preceded by the <code class="code1">static</code> keyword.<br />
+<br />
+A class can have multiple static initializer blocks, and they can appear anywhere within the class body.<br />
+<br />
+When the class is loaded, the static initializer blocks are executed one after the other in the order in which they appear in the class code.
+In fact, the compiler combines the code from all static initializer blocks (in their order of appearance) into a single "special" method that is invoked when the class is loaded.<br />
+<br />
+The code inside static initializer blocks is executed only once (at class loading) and is not executed again when instances of the class are created.<br />
+<br /></li>
+<li>
+Instance initializer blocks:<br />
+<pre class="java-code">
+class ClassA {
+    // initializer block
+    {
+        //...
+    }
+}</pre>
+An instance initializer block is a block of code placed between curly braces "<b>{}</b>".<br />
+<br />
+A class can have multiple instance initializer blocks, and they can appear anywhere within the class body.<br />
+<br />
+When an instance of the class is created, the instance initializer blocks are executed one after the other in the order in which they appear in the class code.
+In fact, the compiler copies the code from all instance initializer blocks (maintaining their order of appearance) to the beginning of each constructor,
+provided that the constructor does not call another constructor using the <code class="code1">this</code> keyword.<br />
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+package com.mtitek.initializerBlock;
+
+class ClassA {
+    // initializer block
+    {
+        System.out.println("initializer block (1)");
+    }
+
+    // static initialization block
+    static {
+        System.out.println("static initialization block (1)");
+    }
+
+    // constructor
+    ClassA() {
+        System.out.println("constructor: ClassA()");
+    }
+
+    // static initialization block
+    static {
+        System.out.println("static initialization block (2)");
+    }
+
+    // initializer block
+    {
+        System.out.println("initializer block (2)");
+    }
+}
+
+public class TestClass {
+    public static void main(String[] args) {
+        // Loading the ClassA class
+        try {
+            Class.forName("com.mtitek.initializerBlock.ClassA");
+        } catch (ClassNotFoundException e) { }
+
+        System.out.println();System.out.println();
+
+        // Creating an instance of the ClassA class
+        new ClassA();
+    }
+}</pre>
+Code execution result:
+<pre class="text-code">
+static initialization block (1)
+static initialization block (2)
+
+initializer block (1)
+initializer block (2)
+constructor: ClassA()</pre>
+Initializer blocks (like constructors) are not inherited.<br />
+<ul class="ul_square_1">
+<li>
+Static initializer blocks:<br />
+The static initializer blocks of the superclass are always executed first,
+followed by the static initializer blocks of the subclass.<br />
+<br /></li>
+<li>
+Instance initializer blocks:<br />
+Since the code of the initializer blocks is copied into each constructor, their execution depends on the execution of the constructors.<br />
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+package com.mtitek.initializerBlock;
+
+class SuperClass {
+    // initializer block
+    {
+        System.out.println("SuperClass: initializer block (1)");
+    }
+
+    // static initialization block
+    static {
+        System.out.println("SuperClass: static initialization block (1)");
+    }
+
+    // constructor
+    SuperClass() {
+        System.out.println("constructor: SuperClass()");
+    }
+}
+
+class SubClass extends SuperClass {
+    // initializer block
+    {
+        System.out.println("SubClass: initializer block (1)");
+    }
+
+    // static initialization block
+    static {
+        System.out.println("SubClass: static initialization block (1)");
+    }
+
+    // constructor
+    SubClass() {
+        super();
+        System.out.println("constructor: SubClass()");
+    }
+}
+
+public class TestClass {
+    public static void main(String[] args) {
+        // Loading the SubClass class
+        try {
+            Class.forName("com.mtitek.initializerBlock.SubClass");
+        } catch (ClassNotFoundException e) { }
+
+        System.out.println();System.out.println();
+
+        // Creating an instance of the SubClass class
+        new SubClass();
+    }
+}</pre>
+Code execution result:
+<pre class="text-code">
+SuperClass: static initialization block (1)
+SubClass: static initialization block (1)
+
+SuperClass: initializer block (1)
+constructor: SuperClass()
+SubClass: initializer block (1)
+constructor: SubClass()</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

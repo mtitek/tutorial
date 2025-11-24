@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Methods Explained: Static vs Instance, Return Types, Parameters &amp; Varargs | MTI TEK</title>
+<meta name="description" content="Learn how Java methods work, including static vs instance methods, return types, parameters, varargs, and local variables." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Methods Explained: Static vs Instance, Return Types, Parameters &amp; Varargs | MTI TEK" />
+<meta property="og:description" content="Learn how Java methods work, including static vs instance methods, return types, parameters, varargs, and local variables." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/methods.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Methods Explained: Static vs Instance, Return Types, Parameters &amp; Varargs | MTI TEK" />
+<meta name="twitter:description" content="Learn how Java methods work, including static vs instance methods, return types, parameters, varargs, and local variables." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/methods.php",
+        "description": "Learn how Java methods work, including static vs instance methods, return types, parameters, varargs, and local variables.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/methods.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Methods</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Instance Methods vs. Static Methods</a></li>
+<li><a href="#sec_id_2">Method Return Types and Return Values</a></li>
+<li><a href="#sec_id_3">Method Parameters and Types</a></li>
+<li><a href="#sec_id_4">Varargs (Variable-Length Argument Lists)</a></li>
+<li><a href="#sec_id_5">Local Variables Within Methods</a></li>
+<li><a href="#sec_id_6">Local Variable Type Inference (var keyword)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Instance Methods vs. Static Methods</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+An instance method is only accessible when an instance has been created.<br />
+<br /></li>
+<li>
+A static method (a.k.a. class method) can be accessed even if no instance of the class has been created.<br />
+<br /></li>
+<li>
+A static method is declared using the <code class="code1">static</code> keyword.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+class ClassA {
+    public void instanceMethod() { }
+
+    public static void staticMethod() { }
+
+    public void doSomething() {
+        // Accessing instance methods
+        (new ClassA()).instanceMethod(); // OK
+        (new ClassA()).staticMethod(); // OK - Warning: The static method staticMethod() from the type ClassA should be accessed in a static way
+
+        // Accessing static methods
+        ClassA.staticMethod(); // OK
+        ClassA.instanceMethod(); // Compiler error: Cannot make a static reference to the non-static method instanceMethod() from the type ClassA
+    }
+}</pre>
+<ul class="ul_square_1">
+<li>
+The code inside an instance method can access all attributes (instance or static) and call all methods (instance or static).<br />
+<br /></li>
+<li>
+The code inside a static method can only access static attributes and only call static methods.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+class ClassA {
+    int var1 = 1;
+    static int var2 = 1;
+
+    public Integer instanceMethod() {
+        return var1 * var2; // OK
+    }
+
+    public static Integer staticMethod() {
+        Integer localVar1 = var2; // OK
+        Integer localVar2 = instanceMethod(); // Compiler error: Cannot make a static reference to the non-static method instanceMethod() from the type ClassA
+        return var1; // Compiler error: Cannot make a static reference to the non-static field var1
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Method Return Types and Return Values</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+The return type can be a primitive or a reference type (including classes, interfaces, and arrays).<br />
+The returned value (or variable) must be the same type as the one declared for the method.<br />
+<pre class="java-code">
+int doReturnPrimitiveType() {
+    int var1 = 0;
+    return var1;
+}</pre>
+<pre class="java-code">
+Object doReturnReferenceType() {
+    Object obj = new Object();
+    return obj;
+}</pre>
+</li>
+<li>
+You can return a value (or variable) that can be <b>implicitly</b> cast to the declared return type.<br />
+<pre class="java-code">
+int doImplicitCastPrimitiveType() {
+    return 'c';
+}</pre>
+<pre class="java-code">
+Object doImplicitCastReferenceType() {
+    return Integer.valueOf(10);
+}</pre>
+</li>
+<li>
+You can return a value (or variable) that can be <b>explicitly</b> cast to the declared return type.<br />
+<pre class="java-code">
+int doExplicitCastPrimitiveType() {
+    double var1 = 12.5;
+    return (int) var1;
+}</pre>
+<pre class="java-code">
+Integer doExplicitCastReferenceType() {
+    Integer temp = Integer.valueOf(10);
+    Object obj = temp;
+    return (Integer) obj;
+}</pre>
+</li>
+<li>
+You can return <code class="code1">null</code>, but only if the return type is a reference type.<br />
+<pre class="java-code">
+Object doReturnNullValue() {
+    return null;
+}</pre>
+</li>
+<li>
+The <code class="code1">void</code> type indicates that the method does not return any value.<br />
+<pre class="java-code">
+void doReturnVoid() {
+}</pre>
+You can also use the <code class="code1">return</code> keyword to explicitly indicate the method returns nothing:<br />
+<pre class="java-code">
+void doReturnVoid() {
+    return;
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Method Parameters and Types</span>
+<div class="tutorialSectionTextDiv1">
+A method can declare multiple parameters, each with its own type.<br />
+A parameter's type can be a primitive or reference type (including classes, interfaces, and arrays).<br />
+<br />
+<b><i>Notes</i></b> :<br />
+<ul class="ul_square_1">
+<li>
+<b>Parameters</b>: The names declared in the method signature, used to match values passed in when the method is called.<br />
+<br />
+</li>
+<li>
+<b>Arguments</b>: The actual values (or variables) passed in between the parentheses during a method call.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+public class ClassA {
+    void foo(int param1, Integer param2, Object param3) {
+    }
+
+    void bar() {
+        int arg1 = 0;
+        Integer arg2 = 1;
+        Object arg3 = this;
+
+        foo(arg1, arg2, arg3);
+    }
+}</pre>
+Here are the rules for arguments to be accepted by the compiler:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+The number of arguments used in the method call must match the number of parameters.<br />
+<pre class="java-code">
+void bar() {
+    int arg1 = 0;
+    Integer arg2 = 1;
+
+    foo(arg1, arg2); // Compiler error: The method foo(int, Integer, Object) in the type ClassA is not applicable for the arguments (int, Integer)
+}</pre>
+</li>
+<li>
+Each argument must be of the same type as its corresponding parameter.<br />
+<pre class="java-code">
+void bar() {
+    String arg1 = "0";
+    Integer arg2 = 1;
+    Object arg3 = this;
+
+    foo(arg1, arg2, arg3); // Compiler error: The method foo(int, Integer, Object) in the type ClassA is not applicable for the arguments (String, Integer, Object)
+}</pre>
+</li>
+<li>
+The argument type can differ from the parameter type as long as it can be implicitly converted to match.<br />
+<pre class="java-code">
+void bar() {
+    Integer arg1 = 0; // OK: Integer --> int
+    int arg2 = 1; // OK: int --> Integer
+    String arg3 = "my String"; // OK: String is a subclass of Object
+
+    foo(arg1, arg2, arg3);
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Varargs (Variable-Length Argument Lists)</span>
+<div class="tutorialSectionTextDiv1">
+Sometimes, you want a method to accept a variable number of arguments.<br />
+For example, a method that sums all values passed in.<br />
+To do this, follow the parameter type with three dots (...)<br />
+<pre class="java-code">
+public class ClassA {
+    static int doSumArgs(int... varParams) { // method accepts a variable number of int arguments
+        int total = 0;
+
+        for (int param : varParams) { // loop through all arguments
+            total += param;
+        }
+
+        return total;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(doSumArgs(1, 2)); // Method call with two arguments
+        System.out.println(doSumArgs(1, 2, 3)); // Method call with three arguments
+    }
+}</pre>
+You can mix regular parameters with varargs.<br />
+However, varargs must be declared last.<br />
+Only one vararg is allowed per method.<br />
+<pre class="java-code">
+void foo(String param1, Integer param2, int... varParams) { // OK
+}
+
+void bar(String param1, int... varParams, Integer param2) { // Compiler error: The variable argument type int of the method bar must be the last parameter
+}
+
+void multiVarArgs(int... varParams1, int... varParams2) { // Compiler error: The variable argument type int of the method multiVarArgs must be the last parameter
+}</pre>
+<b><i>Note</i></b> :<br />
+The syntax for declaring and calling varargs is not part of the core Java language—it’s just "syntactic sugar";<br />
+This means the compiler transforms the code into something else when generating bytecode.<br />
+<br />
+For example, this code:<br />
+<pre class="java-code">
+public class ClassA {
+    void foo(int... varParams) {
+    }
+
+    void bar() {
+        foo(1, 2, 3);
+    }
+}</pre>
+Will be transformed by the compiler into:<br />
+<pre class="java-code">
+public class ClassA {
+    void foo(int[] varParams) {
+    }
+
+    void bar() {
+        foo(new int[] { 1, 2, 3 });
+    }
+}</pre>
+You’ll notice that the vararg declaration <code class="code1">int... varParams</code> becomes an array declaration <code class="code1">int[] varParams</code>.<br />
+And the argument list <code class="code1">1, 2, 3</code> becomes an anonymous array <code class="code1">new int[] { 1, 2, 3 }</code>.<br />
+<br />
+The most important thing to remember about varargs is that they are actually just arrays under the hood.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Local Variables Within Methods</span>
+<div class="tutorialSectionTextDiv1">
+Local variables are variables declared inside a method, constructor, or block.
+They are created when the method is invoked and destroyed when the method exits.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Local variables must be declared and initialized before use.
+They do not have default values, so the compiler will throw an error if they are accessed without initialization.<br />
+<br /></li>
+<li>
+Local variables are only accessible within the method or block where they are declared (i.e., they have <b>method scope</b>).<br />
+<br /></li>
+<li>
+Local variables cannot have access modifiers like
+<code class="code1">public</code>, <code class="code1">private</code>, or <code class="code1">protected</code>.<br />
+<br /></li>
+<li>
+Local variables can shadow instance variables and static variables with the same name within the method.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+public class ClassA {
+    int instanceVar = 10;
+
+    void foo() {
+        int localVar = 5; // Local variable declaration
+
+        System.out.println(localVar); // OK
+        System.out.println(instanceVar); // OK - accessing instance variable
+
+        int instanceVar = 20; // This local variable shadows the instance variable
+        System.out.println(instanceVar); // Refers to the local instanceVar, not the instance field
+    }
+
+    void bar() {
+        int localVar;
+        System.out.println(localVar); // Compiler error: The local variable localVar may not have been initialized
+    }
+}</pre>
+<b><i>Notes</i></b> :<br />
+<ul class="ul_square_1">
+<li>
+Local variables are stored on the stack and are not part of the object’s state.
+They are recreated each time the method is called.<br />
+<br /></li>
+<li>
+You can declare final local variables if you want to prevent reassignment:<br />
+<pre class="java-code">
+void foo() {
+    final int localVar = 3;
+    localVar = 4; // Compiler error: The final local variable localVar cannot be assigned. It must be blank and not using a compound assignment
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Local Variable Type Inference (var keyword)</span>
+<div class="tutorialSectionTextDiv1">
+The <b>var</b> keyword can be used for local variable type inference.
+This allows you to declare local variables without explicitly specifying their type—
+the compiler infers the type from the initializer expression (the value assigned during declaration).<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>var</b> cannot be used without an initializer (e.g., <code class="code1">var x</code>;).<br />
+<br /></li>
+<li>
+<b>var</b> cannot be used for instance variables, static variables, method parameters, or return types.<br />
+<br /></li>
+<li>
+<b>var</b> cannot be used with arrays declared using bracket notation (e.g., <code class="code1">var x[]</code>;).<br />
+<br /></li>
+<li>
+Once declared with <b>var</b>, the variable's type is fixed and cannot be changed.<br />
+<br /></li>
+</ul>
+<pre class="java-code">
+class ClassA {
+    // var cannot be used for instance/static variables
+    var instanceVar1 = 1; // Compiler error: 'var' is not allowed here
+    static var staticVar1 = 1; // Compiler error: 'var' is not allowed here
+
+    void doSomething() {
+        var var1 = "abc"; // Inferred as String
+        var var2 = 1; // Inferred as int
+        var var3 = new int[] { 1, 2, 3 }; // inferred as int[]
+
+        var var4 = new ArrayList&lt;String&gt;(); // Inferred as ArrayList&lt;String&gt;
+        var var5 = Map.of("a", "b"); // Inferred as Map&lt;String, String&gt;
+
+        var2 = "xyz"; // Compiler error: Type mismatch: cannot convert from String to int
+
+        var var6; // Compiler error: Cannot use 'var' on variable without initializer
+        var var7 = null; // Compiler error: Cannot infer type for local variable y
+
+        // var cannot be used with arrays declared using bracket notation
+        var var8[] = { 1, 2, 3 }; // Compiler error: 'var' is not allowed as an element type of an array
+        var[] var9 = { 1, 2, 3 }; // Compiler error: 'var' is not allowed as an element type of an array
+    }
+
+    // var cannot be used for return types
+    var doReturnVar() { // Compiler error: 'var' is not allowed here
+        return 42;
+    }
+
+    // var cannot be used for method parameters
+    void doUseParamVar(var param) { // Compiler error: 'var' is not allowed here
+    }
+}</pre>
+Note that <b>var</b> is a reserved type name but you can still use it as a variable name: <code class="code1">int var = 1;</code><br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

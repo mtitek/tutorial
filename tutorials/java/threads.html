@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Threads Tutorial: Creating, Starting &amp; Managing Threads | MTI TEK</title>
+<meta name="description" content="Learn how to define, instantiate, and manage threads in Java using Thread class and Runnable interface." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Threads Tutorial: Creating, Starting &amp; Managing Threads | MTI TEK" />
+<meta property="og:description" content="Learn how to define, instantiate, and manage threads in Java using Thread class and Runnable interface." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/threads.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Threads Tutorial: Creating, Starting &amp; Managing Threads | MTI TEK" />
+<meta name="twitter:description" content="Learn how to define, instantiate, and manage threads in Java using Thread class and Runnable interface." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/threads.php",
+        "description": "Learn how to define, instantiate, and manage threads in Java using Thread class and Runnable interface.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/threads.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Threads</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction</a></li>
+<li><a href="#sec_id_2">Defining a Thread</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1">Extending the Thread Class</a></li>
+<li><a href="#sec_id_2_2">Implementing the Runnable Interface</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_3">Instantiating a Thread</a></li>
+<li><a href="#sec_id_4">Starting a Thread</a></li>
+<li><a href="#sec_id_5">Thread States at Runtime</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction</span>
+<div class="tutorialSectionTextDiv1">
+In a single thread of execution, program instructions are executed sequentially in the order in which they were written.<br />
+<br />
+The thread uses a call stack to sequence the execution of program instructions.<br />
+It is not possible to execute program instructions in parallel within a single thread.<br />
+The only way to run programs in parallel is to create new threads.<br />
+Each thread will have its own call stack and will execute the task assigned to it concurrently with other threads.<br />
+<br />
+In Java, each application executed by the JVM gets a default thread called the <b>main thread</b>.<br />
+<br />
+It's important to distinguish two different concepts when talking about threads:<br />
+<ul class="ul_square_1">
+<li>the code to execute (the task),<br /></li>
+<li>and the thread (an instance of the <code class="code1">Thread</code> class) that will execute this code.<br /></li>
+</ul>
+<br />
+Java offers two primary ways to define a new thread of execution:<br />
+<ul class="ul_square_1">
+<li>by extending the <code class="code1">Thread</code> class,<br /></li>
+<li>or by implementing the <code class="code1">Runnable</code> interface.<br /></li>
+</ul>
+<br />
+In both cases, you must provide an implementation of the <code class="code1">run()</code> method, which contains the code to be executed by the thread.<br />
+<br />
+Note that the <code class="code1">Thread</code> class implements the <code class="code1">Runnable</code> interface, which defines the <code class="code1">run()</code> method.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Defining a Thread</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1">Extending the Thread Class</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println(
+                "Thread: " + Thread.currentThread().getName() + " (ID: " + Thread.currentThread().threadId() + ")");
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1">Implementing the Runnable Interface</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println(
+                "Runnable: " + Thread.currentThread().getName() + " (ID: " + Thread.currentThread().threadId() + ")");
+    }
+}</pre>
+It is strongly recommended to implement the <code class="code1">Runnable</code> interface rather than extend the <code class="code1">Thread</code> class,
+because it provides a clear separation of concerns between the thread (the execution context) and the task (the code to be executed).<br />
+<br />
+Using <code class="code1">Runnable</code> allows your class to extend another class (since Java doesn't support multiple inheritance).
+It's also easier to use with thread pools and executor services.<br />
+<br />
+Generally, extending the <code class="code1">Thread</code> class is reserved for cases where you want to modify or enhance the thread's behavior itself.<br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Instantiating a Thread</span>
+<div class="tutorialSectionTextDiv1">
+Instantiating a thread means creating an instance of the <code class="code1">Thread</code> class (or a subclass of it).<br />
+This instance is associated with the code it will execute (via the <code class="code1">run()</code> method).<br />
+At this stage, only the <code class="code1">Thread</code> object is created; the actual thread of execution has not yet started.<br />
+<br />
+Java provides several constructors to instantiate a thread:<br />
+<ul class="ul_square_1">
+<li>
+Instantiating a thread using a subclass of the <code class="code1">Thread</code> class:<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        // Thread is created but not started yet
+        Thread myThread = new MyThread();
+
+    }
+}</pre>
+</li>
+<li>
+Instantiating a thread using a class that implements the <code class="code1">Runnable</code> interface:<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        Runnable myRunnable = new MyRunnable();
+
+        Thread myThread1 = new Thread(myRunnable);
+
+        // Giving a custom name to the thread
+        Thread myThread2 = new Thread(myRunnable, "MyCustomThreadName");
+    }
+}</pre>
+</li>
+</ul>
+You can use an anonymous class or lambda expression to implement the <code class="code1">Runnable</code> interface when instantiating the thread:
+
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        // Using anonymous class
+        Thread myThread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Anonymous Runnable: " + Thread.currentThread().getName() + " (ID: "
+                        + Thread.currentThread().threadId() + ")");
+            }
+        });
+
+        // Using lambda expression
+        Thread myThread2 = new Thread(() -> {
+            System.out.println("Lambda Runnable: " + Thread.currentThread().getName() + " (ID: "
+                    + Thread.currentThread().threadId() + ")");
+        });
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Starting a Thread</span>
+<div class="tutorialSectionTextDiv1">
+Starting a thread means beginning its execution by creating a new thread of execution and assigning it a call stack,
+so the JVM can start executing the code inside the thread's <code class="code1">run()</code> method.<br />
+<br />
+To do this, you must call the <code class="code1">start()</code> method on the thread instance.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        // Using anonymous class
+        Runnable myRunnable1 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Anonymous Runnable: " + Thread.currentThread().getName() + " ("
+                        + Thread.currentThread().threadId() + ")");
+            }
+        };
+
+        // Using lambda expression
+        Runnable myRunnable2 = () -> {
+            System.out.println("Lambda Runnable: " + Thread.currentThread().getName() + " ("
+                    + Thread.currentThread().threadId() + ")");
+        };
+
+        Thread myThread1 = new Thread(myRunnable1, "AnonymousRunnable");
+        Thread myThread2 = new Thread(myRunnable2, "LambdaRunnable");
+
+        myThread1.start(); // This starts the new thread of execution
+        myThread2.start(); // This starts the new thread of execution
+    }
+}</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+<b>Calling <code class="code1">run()</code> directly vs. <code class="code1">start()</code>:</b><br />
+A thread instance is a regular object, and you can invoke its methods,
+including the <code class="code1">run()</code> method. However, calling <code class="code1">run()</code> directly will execute the code
+in the <em>current thread</em>, not in a new thread of execution.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        Runnable myRunnable = () -> {
+            System.out.println("Runnable: " + Thread.currentThread().getName() + " (ID: "
+                    + Thread.currentThread().threadId() + ")");
+        };
+
+        Thread myThread = new Thread(myRunnable, "myFirstThread");
+
+        myThread.start(); // Creates new thread, executes run() in that thread
+        myThread.run(); // Executes run() in current thread (main thread)
+    }
+}</pre>
+Typical output:<br />
+<pre class="text-code">
+Runnable: myFirstThread (ID: 19)
+Runnable: main (ID: 1)</pre>
+As you can see, the <code class="code1">run()</code> method was executed by the current thread (main thread with ID 1).<br />
+In contrast, calling <code class="code1">start()</code> creates a new thread of execution, which internally calls the <code class="code1">run()</code> method.<br />
+<br /></li>
+<li>
+<b>The <code class="code1">start()</code> method can only be called once:</b><br />
+Only calling the <code class="code1">start()</code> method can launch a new thread of execution.<br />
+Be aware that this method can only be called once per thread instance.<br />
+If it is called again, the JVM will throw an <code class="code1">IllegalThreadStateException</code>.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        Runnable myRunnable = () -> {
+            System.out.println("Runnable: " + Thread.currentThread().getName() + " (ID: "
+                    + Thread.currentThread().threadId() + ")");
+        };
+
+        Thread myThread = new Thread(myRunnable, "myFirstThread");
+
+        myThread.start(); // First call - works fine
+        myThread.start(); // Second call - throws exception
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Runnable: myFirstThread (9)
+Exception in thread "main" java.lang.IllegalThreadStateException
+    at java.base/java.lang.Thread.start(Thread.java:790)
+    at MainClass.main(MainClass.java:12)</pre>
+</li>
+<li>
+<b>Multiple threads with the same task:</b><br />
+If the same code needs to be executed multiple times by different threads,
+you must create multiple thread instances and call <code class="code1">start()</code> on each of them.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        Runnable myRunnable = () -> {
+            System.out.println("Runnable: " + Thread.currentThread().getName() + " (ID: "
+                    + Thread.currentThread().threadId() + ")");
+        };
+
+        Thread myThread1 = new Thread(myRunnable, "myFirstThread");
+        Thread myThread2 = new Thread(myRunnable, "mySecondThread");
+        Thread myThread3 = new Thread(myRunnable, "myThirdThread");
+
+        myThread1.start();
+        myThread2.start();
+        myThread3.start();
+    }
+}</pre>
+Typical output:<br />
+<pre class="text-code">
+Runnable: myThirdThread (ID: 21)
+Runnable: myFirstThread (ID: 19)
+Runnable: mySecondThread (ID: 20)</pre>
+</li>
+<li>
+<b>Thread execution order is not guaranteed:</b><br />
+The execution order of threads is not deterministic and depends on the thread scheduler.<br />
+Java provides mechanisms to suggest priorities to the JVM via <code class="code1">setPriority()</code>, but the actual scheduling behavior is platform-dependent.<br />
+<br />
+Java also allows creating dependencies between threads using methods like <code class="code1">join()</code>,
+so one thread will wait for another to complete before continuing execution.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Thread States at Runtime</span>
+<div class="tutorialSectionTextDiv1">
+A thread can be in one of several states during its lifecycle. The <code class="code1">Thread.State</code> enum defines these states:<br />
+<ul class="ul_square_1">
+<li>
+<b>NEW:</b><br />
+The thread instance has been created, but <code class="code1">start()</code> has not yet been called.<br />
+<br /></li>
+<li>
+<b>RUNNABLE:</b><br />
+The <code class="code1">start()</code> method has been called, and the thread is either running or ready to run.<br />
+This state encompasses both "ready to run" and "currently running" states.<br />
+<br /></li>
+<li>
+<b>BLOCKED:</b><br />
+The thread is blocked waiting for a monitor lock (synchronized block/method).<br />
+<br /></li>
+<li>
+<b>WAITING:</b><br />
+The thread is waiting indefinitely for another thread to perform a particular action (e.g., <code class="code1">Object.wait()</code>, <code class="code1">Thread.join()</code>).<br />
+<br /></li>
+<li>
+<b>TIMED_WAITING:</b><br />
+The thread is waiting for a specified period of time (e.g., <code class="code1">Thread.sleep()</code>, <code class="code1">Object.wait(timeout)</code>).<br />
+<br /></li>
+<li>
+<b>TERMINATED:</b><br />
+The <code class="code1">run()</code> method has finished executing, either normally or due to an exception.<br />
+<br /></li>
+</ul>
+Here's an example demonstrating different thread states:
+
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        Runnable myRunnable = () -> {
+            System.out.println("(1) Inside run(): " + Thread.currentThread().getState()); // RUNNABLE
+
+            try {
+                Thread.sleep(1000); // Thread will be in TIMED_WAITING state
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Restore interrupt status
+                System.err.println("Thread was interrupted");
+            }
+        };
+
+        Thread myThread = new Thread(myRunnable, "myTestThread");
+
+        System.out.println("(2) After creation: " + myThread.getState()); // NEW
+
+        myThread.start();
+
+        System.out.println("(3) After start(): " + myThread.getState()); // RUNNABLE
+
+        try {
+            Thread.sleep(500); // Let the other thread start sleeping
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("(4) While sleeping: " + myThread.getState()); // TIMED_WAITING
+
+        try {
+            myThread.join(); // Wait for the thread to complete
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("(5) After completion: " + myThread.getState()); // TERMINATED
+    }
+}</pre>
+Typical output:<br />
+<pre class="text-code">
+(2) After creation: NEW
+(1) Inside run(): RUNNABLE
+(3) After start(): RUNNABLE
+(4) While sleeping: TIMED_WAITING
+(5) After completion: TERMINATED</pre>
+<b>Note:</b> The exact output order may vary due to the concurrent nature of threads, but the states will follow the expected lifecycle.
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

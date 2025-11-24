@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java toString() Method | MTI TEK</title>
+<meta name="description" content="Learn how to properly toString the Java equals() method." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java toString() Method | MTI TEK" />
+<meta property="og:description" content="Learn how to properly toString the Java equals() method." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/toString.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java toString() Method | MTI TEK" />
+<meta name="twitter:description" content="Learn how to properly toString the Java equals() method." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/toString.php",
+        "description": "Learn how to properly toString the Java equals() method.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/toString.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">toString() Method</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">toString() Method</a></li>
+<li><a href="#sec_id_2">Example</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">toString() Method</span>
+<div class="tutorialSectionTextDiv1">
+The <b>toString()</b> method is defined in the <b>java.lang.Object</b> class and returns a string representation consisting of the object's class name followed by the "@" symbol and its hash code in hexadecimal format:<br />
+<pre class="java-code">
+public String toString() {
+    return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}</pre>
+The <b>java.util.Objects</b> class provides utility methods for safe string conversion of objects:<br />
+<pre class="java-code">
+public static String toString(Object o) {
+    return String.valueOf(o);
+}</pre>
+<pre class="java-code">
+public static String toString(Object o, String nullDefault) {
+    return (o != null) ? o.toString() : nullDefault;
+}</pre>
+The <b>java.util.Arrays</b> class provides utility methods to get string representations of arrays,
+including specific overloaded methods for each primitive type and <b>deepToString()</b> for nested arrays.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example</span>
+<div class="tutorialSectionTextDiv1">
+The following example demonstrates how to properly implement the <b>toString()</b> method with inheritance:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Superclass "P":</h6>
+<pre class="java-code">
+import java.util.Locale;
+
+class P {
+    Integer id = 1;
+
+    @Override
+    public String toString() {
+        String value = "%s@%X (id:%d)";
+        return String.format(Locale.getDefault(), value, getClass().getName(), System.identityHashCode(this), id);
+    }
+}</pre>
+</li>
+<li>
+<h6>Subclass "C":</h6>
+<pre class="java-code">
+class C extends P {
+    String code = "default";
+
+    @Override
+    public String toString() {
+        String value = "%s (code:%s)";
+        return String.format(Locale.getDefault(), value, super.toString(), code);
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

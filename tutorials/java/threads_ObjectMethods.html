@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Object Class: wait(), notify(), and notifyAll Method Tutorial | MTI TEK</title>
+<meta name="description" content="Learn how to use Java&#039;s wait(), notify(), and notifyAll methods to synchronize threads using the Object class." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Object Class: wait(), notify(), and notifyAll Method Tutorial | MTI TEK" />
+<meta property="og:description" content="Learn how to use Java&#039;s wait(), notify(), and notifyAll methods to synchronize threads using the Object class." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/threads_ObjectMethods.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Object Class: wait(), notify(), and notifyAll Method Tutorial | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Java&#039;s wait(), notify(), and notifyAll methods to synchronize threads using the Object class." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/threads_ObjectMethods.php",
+        "description": "Learn how to use Java&#039;s wait(), notify(), and notifyAll methods to synchronize threads using the Object class.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/threads_ObjectMethods.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Object Class Methods: wait, notify, notifyAll</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">The methods wait, notify</a></li>
+<li><a href="#sec_id_2">The method notifyAll</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">The methods wait, notify</span>
+<div class="tutorialSectionTextDiv1">
+If the execution of code depends on the state of an object in order to read or modify its attributes or invoke its methods,
+then it is possible to put the thread executing this code on hold, waiting for another thread that manipulates the object to send a notification indicating that the object is now ready to be used.<br />
+<br />
+For example, if an application uses two threads, where:<br />
+<ul class="ul_square_1">
+<li>one is responsible for constructing the elements of an array,<br /></li>
+<li>and the other is responsible for sorting the array elements once all elements have been provided.<br /></li>
+</ul>
+Then, both threads can use the <code class="code1">wait</code> and <code class="code1">notify</code> methods to synchronize access to this object.<br />
+<pre class="java-code">
+package com.mtitek.threads;
+
+class MyClass {
+    private volatile boolean ready = false;
+    private Integer[] elements;
+
+    public synchronized boolean isReady() {
+        return ready;
+    }
+
+    public synchronized void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public synchronized Integer[] getElements() {
+        return elements;
+    }
+
+    public synchronized void setElements(Integer[] elements) {
+        this.elements = elements;
+    }
+}
+
+public class MainClass {
+    public static void main(String[] args) {
+        final MyClass myClass = new MyClass();
+
+        Runnable myRunnable1 = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (myClass) {
+                    try {
+                        // Wait while another thread might be using the object
+                        while (myClass.isReady()) {
+                            myClass.wait();
+                        }
+
+                        // Code to be executed by the thread
+                        System.out.println(
+                                Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ")");
+
+                        System.out.println("Initializing array elements (start)");
+
+                        myClass.setElements(new Integer[] { 4, 2, 8, 1, 6 });
+
+                        System.out.println("Initializing array elements (end)");
+
+                        // Mark as ready and notify waiting threads
+                        myClass.setReady(true);
+                        myClass.notify();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt(); // Restore interrupted status
+                        System.err.println(Thread.currentThread().getName() + " was interrupted: " + e.getMessage());
+                    }
+                }
+            }
+        };
+
+        Runnable myRunnable2 = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (myClass) {
+                    try {
+                        // Wait until data is ready
+                        while (!myClass.isReady()) {
+                            myClass.wait();
+                        }
+
+                        // Process the data
+                        System.out.println(
+                                Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ")");
+
+                        System.out.println("Sorting and displaying array elements (start)");
+
+                        Integer[] elements = myClass.getElements();
+                        if (elements != null) {
+                            // Sort the array
+                            java.util.Arrays.sort(elements);
+
+                            for (Integer element : elements) {
+                                System.out.println(element);
+                            }
+                        }
+
+                        System.out.println("Sorting and displaying array elements (end)");
+
+                        // Reset state and notify
+                        myClass.setReady(false);
+                        myClass.notify();
+
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt(); // Restore interrupted status
+                        System.err.println(Thread.currentThread().getName() + " was interrupted: " + e.getMessage());
+                    }
+                }
+            }
+        };
+
+        Thread myThread1 = new Thread(myRunnable1, "myFirstThread");
+        Thread myThread2 = new Thread(myRunnable2, "mySecondThread");
+
+        myThread1.start();
+        myThread2.start();
+
+        // Wait for threads to complete
+        try {
+            myThread1.join();
+            myThread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Main thread was interrupted: " + e.getMessage());
+        }
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+myFirstThread (19)
+Initializing array elements (start)
+Initializing array elements (end)
+mySecondThread (20)
+Sorting and displaying array elements (start)
+1
+2
+4
+6
+8
+Sorting and displaying array elements (end)</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The method notifyAll</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">notifyAll</code> method is used to wake up all threads that are currently waiting on the same object's monitor.
+Unlike <code class="code1">notify</code>, which wakes only one waiting thread (chosen arbitrarily by the JVM), <code class="code1">notifyAll</code> ensures that all waiting threads become eligible for scheduling and will compete for the monitor lock.<br />
+<br />
+This is particularly useful when multiple threads might be waiting for different conditions related to the same object, or when you want to ensure all waiting threads get a chance to re-evaluate their waiting conditions.<br />
+<pre class="java-code">
+package com.mtitek.threads;
+
+public class MainClass {
+    public static void main(String[] args) {
+        final Object lock = new Object();
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    try {
+                        System.out.println(Thread.currentThread().getName() + " is waiting.");
+                        lock.wait();
+                        System.out.println(Thread.currentThread().getName() + " has been notified and resumed.");
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt(); // Restore interrupted status
+                        System.err.println(Thread.currentThread().getName() + " was interrupted: " + e.getMessage());
+                    }
+                }
+            }
+        };
+
+        // Create and start two threads that will wait on the same lock
+        Thread myThread1 = new Thread(myRunnable, "myFirstThread");
+        Thread myThread2 = new Thread(myRunnable, "mySecondThread");
+
+        myThread1.start();
+        myThread2.start();
+
+        // Pause to ensure all threads are waiting
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Main thread was interrupted: " + e.getMessage());
+            return;
+        }
+
+        // Notifier thread
+        Thread notifierThread = new Thread(() -> {
+            synchronized (lock) {
+                System.out.println("NotifierThread is calling notifyAll.");
+                lock.notifyAll(); // Wake up all waiting threads
+            }
+        }, "NotifierThread");
+
+        notifierThread.start();
+
+        // Wait for all threads to complete
+        try {
+            myThread1.join();
+            myThread2.join();
+            notifierThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Main thread was interrupted: " + e.getMessage());
+        }
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+myFirstThread is waiting.
+mySecondThread is waiting.
+NotifierThread is calling notifyAll.
+myFirstThread has been notified and resumed.
+mySecondThread has been notified and resumed.</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

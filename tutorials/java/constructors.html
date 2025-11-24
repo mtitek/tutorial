@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Constructors Explained | MTI TEK</title>
+<meta name="description" content="Learn everything about Java constructors: syntax, declaration rules, code execution, and best practices." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Constructors Explained | MTI TEK" />
+<meta property="og:description" content="Learn everything about Java constructors: syntax, declaration rules, code execution, and best practices." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/constructors.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Constructors Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn everything about Java constructors: syntax, declaration rules, code execution, and best practices." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/constructors.php",
+        "description": "Learn everything about Java constructors: syntax, declaration rules, code execution, and best practices.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/constructors.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Constructors</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Constructors</a></li>
+<li><a href="#sec_id_2">Constructor Declaration Rules</a></li>
+<li><a href="#sec_id_3">Important Notes about Constructor Code</a></li>
+<li><a href="#sec_id_4">Important Notes about Constructor Execution</a></li>
+<li><a href="#sec_id_5">Important Notes about Constructor Exception Handling</a></li>
+<li><a href="#sec_id_6">Important Notes about Constructor and Initialization Order</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Constructors</span>
+<div class="tutorialSectionTextDiv1">
+All classes (including abstract classes) must declare at least one constructor.<br />
+By default, if the class does not declare any constructors, the compiler creates a no-argument constructor (also called a default constructor).<br />
+<br />
+<b><i>Note</i></b>: the compiler will not create any constructors if the class declares at least one constructor.<br />
+<br />
+For example, for the class <b>ClassA</b>, the compiler will automatically create the no-argument constructor <code class="code1">ClassA() {}</code>:<br />
+<pre class="java-code">
+class ClassA {
+}</pre>
+Class <b>ClassB</b> will not have a no-argument constructor:<br />
+<pre class="java-code">
+class ClassB {
+    ClassB(int arg1) { }
+}</pre>
+<b><i>Important</i></b>: Constructors are not inheritable; a subclass does not inherit the constructors of its superclasses. Therefore, the concepts of inheritance and overriding do not apply to constructors.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Constructor Declaration Rules</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li>
+A constructor cannot return a value, and therefore it must not declare a return type.<br />
+You cannot even use the keyword <code class="code1">void</code>.<br />
+<br /></li>
+<li>
+A constructor can have zero or more parameters.<br />
+<br /></li>
+<li>
+The constructor declaration can use any access modifier: <code class="code1">public</code>, <code class="code1">protected</code>, <code class="code1">private</code>, or package-private (no modifier).<br />
+<br /></li>
+<li>
+The constructor declaration cannot use other modifiers such as <code class="code1">final</code>, <code class="code1">static</code>, etc.<br />
+<pre class="java-code">
+public class ClassD {
+    final ClassD() { } // compiler error: Illegal modifier for the constructor in type ClassD; only public, protected &amp; private are permitted
+}</pre>
+</li>
+<li>
+The name of the constructor must match the name of the class in which it is declared.<br />
+<br />
+<b><i>Note</i></b>: Java is case-sensitive, so the constructor name and the class name must match exactly.<br />
+<pre class="java-code">
+class ClassC {
+    // A valid constructor declaration
+    ClassC() { }
+
+    // The compiler treats this as a method, not a constructor
+    classc() { } // compiler error: Return type for the method is missing
+
+    // A valid method declaration
+    void clASSc() { }
+}</pre>
+It is possible to declare a method with the exact same name as the class;
+the difference between a method and a constructor is:
+<ul class="ul_square_1">
+<li>
+A constructor does not declare a return type.<br />
+<br /></li>
+<li>
+A constructor can be invoked using the <code class="code1">new</code> operator (instantiation).<br />
+<br /></li>
+<li>
+A constructor can only be invoked from another constructor (it cannot be called from a method or an initialization block).<br />
+</li>
+</ul>
+<br /></li>
+<li>
+It is possible to declare multiple constructors (constructor overloading) in the same class, as long as their signatures are different.<br />
+<pre class="java-code">
+class ClassC {
+    ClassC() { }
+
+    ClassC(int arg1) { }
+
+    ClassC(int arg1, boolean arg2) { }
+}</pre>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Important Notes about Constructor Code</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li>
+The compiler may insert a call to the no-argument constructor of the superclass (<code class="code1">super()</code>) at the beginning of a constructor.<br />
+<br />
+<b><i>Note</i></b>: The compiler will not insert a call to the superclass constructor if the constructor code already includes:<br />
+<ul class="ul_square_1">
+<li>an explicit call (using the <code class="code1">this</code> keyword) to another constructor in the same class;<br />
+<br />
+</li>
+<li>or an explicit call (using the <code class="code1">super</code> keyword) to a superclass constructor.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+class SuperClass {
+    SuperClass() {
+        // the compiler adds this statement: super();
+        System.out.println();
+    }
+}
+
+class SubClass extends SuperClass {
+    SubClass() {
+        // the compiler adds this statement: super();
+    }
+
+    SubClass(boolean arg1) {
+        this(); // Because of this call, the compiler doesn't add a call to the superclass constructor
+    }
+
+    SubClass(int arg1) {
+        super(); // Because of this call, the compiler doesn't add another call to the superclass constructor
+    }
+}</pre>
+</li>
+<li>
+If the superclass does not declare a no-argument constructor,
+you must explicitly call a superclass constructor that takes arguments.<br />
+<br />
+Otherwise, the compiler will show an error,
+because, as mentioned above, it tries to insert a call to the no-argument constructor — which doesn’t exist in this case!<br />
+<pre class="java-code">
+class SuperClass1 {
+    SuperClass1() { }
+}
+
+class SuperClass2 extends SuperClass1 {
+    SuperClass2(int arg1) {
+        // OK: SuperClass1 declares a no-arg constructor
+    }
+}
+
+class SubClass extends SuperClass2 {
+    SubClass() { } // compiler error: Implicit super constructor SuperClass2() is undefined. Must explicitly invoke another constructor
+
+    SubClass(boolean arg1) {
+        this(); // OK: because of this(), the compiler doesn't add a call to the superclass constructor
+    }
+
+    SubClass(int arg1) {
+        super(arg1); // OK: because of super(), the compiler doesn't add a no-arg call
+    }
+}</pre>
+To understand the error, here’s how the constructor is seen by the compiler:
+
+<pre class="java-code">
+class SubClass extends SuperClass2 {
+    SubClass() {
+        super(); // compiler error: The constructor SuperClass2() is undefined
+    }
+
+    SubClass(boolean arg1) {
+        this();
+    }
+
+    SubClass(int arg1) {
+        super(arg1);
+    }
+}</pre>
+</li>
+<li>
+If the <code class="code1">this</code> or <code class="code1">super</code> keywords are used in constructor code,
+they must be the first statements in the constructor,
+otherwise the compiler will generate an error.<br />
+<pre class="java-code">
+class SuperClass2 {
+    SuperClass2() { }
+}
+
+class SubClassF extends SuperClass2 {
+    SubClassF() {
+        System.out.println();
+        super(); // compiler error: Constructor call must be the first statement in a constructor
+    }
+
+    SubClassF(boolean arg1) {
+        System.out.println();
+        this(); // compiler error: Constructor call must be the first statement in a constructor
+    }
+}</pre>
+</li>
+<li>
+The compiler will generate an error if constructors call each other recursively.<br />
+<pre class="java-code">
+class ClassG {
+    ClassG() {
+        this(true); // compiler error: Recursive constructor invocation ClassG(boolean)
+    }
+
+    ClassG(boolean arg1) {
+        this(); // compiler error: Recursive constructor invocation ClassG()
+    }
+}</pre>
+</li>
+<li>
+You cannot pass instance variables (or call instance methods) as arguments to <code class="code1">this();</code> or <code class="code1">super();</code>.<br />
+<br />
+Only constructor parameters, class variables, and static methods can be passed as arguments to <code class="code1">this();</code> or <code class="code1">super();</code>.<br />
+<br />
+In constructor code, you cannot use an instance variable or call an instance method before the superclass constructor has completed execution.<br />
+<pre class="java-code">
+class SuperClass {
+    SuperClass() { }
+
+    SuperClass(int arg1) { }
+}
+
+class SubClass extends SuperClass {
+    int var1 = 1;
+    static int var2 = 1;
+
+    SubClass() {
+        this(var1); // compiler error: Cannot refer to an instance field var1 while explicitly invoking a constructor
+    }
+
+    SubClass(int arg1) {
+        super(var1); // compiler error: Cannot refer to an instance field var1 while explicitly invoking a constructor
+    }
+
+    SubClass(short arg1) {
+        super(arg1); // OK
+    }
+
+    SubClass(float arg1) {
+        this(instanceMethod()); // compiler error: Cannot refer to an instance method while explicitly invoking a constructor
+    }
+
+    SubClass(double arg1) {
+        this(staticMethod()); // OK
+    }
+
+    SubClass(int arg1, int arg2) {
+        this(staticMethod() + arg1 + arg2 + var2); // OK
+        var1 = instanceMethod(); // OK
+        var2 = staticMethod(); // OK
+    }
+
+    public Integer instanceMethod() {
+        return 0;
+    }
+
+    public static Integer staticMethod() {
+        return 0;
+    }
+}</pre>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Important Notes about Constructor Execution</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li>
+Constructors are executed when a new instance of a class is created:
+instantiation is done using the <code class="code1">new</code> keyword.<br />
+<br />
+The arguments passed with <code class="code1">new</code> determine which constructor is executed.<br />
+<pre class="java-code">
+class ClassH {
+    ClassH() { }
+
+    ClassH(int arg1) { }
+}
+
+public class Test1 {
+    public static void main(String[] args) {
+        new ClassH(); // ClassH() will be executed
+
+        new ClassH(1); // ClassH(int arg1) will be executed
+    }
+}</pre>
+</li>
+<li>
+It is possible to execute multiple constructors during instantiation:
+the constructor invoked using the <code class="code1">new</code> keyword can call another constructor in the same class using <code class="code1">this</code>.
+That constructor can in turn use <code class="code1">this</code> to call another constructor, and so on.
+See the section above for notes on recursive constructor calls.<br />
+<br />
+The arguments passed with <code class="code1">this</code> determine which constructor is executed.<br />
+<br />
+<b><i>Reminder</i></b>: The <code class="code1">this</code> statement (like <code class="code1">super</code>) must be the first line in the constructor body (see details above).<br />
+<pre class="java-code">
+class ClassI {
+    ClassI() { this(1); } // invokes ClassI(int arg1)
+
+    ClassI(int arg1) { }
+}
+
+public class Test1 {
+    public static void main(String[] args) {
+        new ClassI(); // ClassI() will be executed
+
+        new ClassI(1); // ClassI(int arg1) will be executed
+    }
+}</pre>
+</li>
+<li>
+Instantiation guarantees that at least one constructor from each superclass will be executed:
+the constructor called using <code class="code1">new</code> may invoke a constructor from its superclass using <code class="code1">super</code>.
+That constructor may in turn call another constructor in its own superclass, and so on.<br />
+<br />
+The arguments passed with <code class="code1">super</code> determine which superclass constructor is executed.<br />
+<br />
+<b><i>Reminder</i></b>:
+The compiler adds the statement <code class="code1">super();</code> by default at the beginning of the constructor body,
+if it doesn't already contain a call to <b>this</b> or <b>super</b>.<br />
+<pre class="java-code">
+class SuperClass {
+    SuperClass() { } // the compiler will insert "super();" at the beginning
+
+    SuperClass(int arg1) { } // the compiler will insert "super();" at the beginning
+}
+
+class SubClass extends SuperClass {
+    SubClass() { } // the compiler will insert "super();" at the beginning
+
+    SubClass(int arg1) { super(arg1); } // the superclass constructor SuperClass(int arg1) will be executed
+}</pre>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Important Notes about Constructor Exception Handling</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li>
+Constructors can throw exceptions, including both checked and unchecked exceptions.<br />
+When a constructor throws an exception, the object is not created, and no reference to the object is returned.<br />
+<br /></li>
+<li>
+If a constructor throws an exception, any initialization that occurred before the exception is thrown may leave the system in an inconsistent state.<br />
+<br />
+<b><i>Important</i></b>: When an exception is thrown from a constructor, the object is considered not to have been created, so finalizers will not be called.<br />
+<br /></li>
+<li>
+When calling superclass constructors that can throw exceptions, the subclass constructor must handle or declare the exception.<br />
+<br /></li>
+<li>
+If a constructor calls another constructor using <code class="code1">this()</code> and that constructor throws an exception, the calling constructor will not continue execution.<br />
+<br /></li>
+<li>
+When acquiring resources in constructors, proper exception handling is crucial to prevent resource leaks.<br />
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Important Notes about Constructor and Initialization Order</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li>
+The complete initialization order when creating an object follows a specific sequence:<br />
+<br />
+<ol class="ol_decimal_1">
+<li>Static initialization (only once per class loading).</li>
+<li>Instance variable initialization and instance initialization blocks (in order of declaration).</li>
+<li>Constructor execution.</li>
+</ol>
+<br /></li>
+<li>
+In inheritance hierarchies, the initialization order becomes more complex:<br />
+<br />
+<ol class="ol_decimal_1">
+<li>Static initialization of superclass (if not already done).</li>
+<li>Static initialization of subclass (if not already done).</li>
+<li>Instance initialization of superclass.</li>
+<li>Superclass constructor execution.</li>
+<li>Instance initialization of subclass.</li>
+<li>Subclass constructor execution.</li>
+</ol>
+<br /></li>
+<li>
+Instance initialization blocks run before constructors and can be used to initialize instance variables that are common to all constructors.<br />
+<br />
+<b><i>Note</i></b>: Instance initialization blocks have access to instance variables and methods, unlike static initialization blocks.<br />
+<br /></li>
+<li>
+When using constructor chaining with <code class="code1">this()</code>, the initialization order is:<br />
+<br />
+<ol class="ol_decimal_1">
+<li>Instance variable initialization and instance blocks.</li>
+<li>The constructor called by <code class="code1">this().</code></li>
+<li>The current constructor body (after the <code class="code1">this()</code> call).</li>
+</ol>
+<br />
+<b><i>Important</i></b>: Instance initialization happens only once, before the first constructor in the chain executes.<br />
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

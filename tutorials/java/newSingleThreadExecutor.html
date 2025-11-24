@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Single Thread Executor Tutorial | MTI TEK</title>
+<meta name="description" content="Learn Java ExecutorService with Single Thread Executor examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Single Thread Executor Tutorial | MTI TEK" />
+<meta property="og:description" content="Learn Java ExecutorService with Single Thread Executor examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/newSingleThreadExecutor.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Single Thread Executor Tutorial | MTI TEK" />
+<meta name="twitter:description" content="Learn Java ExecutorService with Single Thread Executor examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/newSingleThreadExecutor.php",
+        "description": "Learn Java ExecutorService with Single Thread Executor examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/newSingleThreadExecutor.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Single Thread Executor</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Single Thread Executor</a></li>
+<li><a href="#sec_id_1">Example (1): ExecutorService::execute(Runnable)</a></li>
+<li><a href="#sec_id_2">Example (2) - Synchronous execution: ExecutorService::submit(Callable)</a></li>
+<li><a href="#sec_id_3">Example (3) - Asynchronous execution: ExecutorService::submit(Callable)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Single Thread Executor</span>
+<div class="tutorialSectionTextDiv1">
+The ExecutorService framework provides a higher-level replacement for working with threads directly.
+It manages thread pools, handles thread lifecycle (creation, scheduling, and cleanup), and provides various execution strategies.<br />
+<br />
+The <code class="code1">Executors.newSingleThreadExecutor</code> creates a single-threaded executor that executes tasks sequentially in a dedicated thread,
+making it ideal for tasks that need to be processed in order or when you want to avoid thread contention.<br />
+<br />
+Here's the minimal dependencies needed in order for the following examples to work ("<b>pom.xml</b>" file):<br />
+<pre class="xml-code">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+    &lt;version&gt;3.17.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<b>Note</b>: The Apache Commons Lang3 dependency is included for the <code class="code1">BasicThreadFactory</code> class,
+which provides convenient thread naming and daemon thread configuration.
+While Java's built-in <code class="code1">Executors.newSingleThreadExecutor</code> works without additional dependencies,
+using a custom ThreadFactory allows better thread management and debugging.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Example (1): ExecutorService::execute(Runnable)</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+public class MainClass {
+    public static void main(String[] args) throws InterruptedException {
+        final String namingPattern = "_newSingleThreadExecutor_runnable";
+
+        final BasicThreadFactory.Builder builder = new BasicThreadFactory.Builder();
+
+        final BasicThreadFactory basicThreadFactory = builder.namingPattern(namingPattern).daemon(true).build();
+
+        final ExecutorService executorService = Executors.newSingleThreadExecutor(basicThreadFactory);
+
+        IntStream.iterate(0, i -&gt; i + 1).limit(5).forEach(
+                t -&gt; executorService.execute(() -&gt; System.out.println(Thread.currentThread().getName() + ": " + t)));
+
+        executorService.awaitTermination(100l, TimeUnit.MILLISECONDS);
+
+        executorService.shutdown();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+_newSingleThreadExecutor_runnable: 0
+_newSingleThreadExecutor_runnable: 1
+_newSingleThreadExecutor_runnable: 2
+_newSingleThreadExecutor_runnable: 3
+_newSingleThreadExecutor_runnable: 4</pre>
+The <code class="code1">execute()</code> method accepts a <code class="code1">Runnable</code> and returns void.
+The daemon (background) thread setting ensures the thread won't prevent JVM shutdown.
+Note that <code class="code1">awaitTermination()</code> should be called after <code class="code1">shutdown()</code> for proper cleanup.
+It blocks until all tasks complete after shutdown, or timeout occurs, or current thread is interrupted.
+You should consider timeout values for <code class="code1">awaitTermination()</code> based on your application's requirements.<br />
+<br />
+Always shutdown ExecutorService instances to prevent resource leaks.
+You can use <code class="code1">shutdownNow()</code> if you need to interrupt running tasks; you should handle <code class="code1">InterruptedException</code> properly.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example (2) - Synchronous execution: ExecutorService::submit(Callable)</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+public class MainClass {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        final String namingPattern = "_newSingleThreadExecutor_callable_sync";
+
+        final BasicThreadFactory.Builder builder = new BasicThreadFactory.Builder();
+
+        final BasicThreadFactory basicThreadFactory = builder.namingPattern(namingPattern).daemon(true).build();
+
+        final ExecutorService executorService = Executors.newSingleThreadExecutor(basicThreadFactory);
+
+        // Callable - synchronous
+        {
+            Callable&lt;Integer&gt; callable = () -&gt; {
+                System.out.println(Thread.currentThread().getName() + ": Callable Sync...");
+                return 1;
+            };
+
+            Future&lt;Integer&gt; task = executorService.submit(callable);
+
+            Integer result = task.get();
+
+            System.out.println(result);
+        }
+
+        executorService.shutdown();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+_newSingleThreadExecutor_callable_sync: Callable Sync...
+1</pre>
+Unlike <code class="code1">Runnable</code>, <code class="code1">Callable</code> can return a value and throw checked exceptions.
+The <code class="code1">submit()</code> method returns a <code class="code1">Future&lt;T&gt;</code> object that represents the result of the computation.
+Calling <code class="code1">get()</code> on the Future blocks the current thread until the task completes, making this synchronous execution.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example (3) - Asynchronous execution: ExecutorService::submit(Callable)</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+public class MainClass {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        final String namingPattern = "_newSingleThreadExecutor_callable_async";
+
+        final BasicThreadFactory.Builder builder = new BasicThreadFactory.Builder();
+
+        final BasicThreadFactory basicThreadFactory = builder.namingPattern(namingPattern).daemon(true).build();
+
+        final ExecutorService executorService = Executors.newSingleThreadExecutor(basicThreadFactory);
+
+        // Callable - asynchronous
+        {
+            Callable&lt;Void&gt; callable = () -&gt; {
+                System.out.println(Thread.currentThread().getName() + ": Callable Async...");
+                return null;
+            };
+
+            executorService.submit(callable);
+        }
+
+        executorService.awaitTermination(100l, TimeUnit.MILLISECONDS);
+
+        executorService.shutdown();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+_newSingleThreadExecutor_callable_async: Callable Async...</pre>
+This example demonstrates asynchronous execution. The <code class="code1">submit()</code> call returns immediately without waiting for the task to complete.
+You would typically want to store the returned <code class="code1">Future</code> to check task completion status or handle exceptions.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

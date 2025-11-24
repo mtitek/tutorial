@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Keywords Explained | MTI TEK</title>
+<meta name="description" content="Discover all Java keywords. Learn about data types, variables, access modifiers, inheritance, loops, exceptions, and more." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Keywords Explained | MTI TEK" />
+<meta property="og:description" content="Discover all Java keywords. Learn about data types, variables, access modifiers, inheritance, loops, exceptions, and more." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/javaKeywords.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Keywords Explained | MTI TEK" />
+<meta name="twitter:description" content="Discover all Java keywords. Learn about data types, variables, access modifiers, inheritance, loops, exceptions, and more." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/javaKeywords.php",
+        "description": "Discover all Java keywords. Learn about data types, variables, access modifiers, inheritance, loops, exceptions, and more.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/javaKeywords.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Java Keywords</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Notes</a></li>
+<li><a href="#sec_id_1">Primitive Data Types</a></li>
+<li><a href="#sec_id_2">Type Declaration &amp; Variables</a></li>
+<li><a href="#sec_id_3">Access Modifiers &amp; Visibility</a></li>
+<li><a href="#sec_id_4">Inheritance &amp; Polymorphism</a></li>
+<li><a href="#sec_id_5">Object Creation &amp; Reference</a></li>
+<li><a href="#sec_id_6">Method &amp; Field Modifiers</a></li>
+<li><a href="#sec_id_7">Conditional Statements</a></li>
+<li><a href="#sec_id_8">Loop Statements</a></li>
+<li><a href="#sec_id_9">Jump Statements</a></li>
+<li><a href="#sec_id_10">Exception Handling</a></li>
+<li><a href="#sec_id_11">Code Organization</a></li>
+<li><a href="#sec_id_12">Testing &amp; Debugging</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+<code class="code1">module</code>, <code class="code1">requires</code>, and <code class="code1">exports</code>
+are reserved keywords in module declarations and cannot be used as regular identifiers anywhere in Java code.<br />
+<br />
+<code class="code1">goto</code> and <code class="code1">const</code>
+are reserved keywords and cannot be used as identifiers,
+although they are not currently used in Java.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Primitive Data Types</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">boolean</code>: Represents true/false values<br /><br /></li>
+<li><code class="code1">char</code>: Single 16-bit Unicode character<br /><br /></li>
+<li><code class="code1">byte</code>: 8-bit signed integer (-128 to 127)<br /><br /></li>
+<li><code class="code1">short</code>: 16-bit signed integer (-32,768 to 32,767)<br /><br /></li>
+<li><code class="code1">int</code>: 32-bit signed integer (-2³¹ to 2³¹-1)<br /><br /></li>
+<li><code class="code1">long</code>: 64-bit signed integer (-2⁶³ to 2⁶³-1)<br /><br /></li>
+<li><code class="code1">float</code>: 32-bit floating point<br /><br /></li>
+<li><code class="code1">double</code>: 64-bit floating point<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Type Declaration &amp; Variables</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">void</code>: Indicates that a method doesn't return any value<br /><br /></li>
+<li><code class="code1">var</code>: Local variable type inference (cannot be used for class/instance fields, method parameters, or return types)<br /><br /></li>
+<li><code class="code1">enum</code>: Defines a fixed set of constants<br /><br /></li>
+<li><code class="code1">class</code>: Declares a class<br /><br /></li>
+<li><code class="code1">interface</code>: Declares an interface<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Access Modifiers &amp; Visibility</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">public</code>: Accessible from anywhere<br /><br /></li>
+<li><code class="code1">private</code>: Accessible only within the same class<br /><br /></li>
+<li><code class="code1">protected</code>: Accessible within package and subclasses<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Inheritance &amp; Polymorphism</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">extends</code>: Class inheritance (single inheritance)<br /><br /></li>
+<li><code class="code1">implements</code>: Interface implementation (multiple inheritance of type)<br /><br /></li>
+<li><code class="code1">abstract</code>: Declares abstract classes/methods (cannot be instantiated)<br /><br /></li>
+<li><code class="code1">final</code>: Prevents inheritance (classes), overriding (methods), or reassignment (variables)<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Object Creation &amp; Reference</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">new</code>: Creates new object instances<br /><br /></li>
+<li><code class="code1">this</code>: Reference to current object instance<br /><br /></li>
+<li><code class="code1">super</code>: Reference to parent class<br /><br /></li>
+<li><code class="code1">instanceof</code>: Tests object type at runtime<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Method &amp; Field Modifiers</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">static</code>: Belongs to class rather than instance (shared among all objects)<br /><br /></li>
+<li><code class="code1">native</code>: Method implemented in platform-specific code (JNI)<br /><br /></li>
+<li><code class="code1">volatile</code>: Ensures variable visibility across threads (prevents caching)<br /><br /></li>
+<li><code class="code1">transient</code>: Excludes field from serialization<br /><br /></li>
+<li><code class="code1">synchronized</code>: Thread-safe method/block execution<br /><br /></li>
+<li><code class="code1">strictfp</code>: Ensures consistent floating-point calculations across platforms<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Conditional Statements</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">if</code>: Conditional execution<br /><br /></li>
+<li><code class="code1">else</code>: Alternative execution path<br /><br /></li>
+<li><code class="code1">switch</code>: Multi-way branching<br /><br /></li>
+<li><code class="code1">case</code>: Individual switch cases<br /><br /></li>
+<li><code class="code1">default</code>: Default case in switch statements<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Loop Statements</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">for</code>: Counter-controlled loop (traditional and enhanced for-each)<br /><br /></li>
+<li><code class="code1">while</code>: Condition-controlled loop (pre-test)<br /><br /></li>
+<li><code class="code1">do</code>: Condition-controlled loop (post-test)<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Jump Statements</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">continue</code>: Skips current iteration, continues with next<br /><br /></li>
+<li><code class="code1">break</code>: Exits loops or switch statements<br /><br /></li>
+<li><code class="code1">return</code>: Exits method and optionally returns value<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Exception Handling</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">try</code>: Defines block that may throw exceptions<br /><br /></li>
+<li><code class="code1">catch</code>: Handles specific exception types<br /><br /></li>
+<li><code class="code1">finally</code>: Always executes regardless of exceptions<br /><br /></li>
+<li><code class="code1">throw</code>: Explicitly throws an exception<br /><br /></li>
+<li><code class="code1">throws</code>: Declares exceptions that method may throw<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">Code Organization</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">import</code>: Imports classes/packages for use<br /><br /></li>
+<li><code class="code1">package</code>: Declares a package namespace<br /><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">Testing &amp; Debugging</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><code class="code1">assert</code>: Runtime assertions for debugging (must be enabled with -ea flag)<br /><br /></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

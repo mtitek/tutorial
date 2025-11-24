@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Data Types Explained | MTI TEK</title>
+<meta name="description" content="Learn about Java data types including primitive types like int, boolean, float, and reference types such as classes, interfaces, and arrays." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Data Types Explained | MTI TEK" />
+<meta property="og:description" content="Learn about Java data types including primitive types like int, boolean, float, and reference types such as classes, interfaces, and arrays." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/types.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Data Types Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn about Java data types including primitive types like int, boolean, float, and reference types such as classes, interfaces, and arrays." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/types.php",
+        "description": "Learn about Java data types including primitive types like int, boolean, float, and reference types such as classes, interfaces, and arrays.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/types.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Types</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Primitive Types</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_0">Notes</a></li>
+<li><a href="#sec_id_2_1">Boolean type: boolean</a></li>
+<li><a href="#sec_id_2_2">Character type: char (16 bits)</a></li>
+<li><a href="#sec_id_2_3">Integer type: byte (1 byte/8 bits: -128 to 127)</a></li>
+<li><a href="#sec_id_2_4">Integer type: short (2 bytes/16 bits: -32,768 to 32,767)</a></li>
+<li><a href="#sec_id_2_5">Integer type: int (4 bytes/32 bits: -(2<sup>31</sup>) to (2<sup>31</sup>) - 1)</a></li>
+<li><a href="#sec_id_2_6">Integer type: long (8 bytes/64 bits): -(2<sup>63</sup>) to (2<sup>63</sup>) - 1)</a></li>
+<li><a href="#sec_id_2_7">Floating-point type: float (4 bytes/32 bits)</a></li>
+<li><a href="#sec_id_2_8">Floating-point type: double (8 bytes/64 bits)</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_3">Reference Types</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_0">Notes</a></li>
+<li><a href="#sec_id_3_1">Interface</a></li>
+<li><a href="#sec_id_3_2">Class</a></li>
+<li><a href="#sec_id_3_3">Array</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<h3 class="tutorialSubSectionTitleH31">Notes</h3>
+<div class="tutorialSectionTextDiv1">
+<pre class="text-code">
+              Data Types
+      _______________&dArr;_______________
+     &darr;                               &darr;
+Primitive Types                Reference Types
+            _________________________&dArr;_________________________
+           &darr;                         &darr;                         &darr;
+  Interface                     Class                     Array</pre>
+<ul class="ul_square_1">
+<li>Long integer numbers have a suffix <b>l</b> or <b>L</b>: <b>1l</b>, <b>1L</b></li>
+<li>Floating-point numbers (float) have a suffix <b>f</b> or <b>F</b>: <b>1.0f</b>, <b>1.0F</b></li>
+<li>Floating-point numbers (double) can optionally have a suffix <b>d</b> or <b>D</b>: <b>1.0</b>, <b>1.0d</b>, <b>1.0D</b></li>
+<li>Hexadecimal numbers have a prefix <b>0x</b> or <b>0X</b>: <b>0x1</b>, <b>0X1</b></li>
+<li>Octal numbers have a prefix <b>0</b>: <b>01</b></li>
+<li>Binary numbers have a prefix <b>0b</b> or <b>0B</b>: <b>0b1</b>, <b>0B1</b></li>
+</ul>
+<br />
+<ul class="ul_square_1">
+<li>Underscores can be added to numeric literals: <b>1_000_000</b></li>
+</ul>
+<br />
+<ul class="ul_square_1">
+<li>A character can be expressed as a hexadecimal value using the prefix <b>\u</b>: <b>\u0000</b>, <b>\uFFFF</b></li>
+</ul>
+<br />
+<ul class="ul_square_1">
+<li>You can use the keyword "<b>var</b>" to declare a local variable if its type can be inferred by the compiler from the assigned value.</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<h3 class="tutorialSubSectionTitleH31">Primitive Types</h3>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_0">
+<h4 class="tutorialSubSectionTitleH31">Notes</h4>
+<div class="tutorialSectionTextDiv1">
+Primitive types:
+<ul class="ul_square_1">
+<li>Boolean type: <code class="code1">boolean</code><br /></li>
+<li>Character type: <code class="code1">char</code><br /></li>
+<li>Integer types: <code class="code1">byte</code>, <code class="code1">short</code>, <code class="code1">int</code>, <code class="code1">long</code><br /></li>
+<li>Floating-point types: <code class="code1">float</code>, <code class="code1">double</code><br /></li>
+</ul>
+<br />
+The following are the possible conversions between numeric types without loss of information:<br />
+<ul class="ul_square_1">
+<li><code class="code1">byte</code> <b>&rarr;</b> <code class="code1">short</code> <b>&rarr;</b> <code class="code1">int</code> <b>&rarr;</b> <code class="code1">long</code></li>
+<li><code class="code1">char</code> <b>&rarr;</b> <code class="code1">int</code></li>
+<li><code class="code1">int</code> <b>&rarr;</b> <code class="code1">long</code> <b>&rarr;</b> <code class="code1">float</code> <b>&rarr;</b> <code class="code1">double</code></li>
+</ul>
+<br />
+The following are the possible conversions between numeric types that may result in loss of information (precision):<br />
+<ul class="ul_square_1">
+<li><code class="code1">int</code> <b>&rarr;</b> <code class="code1">float</code></li>
+<li><code class="code1">long</code> <b>&rarr;</b> <code class="code1">float</code></li>
+<li><code class="code1">long</code> <b>&rarr;</b> <code class="code1">double</code></li>
+</ul>
+<br />
+When a conversion between two numeric types can be done without loss of information,
+automatic conversion is possible:
+<pre class="java-code">
+long value = intValue;</pre>
+Otherwise, you need to manually cast the value from one type to another:<br />
+<pre class="java-code">
+int value = (int) longValue;</pre>
+Note that the value might be truncated if it exceeds the numeric range supported by the target type:<br />
+<pre class="java-code">
+byte value = (byte) 128; // "value" will be equal to -128</pre>
+When applying a binary operator to operands of different types, the following rules apply:<br />
+<ul class="ul_square_1">
+<li>If one operand is of type <code class="code1">double</code>, the other will be converted to <code class="code1">double</code></li>
+<li>If one operand is of type <code class="code1">float</code>, the other will be converted to <code class="code1">float</code></li>
+<li>If one operand is of type <code class="code1">long</code>, the other will be converted to <code class="code1">long</code></li>
+<li>Otherwise, both operands are converted to <code class="code1">int</code>
+(<code class="code1">byte</code>, <code class="code1">short</code>, and <code class="code1">char</code> operands are always promoted to <code class="code1">int</code>)</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2_1">
+<h4 class="tutorialSubSectionTitleH31">Boolean type: boolean</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">boolean</code> can hold the values <code class="code1">true</code> or <code class="code1">false</code>.<br />
+</div>
+</li>
+<li id="sec_id_2_2">
+<h4 class="tutorialSubSectionTitleH31">Character type: char (16 bits)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">char</code> can hold characters.<br />
+The value of the variable is represented by 16 bits.<br />
+<pre class="java-code">
+char c1 = 'a';</pre>
+A variable of type <code class="code1">char</code> can also hold positive integers.<br />
+A variable of type <code class="code1">char</code> can hold values in the range: <b>[0, 65535]</b><br />
+A <code class="code1">cast</code> is required to assign an integer value to a variable of type <code class="code1">char</code>.<br />
+<pre class="java-code">
+char c2 = (char) 65535;</pre>
+A character can be expressed as a hexadecimal value using the prefix <b>&#92;u</b><br />
+<pre class="java-code">
+char c3 = '&#92;u005B';</pre>
+Escape Characters:
+<pre class="java-code">
+escape character | unicode value | name</pre>
+<pre class="java-code">
+\"               | &#92;u0022        | Double quote
+\'               | &#92;u0027        | Single quote
+\\               | &#92;u005c        | Backslash
+\t               | &#92;u0009        | Tab
+\n               | &#92;u000a        | Line feed
+\r               | &#92;u000d        | Carriage return
+\b               | &#92;u0008        | Backspace</pre>
+Unicode escape characters are interpreted before the code is parsed.<br />
+<ul class="ul_square_1">
+<li>
+For example "<b>&#92;u0022 + &#92;u0022</b>" is equivalent to <b>"" + ""</b><br />
+<pre class="java-code">
+System.out.println("&#92;u0022 + &#92;u0022");
+System.out.println("" + "");</pre>
+</li>
+<li>
+<b>&#92;u0061</b> is the Unicode value of the character '<b>a</b>'
+<pre class="java-code">
+char c&#92;u0061 = 'x';
+System.out.println(ca); // \u0061 in the identifier becomes the letter 'a'</pre>
+</li>
+</ul>
+Some cases may cause the compiler to report a syntax error:<br />
+<ul class="ul_square_1">
+<li>
+The following will be interpreted as if you typed <code class="code1">System.out.println("" "");</code>:<br />
+<pre class="java-code">
+System.out.println("&#92;u0022 &#92;u0022");</pre>
+</li>
+<li>
+A line feed within a comment:<br />
+<pre class="java-code">
+// the line feed &#92;u000a will cause multiple compiler errors</pre>
+</li>
+<li>
+Invalid Unicode character prefix within a comment:<br />
+<pre class="java-code">
+// invalid unicode: missing the 4 hex digits after &#92;u: &#92;unicode</pre>
+</li>
+</ul>
+Note that the type <code class="code1">char</code> can hold any 16-bit (basic) Unicode character.
+For supplementary Unicode characters, each character has a code value (code point) that is represented as a pair of 16-bit code units.
+When working with strings that may include supplementary Unicode characters,
+you should be aware that a <code class="code1">char</code> value might hold just one of the code units representing such a character.
+For example, the smiley symbol "&#x1F642;" is represented using 2 code units:
+<pre class="java-code">
+String smiley = "&#x1F642;";
+System.out.println(smiley.length()); // code units count: 2
+System.out.println(smiley.codePointCount(0, smiley.length())); // code points count: 1
+System.out.println(String.format("%X", (int) smiley.charAt(0))); // first code unit D83D of the smiley character
+System.out.println(String.format("%X", (int) smiley.charAt(1))); // second code unit DE42 of the smiley character
+System.out.println(String.format("%X", smiley.codePointAt(0))); // code point 1F642 of the smiley character</pre>
+If you need to print all characters in a string, use the <code class="code1">codePoints</code> method of the <code class="code1">String</code> class:
+<pre class="java-code">
+"mti&#x1F642;tek".codePoints().forEach(cp -> System.out.println(new String(Character.toChars(cp))));</pre>
+<pre class="text-code">
+m
+t
+i
+&#x1F642;
+t
+e
+k</pre>
+See the Java API documentation for how to use the <code class="code1">Character.toChars</code> method:
+<pre class="java-code">
+public static char[] toChars(int codePoint)
+//Converts the specified character (Unicode code point) to its UTF-16 representation stored in a char array.
+//If the specified code point is a BMP (Basic Multilingual Plane or Plane 0) value, the resulting char array has the same value as codePoint.
+//If the specified code point is a supplementary code point, the resulting char array has the corresponding surrogate pair.
+
+//Parameters:
+//codePoint - a Unicode code point
+
+//Returns:
+//a char array containing the UTF-16 representation of the code point.</pre>
+</div>
+</li>
+<li id="sec_id_2_3">
+<h4 class="tutorialSubSectionTitleH31">Integer type: byte (1 byte/8 bits: -128 to 127)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">byte</code> can hold both positive and negative values.<br />
+The value of the variable is represented using 8 bits.<br />
+A variable of type <code class="code1">byte</code> can hold values in the range [-128, 127].<br />
+<br />
+Java uses <b>two's complement</b> representation for all signed integer types (<code class="code1">byte</code>, <code class="code1">short</code>, <code class="code1">int</code>, <code class="code1">long</code>).<br />
+In two's complement representation, all bits participate in the value calculation, including the most significant bit (MSB).<br />
+The MSB has a negative weight, while all other bits have positive weights.<br />
+When the most significant bit is 1, the number is negative; when it's 0, the number is positive.<br />
+<br />
+For a <code class="code1">byte</code> type with 8 bits, the bit weights are:<br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1">Bit Position</th>
+<th class="cssth1">7 (MSB)</th>
+<th class="cssth1">6</th>
+<th class="cssth1">5</th>
+<th class="cssth1">4</th>
+<th class="cssth1">3</th>
+<th class="cssth1">2</th>
+<th class="cssth1">1</th>
+<th class="cssth1">0 (LSB)</th>
+</tr>
+<tr class="csstr1">
+<th class="cssth1">Weight</th>
+<td class="csstd1">-128</td>
+<td class="csstd1">64</td>
+<td class="csstd1">32</td>
+<td class="csstd1">16</td>
+<td class="csstd1">8</td>
+<td class="csstd1">4</td>
+<td class="csstd1">2</td>
+<td class="csstd1">1</td>
+</tr>
+</table>
+<br />
+Calculation formula:
+<code class="code1">(-128 × bit7) + (64 × bit6) + (32 × bit5) + (16 × bit4) + (8 × bit3) + (4 × bit2) + (2 × bit1) + (1 × bit0)</code><br />
+<br />
+Examples:<br />
+<pre class="text-code">
+00000001
+= (-128×0) + (64×0) + (32×0) + (16×0) + (8×0) + (4×0) + (2×0) + (1×1)
+= 0 + 0 + 0 + 0 + 0 + 0 + 0 + 1
+= 1
+
+10000001
+= (-128×1) + (64×0) + (32×0) + (16×0) + (8×0) + (4×0) + (2×0) + (1×1)
+= -128 + 0 + 0 + 0 + 0 + 0 + 0 + 1
+= -127
+
+11111111
+= (-128×1) + (64×1) + (32×1) + (16×1) + (8×1) + (4×1) + (2×1) + (1×1)
+= -128 + 64 + 32 + 16 + 8 + 4 + 2 + 1
+= -1
+
+1000 0000
+= (-128×1) + (64×0) + (32×0) + (16×0) + (8×0) + (4×0) + (2×0) + (1×0)
+= -128 + 0 + 0 + 0 + 0 + 0 + 0 + 0
+= -128
+</pre>
+</div>
+</li>
+<li id="sec_id_2_4">
+<h4 class="tutorialSubSectionTitleH31">Integer type: short (2 bytes/16 bits: -32,768 to 32,767)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">short</code> can hold both positive and negative values.<br />
+The value of the variable is represented using 16 bits.<br />
+A variable of type <code class="code1">short</code> can hold values in the range [-32,768, 32,767].<br />
+Same as <code class="code1">byte</code>, <b>two's complement</b> representation is used to represent <code class="code1">short</code> values.<br />
+</div>
+</li>
+<li id="sec_id_2_5">
+<h4 class="tutorialSubSectionTitleH31">Integer type: int (4 bytes/32 bits: -(2<sup>31</sup>) to (2<sup>31</sup>) - 1)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">int</code> can hold both positive and negative values.<br />
+The value of the variable is represented using 32 bits.<br />
+A variable of type <code class="code1">int</code> can hold values in the range [-2,147,483,648 to 2,147,483,647].<br />
+Same as <code class="code1">byte</code>, <b>two's complement</b> representation is used to represent <code class="code1">int</code> values.<br />
+</div>
+</li>
+<li id="sec_id_2_6">
+<h4 class="tutorialSubSectionTitleH31">Integer type: long (8 bytes/64 bits): -(2<sup>63</sup>) to (2<sup>63</sup>) - 1</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">long</code> can hold both positive and negative values.<br />
+The value of the variable is represented using 64 bits.<br />
+A variable of type <code class="code1">long</code> can hold values in the range [-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807].<br />
+Same as <code class="code1">byte</code>, <b>two's complement</b> representation is used to represent <code class="code1">long</code> values.<br />
+<br />
+Long integer numbers have a suffix <b>l</b> or <b>L</b>.<br />
+Examples:<br />
+<pre class="java-code">
+long l1 = 1l;
+long l2 = 1L;</pre>
+</div>
+</li>
+<li id="sec_id_2_7">
+<h4 class="tutorialSubSectionTitleH31">Floating-point type: float (4 bytes/32 bits)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">float</code> can hold real numbers.<br />
+The value of the variable is represented using 32 bits.<br />
+<br />
+Floating-point numbers (float) have a suffix <b>f</b> or <b>F</b>.<br />
+Examples:<br />
+<pre class="java-code">
+// 1.0 is a double literal by default, which is why the explicit cast or f suffix is needed.
+float f1 = 1.0; // compiler error: "Type mismatch: cannot convert from double to float"
+float f2 = (float) 1.0; // OK
+float f3 = 1.0f; // OK
+float f4 = 1.0F; // OK</pre>
+Constant holding the positive infinity of type float:<br />
+<pre class="java-code">
+/**
+ * A constant holding the positive infinity of type float.
+ * It is equal to the value returned by Float.intBitsToFloat(0x7f800000).
+ */
+float POSITIVE_INFINITY = 1.0f / 0.0f;</pre>
+Constant holding the negative infinity of type float:<br />
+<pre class="java-code">
+/**
+ * A constant holding the negative infinity of type float.
+ * It is equal to the value returned by Float.intBitsToFloat(0xff800000).
+ */
+float NEGATIVE_INFINITY = -1.0f / 0.0f;</pre>
+Constant holding a Not-a-Number (NaN) value of type float:<br />
+<pre class="java-code">
+/**
+ * A constant holding a Not-a-Number (NaN) value of type float.
+ * It is equivalent to the value returned by Float.intBitsToFloat(0x7fc00000).
+ */
+float NaN = 0.0f / 0.0f;</pre>
+Check if a variable is not a number:<br />
+<pre class="java-code">
+if (Float.isNaN(f3))</pre>
+The following is always false (use Float.isNaN instead):<br />
+<pre class="java-code">
+if (f3 == Float.NaN)</pre>
+Check if a variable is positive infinity:<br />
+<pre class="java-code">
+if (f3 == Float.POSITIVE_INFINITY)</pre>
+Check if a variable is negative infinity:<br />
+<pre class="java-code">
+if (f3 == Float.NEGATIVE_INFINITY)</pre>
+Check if a variable is a finite floating-point value:<br />
+<pre class="java-code">
+if (Float.isFinite(f3))</pre>
+Check if a variable is either positive infinity or negative infinity:<br />
+<pre class="java-code">
+if (Float.isInfinite(f3))</pre>
+</div>
+</li>
+<li id="sec_id_2_8">
+<h4 class="tutorialSubSectionTitleH31">Floating-point type: double (8 bytes/64 bits)</h4>
+<div class="tutorialSectionTextDiv1">
+A variable of type <code class="code1">double</code> can hold real numbers.<br />
+The value of the variable is represented using 64 bits.<br />
+<br />
+Floating-point numbers (double) can optionally have a suffix <b>d</b> or <b>D</b>.<br />
+Examples:<br />
+<pre class="java-code">
+double d1 = 1.0; // OK
+double d2 = 1.0d; // OK
+double d3 = 1.0D; // OK</pre>
+Constant holding the positive infinity of type double:<br />
+<pre class="java-code">
+/**
+ * A constant holding the positive infinity of type double.
+ * It is equal to the value returned by Double.longBitsToDouble(0x7ff0000000000000L).
+ */
+double POSITIVE_INFINITY = 1.0 / 0.0;</pre>
+Constant holding the negative infinity of type double:<br />
+<pre class="java-code">
+/**
+ * A constant holding the negative infinity of type double.
+ * It is equal to the value returned by Double.longBitsToDouble(0xfff0000000000000L).
+ */
+double NEGATIVE_INFINITY = -1.0 / 0.0;</pre>
+Constant holding a Not-a-Number (NaN) value of type double:<br />
+<pre class="java-code">
+/**
+ * A constant holding a Not-a-Number (NaN) value of type double.
+ * It is equivalent to the value returned by Double.longBitsToDouble(0x7ff8000000000000L).
+ */
+double NaN = 0.0d / 0.0;</pre>
+Check if a variable is not a number:<br />
+<pre class="java-code">
+if (Double.isNaN(d1))</pre>
+The following is always false (use Double.isNaN instead):<br />
+<pre class="java-code">
+if (d1 == Double.NaN)</pre>
+Check if a variable is positive infinity:<br />
+<pre class="java-code">
+if (d1 == Double.POSITIVE_INFINITY)</pre>
+Check if a variable is negative infinity:<br />
+<pre class="java-code">
+if (d1 == Double.NEGATIVE_INFINITY)</pre>
+Check if a variable is a finite floating-point value:<br />
+<pre class="java-code">
+if (Double.isFinite(d1))</pre>
+Check if a variable is either positive infinity or negative infinity:<br />
+<pre class="java-code">
+if (Double.isInfinite(d1))</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_3">
+<h3 class="tutorialSubSectionTitleH31">Reference Types</h3>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_0">
+<h4 class="tutorialSubSectionTitleH31">Notes</h4>
+<div class="tutorialSectionTextDiv1">
+When we talk about references, it’s important to distinguish between the objects created in memory and the variables that reference those objects:<br />
+<ul class="ul_square_1">
+<li>
+An object is an instance of a specific class whose type and identity remain constant once created, though its state may be mutable depending on the class design (e.g., StringBuilder).<br />
+Note that the object's reference/memory location can change due to JVM operations such as Garbage Collection, JIT Compilation, and Memory Management.<br />
+<br /></li>
+<li>
+A variable, on the other hand, can reference any object in memory and can also reference different objects during its lifetime, as long as the variable is not declared with the <code class="code1">final</code> keyword.<br />
+<br />
+The only rules applying to variables concern the type used during their declaration:<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+The type of the variable cannot be changed once the variable is declared.<br />
+<pre class="java-code">
+public class MyClass {
+    void foo() {
+        Integer var1; // The variable var1 will always be of type Integer!!!
+    }
+}</pre>
+</li>
+<li>
+If a variable is declared with the <code class="code1">final</code> keyword, then once it is initialized, its value cannot be changed (in other words, the variable cannot reference another object).<br />
+<pre class="java-code">
+public class MyClass {
+    void foo() {
+        Integer var1 = Integer.valueOf(0);
+        final Integer var2 = Integer.valueOf(0);
+
+        var1 = Integer.valueOf(10); // OK
+        var2 = Integer.valueOf(20); // Compiler error: The final local variable var2 cannot be assigned. It must be blank and not using a compound assignment
+    }
+}</pre>
+</li>
+<li>
+The type of the variable determines which objects it can reference.<br />
+This includes:<br />
+- objects of the same type as the variable,<br />
+- and also objects whose type is a subtype of the variable's type.<br />
+<pre class="java-code">
+public class MyClass {
+    void foo() {
+        Integer var1 = Integer.valueOf(0); // OK: referenced object is the same type (Integer) as variable var1
+        Object var2 = Integer.valueOf(0); // OK: referenced object type (Integer) is a subtype of variable var2’s type (Object)
+
+        String var3 = var1; // Compiler error: Type mismatch: cannot convert from Integer to String
+        String var4 = var2; // Compiler error: Type mismatch: cannot convert from Object to String
+    }
+}</pre>
+</li>
+<li>
+The type of the variable determines which methods of the referenced object can be invoked.<br />
+This restriction is especially important when the referenced object's type is a subtype of the variable's type, because potentially the object's type can define new methods that are not declared by the variable's type.<br />
+<pre class="java-code">
+public class MyClass {
+    void foo() {
+        Integer var1 = Integer.valueOf(0);
+        Object var2 = Integer.valueOf(0);
+
+        var1.intValue();
+        var2.intValue(); // Compiler error: The method intValue() is undefined for the type Object
+    }
+}</pre>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3_1">
+<h4 class="tutorialSubSectionTitleH31">Interface</h4>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<b>Interface declaration rules:</b><br />
+<pre class="java-code">
+public abstract interface MyInterfaceType {}</pre>
+<ul class="ul_circle_1">
+<li>
+The interface declaration can only use the <code class="code1">public</code> and <code class="code1">abstract</code> modifiers.<br />
+<br /></li>
+<li>
+The interface declaration can omit the <code class="code1">public</code> access modifier (in this case it will have default access).<br />
+<br /></li>
+<li>
+The interface declaration can include or omit the <code class="code1">abstract</code> modifier; an interface can contain method declarations as well as methods with the <b>default</b> modifier.<br />
+<br /></li>
+<li>
+The interface declaration cannot use the access modifiers <code class="code1">protected</code> or <code class="code1">private</code>.<br />
+<br /></li>
+<li>
+The interface declaration cannot use the modifiers <code class="code1">static</code> or <code class="code1">final</code>.<br />
+<br /></li>
+</ul>
+</li>
+<li>
+<b>Interface variable declaration rules:</b>
+<pre class="java-code">
+public abstract interface MyInterfaceType {
+    public final static Integer ADD_OPERATION_ID = 0;
+    Integer MULTIPLY_OPERATION_ID = 1;
+}</pre>
+<ul class="ul_circle_1">
+<li>
+Variable declarations can only use the modifiers <code class="code1">public</code>, <code class="code1">final</code>, and <code class="code1">static</code>.<br />
+<br /></li>
+<li>
+Variable declarations can omit the modifiers
+<code class="code1">public</code>, <code class="code1">final</code>, and <code class="code1">static</code>;
+the compiler adds them by default.<br />
+Variables declared in interfaces are actually constants and cannot be modified in classes that implement these interfaces.<br />
+<br /></li>
+<li>
+Variable declarations cannot use the access modifiers <code class="code1">protected</code> or <code class="code1">private</code>.<br />
+<br /></li>
+</ul>
+</li>
+<li>
+<b>Interface method declaration rules:</b>
+<pre class="java-code">
+public abstract interface MyInterfaceType {
+    public abstract Integer addOperation(Integer value1, Integer value2);
+    Integer multiplyOperation(Integer value1, Integer value2);
+    default Integer identity(Integer i) { return i;}
+}</pre>
+<ul class="ul_circle_1">
+<li>
+Method declarations can only use the modifiers <code class="code1">public</code> and <code class="code1">abstract</code>.<br />
+<br /></li>
+<li>
+Method declarations can omit the modifiers <code class="code1">public</code> and <code class="code1">abstract</code>; the compiler adds them by default.<br />
+<br /></li>
+<li>
+Method declarations cannot use the access modifiers <code class="code1">protected</code> or <code class="code1">private</code>.<br />
+<br /></li>
+<li>
+Interface methods cannot use the modifiers <code class="code1">final</code> (because of the <code class="code1">abstract</code> keyword), <code class="code1">native</code>, or <code class="code1">strictfp</code>.<br />
+<br /></li>
+<li>
+Interface methods cannot contain code (because of the <code class="code1">abstract</code> keyword) unless they are marked as <code class="code1">default</code>.<br />
+<br /></li>
+<li>
+Static methods in interfaces must use the <code class="code1">static</code> modifier and must provide an implementation.<br />
+<br /></li>
+<li>
+Static methods in interfaces can only use the <code class="code1">public</code> access modifier (which is implicit if omitted).<br />
+<br /></li>
+<li>
+Private methods in interfaces can be used by default and static methods.<br />
+Private methods must provide an implementation and can be either static or non-static.<br />
+<br /></li>
+</ul>
+</li>
+<li>
+<b>Rules for extending interfaces:</b>
+<ul class="ul_circle_1">
+<li>
+An interface can extend (<code class="code1">extends</code>) only other interfaces (it cannot extend classes).<br />
+</li>
+</ul>
+<pre class="java-code">
+package com.mtitek.inheritance;
+
+interface MyInterface1 {
+    public void doAction1();
+}
+
+interface MyInterface2 {
+    public void doAction2();
+}
+
+interface MyInterface3 extends MyInterface1, MyInterface2 {
+    public void doAction3();
+}</pre>
+</li>
+<li>
+<b>Rules for implementing interface methods:</b>
+<ul class="ul_circle_1">
+<li>
+A class can implement (<code class="code1">implements</code>) multiple interfaces.<br />
+<br /></li>
+<li>
+A class that implements an interface must implement all the methods of that interface unless the class is:<br />
+- abstract;<br />
+- or one of its superclasses has already implemented the methods of that interface.<br />
+</li>
+</ul>
+<pre class="java-code">
+package com.mtitek.inheritance;
+
+interface MyInterface1 {
+    public void doAction1();
+}
+
+interface MyInterface2 {
+    public void doAction2();
+}
+
+interface MyInterface3 {
+    public void doAction3();
+}</pre>
+<pre class="java-code">
+/* The class "SuperClass1" is abstract, so it is not required to implement any of the methods from the interfaces "MyInterface1" and "MyInterface2". */
+abstract class SuperClass1 implements MyInterface1, MyInterface2 {
+    @Override
+    public void doAction1() {
+    }
+}</pre>
+<pre class="java-code">
+/* The class "SuperClass2" is not required to implement the method "doAction1" because it is already implemented by the class "SuperClass1". */
+class SuperClass2 extends SuperClass1 implements MyInterface3 {
+    @Override
+    public void doAction2() {
+    }
+
+    @Override
+    public void doAction3() {
+    }
+}</pre>
+<pre class="java-code">
+/* The class "SubClass1" is not required to implement any methods because they are already implemented by its superclasses. */
+class SubClass1 extends SuperClass2 implements MyInterface2 {
+}</pre>
+</li>
+<li>
+<b>Interface default method declaration rules:</b><br />
+<ul class="ul_circle_1">
+<li>
+Default methods must use the <code class="code1">default</code> modifier and must provide an implementation.<br />
+<br /></li>
+<li>
+Default methods can only use the <code class="code1">public</code> access modifier (which is implicit if omitted).<br />
+<br /></li>
+<li>
+Default methods cannot use the modifiers <code class="code1">abstract</code>, <code class="code1">static</code>, <code class="code1">final</code>, <code class="code1">native</code>, <code class="code1">strictfp</code>, or <code class="code1">synchronized</code>.<br />
+<br /></li>
+<li>
+Default methods cannot use the access modifiers <code class="code1">protected</code> or <code class="code1">private</code>.<br />
+</li>
+</ul>
+<pre class="java-code">
+interface MyInterface4 {
+    // Abstract method
+    public abstract void doAction1();
+
+    // Default method
+    default void doAction2() {
+        doAction3(); // OK: can call private methods
+        doAction4(); // OK: can call static methods
+    }
+
+    // Static method
+    static void doAction3() {
+        System.out.println("This is a static method");
+    }
+
+    // Private method
+    private void doAction4() {
+        System.out.println("This is a private method");
+    }
+}</pre>
+<pre class="java-code">
+public class MyClass4 {
+    public static void main(String[] args) {
+        MyInterface4 myInterface4 = new MyInterface4() {
+            @Override
+            public void doAction1() {
+                System.out.println("This is the implementation of the abstract method");
+            }
+
+        };
+
+        myInterface4.doAction1();
+        myInterface4.doAction2();
+        MyInterface4.doAction3();
+    }
+}</pre>
+</li>
+<li>
+<b>Rules for implementing interfaces with default methods:</b>
+<ul class="ul_circle_1">
+<li>
+A class that implements an interface with default methods is <b>not required</b> to override the default methods.<br />
+The class will inherit the default implementation.<br />
+<br /></li>
+<li>
+A class <b>can override</b> default methods if needed, treating them like any other inherited method.<br />
+<br /></li>
+<li>
+When a class implements multiple interfaces with conflicting default methods (same signature), the class <b>must override</b> the method to resolve the conflict.<br />
+<br /></li>
+<li>
+A class can call the default implementation of a specific interface using the syntax: <code class="code1">InterfaceName.super.methodName()</code><br />
+<br /></li>
+<li>
+If a class inherits a method from a superclass and also inherits a default method with the same signature from an interface, the class method takes precedence over the default method.<br />
+</li>
+</ul>
+<pre class="java-code">
+interface MyInterface5 {
+    default void doAction1() {
+        System.out.println("Default from MyInterface5");
+    }
+}
+
+interface MyInterface6 {
+    default void doAction1() {
+        System.out.println("Default from MyInterface6");
+    }
+}
+
+// Case 1: implements interface with default method
+class MyClass5 implements MyInterface5 {
+    public void doAction2() {
+        doAction1(); // uses default implementation
+    }
+}
+
+// Case 2: implements interface + overrides default method
+class MyClass6 implements MyInterface5 {
+    @Override
+    public void doAction1() {
+        System.out.println("Overridden in MyClass6");
+        MyInterface5.super.doAction1(); // Can call default implementation
+    }
+
+    public void doAction3() {
+        doAction1(); // uses overridden method
+    }
+}
+
+// Case 3: Diamond problem - must resolve conflict
+class MyClass7 implements MyInterface5, MyInterface6 {
+    @Override
+    public void doAction1() {
+        System.out.println("Overridden in MyClass7");
+        MyInterface5.super.doAction1(); // Must choose implementation to resolve conflict
+    }
+
+    public void doAction4() {
+        doAction1(); // uses overridden method
+    }
+}</pre>
+<pre class="java-code">
+public class MyClass8 {
+    public static void main(String[] args) {
+        new MyClass5().doAction1(); // call MyInterface5
+        new MyClass5().doAction2(); // call MyClass5
+
+        new MyClass6().doAction1(); // call MyClass6
+        new MyClass6().doAction3(); // call MyClass6
+
+        new MyClass7().doAction1(); // call MyClass7
+        new MyClass7().doAction4(); // call MyClass7
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3_2">
+<h4 class="tutorialSubSectionTitleH31">Class</h4>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+A class can extend (<code class="code1">extends</code>) only one class.<br />
+<br /></li>
+<li>
+A class can implement (<code class="code1">implements</code>) multiple interfaces.<br />
+<br /></li>
+<li>
+A class can declare multiple constructors (with different signatures) which can be invoked when instantiating the class.<br />
+The constructor invoked depends on the arguments used in the class instantiation (<code class="code1">new</code>).<br />
+A constructor can also invoke another constructor of the same class using the keyword <code class="code1">this</code>.<br />
+<br /></li>
+<li>
+The compiler adds a no-argument constructor by default only if no constructors have been defined in the class.<br />
+<br /></li>
+<li>
+Constructor declarations cannot specify a return type and cannot use the modifiers <code class="code1">final</code>, <code class="code1">static</code>, or <code class="code1">abstract</code>.<br />
+</li>
+</ul>
+<pre class="java-code">
+class MyClassType implements MyInterfaceType {
+    MyClassType() {
+        // constructor code
+    }
+
+    @Override
+    public Integer addOperation(Integer value1, Integer value2) {
+        return value1 + value2;
+    }
+
+    @Override
+    public Integer multiplyOperation(Integer value1, Integer value2) {
+        return value1 * value2;
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_3_3">
+<h4 class="tutorialSubSectionTitleH31">Array</h4>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+An array is an <code class="code1">Object</code> type structure that can hold a fixed number of elements of the same type (primitive or reference).<br />
+<br /></li>
+<li>
+All elements in the array must be of the same type or subtypes of the main type defined in the array declaration.<br />
+<br /></li>
+<li>
+The maximum number of elements an array can hold is fixed when the array is created and cannot be changed afterward.<br />
+<br /></li>
+<li>
+Array elements are accessed by their indices;<br />
+the first element has index 0, the second index 1, and so on.<br />
+</li>
+</ul>
+<br />
+Declare an array that can hold integers:<br />
+<pre class="java-code">
+int myIntsArray[] = new int[10];
+myIntsArray[0] = 3;
+System.out.println(myIntsArray.length); // 10
+System.out.println(myIntsArray[0]); // 3</pre>
+Declare an array that can hold objects:<br />
+<pre class="java-code">
+Object[] myObjectsArray = new Object[5];
+myObjectsArray[0] = Integer.valueOf(7);
+System.out.println(myObjectsArray.length); // 5
+System.out.println(myObjectsArray[0]); // 7</pre>
+Declare a String array and initialize it with initial values:<br />
+<pre class="java-code">
+String[] myStringsArray = {"value1", "value2"};
+// explicit syntax:
+String[] myStringsArray = new String[] {"value1", "value2"};</pre>
+Declare an Object array and initialize it with initial values:<br />
+<pre class="java-code">
+Object[] myComplexObjectsArray = { myStringsArray, myObjectsArray, myIntsArray };
+// explicit syntax:
+Object[] myComplexObjectsArray = new Object[] { myStringsArray, myObjectsArray, myIntsArray };</pre>
+Declare a 2-dimensional array and initialize it with initial values:<br />
+<pre class="java-code">
+String[][] myStringsArray2D = {{"value11", "value12"}, {"value21", "value22"}, {"value31", "value32"}, {"value41", "value42"}};
+// explicit syntax:
+String[][] myStringsArray2D = new String[][] {{"value11", "value12"}, {"value21", "value22"}, {"value31", "value32"}, {"value41", "value42"}};
+
+System.out.println(myStringsArray2D.length); // 4
+System.out.println(myStringsArray2D[0].length); // 2</pre>
+Declare an empty array:<br />
+<pre class="java-code">
+String[] emptyArray1 = new String[0];
+String[] emptyArray2 = {};
+String[] emptyArray3 = new String[] {};
+System.out.println(emptyArray1.length); // 0
+System.out.println(emptyArray2.length); // 0
+System.out.println(emptyArray3.length); // 0</pre>
+To iterate over an array, use a "<code class="code1">for-each</code>" loop: <code class="code1">for (type element : array) statement</code><br />
+<br />
+To copy an array, use the "<code class="code1">copyOf</code>" method of the "<code class="code1">Arrays</code>" class: <code class="code1">Arrays.copyOf(array, array.length)</code><br />
+<br />
+To sort an array, use the "<code class="code1">sort</code>" method of the "<code class="code1">Arrays</code>" class: <code class="code1">Arrays.sort(array)</code><br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

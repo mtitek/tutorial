@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java equals() Method: Best Practices &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn how to properly override the Java equals() method with best practices and code examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java equals() Method: Best Practices &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn how to properly override the Java equals() method with best practices and code examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/equals.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java equals() Method: Best Practices &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how to properly override the Java equals() method with best practices and code examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/equals.php",
+        "description": "Learn how to properly override the Java equals() method with best practices and code examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/equals.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">equals() Method</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">equals() Method</a></li>
+<li><a href="#sec_id_2">Example: Using Objects.equals</a></li>
+<li><a href="#sec_id_3">Example: Using EqualsBuilder</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">equals() Method</span>
+<div class="tutorialSectionTextDiv1">
+When implementing the <b>equals()</b> method we should make sure that it's:<br />
+<ul class="ul_square_1">
+<li>reflexive (x &lt;-&gt; x): <code class="code1">x.equals(x)</code> must return <b>true</b>.<br /><br /></li>
+<li>symmetric (x &lt;-&gt; y): <code class="code1">x.equals(y)</code> returns <b>true</b> if and only if <code class="code1">y.equals(x)</code> returns <b>true</b>.<br /><br /></li>
+<li>transitive (<b>equals()</b>x &lt;-&gt; y &#38;&#38; y &lt;-&gt; z =&gt; x &lt;-&gt; z): if <code class="code1">x.equals(y)</code> and <code class="code1">y.equals(z)</code> return <b>true</b>, then <code class="code1">x.equals(z)</code> must return <b>true</b>.<br /><br /></li>
+<li>consistent (either always true or always false): multiple invocations must consistently return the same result</li>
+</ul>
+<br />
+Calling the <b>equals()</b> method with <b>null</b> as the argument should return <b>false</b>.<br />
+<br />
+<b>Important:</b> When overriding <b>equals()</b>, you must also override <b>hashCode()</b> to maintain the general contract that equal objects must have equal hash codes.<br />
+<br />
+The <b>equals()</b> method is defined in the <b>java.lang.Object</b> class:<br />
+<pre class="java-code">
+public boolean equals(Object obj) {
+    return (this == obj);
+}</pre>
+The <b>java.util.Objects</b> class provides utility methods to check if two objects are equals or deeply equals (in case of arrays):<br />
+<pre class="java-code">
+public static boolean equals(Object a, Object b) {
+    return (a == b) || (a != null &amp;&amp; a.equals(b));
+}</pre>
+<pre class="java-code">
+public static boolean deepEquals(Object a, Object b) {
+    if (a == b)
+        return true;
+    else if (a == null || b == null)
+        return false;
+    else
+        return Arrays.deepEquals0(a, b);
+}</pre>
+The <b>java.util.Arrays</b> class provides utility methods to check if two arrays are equals
+(including specific overloaded methods for each primitive type).
+It also provides a utility method to check if two arrays are deeply equals (nested arrays).<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Using Objects.equals</span>
+<div class="tutorialSectionTextDiv1">
+The following is a sample code that shows how to implement the <b>equals()</b> method.<br />
+The code provides an implementation of the <b>equals()</b> method for a superclass "P" and subclass "C".<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Superclass "P":</h6>
+<pre class="java-code">
+import java.util.Objects;
+
+class P {
+    private Integer id = 1;
+
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof P)) {
+            return false;
+        }
+
+        P p = (P) obj;
+
+        return Objects.equals(this.getId(), p.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}</pre>
+</li>
+<li>
+<h6>Subclass "C":</h6>
+<pre class="java-code">
+class C extends P {
+    private String code = "default";
+
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        C c = (C) obj;
+
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        return Objects.equals(this.getCode(), c.getCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), code);
+    }
+}</pre>
+</li>
+</ul>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>Use <code class="code1">!(obj instanceof ClassName)</code> to allow subclass equality.</li>
+<li>Use <code class="code1">getClass() != obj.getClass()</code> for strict type checking (no subclass equality).</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Using EqualsBuilder</span>
+<div class="tutorialSectionTextDiv1">
+The following is a sample code that shows how to implement the <b>equals()</b> method.<br />
+The code provides an implementation of the <b>equals()</b> method for a superclass "P" and subclass "C".<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Superclass "P":</h6>
+<pre class="java-code">
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+class P {
+    Integer id = 1;
+
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof P)) {
+            return false;
+        }
+
+        P p = (P) obj;
+
+        return new EqualsBuilder().append(this.getId(), p.getId()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}</pre>
+</li>
+<li>
+<h6>Subclass "C":</h6>
+<pre class="java-code">
+class C extends P {
+    String code = "default";
+
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        C c = (C) obj;
+
+        return new EqualsBuilder().append(this.getCode(), c.getCode()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), code);
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

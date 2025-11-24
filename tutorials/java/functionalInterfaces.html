@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Functional Interfaces | MTI TEK</title>
+<meta name="description" content="Learn how Java functional interfaces work. Understand method references, lambda expressions, and how to use functional interfaces as method parameters." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Functional Interfaces | MTI TEK" />
+<meta property="og:description" content="Learn how Java functional interfaces work. Understand method references, lambda expressions, and how to use functional interfaces as method parameters." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/functionalInterfaces.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Functional Interfaces | MTI TEK" />
+<meta name="twitter:description" content="Learn how Java functional interfaces work. Understand method references, lambda expressions, and how to use functional interfaces as method parameters." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/functionalInterfaces.php",
+        "description": "Learn how Java functional interfaces work. Understand method references, lambda expressions, and how to use functional interfaces as method parameters.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/functionalInterfaces.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Functional Interfaces</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Functional Interfaces</a></li>
+<li><a href="#sec_id_2">Using a Functional Interface</a></li>
+<li><a href="#sec_id_3">Package "java.util.function"</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Functional Interfaces</span>
+<div class="tutorialSectionTextDiv1">
+A functional interface is an interface that declares exactly one abstract method.
+This abstract method is referred to as the functional method of the functional interface.<br />
+<br />
+Functional interfaces can also inherit abstract methods from parent interfaces.
+If an interface inherits one abstract method and declares no additional abstract methods, it is still considered a functional interface.<br />
+<br />
+A functional interface can declare other non-abstract methods, but these must provide a default implementation using the <code class="code1">default</code> keyword.<br />
+<br />
+A functional interface can also define static methods.<br />
+<br />
+A functional interface can be annotated with the "<code class="code1">@FunctionalInterface</code>" annotation to make it explicit that it is intended to be a functional interface.
+The annotation is optional but recommended as it provides compile-time checking and clear documentation.<br />
+<br />
+Here are some functional interfaces from the <code class="code1">java.util.function</code> package:<br />
+<ul class="ul_square_1">
+<li><code class="code1">Predicate&lt;T&gt;</code>: Takes input of type <b>T</b> and returns boolean (<code class="code1">boolean test(T t);</code>).<br /></li>
+<li><code class="code1">Function&lt;T,R&gt;</code>: Takes input of type <b>T</b> and returns result of type <b>R</b> (<code class="code1">R apply(T t);</code>).<br /></li>
+<li><code class="code1">Consumer&lt;T&gt;</code>: Takes input of type <b>T</b> and returns void. It should performs side effects. (<code class="code1">void accept(T t);</code>).<br /></li>
+<li><code class="code1">Supplier&lt;T&gt;</code>: Takes no input and returns result of type <b>T</b> (<code class="code1">T get();</code>).<br /></li>
+<li><code class="code1">UnaryOperator&lt;T&gt;</code>: Takes input of type <b>T</b> and returns result of same type <b>T</b> (<code class="code1">T apply(T t);</code>).<br /></li>
+<li><code class="code1">BinaryOperator&lt;T&gt;</code>: Takes two inputs of type <b>T</b> and returns result of type <b>T</b> (<code class="code1">T apply(T t, T u);</code>).<br /></li>
+</ul>
+<br />
+Example: <code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/Predicate.html">java.util.function.Predicate</a></code><br />
+<pre class="java-code">
+@FunctionalInterface
+public interface Predicate&lt;T&gt; {
+    // This is the only abstract method in the intervace which makes it a functional interface
+    boolean test(T t);
+
+    // Default and Static methods don't break the functional interface contract
+    default Predicate&lt;T&gt; and(Predicate&lt;? super T&gt; other) {
+        Objects.requireNonNull(other);
+        return (t) -&gt; test(t) &amp;&amp; other.test(t);
+    }
+
+    default Predicate&lt;T&gt; negate() {
+        return (t) -&gt; !test(t);
+    }
+
+    default Predicate&lt;T&gt; or(Predicate&lt;? super T&gt; other) {
+        Objects.requireNonNull(other);
+        return (t) -&gt; test(t) || other.test(t);
+    }
+
+    static &lt;T&gt; Predicate&lt;T&gt; isEqual(Object targetRef) {
+        return (null == targetRef) ? Objects::isNull : object -&gt; targetRef.equals(object);
+    }
+
+    static &lt;T&gt; Predicate&lt;T&gt; not(Predicate&lt;? super T&gt; target) {
+        Objects.requireNonNull(target);
+        return (Predicate&lt;T&gt;) target.negate();
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Using a Functional Interface</span>
+<div class="tutorialSectionTextDiv1">
+You can specify a functional interface type as the parameter type or return type of a method.<br />
+<br />
+For example, a method can be defined as follows:<br />
+<code class="code1">MyFunctionalInterface foo(MyFunctionalInterface myFunctionalInterface) { ... }</code><br />
+<br />
+To invoke a method that declares a parameter or return value of a functional interface type, you can use any of the following approaches:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>A reference to a static method:</b> <code class="code1">MyType::myStaticMethod</code><br />
+This approach is useful when you have existing static utility methods that match the functional interface signature.<br />
+<pre class="java-code">
+import java.util.function.UnaryOperator;
+
+/*
+// UnaryOperator extends Function&lt;T,T&gt;: it takes a parameter of type T and returns the same type T
+@FunctionalInterface
+public interface UnaryOperator&lt;T&gt; extends Function&lt;T, T&gt; {
+}
+
+@FunctionalInterface
+public interface Function&lt;T, R&gt; {
+    R apply(T t);
+}
+*/
+
+public class MainClass {
+    // Static method that matches UnaryOperator&lt;String&gt;::apply signature: String -&gt; String
+    public static String toLowerCase(String value) {
+        return value == null ? "" : value.toLowerCase();
+    }
+
+    public static String convert(String value, UnaryOperator&lt;String&gt; myStringConverter) {
+        return myStringConverter.apply(value);
+    }
+
+    public static void main(String[] args) {
+        final String convertedValue = MainClass.convert("tESt", MainClass::toLowerCase);
+        System.out.println(convertedValue); // Output: test
+    }
+}</pre>
+</li>
+<li>
+<b>A reference to an instance method:</b> <code class="code1">myInstance::myInstanceMethod</code><br />
+This approach is useful when you need to use methods from a specific object instance.<br />
+<pre class="java-code">
+import java.util.function.UnaryOperator;
+
+public class MainClass {
+    // Instance method that matches UnaryOperator&lt;String&gt;::apply signature: String -&gt; String
+    public String toUpperCase(String value) {
+        return value == null ? "" : value.toUpperCase();
+    }
+
+    public static String convert(String value, UnaryOperator&lt;String&gt; myStringConverter) {
+        return myStringConverter.apply(value);
+    }
+
+    public static void main(String[] args) {
+        final MainClass mainClass = new MainClass();
+        final String convertedValue = MainClass.convert("tESt", mainClass::toUpperCase);
+        System.out.println(convertedValue); // Output: TEST
+    }
+}</pre>
+</li>
+<li>
+<b>A reference to an instance method of an arbitrary object of a particular type:</b> <code class="code1">MyType::myInstanceMethod</code><br />
+The method reference implies that the first parameter of the functional interface will be the object on which the method is called.
+Which means it accepts a parameter of type "<code class="code1">MyType</code>" as the first parameter:<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+In the example below, the reference "<code class="code1">String::toUpperCase</code>" implies that
+the functional interface is of type "<code class="code1">Function&lt;String, String&gt;</code>":
+it takes a String parameter and calls toUpperCase() on it.<br />
+Equivalent to: <code class="code1">s -&gt; s.toUpperCase()</code><br />
+<br />
+We can use an assignment statement to illustrate this implication:<br />
+<pre class="java-code">
+Function&lt;String, String&gt; toUpperCaseFunction = String::toUpperCase;</pre>
+</li>
+<li>
+On the other hand, the reference "<code class="code1">MainClass::toUpperCase</code>" implies
+that the functional interface is of type "<code class="code1">Function&lt;MainClass, String&gt;</code>":
+it takes a MainClass parameter and calls toUpperCase() on it.<br />
+Equivalent to: <code class="code1">mainClassInstance -&gt; mainClassInstance.toUpperCase()</code><br />
+<br />
+We can use an assignment statement to illustrate this implication:<br />
+<pre class="java-code">
+Function&lt;MainClass, String&gt; toUpperCaseFunction = MainClass::toUpperCase;</pre>
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
+public class MainClass {
+    private String value;
+
+    public MainClass(String value) {
+        this.value = value;
+    }
+
+    public String toUpperCase() {
+        return value == null ? "" : value.toUpperCase();
+    }
+
+    // Accepts UnaryOperator&lt;String&gt;::apply signature: String -&gt; String
+    public static void convert(String value, UnaryOperator&lt;String&gt; myStringConverter) {
+        System.out.println(myStringConverter.apply(value));
+    }
+
+    // Accepts Function&lt;MainClass, String&gt;::apply signature: MainClass -&gt; String
+    public static void convert(MainClass object, Function&lt;MainClass, String&gt; myFunction) {
+        System.out.println(myFunction.apply(object));
+    }
+
+    public static void main(String[] args) {
+        // First example: String::toUpperCase matches UnaryOperator&lt;String&gt;::apply
+        // The String parameter becomes the object on which toUpperCase() is called
+        MainClass.convert("hello", String::toUpperCase); // Output: HELLO
+
+        // Second example: MainClass::toUpperCase matches Function&lt;MainClass, String&gt;::apply
+        // The MainClass parameter becomes the object on which toUpperCase() is called
+        MainClass.convert(new MainClass("hello"), MainClass::toUpperCase); // Output: HELLO
+    }
+}</pre>
+</li>
+<li>
+<b>A reference to a constructor:</b> <code class="code1">MyType::new</code><br />
+Constructor references are useful, for example, when you need to create objects based on functional interface calls.<br />
+<pre class="java-code">
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public class MainClass {
+    private String value;
+
+    public MainClass() {
+        this.value = "default";
+        System.out.println("Created with default value");
+    }
+
+    public MainClass(String value) {
+        this.value = value;
+        System.out.println("Created with value: " + value);
+    }
+
+    // Uses no-arg constructor: Supplier&lt;MainClass&gt;
+    public static MainClass build(Supplier&lt;MainClass&gt; supplier) {
+        return supplier.get(); // Equivalent to: () -&gt; new MainClass()
+    }
+
+    // Uses constructor with parameter: Function&lt;String, MainClass&gt;
+    public static MainClass build(String value, Function&lt;String, MainClass&gt; myFunction) {
+        return myFunction.apply(value); // Equivalent to: t -&gt; new MainClass(t)
+    }
+
+    public static void main(String[] args) {
+        // Uses no-arg constructor
+        MainClass instance1 = MainClass.build(MainClass::new); // Output: Created with default value
+        MainClass instance2 = MainClass.build(() -&gt; new MainClass()); // Output: Created with default value
+
+        // Uses constructor with parameter
+        MainClass instance3 = MainClass.build("test", MainClass::new); // Output: Created with value: test
+        MainClass instance4 = MainClass.build("test", value -&gt; new MainClass(value)); // Output: Created with value: test
+    }
+}</pre>
+The compiler determines which constructor to use based on the functional interface's signature:<br />
+<ul class="ul_square_1">
+<li><code class="code1">Supplier&lt;T&gt;</code> with <code class="code1">MyClass::new</code> uses the no-argument constructor.<br /></li>
+<li><code class="code1">Function&lt;T, R&gt;</code> with <code class="code1">MyClass::new</code> uses the constructor that takes a parameter of type <b>R</b>.<br /></li>
+<li><code class="code1">BiFunction&lt;T, U, R&gt;</code> with <code class="code1">MyClass::new</code> would use a constructor taking two parameters of types <b>U</b> and <b>R</b>.<br /></li>
+</ul>
+<br />
+</li>
+<li>
+<b>Using a lambda expression:</b> <code class="code1">(parameters -&gt; statements)</code><br />
+Lambda expressions are ideal for simple transformations or when no existing method matches your needs.<br />
+<pre class="java-code">
+import java.util.function.BinaryOperator;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
+
+public class MainClass {
+    public static String convert(String value, UnaryOperator&lt;String&gt; myStringConverter) {
+        return myStringConverter.apply(value);
+    }
+
+    public static String combine(String a, String b, BinaryOperator&lt;String&gt; combiner) {
+        return combiner.apply(a, b);
+    }
+
+    public static boolean test(String value, Predicate&lt;String&gt; tester) {
+        return tester.test(value);
+    }
+
+    public static void main(String[] args) {
+        // Simple expression lambda
+        final String convertedValue = MainClass.convert(" test ", t -&gt; t == null ? "" : t.trim());
+        System.out.println(convertedValue); // Output: test
+
+        // Lambda with multiple parameters
+        String combined = MainClass.combine("Hello", "Lambda", (a, b) -&gt; a + " " + b);
+        System.out.println(combined); // Output: Hello Lambda
+
+        // Block syntax lambda
+        final String convertedValue2 = MainClass.convert(" test ", t -&gt; {
+            if (t == null) {
+                return "";
+            }
+            return t.trim();
+        });
+        System.out.println(convertedValue2); // Output: test
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Package "java.util.function"</span>
+<div class="tutorialSectionTextDiv1">
+The Java library provides a list of functional interfaces located in the
+"<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/package-summary.html">java.util.function</a></code>" package:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/Predicate.html">Predicate&lt;T&gt;: boolean test(T t)</a></code><br />
+This interface defines the functional method "<code class="code1">boolean test(T t)</code>"
+which declares a single parameter ("<b>t</b>" of type "<b>T</b>") and returns a <b>true/false</b> result.
+Implementations typically apply some logic to the argument "<b>t</b>".
+Predicates support logical operations like <code class="code1">and()</code>, <code class="code1">or()</code>, and <code class="code1">negate()</code> for method chaining.<br />
+<pre class="java-code">
+Predicate&lt;Integer&gt; isOdd = t -&gt; t % 2 != 0; // Output: true
+System.out.println(isOdd.test(1));
+
+Predicate&lt;Integer&gt; isEven = isOdd.negate();
+System.out.println(isEven.test(1)); // Output: false</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntPredicate.html">IntPredicate: boolean test(int t)</a></code><br />
+This interface is a primitive specialization of "<b>Predicate</b>", specifying the parameter type "<b>t</b>" as "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongPredicate.html">LongPredicate: boolean test(long t)</a></code><br />
+This interface is a primitive specialization of "<b>Predicate</b>", specifying the parameter type "<b>t</b>" as "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoublePredicate.html">DoublePredicate: boolean test(double t)</a></code><br />
+This interface is a primitive specialization of "<b>Predicate</b>", specifying the parameter type "<b>t</b>" as "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/BiPredicate.html">BiPredicate&lt;T, U&gt;: boolean test(T t, U u)</a></code><br />
+This interface defines the functional method "<code class="code1">boolean test(T t, U u)</code>"
+which declares two parameters ("<b>t</b>" of type "<b>T</b>", "<b>u</b>" of type "<b>U</b>") and returns a <b>true/false</b> result.
+Implementations typically apply logic to the arguments "<b>t</b>" and "<b>u</b>".
+Like <code class="code1">Predicate</code>, it supports logical operations for method chaining.<br />
+<pre class="java-code">
+BiPredicate&lt;Object, Object&gt; equals = (a, b) -&gt; Objects.equals(a, b);
+System.out.println(equals.test(1, 2)); // Output: false
+
+BiPredicate&lt;Object, Object&gt; deepEquals = Objects::deepEquals;
+System.out.println(deepEquals.test(1, 2)); // Output: false
+
+BiPredicate&lt;String, String&gt; eitherNull = (a, b) -&gt; a == null || b == null;
+System.out.println(eitherNull.test(null, "test")); // Output: true
+
+BiPredicate&lt;String, String&gt; bothNotNull = eitherNull.negate();
+System.out.println(bothNotNull.test(null, "test")); // Output: false</pre>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/Consumer.html">Consumer&lt;T&gt;: void accept(T t)</a></code><br />
+This interface defines the functional method "<code class="code1">void accept(T t)</code>"
+which declares a single parameter ("<b>t</b>" of type "<b>T</b>") and does not return a value.
+Implementations typically consume the value of "<b>t</b>" and produce a side effect.
+Consumers support method chaining with <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+Consumer&lt;String&gt; println = t -&gt; System.out.println(t);
+println.accept("test"); // output: test</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntConsumer.html">IntConsumer: void accept(int t)</a></code><br />
+This interface is a primitive specialization of "<b>Consumer</b>", specifying the parameter type "<b>t</b>" as "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongConsumer.html">LongConsumer: void accept(long t)</a></code><br />
+This interface is a primitive specialization of "<b>Consumer</b>", specifying the parameter type "<b>t</b>" as "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleConsumer.html">DoubleConsumer: void accept(double t)</a></code><br />
+This interface is a primitive specialization of "<b>Consumer</b>", specifying the parameter type "<b>t</b>" as "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/BiConsumer.html">BiConsumer&lt;T, U&gt;: void accept(T t, U u)</a></code><br />
+This interface defines the functional method "<code class="code1">void accept(T t, U u)</code>"
+with two parameters ("<b>t</b>" of type "<b>T</b>", "<b>u</b>" of type "<b>U</b>") and no return value.
+Implementations typically consume both arguments and produce side effects.
+Supports method chaining with <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+BiConsumer&lt;String, String&gt; printlnIfElse = (a, b) -&gt; System.out.println(a == null ? b : a);
+printlnIfElse.accept(null, "test"); // Output: test</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ObjIntConsumer.html">ObjIntConsumer&lt;T&gt;: void accept(T t, int u)</a></code><br />
+A primitive specialization of "<b>BiConsumer</b>" with parameter "<b>u</b>" typed as "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ObjLongConsumer.html">ObjLongConsumer&lt;T&gt;: void accept(T t, long u)</a></code><br />
+A primitive specialization of "<b>BiConsumer</b>" with parameter "<b>u</b>" typed as "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ObjDoubleConsumer.html">ObjDoubleConsumer&lt;T&gt;: void accept(T t, double u)</a></code><br />
+A primitive specialization of "<b>BiConsumer</b>" with parameter "<b>u</b>" typed as "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/Supplier.html">Supplier&lt;T&gt;: T get()</a></code><br />
+This interface defines the functional method "<code class="code1">T get()</code>"
+which declares no parameters and returns a value of type "<b>T</b>".<br />
+<pre class="java-code">
+Supplier&lt;Double&gt; random = () -&gt; Math.random();
+System.out.println(random.get()); // Output: 0.7086586779711673</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/BooleanSupplier.html">BooleanSupplier: boolean getAsBoolean()</a></code><br />
+A primitive specialization of "<b>Supplier</b>" returning a "<b>boolean</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntSupplier.html">IntSupplier: int getAsInt()</a></code><br />
+A primitive specialization of "<b>Supplier</b>" returning an "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongSupplier.html">LongSupplier: long getAsLong()</a></code><br />
+A primitive specialization of "<b>Supplier</b>" returning a "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleSupplier.html">DoubleSupplier: double getAsDouble()</a></code><br />
+A primitive specialization of "<b>Supplier</b>" returning a "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/Function.html">Function&lt;T, R&gt;: R apply(T t)</a></code><br />
+This interface defines the functional method "<code class="code1">R apply(T t)</code>"
+which declares one parameter ("<b>t</b>" of type "<b>T</b>") and returns a value of type "<b>R</b>".
+Implementations typically apply some logic to the argument "<b>t</b>".
+Functions support method chaining with <code class="code1">compose()</code> and <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+Function&lt;Integer, String&gt; valueOf = t -&gt; String.valueOf(t);
+System.out.println(valueOf.apply(1)); // Output: 1
+
+Function&lt;String, String&gt; trim = s -&gt; s.trim();
+System.out.println(trim.apply("       hello")); // Output: hello
+
+Function&lt;String, String&gt; toUpperCase = s -&gt; s.toUpperCase();
+System.out.println(toUpperCase.apply("       hello")); // Output:HELLO
+
+Function&lt;String, String&gt; trimThenToUpperCase = trim.andThen(toUpperCase);
+System.out.println(trimThenToUpperCase.apply("       hello")); // Output: HELLO</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntFunction.html">IntFunction&lt;R&gt;: R apply(int t)</a></code><br />
+A primitive specialization of "<b>Function</b>" with parameter type "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongFunction.html">LongFunction&lt;R&gt;: R apply(long t)</a></code><br />
+A primitive specialization of "<b>Function</b>" with parameter type "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleFunction.html">DoubleFunction&lt;R&gt;: R apply(double t)</a></code><br />
+A primitive specialization of "<b>Function</b>" with parameter type "<b>double</b>".<br />
+<br /></li>
+</ul>
+<hr /><br />
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToIntFunction.html">ToIntFunction&lt;T&gt;: int applyAsInt(T t)</a></code><br />
+A specialization of "<b>Function</b>" with an "<b>int</b>" return type.<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToLongFunction.html">ToLongFunction&lt;T&gt;: long applyAsLong(T t)</a></code><br />
+A specialization of "<b>Function</b>" with a "<b>long</b>" return type.<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToDoubleFunction.html">ToDoubleFunction&lt;T&gt;: double applyAsDouble(T t)</a></code><br />
+A specialization of "<b>Function</b>" with a "<b>double</b>" return type.<br />
+<br /></li>
+</ul>
+<hr /><br />
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntToLongFunction.html">IntToLongFunction: long applyAsLong(int t)</a></code><br />
+A specialization converting from "<b>int</b>" to "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntToDoubleFunction.html">IntToDoubleFunction: double applyAsDouble(int t)</a></code><br />
+A specialization converting from "<b>int</b>" to "<b>double</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongToIntFunction.html">LongToIntFunction: int applyAsInt(long t)</a></code><br />
+A specialization converting from "<b>long</b>" to "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongToDoubleFunction.html">LongToDoubleFunction: double applyAsDouble(long t)</a></code><br />
+A specialization converting from "<b>long</b>" to "<b>double</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleToIntFunction.html">DoubleToIntFunction: int applyAsInt(double t)</a></code><br />
+A specialization converting from "<b>double</b>" to "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleToLongFunction.html">DoubleToLongFunction: long applyAsLong(double t)</a></code><br />
+A specialization converting from "<b>double</b>" to "<b>long</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/BiFunction.html">BiFunction&lt;T, U, R&gt;: R apply(T t, U u)</a></code><br />
+This interface defines the functional method "<code class="code1">R apply(T t, U u)</code>"
+with two parameters ("<b>t</b>" of type "<b>T</b>", "<b>u</b>" of type "<b>U</b>") and returns a value of type "<b>R</b>".
+Implementations typically apply logic to both arguments.
+Supports method chaining with <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+BiFunction&lt;Integer, Integer, String&gt; valueOfMax = (a, b) -&gt; "id-".concat(String.valueOf(Math.max(a, b)));
+System.out.println(valueOfMax.apply(1, 2)); // Output: id-2</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToIntBiFunction.html">ToIntBiFunction&lt;T, U&gt;: int applyAsInt(T t, U u)</a></code><br />
+A specialization of "<b>BiFunction</b>" returning an "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToLongBiFunction.html">ToLongBiFunction&lt;T, U&gt;: long applyAsLong(T t, U u)</a></code><br />
+A specialization of "<b>BiFunction</b>" returning a "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/ToDoubleBiFunction.html">ToDoubleBiFunction&lt;T, U&gt;: double applyAsDouble(T t, U u)</a></code><br />
+A specialization of "<b>BiFunction</b>" returning a "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/UnaryOperator.html">UnaryOperator&lt;T&gt; extends Function&lt;T, T&gt;: T apply(T t)</a></code><br />
+This interface is a specialization of "<b>Function</b>" where both the parameter and return types are the same "<b>T</b>".
+Inherits method chaining capabilities from <code class="code1">Function</code> including <code class="code1">compose()</code> and <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+UnaryOperator&lt;Integer&gt; abs = t -&gt; Math.abs(t);
+System.out.println(abs.apply(-1)); // Output: 1</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntUnaryOperator.html">IntUnaryOperator: int applyAsInt(int t)</a></code><br />
+A primitive specialization of "<b>Function</b>" for "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongUnaryOperator.html">LongUnaryOperator: long applyAsLong(long t)</a></code><br />
+A primitive specialization of "<b>Function</b>" for "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleUnaryOperator.html">DoubleUnaryOperator: double applyAsDouble(double t)</a></code><br />
+A primitive specialization of "<b>Function</b>" for "<b>double</b>".<br />
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/BinaryOperator.html">BinaryOperator&lt;T&gt; extends BiFunction&lt;T, T, T&gt;: T apply(T t, T u)</a></code><br />
+This interface is a specialization of "<b>BiFunction</b>" where both arguments and return types are the same "<b>T</b>".
+Inherits method chaining capabilities from <code class="code1">BiFunction</code> including <code class="code1">andThen()</code>.<br />
+<pre class="java-code">
+BinaryOperator&lt;Integer&gt; add = (a, b) -&gt; a + b;
+System.out.println(add.apply(3, 4)); // Output: 7</pre>
+<ul class="ul_circle_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/IntBinaryOperator.html">IntBinaryOperator: int applyAsInt(int t, int u)</a></code><br />
+A primitive specialization of "<b>BiFunction</b>" for "<b>int</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/LongBinaryOperator.html">LongBinaryOperator: long applyAsLong(long t, long u)</a></code><br />
+A primitive specialization of "<b>BiFunction</b>" for "<b>long</b>".<br />
+<br /></li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/DoubleBinaryOperator.html">DoubleBinaryOperator: double applyAsDouble(double t, double u)</a></code><br />
+A primitive specialization of "<b>BiFunction</b>" for "<b>double</b>".<br />
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

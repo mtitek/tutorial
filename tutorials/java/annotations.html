@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Annotations Tutorial: @Target, @Retention &amp; More | MTI TEK</title>
+<meta name="description" content="Learn how to use Java annotations including @Target, @Retention, and custom annotations with examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Annotations Tutorial: @Target, @Retention &amp; More | MTI TEK" />
+<meta property="og:description" content="Learn how to use Java annotations including @Target, @Retention, and custom annotations with examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/annotations.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Annotations Tutorial: @Target, @Retention &amp; More | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Java annotations including @Target, @Retention, and custom annotations with examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/annotations.php",
+        "description": "Learn how to use Java annotations including @Target, @Retention, and custom annotations with examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/annotations.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Annotations</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Annotations</a></li>
+<li><a href="#sec_id_2">@Target Annotation</a></li>
+<li><a href="#sec_id_3">@Retention Annotation</a></li>
+<li><a href="#sec_id_4">Create Your Own Annotation</a></li>
+<li><a href="#sec_id_5">Read an Annotation via Reflection</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Annotations</span>
+<div class="tutorialSectionTextDiv1">
+Annotations are a kind of metadata that can be associated with classes, interfaces, methods, fields, parameters, and other program elements.<br />
+Annotations do not affect the runtime behavior of the code directly but can be used for various purposes: compile-time checking, code generation, runtime processing, and documentation.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+public class AnnotationTest1 {
+    @SuppressWarnings("unused")
+    private void doSomething() {
+    }
+}</pre>
+In the above example, without the <code class="code1">@SuppressWarnings</code> annotation, the compiler would display the following warning message:
+"<b>The method doSomething() from the type AnnotationTest1 is never used locally</b>".<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">@Target Annotation</span>
+<div class="tutorialSectionTextDiv1">
+This annotation (also called a meta-annotation since it applies to other annotations) is used to specify which program elements an annotation can be applied to.<br />
+<br />
+This annotation can be applied to the following elements:<br />
+<ul class="ul_square_1">
+<li>
+ElementType.<b>TYPE</b>: class, interface, enum, and annotation declarations.<br />
+</li>
+<li>
+ElementType.<b>FIELD</b>: field declarations (including enum constants).<br />
+</li>
+<li>
+ElementType.<b>METHOD</b>: method declarations.<br />
+</li>
+<li>
+ElementType.<b>PARAMETER</b>: formal parameter declarations.<br />
+</li>
+<li>
+ElementType.<b>CONSTRUCTOR</b>: constructor declarations.<br />
+</li>
+<li>
+ElementType.<b>LOCAL_VARIABLE</b>: local variable declarations.<br />
+</li>
+<li>
+ElementType.<b>ANNOTATION_TYPE</b>: annotation type declarations.<br />
+</li>
+<li>
+ElementType.<b>PACKAGE</b>: package declarations.<br />
+</li>
+<li>
+ElementType.<b>TYPE_PARAMETER</b>: type parameter declarations.<br />
+</li>
+<li>
+ElementType.<b>TYPE_USE</b>: use of types.<br />
+</li>
+<li>
+ElementType.<b>MODULE</b>: module declarations.<br />
+</li>
+<li>
+ElementType.<b>RECORD_COMPONENT</b>: record component declarations.<br />
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+package java.lang;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Override {
+}</pre>
+In the example above, the <code class="code1">@Target</code> annotation specifies that the <code class="code1">@Override</code> annotation can only be applied to method declarations.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">@Retention Annotation</span>
+<div class="tutorialSectionTextDiv1">
+This annotation specifies how long an annotation should be retained:<br />
+<ul class="ul_square_1">
+<li>
+RetentionPolicy.<b>SOURCE</b>: Annotations are discarded by the compiler and are not included in the class bytecode. Used primarily for compile-time processing and IDE support.<br />
+</li>
+<li>
+RetentionPolicy.<b>CLASS</b>: Annotations are recorded in the class bytecode but are not available at runtime via reflection. This is the default retention policy.<br />
+</li>
+<li>
+RetentionPolicy.<b>RUNTIME</b>: Annotations are recorded in the class bytecode and are available at runtime via reflection, allowing for runtime processing.<br />
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+package java.lang;
+
+import java.lang.annotation.*;
+import static java.lang.annotation.ElementType.*;
+
+@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
+@Retention(RetentionPolicy.SOURCE)
+public @interface SuppressWarnings {
+    String[] value();
+}</pre>
+In the above example, the <code class="code1">@Retention</code> annotation specifies that the <code class="code1">@SuppressWarnings</code> annotation is only relevant during compilation and should not be retained in the class bytecode.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Create Your Own Annotation</span>
+<div class="tutorialSectionTextDiv1">
+The syntax for creating an annotation is similar to an interface declaration, using the <code class="code1">@interface</code> keyword.<br />
+<br />
+Inside the annotation body, you define methods (called elements or attributes) according to the following rules:<br />
+<ul class="ul_square_1">
+<li>
+Method declarations must not have parameters or throw clauses.<br />
+</li>
+<li>
+Method return types are restricted to: primitives, String, Class, enum types, annotation types, and arrays of these types.<br />
+</li>
+<li>
+Methods can have default values using the <code class="code1">default</code> keyword.<br />
+</li>
+<li>
+If an annotation has only one element, it should be named <code class="code1">value</code> for convenience.<br />
+</li>
+</ul>
+<br />
+Example:<br />
+<pre class="java-code">
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Annotation1 {
+    double value() default 10.0;
+}</pre>
+When an annotation has a single element named <code class="code1">value</code>, the element name can be omitted when using the annotation.
+If a default value is provided and you want to use it, parentheses can be omitted entirely.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+public class Test1Annotation1 {
+    @Annotation1 // Uses default value (10.0)
+    public Double myVar1;
+
+    @Annotation1(1.2) // Shorthand for value = 1.2
+    public Double myVar2;
+
+    @Annotation1(value = 1.3) // Explicit element name
+    public Double myVar3;
+}</pre>
+Annotations with no elements are called marker annotations and can be used without parentheses.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Read an Annotation via Reflection</span>
+<div class="tutorialSectionTextDiv1">
+Annotations with <code class="code1">RetentionPolicy.RUNTIME</code> can be accessed at runtime using Java's reflection API.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.lang.reflect.Field;
+
+public class Test2Annotation1 {
+    @Annotation1
+    public Double myVar1;
+
+    @Annotation1(1.2)
+    public Double myVar2;
+
+    @Annotation1(value = 1.3)
+    public Double myVar3;
+
+    public static void main(String[] args) {
+        Field[] fields = Test2Annotation1.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Annotation1.class)) {
+                Annotation1 annotation = field.getAnnotation(Annotation1.class);
+                System.out.println("Field: " + field.getName() + ", Value: " + annotation.value());
+            }
+        }
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Field: myVar1, Value: 10.0
+Field: myVar2, Value: 1.2
+Field: myVar3, Value: 1.3</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

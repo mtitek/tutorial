@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Thread Methods: sleep() and join() Explained with Examples | MTI TEK</title>
+<meta name="description" content="Learn how to use Java&#039;s Thread methods sleep() and join() with clear explanations and runnable code examples. Understand thread states and execution flow in Java multithreading." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Thread Methods: sleep() and join() Explained with Examples | MTI TEK" />
+<meta property="og:description" content="Learn how to use Java&#039;s Thread methods sleep() and join() with clear explanations and runnable code examples. Understand thread states and execution flow in Java multithreading." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/threads_ThreadMethods.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Thread Methods: sleep() and join() Explained with Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Java&#039;s Thread methods sleep() and join() with clear explanations and runnable code examples. Understand thread states and execution flow in Java multithreading." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/threads_ThreadMethods.php",
+        "description": "Learn how to use Java&#039;s Thread methods sleep() and join() with clear explanations and runnable code examples. Understand thread states and execution flow in Java multithreading.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/threads_ThreadMethods.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Thread Class Methods: sleep, join</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">The sleep Method</a></li>
+<li><a href="#sec_id_2">The join Method</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">The sleep Method</span>
+<div class="tutorialSectionTextDiv1">
+Calling the <code class="code1">sleep</code> method causes the current thread to pause its execution and move to the "<b>TIMED_WAITING</b>" state (not "Waiting").<br />
+<br />
+The thread will be put to sleep for the duration specified in the method's argument (in milliseconds).
+When this time elapses, the JVM changes the thread's state to "<b>RUNNABLE</b>", making it eligible for execution again.<br />
+<br />
+The <code class="code1">sleep</code> method is a static method, so it is not necessary to have a reference to a thread instance to call it. It always operates on the currently executing thread.<br />
+<br />
+<b>Note:</b> The <code class="code1">sleep</code> method can throw an <code class="code1">InterruptedException</code>, which must be handled or declared.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : START");
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(
+                        Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : START");
+                try {
+                    Thread.sleep(1000); // Sleep for 1000 milliseconds (1 second)
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // Restore interrupted status
+                    e.printStackTrace();
+                }
+                System.out.println(
+                        Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : END");
+            }
+        };
+
+        Thread myThread1 = new Thread(myRunnable, "mySleepThread");
+
+        myThread1.start();
+
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : END");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main (1) : START
+main (1) : END
+mySleepThread (19) : START
+mySleepThread (19) : END</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>The main thread completes before the sleep thread finishes, demonstrating concurrent execution.<br /></li>
+<li>The sleep thread pauses for 1 second before printing its END message.<br /></li>
+<li>Thread IDs may vary between different program runs.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The join Method</span>
+<div class="tutorialSectionTextDiv1">
+Calling the <code class="code1">join</code> method causes the current thread to pause its execution and move to the "<b>WAITING</b>" state.<br />
+<br />
+The current thread will wait until the thread (whose instance was used to call the <code class="code1">join</code> method) finishes its execution before it can be scheduled again by the JVM to resume its execution.<br />
+<br />
+The <code class="code1">join</code> method is an instance method, so it is necessary to have a reference to a thread instance in order to call it.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : START");
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(
+                        Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : START");
+                try {
+                    Thread.sleep(1000); // Simulate some work
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+                System.out.println(
+                        Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : END");
+            }
+        };
+
+        Thread myThread1 = new Thread(myRunnable, "myJoinThread");
+
+        myThread1.start();
+
+        try {
+            myThread1.join(); // Main thread waits for myThread1 to complete
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : END");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main (1) : START
+myJoinThread (19) : START
+myJoinThread (19) : END
+main (1) : END</pre>
+In this example, two important points should be noted:<br />
+<ul class="ul_square_1">
+<li>The <code class="code1">myThread1.join();</code> statement is executed by the "<b>main</b>" thread.<br /></li>
+<li>The reference used to invoke the <code class="code1">join</code> method belongs to the "<b>myJoinThread</b>" thread.<br /></li>
+</ul>
+<br />
+As you can see from the program output,
+the "<b>main</b>" thread continued its execution only after the "<b>myJoinThread</b>" thread completed its execution.<br />
+<br />
+<b>Joining an Already Terminated Thread:</b><br />
+If the current thread "<b>main</b>" tries to join a thread "<b>myJoinThread</b>" that has already completed its execution,
+the JVM recognizes that the "<b>myJoinThread</b>" thread has already terminated,
+and therefore allows the "<b>main</b>" thread to continue its execution without waiting.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : START");
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(
+                        Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : EXECUTING");
+            }
+        };
+
+        Thread myThread1 = new Thread(myRunnable, "myJoinThread");
+
+        myThread1.start();
+
+        try {
+            Thread.sleep(1000); // Give enough time for myThread1 to complete
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
+        System.out.println("myJoinThread state : " + myThread1.getState());
+
+        try {
+            myThread1.join(); // This will return immediately since thread is already terminated
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
+        System.out.println(Thread.currentThread().getName() + " (" + Thread.currentThread().threadId() + ") : END");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main (1) : START
+myJoinThread (19) : EXECUTING
+myJoinThread state : TERMINATED
+main (1) : END</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

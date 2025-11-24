@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java ReentrantLock Tutorial | MTI TEK</title>
+<meta name="description" content="Learn Java ReentrantLock for thread synchronization with practical examples. Solve concurrent programming issues using ReentrantLock vs synchronized blocks in Java." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java ReentrantLock Tutorial | MTI TEK" />
+<meta property="og:description" content="Learn Java ReentrantLock for thread synchronization with practical examples. Solve concurrent programming issues using ReentrantLock vs synchronized blocks in Java." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/reentrantLock.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java ReentrantLock Tutorial | MTI TEK" />
+<meta name="twitter:description" content="Learn Java ReentrantLock for thread synchronization with practical examples. Solve concurrent programming issues using ReentrantLock vs synchronized blocks in Java." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/reentrantLock.php",
+        "description": "Learn Java ReentrantLock for thread synchronization with practical examples. Solve concurrent programming issues using ReentrantLock vs synchronized blocks in Java.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/reentrantLock.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">locks: ReentrantLock</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">ReentrantLock</a></li>
+<li><a href="#sec_id_2">Problem</a></li>
+<li><a href="#sec_id_3">Using ReentrantLock to solve this problem</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">ReentrantLock</span>
+<div class="tutorialSectionTextDiv1">
+ReentrantLock is a synchronization primitive in Java's <code class="code1">java.util.concurrent.locks</code> package that provides explicit locking mechanisms.
+Unlike synchronized blocks, ReentrantLock offers more flexibility with features like <code class="code1">tryLock()</code>, timed locking, and interruptible lock acquisition.
+The "<b>reentrant</b>" aspect means the same thread can acquire the lock multiple times without deadlocking itself, making it safe for recursive method calls.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Problem</span>
+<div class="tutorialSectionTextDiv1">
+First we will look at this example:<br />
+<pre class="java-code">
+private Integer id = Integer.valueOf(0);
+
+public void updateId(final Integer localId) {
+    this.id = localId;
+    System.out.println("localId: " + localId + " / id:" + this.id);
+}</pre>
+The problem with this example is if multiple threads call this method,
+the value of the instance variable "<b>id</b>" that we print at the end of the method can be different from the value of the parameter "<b>localId</b>".<br />
+<br />
+If 5 concurrent threads call this method, the output could be something like the following:<br />
+<pre class="text-code">
+localId: 2 / id:3
+localId: 4 / id:3
+localId: 1 / id:3
+localId: 0 / id:3
+localId: 3 / id:3</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Using ReentrantLock to solve this problem</span>
+<div class="tutorialSectionTextDiv1">
+Here's the minimal dependencies needed in order for the following example to work ("<b>pom.xml</b>" file):<br />
+<pre class="xml-code">
+&lt;dependency&gt;
+&lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+&lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+&lt;version&gt;3.17.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<b>Note</b>: The Apache Commons Lang3 dependency is included for the <code class="code1">BasicThreadFactory</code> class,
+which provides convenient thread naming and daemon thread configuration.
+While Java's built-in <code class="code1">ReentrantLock</code> works without additional dependencies,
+using a custom ThreadFactory allows better thread management and debugging.<br />
+<br />
+Example: Using <code class="code1">ReentrantLock</code><br />
+<pre class="java-code">
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
+
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+public class MainClass {
+    private final ReentrantLock lock = new ReentrantLock();
+
+    private Integer id = Integer.valueOf(0);
+
+    public void updateId(final Integer localId) {
+        try {
+            lock.lock();
+
+            this.id = localId;
+
+            // simulate a time-consuming code
+            try {
+                Thread.sleep(500l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("localId: " + localId + " / id:" + this.id);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        final String poolName = "_newFixedThreadPool";
+
+        final BasicThreadFactory basicThreadFactory = new BasicThreadFactory.Builder().namingPattern(poolName).daemon(true).build();
+
+        final ExecutorService executorService = Executors.newFixedThreadPool(5, basicThreadFactory);
+
+        final MainClass mainClass = new MainClass();
+
+        IntStream.iterate(0, i -&gt; i + 1).limit(5).forEach(t -&gt; executorService.execute(() -&gt; {
+            try {
+                // wait (random time) before calling the update method
+                Thread.sleep(new Random().nextInt(500) + 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            mainClass.updateId(t);
+        }));
+
+        executorService.awaitTermination(10000l, TimeUnit.MILLISECONDS);
+
+        executorService.shutdown();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+localId: 2 / id:2
+localId: 0 / id:0
+localId: 1 / id:1
+localId: 4 / id:4
+localId: 3 / id:3</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

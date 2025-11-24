@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Fields: Static, Final, Inheritance &amp; Access Explained | MTI TEK</title>
+<meta name="description" content="Learn about Java fields including static vs instance, initialization, access modifiers, final fields, shadowing, and inheritance." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Fields: Static, Final, Inheritance &amp; Access Explained | MTI TEK" />
+<meta property="og:description" content="Learn about Java fields including static vs instance, initialization, access modifiers, final fields, shadowing, and inheritance." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/fields.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Fields: Static, Final, Inheritance &amp; Access Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn about Java fields including static vs instance, initialization, access modifiers, final fields, shadowing, and inheritance." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/fields.php",
+        "description": "Learn about Java fields including static vs instance, initialization, access modifiers, final fields, shadowing, and inheritance.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/fields.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Fields</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Instance and Class (Static) Fields</a></li>
+<li><a href="#sec_id_2">Field Initialization</a></li>
+<li><a href="#sec_id_3">Field Access Modifiers</a></li>
+<li><a href="#sec_id_4">Final Fields</a></li>
+<li><a href="#sec_id_5">Field Shadowing</a></li>
+<li><a href="#sec_id_6">Field Inheritance</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Instance and Class (Static) Fields</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+An instance fields is accessible only when an instance is created.<br />
+<br /></li>
+<li>
+A class fields is accessible even if no instance of the class has been created.<br />
+<br /></li>
+<li>
+A class fields is declared using the <code class="code1">static</code> keyword.<br />
+<br /></li>
+<li>
+Instance fields belong to individual objects, while static fields belong to the class itself.<br />
+<br /></li>
+<li>
+Static fields are shared among all instances of the class.<br />
+</li>
+</ul>
+<br />
+<pre class="java-code">
+class Test1 {
+    int var1 = 1; // instance fields (unique to each instance)
+    static int var2 = 1; // class fields
+
+    public Test1() {
+        Integer localVar1;
+
+        // Access fields
+        localVar1 = var1; // OK
+        localVar1 = var2; // OK
+
+        // Access fields using an instance reference
+        localVar1 = (new Test1()).var1; // OK
+        localVar1 = (new Test1()).var2; // OK - Warning: The static field Test1.var2 should be accessed in a static way
+
+        // Access fields using the class name
+        localVar1 = Test1.var1; // compiler error: Cannot make a static reference to the non-static field Test1.var1
+        localVar1 = Test1.var2; // OK
+    }
+
+    public void doSomething() {
+        Integer localVar1;
+
+        // Access fields
+        localVar1 = var1; // OK
+        localVar1 = var2; // OK
+
+        // Access fields using an instance reference
+        localVar1 = (new Test1()).var1; // OK
+        localVar1 = (new Test1()).var2; // OK - Warning: The static field Test1.var2 should be accessed in a static way
+
+        // Access fields using the class name
+        localVar1 = Test1.var1; // compiler error: Cannot make a static reference to the non-static field Test1.var1
+        localVar1 = Test1.var2; // OK
+    }
+
+    public static void doSomethingElse() {
+        Integer localVar1;
+
+        // Access fields
+        localVar1 = var1; // compiler error: Cannot make a static reference to the non-static field var1
+        localVar1 = var2; // OK
+
+        // Access fields using an instance reference
+        localVar1 = (new Test1()).var1; // OK
+        localVar1 = (new Test1()).var2; // OK - Warning: The static field Test1.var2 should be accessed in a static way
+
+        // Access fields using the class name
+        localVar1 = Test1.var1; // compiler error: Cannot make a static reference to the non-static field Test1.var1
+        localVar1 = Test1.var2; // OK
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Field Initialization</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Fields can be initialized at declaration or in constructors.<br />
+<br /></li>
+<li>
+Static fields are initialized when the class is first loaded.<br />
+<br /></li>
+<li>
+Instance fields are initialized when an object is created.<br />
+<br /></li>
+<li>
+If not explicitly initialized, fields get default values: 0 for numeric types, false for boolean, null for objects.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Field Access Modifiers</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<code class="code1">public</code>: Accessible from anywhere.<br />
+<br /></li>
+<li>
+<code class="code1">private</code>: Accessible only within the same class.<br />
+<br /></li>
+<li>
+<code class="code1">protected</code>: Accessible within the same package and by subclasses.<br />
+<br /></li>
+<li>
+Package-private (no modifier): Accessible within the same package only.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Final Fields</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<code class="code1">final</code> fields cannot be reassigned after initialization.<br />
+<br /></li>
+<li>
+Final fields must be initialized either at declaration or in the constructor.<br />
+<br /></li>
+<li>
+Static final fields are compile-time constants if initialized with constant expressions.<br />
+<br /></li>
+<li>
+Final fields provide immutability for primitive types and reference immutability for objects.<br />
+<br /></li>
+</ul>
+<pre class="java-code">
+class Test2 {
+    // Final field initialized at declaration
+    final int CONSTANT = 1;
+
+    // Final field to be initialized in constructor
+    final int var1;
+
+    // Static final field (compile-time constant)
+    static final int var2 = 1;
+
+    // Final object reference (object can be modified, reference cannot)
+    final List&lt;String&gt; list1 = new ArrayList&lt;&gt;();
+
+    // Compiler error if var1 not initialized: The blank final field var3 may not have been initialized
+    public Test2() {
+        this.var1 = 1; // must initialize final field in constructor
+    }
+
+    public void doSomething() {
+        CONSTANT = 200; // Compiler error: The final field Test2.CONSTANT cannot be assigned
+        var1 = 1; // Compiler error: The final field Test2.var1 cannot be assigned
+        list1 = new ArrayList&lt;&gt;(); // Compiler error: The final field Test2.list1 cannot be assigned
+
+        // can modify the object that final reference points to
+        list1.add("Item 1"); // OK
+        list1.add("Item 2"); // OK
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Field Shadowing</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Local variables and parameters can shadow (hide) fields with the same name.<br />
+<br /></li>
+<li>
+Use <code class="code1">this</code> keyword to access instance fields when shadowed.<br />
+<br /></li>
+<li>
+Use class name to access static fields when shadowed.<br />
+<br /></li>
+<li>
+Subclass fields can shadow superclass fields with the same name.<br />
+<br /></li>
+</ul>
+<pre class="java-code">
+class Test3 {
+    int var1 = 1;
+    static int var2 = 1;
+
+    public void doSomething() {
+        int var1 = 2; // local variable shadows the instance field
+        System.out.println(var1); // prints local variable var1 (2)
+        System.out.println(new Test3().var1); // prints instance field var1 (1)
+
+        int var2 = 2; // local variable shadows the static field
+        System.out.println(var2); // prints local variable var2 (2)
+        System.out.println(Test3.var2); // prints static field var2 (1)
+    }
+}
+
+class Test4 extends Test3 {
+    int var1 = 10; // shadows parent field
+    static int var2 = 10; // shadows parent field
+
+    public void doSomethingElse() {
+        System.out.println(var1); // prints child instance field var1 (10)
+        System.out.println(super.var1); // prints parent instance field var1 (1)
+
+        System.out.println(var2); // prints child static field var2 (10)
+        System.out.println(super.var2); // prints parent static field var2 (1)
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Field Inheritance</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Subclasses inherit all non-private fields from their superclass.<br />
+<br /></li>
+<li>
+Private fields are not inherited but can be accessed through public/protected methods.<br />
+<br /></li>
+<li>
+Static fields are inherited and shared across the inheritance hierarchy.<br />
+<br /></li>
+<li>
+Field access depends on the declared type, not the actual object type.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

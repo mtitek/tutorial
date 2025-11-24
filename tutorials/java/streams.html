@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Streams Tutorial: Stream Interface, Methods &amp; Collection Integration | MTI TEK</title>
+<meta name="description" content="Learn how to use Java Streams with this tutorial covering the Stream interface, key methods like map and filter, and integration with collections." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Streams Tutorial: Stream Interface, Methods &amp; Collection Integration | MTI TEK" />
+<meta property="og:description" content="Learn how to use Java Streams with this tutorial covering the Stream interface, key methods like map and filter, and integration with collections." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/streams.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Streams Tutorial: Stream Interface, Methods &amp; Collection Integration | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Java Streams with this tutorial covering the Stream interface, key methods like map and filter, and integration with collections." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/streams.php",
+        "description": "Learn how to use Java Streams with this tutorial covering the Stream interface, key methods like map and filter, and integration with collections.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/streams.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Streams</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">The Stream Interface</a></li>
+<li><a href="#sec_id_2">Intermediate and Terminal Operations</a></li>
+<li><a href="#sec_id_3">Methods of the Stream Interface</a></li>
+<li><a href="#sec_id_4">Package "java.util.stream"</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">The Stream Interface</span>
+<div class="tutorialSectionTextDiv1">
+Java allows the construction of a processing flow (or pipeline) that contains a set of steps (or operations) applied sequentially to the elements of a data source.<br />
+<br />
+The operations that can be applied to a stream are of two types:
+<code class="code1">intermediate operations</code> or <code class="code1">terminal operations</code>.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+The processing flow begins by creating an instance of the <code class="code1">java.util.stream.Stream</code> interface from a data source (collection, array, set of elements).
+The Stream interface represents a sequence of elements supporting sequential and parallel aggregate operations.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+// Creates a stream from a set of values.
+Stream&lt;Integer&gt; integerStream1 = Stream.of(1, 2, 3);
+
+// Creates a stream from an array.
+Integer[] values = {1, 2, 3};
+Stream&lt;Integer&gt; integerStream2 = Stream.of(values);
+Stream&lt;Integer&gt; integerStream3 = Arrays.stream(values);
+
+// Creates a stream from a list.
+Stream&lt;Integer&gt; integerStream4 = Arrays.asList(values).stream();</pre>
+</li>
+<li>
+Intermediate operations in the pipeline produce a new instance of the <code class="code1">Stream</code> interface.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; integerStream1 = Stream.of(1, 2, 3);
+
+// The intermediate operation "filter" transforms a stream into another stream
+Stream&lt;Integer&gt; integerStream2 = integerStream1.filter(i -&gt; i % 2 == 0);
+
+// The intermediate operation "map" transforms a stream into another stream
+Stream&lt;String&gt; stringStream = integerStream2.map(i -&gt; String.valueOf(i));</pre>
+</li>
+<li>
+The terminal operation in the pipeline produces a result or a side effect.
+This operation closes the stream and triggers the execution of all intermediate operations in the pipeline.
+Without a terminal operation, no processing occurs, as intermediate operations are executed lazily.<br />
+<br />
+Terminal operations are either non-short-circuiting (they must process all elements) or short-circuiting (they may terminate early).
+Examples include reduction operations like <code class="code1">collect</code>, <code class="code1">reduce</code>, and <code class="code1">count</code>, as well as short-circuiting operations like <code class="code1">findFirst</code> and <code class="code1">anyMatch</code>.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+// The terminal operation "count" produces a result
+long count = Stream.of(1, 2, 3).count();
+
+// The terminal operation "forEach" produces a side effect
+Stream.of(1, 2, 3).forEach(System.out::println);</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Intermediate and Terminal Operations</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Intermediate operations are executed lazily only when a terminal operation is invoked.
+In other words, intermediate operations in a pipeline are never executed if the pipeline does not declare a terminal operation.<br />
+<br />
+Also, elements of the data source are consumed only as needed.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+// filter and limit are intermediate operations; they won't be applied yet
+Stream&lt;Integer&gt; integerStream1 = Stream.of(1, 2, 3, 4, 5, 6).filter(i -&gt; i % 2 == 0).limit(2);
+
+// forEach is a terminal operation; all intermediate operations along with the terminal operation will now be applied
+integerStream1.forEach(System.out::println);</pre>
+</li>
+<li>
+A stream can only be consumed once. Once a terminal operation has been applied to a <code class="code1">Stream</code> instance, that stream is closed and cannot be reused.<br />
+<br />
+If any operation (intermediate or terminal) is applied to a <code class="code1">Stream</code> instance
+after it has already been operated upon or closed, an exception will be thrown:<br />
+<code class="code1">"IllegalStateException: stream has already been operated upon or closed"</code>.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; integerStream1 = Stream.of(1, 2, 3);
+
+// OK: first operation on "integerStream1"
+Stream&lt;Integer&gt; integerStream2 = integerStream1.filter(i -&gt; i % 2 == 0);
+
+// Runtime Exception: IllegalStateException - stream has already been operated upon or closed
+Stream&lt;Integer&gt; integerStream3 = integerStream1.filter(i -&gt; i % 2 == 0);
+
+// Runtime Exception: IllegalStateException - stream has already been operated upon or closed
+long count = integerStream1.count();
+
+// OK: first operation on "integerStream2"
+System.out.println(integerStream2.count());
+
+// Runtime Exception: IllegalStateException - stream has already been operated upon or closed
+System.out.println(integerStream2.count());</pre>
+</li>
+<li>
+The chain of operations applied to a sequence of elements can be executed sequentially (by default) or in parallel.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.Arrays;
+
+Integer[] values = {1, 2, 3};
+
+// stream returns a sequential Stream
+Arrays.stream(values).forEach(System.out::println);
+Arrays.asList(values).stream().forEach(System.out::println);
+
+// parallel/parallelStream returns a possibly parallel Stream
+Arrays.stream(values).parallel().forEach(System.out::println);
+Arrays.asList(values).parallelStream().forEach(System.out::println);</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Methods of the Stream Interface</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<code class="code1">collect</code> (<b>terminal operation</b>)<br />
+The Java API defines two versions of the <code class="code1">collect</code> method.<br />
+<ul class="ul_circle_1">
+<li>
+The first method takes three parameters:<br />
+<code class="code1">&lt;R&gt; R collect(Supplier&lt;R&gt; supplier, BiConsumer&lt;R, ? super T&gt; accumulator, BiConsumer&lt;R, R&gt; combiner);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; integerStream = Stream.of(1, 2, 3);
+
+Supplier&lt;StringBuilder&gt; supplier = StringBuilder::new;
+BiConsumer&lt;StringBuilder, ? super Integer&gt; accumulator = StringBuilder::append;
+BiConsumer&lt;StringBuilder, StringBuilder&gt; combiner = StringBuilder::append;
+
+StringBuilder stringBuilder = integerStream.collect(supplier, accumulator, combiner);</pre>
+</li>
+<li>
+The second method takes a single parameter:<br />
+<code class="code1">&lt;R, A&gt; R collect(Collector&lt;? super T, A, R&gt; collector);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; integerStream = Stream.of(1, 2, 3);
+
+// Collectors.toList() returns a Collector that accumulates elements into a List
+List&lt;Integer&gt; list = integerStream.collect(Collectors.toList());</pre>
+</li>
+</ul>
+<br /></li>
+<li>
+<code class="code1">map</code> (<b>intermediate operation</b>)<br />
+The method <code class="code1">map</code> applies the given function to each element of the stream and produces a new stream containing the results.<br />
+<code class="code1">&lt;R&gt; Stream&lt;R&gt; map(Function&lt;? super T, ? extends R&gt; mapper);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; intStream = Stream.of(1, 2, 3);
+Stream&lt;String&gt; stringStream = intStream.map(String::valueOf);
+stringStream.forEach(System.out::println);</pre>
+</li>
+<li>
+<code class="code1">filter</code> (<b>intermediate operation</b>)<br />
+The method <code class="code1">filter</code> applies the given predicate to filter elements of the stream, retaining only those that match.<br />
+<code class="code1">Stream&lt;T&gt; filter(Predicate&lt;? super T&gt; predicate);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+Stream&lt;Integer&gt; intStream1 = Stream.of(1, 2, 3, 4, 5);
+Stream&lt;Integer&gt; intStream2 = intStream1.filter(i -&gt; i % 2 == 0);
+intStream2.forEach(System.out::println);</pre>
+</li>
+<li>
+<code class="code1">findFirst</code> / <code class="code1">findAny</code> (<b>terminal operations</b>)<br />
+The method <code class="code1">findFirst</code> returns the first element of the stream wrapped in an <code class="code1">Optional</code>.<br />
+<code class="code1">Optional&lt;T&gt; findFirst();</code><br />
+<br />
+The method <code class="code1">findAny</code> returns any element of the stream wrapped in an <code class="code1">Optional</code>, possibly the first but not guaranteed.<br />
+<code class="code1">Optional&lt;T&gt; findAny();</code><br />
+<br />
+These are short-circuiting terminal operations that stop processing the stream once an element is found.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.Optional;
+import java.util.stream.Stream;
+
+Optional&lt;Integer&gt; firstValue = Stream.of(1, 2, 3).findFirst();
+if (firstValue.isPresent()) {
+    System.out.println(firstValue.get());
+}
+
+Optional&lt;Integer&gt; anyValue = Stream.of(1, 2, 3).findAny();
+anyValue.ifPresent(System.out::println);</pre>
+</li>
+<li>
+<code class="code1">anyMatch</code> / <code class="code1">allMatch</code> / <code class="code1">noneMatch</code> (<b>terminal operations</b>)<br />
+The method <code class="code1">anyMatch</code> returns <code class="code1">true</code> if any element matches the predicate.<br />
+<code class="code1">boolean anyMatch(Predicate&lt;? super T&gt; predicate);</code><br />
+<br />
+The method <code class="code1">allMatch</code> returns <code class="code1">true</code> if all elements match the predicate.<br />
+<code class="code1">boolean allMatch(Predicate&lt;? super T&gt; predicate);</code><br />
+<br />
+The method <code class="code1">noneMatch</code> returns <code class="code1">true</code> if no elements match the predicate.<br />
+<code class="code1">boolean noneMatch(Predicate&lt;? super T&gt; predicate);</code><br />
+<br />
+These are short-circuiting terminal operations that stop processing as soon as the result is determined.<br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+// anyMatch
+boolean anyMatch = Stream.of(1, 2, 3).anyMatch(i -&gt; i % 2 == 1);
+System.out.println(anyMatch); // true
+
+// allMatch
+boolean allMatch = Stream.of(1, 2, 3).allMatch(i -&gt; i % 2 == 1);
+System.out.println(allMatch); // false
+
+// noneMatch
+boolean noneMatch = Stream.of(1, 2, 3).noneMatch(i -&gt; i % 2 == 1);
+System.out.println(noneMatch); // false</pre>
+</li>
+<li>
+<code class="code1">reduce</code> (<b>terminal operation</b>)<br />
+The method <code class="code1">reduce</code> performs a reduction on the elements of the stream using an accumulator function and returns an <code class="code1">Optional</code> or a single value.<br />
+<code class="code1">Optional&lt;T&gt; reduce(BinaryOperator&lt;T&gt; accumulator);</code><br />
+<code class="code1">T reduce(T identity, BinaryOperator&lt;T&gt; accumulator);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.Optional;
+import java.util.stream.Stream;
+
+// Sum using reduce with Optional
+Optional&lt;Integer&gt; sum1 = Stream.of(1, 2, 3, 4, 5).reduce((a, b) -&gt; a + b);
+sum1.ifPresent(System.out::println); // 15
+
+// Sum using reduce with identity
+int sum2 = Stream.of(1, 2, 3, 4, 5).reduce(0, (a, b) -&gt; a + b);
+System.out.println(sum2); // 15</pre>
+</li>
+<li>
+<code class="code1">limit</code> / <code class="code1">skip</code> (<b>intermediate operations</b>)<br />
+The method <code class="code1">limit</code> returns a stream with at most the specified number of elements.<br />
+<code class="code1">Stream&lt;T&gt; limit(long maxSize);</code><br />
+<br />
+The method <code class="code1">skip</code> returns a stream with the first specified number of elements discarded.<br />
+<code class="code1">Stream&lt;T&gt; skip(long n);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+// limit - only first 3 elements
+Stream.of(1, 2, 3, 4, 5).limit(3).forEach(System.out::println); // 1, 2, 3
+
+// skip - first 2 elements
+Stream.of(1, 2, 3, 4, 5).skip(2).forEach(System.out::println); // 3, 4, 5
+
+// skip and limit
+Stream.of(1, 2, 3, 4, 5).skip(2).limit(3).forEach(System.out::println); // 3, 4, 5</pre>
+</li>
+<li>
+<code class="code1">distinct</code> (<b>intermediate operation</b>)<br />
+The method <code class="code1">distinct</code> returns a stream with duplicate elements removed based on their <code class="code1">equals()</code> method.<br />
+<code class="code1">Stream&lt;T&gt; distinct();</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.stream.Stream;
+
+Stream.of(1, 1, 2, 3, 4, 4, 5).distinct().forEach(System.out::println); // 1, 2, 3, 4, 5</pre>
+</li>
+<li>
+<code class="code1">sorted</code> (<b>intermediate operation</b>)<br />
+The method <code class="code1">sorted</code> returns a stream with elements sorted in natural order or according to a provided <code class="code1">Comparator</code>.<br />
+<code class="code1">Stream&lt;T&gt; sorted();</code><br />
+<code class="code1">Stream&lt;T&gt; sorted(Comparator&lt;? super T&gt; comparator);</code><br />
+<br />
+Example:<br />
+<pre class="java-code">
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+// Natural order sorting
+Stream.of(1, 3, 2, 5, 4, 1).sorted().forEach(System.out::println); // 1, 1, 2, 3, 4, 5
+
+// Custom comparator - reverse order
+Stream.of(1, 3, 2, 5, 4, 1).sorted(Comparator.reverseOrder()).forEach(System.out::println); // 5, 4, 3, 2, 1, 1</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Package "java.util.stream"</span>
+<div class="tutorialSectionTextDiv1">
+The Java library provides a set of interfaces for working with streams, which are found in the
+"<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/package-summary.html">java.util.stream</a></code>" package:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/BaseStream.html">BaseStream: BaseStream&lt;T, S extends BaseStream&lt;T, S&gt;&gt; extends AutoCloseable</a></code><br />
+<br />
+Base interface for streams that handle elements of type T.<br />
+<pre class="java-code">
+public interface BaseStream&lt;T, S extends BaseStream&lt;T, S&gt;&gt; extends AutoCloseable {
+    Iterator&lt;T&gt; iterator();
+
+    Spliterator&lt;T&gt; spliterator();
+
+    boolean isParallel();
+
+    S sequential();
+
+    S parallel();
+
+    S unordered();
+
+    S onClose(Runnable closeHandler);
+
+    @Override
+    void close();
+}</pre>
+</li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/Stream.html">Stream: Stream&lt;T&gt; extends BaseStream&lt;T, Stream&lt;T&gt;&gt;</a></code><br />
+This is the main specialization of the "<code class="code1">BaseStream</code>" interface for object references.
+It defines several methods for transformation, filtering, aggregation, etc. (<b>filter</b>, <b>map</b>, <b>reduce</b>, <b>distinct</b>, <b>count</b>, ...).<br />
+<pre class="java-code">
+public interface Stream&lt;T&gt; extends BaseStream&lt;T, Stream&lt;T&gt;&gt; {
+    // Filtering operations (intermediate operations)
+    Stream&lt;T&gt; filter(Predicate&lt;? super T&gt; predicate);
+
+    // Mapping operations (intermediate operations)
+    &lt;R&gt; Stream&lt;R&gt; map(Function&lt;? super T, ? extends R&gt; mapper);
+
+    // count operations (terminal operations)
+    long count();
+
+    // reduce operations (terminal operations)
+    Optional&lt;T&gt; reduce(BinaryOperator&lt;T&gt; accumulator);
+
+    // ... other methods
+}</pre>
+</li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/IntStream.html">IntStream: IntStream extends BaseStream&lt;Integer, IntStream&gt;</a></code><br />
+This interface is a specialization of the "<code class="code1">BaseStream</code>" interface for primitive <b>int</b> values.
+It defines several methods for transformation, filtering, aggregation, etc. (<b>filter</b>, <b>map</b>, <b>reduce</b>, <b>distinct</b>, <b>count</b>, <b>sum</b>, <b>average</b>, ...).<br />
+<pre class="java-code">
+public interface IntStream extends BaseStream&lt;Integer, IntStream&gt; {
+    // Filtering operations (intermediate operations)
+    IntStream filter(IntPredicate predicate);
+
+    // Mapping operations (intermediate operations)
+    IntStream map(IntUnaryOperator mapper);
+
+    // sum operations (terminal operations)
+    int sum();
+
+    // average operations (terminal operations)
+    OptionalDouble average();
+
+    // ... other methods
+}</pre>
+</li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/LongStream.html">LongStream: LongStream extends BaseStream&lt;Long, LongStream&gt;</a></code><br />
+This interface is a specialization of the "<code class="code1">BaseStream</code>" interface for primitive <b>long</b> values.
+It defines several methods for transformation, filtering, aggregation, etc. (<b>filter</b>, <b>map</b>, <b>reduce</b>, <b>distinct</b>, <b>count</b>, <b>sum</b>, <b>average</b>, ...).<br />
+<pre class="java-code">
+public interface LongStream extends BaseStream&lt;Long, LongStream&gt; {
+    // Filtering operations (intermediate operations)
+    LongStream filter(LongPredicate predicate);
+
+    // Mapping operations (intermediate operations)
+    LongStream map(LongUnaryOperator mapper);
+
+    // sum operations (terminal operations)
+    long sum();
+
+    // average operations (terminal operations)
+    OptionalDouble average();
+
+    // ... other methods
+}</pre>
+</li>
+<li>
+<code class="code1"><a target="_blank" href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/stream/DoubleStream.html">DoubleStream: DoubleStream extends BaseStream&lt;Double, DoubleStream&gt;</a></code><br />
+This interface is a specialization of the "<code class="code1">BaseStream</code>" interface for primitive <b>double</b> values.
+It defines several methods for transformation, filtering, aggregation, etc. (<b>filter</b>, <b>map</b>, <b>reduce</b>, <b>distinct</b>, <b>count</b>, <b>sum</b>, <b>average</b>, ...).<br />
+<pre class="java-code">
+public interface DoubleStream extends BaseStream&lt;Double, DoubleStream&gt; {
+    // Filtering operations (intermediate operations)
+    DoubleStream filter(DoublePredicate predicate);
+
+    // Mapping operations (intermediate operations)
+    DoubleStream map(DoubleUnaryOperator mapper);
+
+    // sum operations (terminal operations)
+    double sum();
+
+    // average operations (terminal operations)
+    OptionalDouble average();
+
+    // ... other methods
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

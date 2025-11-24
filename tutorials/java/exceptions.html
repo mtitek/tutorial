@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Exceptions: try-catch, throw, throws &amp; Custom Errors | MTI TEK</title>
+<meta name="description" content="Learn Java exception handling with try-catch-finally, throw and throws keywords, and how to create custom exceptions." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Exceptions: try-catch, throw, throws &amp; Custom Errors | MTI TEK" />
+<meta property="og:description" content="Learn Java exception handling with try-catch-finally, throw and throws keywords, and how to create custom exceptions." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/exceptions.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Exceptions: try-catch, throw, throws &amp; Custom Errors | MTI TEK" />
+<meta name="twitter:description" content="Learn Java exception handling with try-catch-finally, throw and throws keywords, and how to create custom exceptions." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/exceptions.php",
+        "description": "Learn Java exception handling with try-catch-finally, throw and throws keywords, and how to create custom exceptions.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/exceptions.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Exceptions</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Exceptions</a></li>
+<li><a href="#sec_id_2">Exception Handling</a></li>
+<li><a href="#sec_id_3">The try-catch-finally Clauses</a></li>
+<li><a href="#sec_id_4">Throwing an Exception: throw</a></li>
+<li><a href="#sec_id_5">Declaring an Exception: throws</a></li>
+<li><a href="#sec_id_6">Creating Custom Exception</a></li>
+<li><a href="#sec_id_7">Try-with-resources Statement</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Exceptions</span>
+<div class="tutorialSectionTextDiv1">
+Exceptions in Java are grouped into three main categories:
+<ul class="ul_square_1">
+<li><b>Errors</b> (class: <code class="code1">Error</code>) - Serious problems that applications should not try to catch.</li>
+<li><b>Unchecked exceptions</b> (class: <code class="code1">RuntimeException</code>) - Exceptions that are not checked at compile time.</li>
+<li><b>Checked exceptions</b> (class: <code class="code1">Exception</code>, excluding <code class="code1">RuntimeException</code>) - Exceptions that must be handled or declared.</li>
+</ul>
+<br />
+<pre class="text-code">
+              java.lang.Object
+                     |
+                     |
+              java.lang.Throwable
+                     |
+      _______________|_______________
+     |                               |
+    \_/                             \_/
+java.lang.Error                java.lang.Exception
+                                     |
+                 ____________________|____________________
+                |                                         |
+               \_/                                       \_/
+     java.lang.RuntimeException               [Other subclasses of Exception]</pre>
+<b>Checked vs. Unchecked Exceptions:</b>
+<ul class="ul_square_1">
+<li>
+<b>Checked exceptions</b> are compile-time enforced exceptions that must be either handled with a try-catch block or declared in the method signature using the <code class="code1">throws</code> keyword.
+These include all exceptions that extend <code class="code1">Exception</code> but not <code class="code1">RuntimeException</code>.
+Examples: <code class="code1">IOException</code>, <code class="code1">SQLException</code>, <code class="code1">ClassNotFoundException</code>.<br />
+<br />
+</li>
+<li>
+<b>Unchecked exceptions</b> are runtime exceptions that do not need to be explicitly handled or declared. These include:
+<ul class="ul_circle_1">
+<li>All subclasses of <code class="code1">RuntimeException</code> (e.g., <code class="code1">NullPointerException</code>, <code class="code1">ArithmeticException</code>)</li>
+<li>All subclasses of <code class="code1">Error</code> (e.g., <code class="code1">OutOfMemoryError</code>, <code class="code1">StackOverflowError</code>)</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Exception Handling</span>
+<div class="tutorialSectionTextDiv1">
+To handle an exception, we use a <b>try-catch</b> block:<br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("main: start");
+        try {
+            int a = 10 / 0;  // This will throw ArithmeticException
+            System.out.println("Result: " + a);  // This line won't execute
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero!");
+            e.printStackTrace();
+        }
+        System.out.println("main: end");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+Cannot divide by zero!
+java.lang.ArithmeticException: / by zero
+    at com.mtitek.exceptions.MyTest1.main(MyTest1.java:7)
+main: end</pre>
+<b>Note:</b> <code class="code1">ArithmeticException</code> is a subclass of <code class="code1">RuntimeException</code> (unchecked exception),
+so the compiler does not require this exception to be handled. However, handling it prevents program termination:<br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("main: start");
+
+        int a = 10 / 0;  // Unhandled exception will terminate the program
+
+        System.out.println("main: end");  // This line will never execute
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+    at com.mtitek.exceptions.MyTest1.main(MyTest1.java:7)</pre>
+When the JVM encounters an unhandled exception, the program terminates abruptly.<br />
+<br />
+<b>Exception Propagation:</b> Exception handling prevents exceptions from propagating up the call stack.
+Without handling, exceptions propagate through method calls until they reach the main method.
+If not caught there, the program terminates.<br />
+<br />
+<b>Note:</b> While all exceptions extending <code class="code1">Throwable</code> can be caught,
+it's recommended to handle only <code class="code1">Exception</code> and its subclasses.
+<code class="code1">Error</code> types typically indicate serious JVM problems that applications cannot recover from
+(e.g., <code class="code1">OutOfMemoryError</code>, <code class="code1">StackOverflowError</code>).<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">The try-catch-finally Clauses</span>
+<div class="tutorialSectionTextDiv1">
+The <b>try</b>, <b>catch</b>, and <b>finally</b> clauses work together for comprehensive exception handling:<br />
+<ul class="ul_square_1">
+<li>
+<b>try</b>: Defines a block of code that might throw an exception.<br />
+<br /></li>
+<li>
+<b>catch</b>: Handles specific exceptions thrown by the try block.<br />
+<br /></li>
+<li>
+<b>finally</b>: Contains cleanup code that executes regardless of whether an exception occurs.<br />
+</li>
+</ul>
+<br />
+<b>Usage Rules:</b>
+<ul class="ul_square_1">
+<li>
+A <b>try</b> block must be followed by at least one <b>catch</b> block or one <b>finally</b> block.
+Otherwise, you'll get a compilation error:<br />
+<pre class="java-code">
+try {
+    int a = 10 / 0;
+} // Compiler error: "Syntax error, insert 'Finally' to complete BlockStatements"</pre>
+</li>
+<li>
+Multiple <b>catch</b> blocks can handle different exception types, but they must be ordered from most specific to most general:<br />
+<pre class="java-code">
+try {
+    // Code that might throw exceptions
+} catch (ArithmeticException e) {
+    // Handle arithmetic exceptions specifically
+    System.out.println("Arithmetic error: " + e.getMessage());
+} catch (RuntimeException e) {
+    // Handle other runtime exceptions
+    System.out.println("Runtime error: " + e.getMessage());
+} catch (Exception e) {
+    // Handle any other exceptions
+    System.out.println("General error: " + e.getMessage());
+}</pre>
+</li>
+<li>
+Each <b>catch</b> block must handle a distinct exception type.
+Duplicate exception types result in compilation errors:<br />
+<pre class="java-code">
+try {
+    // ...
+} catch (Exception e) {
+    // ...
+} catch (Exception e) { // Compiler error: Unreachable catch block
+    // ...
+}</pre>
+</li>
+<li>
+Catch blocks must be ordered from specific to general exceptions.
+A more general exception type cannot appear before a more specific one:<br />
+<pre class="java-code">
+try {
+    // ...
+} catch (Exception e) { // Catches all exceptions
+    // ...
+} catch (ArithmeticException e) { // Compiler error: Unreachable - already caught by Exception
+    // ...
+}</pre>
+</li>
+<li>
+Once a catch block executes, remaining catch blocks are skipped.
+If the catch block itself throws an exception, it must be handled by an outer try-catch:<br />
+<pre class="java-code">
+public static void main(String[] args) {
+    System.out.println("main: start");
+
+    try { // outer try
+        try { // inner try
+            int a = 10 / 0; // First exception thrown here
+        } catch (ArithmeticException e) {
+            System.out.println("inner try: caught ArithmeticException");
+            int b = 10 / 0; // Second exception thrown here
+        } catch (Exception e) {
+            System.out.println("inner try: catch Exception"); // This block is skipped
+        }
+    } catch (Exception e) {
+        System.out.println("outer try: caught Exception"); // Second exception caught here
+    }
+
+    System.out.println("main: end");
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+inner try: caught ArithmeticException
+outer try: caught Exception
+main: end</pre>
+</li>
+<li>
+A <b>finally</b> block can be used without catch blocks for cleanup operations.
+This is useful when you want to perform cleanup but let the exception propagate:<br />
+<pre class="java-code">
+public static void main(String[] args) {
+    System.out.println("main: start");
+
+    try { // outer try
+        try { // inner try
+            int a = 10 / 0; // Exception thrown here
+        }
+        finally {
+            System.out.println("inner try: finally - cleanup performed");
+        }
+    } catch (Exception e) {
+        System.out.println("outer try: caught Exception");
+    }
+
+    System.out.println("main: end");
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+inner try: finally - cleanup performed
+outer try: caught Exception
+main: end</pre>
+</li>
+<li>
+The <b>finally</b> block <em>always</em> executes, regardless of whether an exception occurs or is caught.
+It executes even when a catch block throws another exception:<br />
+<pre class="java-code">
+public static void main(String[] args) {
+    System.out.println("main: start");
+
+    try { // outer try
+        try { // inner try
+            int a = 10 / 0; // First exception thrown here
+        } catch (ArithmeticException e) {
+            System.out.println("inner try: caught ArithmeticException");
+            int b = 10 / 0; // Second exception thrown here
+        } finally {
+            System.out.println("inner try: finally - always executes");
+        }
+    } catch (Exception e) {
+        System.out.println("outer try: caught Exception");
+    }
+
+    System.out.println("main: end");
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+inner try: caught ArithmeticException
+inner try: finally - always executes
+outer try: caught Exception
+main: end</pre>
+</li>
+</ul>
+<br />
+<b>Notes:</b>
+<ul class="ul_square_1">
+<li>Use <b>finally</b> blocks for resource cleanup (closing files, database connections, etc.).</li>
+<li>Consider using try-with-resources for automatic resource management.</li>
+<li>Avoid putting return statements in finally blocks as they can mask exceptions.</li>
+<li>The finally block executes even if there's a return statement in the try or catch block.</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Throwing an Exception: throw</span>
+<div class="tutorialSectionTextDiv1">
+It is possible to throw an exception in code, for example, when an invalid situation is encountered during execution.
+
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("main: start");
+
+        try {
+            int v1 = 10;
+            int v2 = 0;
+
+            if (v2 == 0) {
+                throw new ArithmeticException("Warning, integer division by zero!");
+            } else {
+                int v = v1 / v2;
+            }
+        } catch (ArithmeticException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("main: end");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+java.lang.ArithmeticException: Warning, integer division by zero!
+    at test.MyTest1.main(MyTest1.java:12)
+main: end</pre>
+This example demonstrates how the <code class="code1">throw</code> keyword is used to explicitly throw an exception when a specific condition is met. Note that <code class="code1">ArithmeticException</code> is a runtime (unchecked) exception, so it doesn't need to be declared in the method signature.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Declaring an Exception: throws</span>
+<div class="tutorialSectionTextDiv1">
+A method that throws checked exceptions (or calls other methods that might throw checked exceptions) must declare those exceptions using the <code class="code1">throws</code> keyword.
+This allows calling methods to know about the exceptions that may be thrown, and either handle them or declare them as well.<br />
+<br />
+The compiler only enforces declaration and handling for <b>checked exceptions</b> (those that extend <code class="code1">Exception</code> but not <code class="code1">RuntimeException</code>).
+Unchecked exceptions (those extending <code class="code1">RuntimeException</code>) and errors (extending <code class="code1">Error</code>) can be thrown without declaration.
+In Java, you must either handle or declare a checked exception, otherwise the compiler will generate a compilation error.<br />
+<br />
+To declare a single exception: <code class="code1">throws Exception</code><br />
+To declare multiple exceptions: <code class="code1">throws IOException, SQLException</code><br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("main: start");
+
+        try {
+            int v1 = divide(10, 0);
+            System.out.println("Result: " + v1);
+        } catch (Exception e) {
+            System.err.println("Caught exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("main: end");
+    }
+
+    private static int divide(int p1, int p2) throws Exception {
+        if (p2 == 0) {
+            throw new Exception("Division by zero is not allowed!");
+        }
+        return p1 / p2;
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+Caught exception: Division by zero is not allowed!
+java.lang.Exception: Division by zero is not allowed!
+    at test.MyTest1.divide(MyTest1.java:20)
+    at test.MyTest1.main(MyTest1.java:8)
+main: end</pre>
+A method must either handle or declare the checked exceptions thrown by the methods it calls.<br />
+<br />
+In the previous example, the <code class="code1">main</code> method handles the exception thrown by the <code class="code1">divide</code> method. Alternatively, <code class="code1">main</code> could declare the exception
+instead of handling it:<br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) throws Exception {
+        System.out.println("main: start");
+
+        int v1 = divide(10, 0);
+        System.out.println("Result: " + v1);
+
+        System.out.println("main: end");
+    }
+
+    private static int divide(int p1, int p2) throws Exception {
+        if (p2 == 0) {
+            throw new Exception("Division by zero is not allowed!");
+        }
+        return p1 / p2;
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+Exception in thread "main" java.lang.Exception: Division by zero is not allowed!
+    at test.MyTest1.divide(MyTest1.java:15)
+    at test.MyTest1.main(MyTest1.java:7)</pre>
+Note that the program terminates abruptly because the exception was not handled. Since the <code class="code1">main</code> method is at the top of the call stack,
+the JVM stops propagating the exception and terminates the program with an error message.<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Creating Custom Exceptions</span>
+<div class="tutorialSectionTextDiv1">
+Exceptions are classes that inherit from the <code class="code1">Throwable</code> hierarchy. Creating custom exceptions is useful when you want to handle specific types of errors and distinguish them from other exceptions.<br />
+<br />
+Custom exception classes must extend one of the following:<br />
+<ul class="ul_square_1">
+<li><code class="code1">Exception</code> - for checked exceptions that must be handled or declared.<br /></li>
+<li><code class="code1">RuntimeException</code> - for unchecked exceptions.<br /></li>
+<li><code class="code1">Error</code> - for system-level errors (rarely used).<br /></li>
+</ul>
+<br />
+<b>Note:</b> Extend <code class="code1">Exception</code> for recoverable conditions that calling code should handle, and <code class="code1">RuntimeException</code> for programming errors.<br />
+<pre class="java-code">
+public class BigNumberException extends Exception {
+    public BigNumberException() {
+        super("Number is too large for this operation");
+    }
+
+    public BigNumberException(String message) {
+        super(message);
+    }
+}</pre>
+<pre class="java-code">
+public class SmallNumberException extends Exception {
+    public SmallNumberException() {
+        super("Number is too small for this operation");
+    }
+
+    public SmallNumberException(String message) {
+        super(message);
+    }
+}</pre>
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("main: start");
+
+        // Test case 1: Division by zero (unchecked exception)
+        try {
+            int v1 = divide(10, 0);
+            System.out.println("Result: " + v1);
+        } catch (BigNumberException | SmallNumberException e) {
+            System.err.println("Custom exception: " + e.getMessage());
+        } catch (ArithmeticException e) {
+            System.err.println("Arithmetic error: " + e.getMessage());
+        }
+
+        // Test case 2: Large number (checked exception)
+        try {
+            int v1 = divide(100, 2);
+            System.out.println("Result: " + v1);
+        } catch (BigNumberException | SmallNumberException e) {
+            System.err.println("Custom exception: " + e.getMessage());
+        } catch (ArithmeticException e) {
+            System.err.println("Arithmetic error: " + e.getMessage());
+        }
+
+        // Test case 3: Small number (checked exception)
+        try {
+            int v1 = divide(-10, 2);
+            System.out.println("Result: " + v1);
+        } catch (BigNumberException | SmallNumberException e) {
+            System.err.println("Custom exception: " + e.getMessage());
+        } catch (ArithmeticException e) {
+            System.err.println("Arithmetic error: " + e.getMessage());
+        }
+
+        System.out.println("main: end");
+    }
+
+    private static int divide(int p1, int p2) throws SmallNumberException, BigNumberException {
+        if (p2 == 0) {
+            // ArithmeticException is unchecked, so no need to declare it
+            throw new ArithmeticException("Division by zero is not allowed!");
+        } else if (p1 &lt; 0) {
+            throw new SmallNumberException("Negative numbers not supported: " + p1);
+        } else if (p2 &gt; 50) {
+            throw new BigNumberException("Number too large for operation: " + p1);
+        } else {
+            return p1 / p2;
+        }
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+main: start
+Arithmetic error: Division by zero is not allowed!
+Result: 50
+Custom exception: Negative numbers not supported: -10
+main: end</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Try-with-resources Statement</span>
+<div class="tutorialSectionTextDiv1">
+The try-with-resources statement is a special form of try statement that automatically manages resources that implement the <code class="code1">AutoCloseable</code> interface.
+It ensures that resources are properly closed even if an exception occurs, eliminating the need for explicit finally blocks in most cases.<br />
+<br />
+Resources declared in the try-with-resources statement are automatically closed at the end of the statement, whether the code executes normally or an exception is thrown.
+This helps prevent resource leaks and makes code more readable and maintainable.<br />
+<br />
+<b>Syntax:</b><br />
+<pre class="java-code">
+try (ResourceType resource = new ResourceType()) {
+    // do something here
+} catch (ExceptionType e) {
+    // handle exception
+}</pre>
+You can declare multiple resources in a single try-with-resources statement by separating them with semicolons.
+Resources are closed in <b>reverse order</b> of their declaration.<br />
+<br />
+<b>Syntax:</b><br />
+<pre class="java-code">
+try (ResourceType resource = new ResourceType();
+        AnotherResourceType anotherResource = new AnotherResourceType()) {
+    // do something here
+} catch (ExceptionType e) {
+    // handle exception
+}</pre>
+<b>Note:</b>
+Always use try-with-resources for <code class="code1">AutoCloseable</code> resources instead of manual resource management.<br />
+<br />
+<b>Example:</b><br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        System.out.println("Using try-with-resources:");
+
+        try (MyAutoCloseableResource resource = new MyAutoCloseableResource()) {
+            resource.doSomething();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("main: end");
+    }
+}</pre>
+<pre class="java-code">
+class MyAutoCloseableResource implements AutoCloseable {
+    @Override
+    public void close() throws Exception {
+        System.out.println("Closing resources ....");
+    }
+
+    public void doSomething() {
+        System.out.println("Doing something ...");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Using try-with-resources:
+Doing something ...
+Closing resources ....
+main: end
+</pre>
+<b>Suppressed Exceptions:</b><br />
+If an exception occurs both in the try block and in the <code class="code1">close()</code> method, the exception from the try block is thrown, and the exception from <code class="code1">close()</code> is added as a suppressed exception.<br />
+<pre class="java-code">
+package com.mtitek.exceptions;
+
+public class MyTest1 {
+    public static void main(String[] args) {
+        try (MyAnotherAutoCloseableResource resource = new MyAnotherAutoCloseableResource()) {
+            resource.doSomething();
+        } catch (Exception e) {
+            System.err.println("Main exception: " + e.getMessage());
+
+            // Check for suppressed exceptions
+            Throwable[] suppressed = e.getSuppressed();
+            for (Throwable t : suppressed) {
+                System.err.println("Suppressed: " + t.getMessage());
+            }
+        }
+    }
+}</pre>
+<pre class="java-code">
+class MyAnotherAutoCloseableResource implements AutoCloseable {
+    @Override
+    public void close() throws Exception {
+        throw new Exception("Error closing resource ...");
+    }
+
+    public void doSomething() throws Exception {
+        throw new Exception("Error during doing something ...");
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Main exception: Error during doing something ...
+Suppressed: Error closing resource ...</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

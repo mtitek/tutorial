@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java hashCode() Method: Best Practices &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn how to properly override the Java hashCode() method with best practices and code examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java hashCode() Method: Best Practices &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn how to properly override the Java hashCode() method with best practices and code examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/hashCode.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java hashCode() Method: Best Practices &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how to properly override the Java hashCode() method with best practices and code examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/hashCode.php",
+        "description": "Learn how to properly override the Java hashCode() method with best practices and code examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/hashCode.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">hashCode() Method</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">hashCode() Method</a></li>
+<li><a href="#sec_id_2">Example: Using Objects.hashCode</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">hashCode() Method</span>
+<div class="tutorialSectionTextDiv1">
+When implementing the <b>hashCode()</b> method, we should ensure that it follows the general contract:
+objects that are equal according to the <b>equals(Object)</b> method must have the same hash code.<br />
+<br />
+Additionally, it should be consistent (returning the same value during multiple invocations) and ideally distribute hash codes well to minimize collisions.<br />
+<br />
+<b>Important:</b> When overriding <b>hashCode()</b>, you must also override <b>equals()</b> to maintain the general contract that equal objects must have equal hash codes.<br />
+<br />
+The <b>hashCode()</b> method is defined in the <b>java.lang.Object</b> class. However, the default implementation does not necessarily return the object's internal address (this is implementation-dependent and may use identity hash codes):<br />
+<pre class="java-code">
+public native int hashCode();</pre>
+The <b>java.util.Objects</b> class provides utility methods to safely get the hash code of an object or multiple objects:<br />
+<pre class="java-code">
+public static int hashCode(Object o) {
+    return o != null ? o.hashCode() : 0;
+}</pre>
+<pre class="java-code">
+public static int hash(Object... values) {
+    return Arrays.hashCode(values);
+}</pre>
+The <b>java.util.Arrays</b> class provides utility methods to get the hash code of arrays,
+including specific overloaded methods for each primitive type (e.g., <b>hashCode(int[])</b>, <b>hashCode(boolean[])</b>, etc.).
+It also provides <b>deepHashCode(Object[])</b> for computing hash codes of nested arrays.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Using Objects.hashCode</span>
+<div class="tutorialSectionTextDiv1">
+The following sample code demonstrates how to properly implement the <b>hashCode()</b> method.<br />
+The implementation uses the <b>hashCode()</b> and <b>hash</b> utility methods from the <b>java.util.Objects</b> class:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Superclass "P":</h6>
+<pre class="java-code">
+import java.util.Objects;
+
+class P {
+    Integer id = 1;
+
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof P)) {
+            return false;
+        }
+
+        P p = (P) obj;
+
+        return Objects.equals(this.getId(), p.getId());
+    }
+}</pre>
+</li>
+<li>
+<h6>Subclass "C":</h6>
+<pre class="java-code">
+class C extends P {
+    String code = "default";
+
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), code);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        C c = (C) obj;
+
+        return Objects.equals(this.getCode(), c.getCode());
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

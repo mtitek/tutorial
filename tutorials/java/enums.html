@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Enums Tutorial with Examples | MTI TEK</title>
+<meta name="description" content="Learn how to use enums in Java with examples. Understand enum constructors, methods, and best practices for defining and using enumerated types." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Enums Tutorial with Examples | MTI TEK" />
+<meta property="og:description" content="Learn how to use enums in Java with examples. Understand enum constructors, methods, and best practices for defining and using enumerated types." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/enums.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Enums Tutorial with Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use enums in Java with examples. Understand enum constructors, methods, and best practices for defining and using enumerated types." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/enums.php",
+        "description": "Learn how to use enums in Java with examples. Understand enum constructors, methods, and best practices for defining and using enumerated types.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/enums.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Enums</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Enums</a></li>
+<li><a href="#sec_id_2">Example 1 - Basic Usage</a></li>
+<li><a href="#sec_id_3">Example 2 - Constructors and Fields</a></li>
+<li><a href="#sec_id_4">Example 3 - Methods and Abstract Implementation</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Enums</span>
+<div class="tutorialSectionTextDiv1">
+Creating an <b>Enum</b> type allows you to restrict the values of variables of that type to a predefined list of constants.
+Enums provide type safety and make code more readable and maintainable.<br />
+<pre class="java-code">
+public enum EnumSample1 {
+    ITEM_A,
+    ITEM_B
+}</pre>
+The <b>enum</b> keyword tells the compiler that this is a special construct that needs to be translated into more complex code.<br />
+The above code will be translated into something "like" the following:<br />
+<pre class="java-code">
+public final class EnumSample1 extends java.lang.Enum&lt;EnumSample1&gt; {
+    public static final EnumSample1 ITEM_A = new EnumSample1("ITEM_A", 0);
+    public static final EnumSample1 ITEM_B = new EnumSample1("ITEM_B", 1);
+
+    private static final EnumSample1[] $VALUES = {ITEM_A, ITEM_B};
+
+    private EnumSample1(String name, int ordinal) {
+        super(name, ordinal);
+    }
+
+    public static EnumSample1[] values() {
+        return $VALUES.clone();
+    }
+
+    public static EnumSample1 valueOf(String name) {
+        return Enum.valueOf(EnumSample1.class, name);
+    }
+}</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>You cannot explicitly extend the <b>Enum</b> class. If you try, the compiler will display the error: "<b>The type EnumSample1 may not subclass Enum explicitly</b>".<br /></li>
+<li>Since enums implicitly extend <b>java.lang.Enum</b>, you can override some methods from that class or from <b>Object</b> (such as <b>toString()</b>).<br /></li>
+<li>Some methods in <b>java.lang.Enum</b> are marked as <b>final</b> (like <b>equals()</b>, <b>hashCode()</b>, and <b>compareTo()</b>), so they cannot be overridden.<br /></li>
+<li>Enums are implicitly <b>final</b>, so they cannot be extended by other classes.<br /></li>
+<li>All enum constants are implicitly <b>public static final</b>.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example 1 - Basic Usage</span>
+<div class="tutorialSectionTextDiv1">
+This example demonstrates basic enum usage, including comparison methods and built-in methods like <b>name()</b> and <b>ordinal()</b>.<br />
+<pre class="java-code">
+package com.mtitek.enums;
+
+enum EnumSample1 {
+    ITEM_A, ITEM_B
+}
+
+public class EnumSample1Test {
+    public static void main(String[] args) {
+        EnumSample1 myEnumSample1 = EnumSample1.ITEM_B;
+
+        // Using switch statement
+        switch(myEnumSample1) {
+            case ITEM_A:
+                System.out.println(EnumSample1.ITEM_A.name() + " : " + EnumSample1.ITEM_A.ordinal());
+                break;
+            case ITEM_B:
+                System.out.println(EnumSample1.ITEM_B.name() + " : " + EnumSample1.ITEM_B.ordinal());
+                break;
+        }
+
+        // Using equals() method
+        if(myEnumSample1.equals(EnumSample1.ITEM_A)) {
+            System.out.println(EnumSample1.ITEM_A.name() + " : " + EnumSample1.ITEM_A.ordinal());
+        } else if(myEnumSample1.equals(EnumSample1.ITEM_B)) {
+            System.out.println(EnumSample1.ITEM_B.name() + " : " + EnumSample1.ITEM_B.ordinal());
+        }
+
+        // Using == operator - preferred for enums (more efficient and null-safe)
+        if(myEnumSample1 == EnumSample1.ITEM_A) {
+            System.out.println(EnumSample1.ITEM_A.name() + " : " + EnumSample1.ITEM_A.ordinal());
+        } else if(myEnumSample1 == EnumSample1.ITEM_B) {
+            System.out.println(EnumSample1.ITEM_B.name() + " : " + EnumSample1.ITEM_B.ordinal());
+        }
+
+        System.out.println("All enum values:");
+        for(EnumSample1 value : EnumSample1.values()) {
+            System.out.println("  " + value.name() + " (ordinal: " + value.ordinal() + ")");
+        }
+
+        EnumSample1 enumSample1 = EnumSample1.valueOf("ITEM_A");
+        System.out.println("Enum: " + enumSample1);
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+ITEM_B : 1
+ITEM_B : 1
+ITEM_B : 1
+All enum values:
+  ITEM_A (ordinal: 0)
+  ITEM_B (ordinal: 1)
+Enum: ITEM_A
+</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>Use <b>==</b> instead of <b>equals()</b> for enum comparison - it's more efficient and null-safe.<br /></li>
+<li>The <b>ordinal()</b> method returns the position of the enum constant, but avoid relying on ordinal values in your logic as they can change when you reorder constants.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example 2 - Constructors and Fields</span>
+<div class="tutorialSectionTextDiv1">
+Enums can have constructors, fields, and methods. All enum constructors are implicitly private.<br />
+<pre class="java-code">
+package com.mtitek.enums;
+
+enum EnumSample2 {
+    ITEM_A, // Uses default constructor
+    ITEM_B(), // Explicitly calls default constructor
+    ITEM_C(100); // Uses parameterized constructor
+
+    // Default constructor for the enum
+    EnumSample2() {
+        this(0);
+    }
+
+    // Parameterized constructor for the enum
+    EnumSample2(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    // Instance field
+    private Integer value;
+
+    // Static field
+    public static final Integer ENUM_ID = 99999;
+}
+
+public class EnumSample2Test {
+    public static void main(String[] args) {
+        System.out.println(EnumSample2.ITEM_A.name() + " : " + EnumSample2.ITEM_A.ordinal() + " : " + EnumSample2.ITEM_A.getValue());
+        System.out.println(EnumSample2.ITEM_B.name() + " : " + EnumSample2.ITEM_B.ordinal() + " : " + EnumSample2.ITEM_B.getValue());
+        System.out.println(EnumSample2.ITEM_C.name() + " : " + EnumSample2.ITEM_C.ordinal() + " : " + EnumSample2.ITEM_C.getValue());
+
+        System.out.println("ENUM_ID : " + EnumSample2.ENUM_ID);
+
+        // Enums are mutable - not recommended
+        EnumSample2.ITEM_A.setValue(1000);
+        System.out.println("Modified ITEM_A value: " + EnumSample2.ITEM_A.getValue());
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+ITEM_A : 0 : 0
+ITEM_B : 1 : 0
+ITEM_C : 2 : 100
+ENUM_ID : 99999
+Modified ITEM_A value: 1000</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>All enum constructors are implicitly <b>private</b> - you cannot make them public or protected.<br /></li>
+<li>Enum constants are created during class loading, so constructor logic runs only once per constant.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Example 3 - Methods and Abstract Implementation</span>
+<div class="tutorialSectionTextDiv1">
+Enums can have abstract methods that must be implemented by each constant. They can also have constant-specific methods and fields.<br />
+<pre class="java-code">
+package com.mtitek.enums;
+
+enum EnumSample3 {
+    ITEM_A {
+        // Constant-specific field
+        private final int localValue = 10;
+
+        @Override
+        public String getGlobalToString() {
+            return name() + " : " + ordinal() + " : Global (localValue=" + localValue + ")";
+        }
+
+        // Constant-specific method
+        public int getLocalValue() {
+            return localValue;
+        }
+    },
+    ITEM_B {
+        @Override
+        public String getGlobalToString() {
+            return name() + " : " + ordinal() + " : Global : " + getLocalToString();
+        }
+
+        // This method is local and visible only inside ITEM_B
+        private String getLocalToString() {
+            return "Local";
+        }
+    };
+
+    // Abstract method that must be implemented by all constants
+    public abstract String getGlobalToString();
+
+    // Regular method available to all constants
+    public String getDescription() {
+        return "This is " + name() + " with ordinal " + ordinal();
+    }
+}
+
+public class EnumSample3Test {
+    public static void main(String[] args) {
+        System.out.println(EnumSample3.ITEM_A.getGlobalToString());
+        System.out.println(EnumSample3.ITEM_B.getGlobalToString());
+
+        // Using the regular method
+        for (EnumSample3 item : EnumSample3.values()) {
+            System.out.println(item.getDescription());
+        }
+
+        // Constant-specific methods are not accessible from outside
+        // System.out.println(EnumSample3.ITEM_A.getLocalValue()); // Compiler error: The method getLocalValue() is undefined for the type EnumSample3
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+ITEM_A : 0 : Global (localValue=10)
+ITEM_B : 1 : Global : Local
+This is ITEM_A with ordinal 0
+This is ITEM_B with ordinal 1</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>Abstract methods in enums must be implemented by all enum constants.<br /></li>
+<li>Constant-specific methods are only accessible within that constant's implementation.<br /></li>
+<li>Each enum constant can have its own implementation of abstract methods, enabling polymorphic behavior.<br /></li>
+<li>Constant-specific fields and methods create anonymous inner classes, which can impact memory usage.<br /></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

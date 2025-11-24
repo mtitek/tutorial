@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Generics Tutorial: Wildcards, Methods &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn Java generics with this complete guide on wildcards, generic methods, constructors, and exceptions." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Generics Tutorial: Wildcards, Methods &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn Java generics with this complete guide on wildcards, generic methods, constructors, and exceptions." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/generics.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Generics Tutorial: Wildcards, Methods &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn Java generics with this complete guide on wildcards, generic methods, constructors, and exceptions." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/generics.php",
+        "description": "Learn Java generics with this complete guide on wildcards, generic methods, constructors, and exceptions.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/generics.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Generics</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction</a></li>
+<li><a href="#sec_id_2">Generic Classes</a></li>
+<li><a href="#sec_id_3">Using the Generic Type</a></li>
+<li><a href="#sec_id_4">Wildcard (?)</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Using the wildcard as a subtype of the generic type</a></li>
+<li><a href="#sec_id_4_2">Using the wildcard as a supertype of the generic type</a></li>
+<li><a href="#sec_id_4_3">Using the wildcard to represent any type</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_5">Generic Methods</a></li>
+<li><a href="#sec_id_6">Generic Constructors</a></li>
+<li><a href="#sec_id_7">Throwing Generic Exceptions</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction</span>
+<div class="tutorialSectionTextDiv1">
+Generics provide the ability to specify parameterized types for variables
+(including return types of methods, method parameters, and constructor parameters).<br />
+<br />
+The generic type information is used at compile time;
+the compiler uses it to ensure type safety when instantiating classes and invoking methods.<br />
+<br />
+Generic type information is erased at runtime through a process called type erasure.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Generic Classes</span>
+<div class="tutorialSectionTextDiv1">
+To define a generic type for a class, you must follow its name with a type parameter placed between the characters "<b>&lt;</b>" and "<b>&gt;</b>".<br />
+<br />
+It is possible to specify multiple generic type parameters; the names of the type parameters should be listed side by side, separated by the character "<b>,</b>": <code class="code1">&lt;T,R,P&gt;</code>.<br />
+<br />
+By convention, generic type parameter names should be single uppercase letters: <b>T</b> (Type), <b>E</b> (Element), <b>K</b> (Key), <b>V</b> (Value), <b>N</b> (Number), etc.<br />
+<br />
+The generic type parameter can be used as:<br />
+<ul class="ul_square_1">
+<li>the type of instance variables and local variables;<br /><br /></li>
+<li>the return type of methods;<br /><br /></li>
+<li>the type of method parameters;<br /><br /></li>
+<li>or the type of constructor parameters.<br /><br /></li>
+</ul>
+<pre class="java-code">
+public class MyGenericClass&lt;T&gt; {
+    private T attr1;
+
+    public MyGenericClass() {
+    }
+
+    public MyGenericClass(T attr1) {
+        this.attr1 = attr1;
+    }
+
+    public T getAttr1() {
+        return attr1;
+    }
+
+    public void setAttr1(T attr1) {
+        this.attr1 = attr1;
+    }
+}</pre>
+Due to type erasure, generic type information is removed during compilation and replaced with raw types.
+The previous code is effectively compiled as if it had been written as follows:<br />
+<pre class="java-code">
+public class MyGenericClass {
+    private Object attr1;
+
+    public MyGenericClass() {
+    }
+
+    public MyGenericClass(Object attr1) {
+        this.attr1 = attr1;
+    }
+
+    public Object getAttr1() {
+        return attr1;
+    }
+
+    public void setAttr1(Object attr1) {
+        this.attr1 = attr1;
+    }
+}</pre>
+The compiler replaces unbounded type parameters with <code class="code1">Object</code>, while bounded type parameters are replaced with their upper bound.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Using the Generic Type</span>
+<div class="tutorialSectionTextDiv1">
+At the level of generic class definitions,
+the generic type may not seem very impressive,
+especially knowing that this information exists only in the source code and is lost once the bytecode is generated (due to type erasure).<br />
+<br />
+However, this impression changes when we start using the generic type to declare/instantiate a generic class and invoke its generic methods;
+the compiler uses it to ensure and verify that the type specified during instantiation is used correctly throughout the code where the class's generic methods are called.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;Number&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Number&gt;(Integer.valueOf(0));
+
+        myGenericClass.setAttr1(Integer.valueOf(10));
+
+        Number v1 = myGenericClass.getAttr1(); // Explicit cast not needed due to generics
+
+        System.out.println(v1);
+    }
+}</pre>
+The type you want to use must be specified when declaring the variables that reference the generic class.
+The declaration is done the same way as the generic class definition: the type must be placed between the "<b>&lt;</b>" and "<b>&gt;</b>" characters.<br />
+<br />
+Again, the generic type exists only in the source code and is lost in the bytecode due to type erasure:<br />
+<pre class="java-code">
+public class MainClass {
+    private static MyGenericClass&lt;Number&gt; foo(MyGenericClass&lt;Number&gt; myGenericClass) {
+        if(myGenericClass == null)
+            return null;
+
+        Number v1 = myGenericClass.getAttr1();
+
+        if(v1 == null)
+            return new MyGenericClass&lt;Number&gt;(Integer.valueOf(0));
+
+        if(v1 instanceof Byte)
+            myGenericClass.setAttr1(v1.byteValue() * (byte) 2);
+        else if(v1 instanceof Short)
+            myGenericClass.setAttr1(v1.shortValue() * (short) 2);
+        else if(v1 instanceof Integer)
+            myGenericClass.setAttr1(v1.intValue() * 2);
+        else if(v1 instanceof Long)
+            myGenericClass.setAttr1(v1.longValue() * 2L);
+        else if(v1 instanceof Float)
+            myGenericClass.setAttr1(v1.floatValue() * 2.0f);
+        else if(v1 instanceof Double)
+            myGenericClass.setAttr1(v1.doubleValue() * 2.0d);
+
+        return myGenericClass;
+    }
+
+    public static void main(String[] args) {
+        MyGenericClass&lt;Number&gt; myGenericClass = new MyGenericClass&lt;Number&gt;(Integer.valueOf(10));
+        myGenericClass = foo(myGenericClass);
+    }
+}</pre>
+The previous code is treated, during bytecode generation, as if it had been written like this (due to type erasure):<br />
+<pre class="java-code">
+public class MainClass {
+    private static MyGenericClass foo(MyGenericClass myGenericClass) {
+        if(myGenericClass == null)
+            return null;
+
+        Number v1 = (Number) myGenericClass.getAttr1(); // Cast inserted by compiler
+
+        if(v1 == null)
+            return new MyGenericClass(Integer.valueOf(0));
+
+        if(v1 instanceof Byte)
+            myGenericClass.setAttr1(v1.byteValue() * (byte) 2);
+        else if(v1 instanceof Short)
+            myGenericClass.setAttr1(v1.shortValue() * (short) 2);
+        else if(v1 instanceof Integer)
+            myGenericClass.setAttr1(v1.intValue() * 2);
+        else if(v1 instanceof Long)
+            myGenericClass.setAttr1(v1.longValue() * 2L);
+        else if(v1 instanceof Float)
+            myGenericClass.setAttr1(v1.floatValue() * 2.0f);
+        else if(v1 instanceof Double)
+            myGenericClass.setAttr1(v1.doubleValue() * 2.0d);
+
+        return myGenericClass;
+    }
+
+    public static void main(String[] args) {
+        MyGenericClass myGenericClass = new MyGenericClass(Integer.valueOf(10));
+        myGenericClass = foo(myGenericClass);
+    }
+}</pre>
+The compiler uses the generic type to add automatic type casts when assigning a generic reference to a variable of the specified type during class declaration.<br />
+<br />
+When bytecode is generated, the following code <code class="code1">Number v1 = myGenericClass.getAttr1();</code> is replaced by <code class="code1">Number v1 = (Number) myGenericClass.getAttr1();</code>.<br />
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+The type specified when instantiating a class must be exactly the same as the type used in the declaration of the variable that references that class.
+The compiler will throw an error if the type is different (generics are invariant - a subtype is considered different):<br />
+<pre class="java-code">
+MyGenericClass&lt;Number&gt; myGenericClass;
+
+// Compiler error: Type mismatch: cannot convert from MyGenericClass&lt;Integer&gt; to MyGenericClass&lt;Number&gt;
+// This is because MyGenericClass&lt;Integer&gt; is NOT a subtype of MyGenericClass&lt;Number&gt;
+myGenericClass = new MyGenericClass&lt;Integer&gt;(Integer.valueOf(0));</pre>
+This restriction also applies to method return values and arguments:<br />
+<pre class="java-code">
+public class MainClass {
+    private static MyGenericClass&lt;Number&gt; foo(MyGenericClass&lt;Number&gt; myGenericClass) {
+        return null;
+    }
+
+    public static void main(String[] args) {
+        MyGenericClass&lt;Integer&gt; myGenericClass = null;
+
+        // Compiler error: The method foo(MyGenericClass&lt;Number&gt;) in the type MainClass is not applicable for the arguments (MyGenericClass&lt;Integer&gt;)
+        foo(myGenericClass);
+
+        // Compiler error: The method foo(MyGenericClass&lt;Number&gt;) in the type MainClass is not applicable for the arguments (MyGenericClass&lt;Float&gt;)
+        foo(new MyGenericClass&lt;Float&gt;());
+
+        // Compiler error: Type mismatch: cannot convert from MyGenericClass&lt;Number&gt; to MyGenericClass&lt;Integer&gt;
+        myGenericClass = foo(new MyGenericClass&lt;Number&gt;());
+    }
+}</pre>
+The general rule is: the compiler will always disallow assigning one reference to another if their generic types do not match exactly (invariance principle).<br />
+<pre class="java-code">
+MyGenericClass&lt;Integer&gt; myGenericClass_Integer = null;
+MyGenericClass&lt;Float&gt; myGenericClass_Float = null;
+
+// Compiler error: Type mismatch: cannot convert from MyGenericClass&lt;Float&gt; to MyGenericClass&lt;Integer&gt;
+myGenericClass_Integer = myGenericClass_Float;</pre>
+</li>
+<li>
+The previous rule applies only when classes are instantiated and variables or parameters are declared using an explicit generic type.<br />
+<br />
+If class instantiation and variable or parameter declarations do not use the generic type (raw types),
+the compiler will not perform any checks and will not generate an error. However, it will display a warning message:<br />
+<pre class="java-code">
+// Warning: Type safety: The expression of type MyGenericClass needs unchecked conversion to conform to MyGenericClass&lt;Number&gt;
+MyGenericClass&lt;Number&gt; myGenericClass_Number = new MyGenericClass(new String("10"));
+
+// Warning: MyGenericClass is a raw type. References to generic type MyGenericClass&lt;T&gt; should be parameterized
+MyGenericClass myGenericClass = null;
+
+// Warning: Type safety: The constructor MyGenericClass(Object) belongs to the raw type MyGenericClass.
+// References to generic type MyGenericClass&lt;T&gt; should be parameterized
+myGenericClass = new MyGenericClass(new String("10"));
+
+// Warning: Type safety: The expression of type MyGenericClass needs unchecked conversion to conform to MyGenericClass&lt;Number&gt;
+myGenericClass_Number = myGenericClass;
+
+// OK - assigning parameterized type to raw type is allowed
+myGenericClass = myGenericClass_Number;</pre>
+</li>
+<li>
+The type specified when invoking the class's generic methods can be the same or a subtype of the type specified during the class instantiation (covariance for method arguments):<br />
+<pre class="java-code">
+MyGenericClass&lt;Number&gt; myGenericClass = new MyGenericClass&lt;Number&gt;();
+
+myGenericClass.setAttr1(Float.valueOf(10.0f)); // OK: Float is a subclass of Number
+
+myGenericClass.setAttr1(Integer.valueOf(10));  // OK: Integer is a subclass of Number</pre>
+The compiler will display an error if the type used when invoking the class's generic methods is not compatible with the type specified during instantiation:<br />
+<pre class="java-code">
+// Compiler error: The method setAttr1(Number) in the type MyGenericClass&lt;Number&gt; is not applicable for the arguments (String)
+myGenericClass.setAttr1(new String("10"));</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Wildcard (?)</span>
+<div class="tutorialSectionTextDiv1">
+The wildcard (the "<b>?</b>" character) is used to specify that the generic type can be a subtype or a supertype of a certain type.<br />
+It can also be used to specify that the generic type can be any type!<br />
+<br />
+Note that the wildcard can only be used in variable declarations (including method parameters and return types):<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? extends Number&gt; myGenericClass_1; // OK
+        MyGenericClass&lt;? super Integer&gt; myGenericClass_2; // OK
+        MyGenericClass&lt;?&gt; myGenericClass_3; // OK
+
+        // Compiler error: Cannot instantiate the type MyGenericClass&lt;? extends Number&gt;
+        myGenericClass_1 = new MyGenericClass&lt;? extends Number&gt;();
+
+        // Compiler error: Cannot instantiate the type MyGenericClass&lt;? super Integer&gt;
+        myGenericClass_2 = new MyGenericClass&lt;? super Integer&gt;();
+
+        // Compiler error: Cannot instantiate the type MyGenericClass&lt;?&gt;
+        myGenericClass_3 = new MyGenericClass&lt;?&gt;();
+
+        myGenericClass_1 = new MyGenericClass&lt;Float&gt;(); // OK: Float extends Number
+        myGenericClass_2 = new MyGenericClass&lt;Object&gt;(); // OK: Integer extends Object
+        myGenericClass_3 = new MyGenericClass&lt;String&gt;(); // OK: ? means any type
+    }
+
+    public static MyGenericClass&lt;? extends Number&gt; foo(MyGenericClass&lt;? extends Number&gt; myGenericClass_1) {
+        return null;
+    }
+}</pre>
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Using the wildcard as a subtype of the generic type</span>
+<div class="tutorialSectionTextDiv1">
+In the following example, we can assign to the variable <code class="code1">myGenericClass</code> any reference whose generic type is the same as or a subtype of the <code class="code1">Number</code> class.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? extends Number&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Integer&gt;(); // OK
+
+        myGenericClass = new MyGenericClass&lt;Float&gt;(); // OK
+    }
+}</pre>
+However, there are some restrictions when using this syntax:<br />
+<ul class="ul_square_1">
+<li>
+You cannot use the reference created with this syntax to modify attributes whose type is generic
+(typically by directly accessing these attributes or by invoking methods that modify them).<br />
+<pre class="java-code">
+MyGenericClass&lt;? extends Number&gt; myGenericClass;
+
+myGenericClass = new MyGenericClass&lt;Integer&gt;(Integer.valueOf(10)); // OK
+
+// Compiler error: The method setAttr1(capture#2-of ? extends Number) in the type MyGenericClass&lt;capture#2-of ? extends Number&gt; is not applicable for the arguments (Integer)
+myGenericClass.setAttr1(Integer.valueOf(10));</pre>
+</li>
+<li>
+You can only use the reference created with this syntax to read attributes whose type is generic
+(typically by directly accessing these attributes or invoking methods that return them),
+but you must add an explicit cast to do so:<br />
+<pre class="java-code">
+// Compiler error: Type mismatch: cannot convert from capture#3-of ? extends Number to Integer
+Integer intVar1 = myGenericClass.getAttr1();
+
+Integer intVar2 = (Integer) myGenericClass.getAttr1(); // OK</pre>
+Note that the compiler only checks that the cast type is a subtype of the generic type declared.
+This means that you may get a runtime error if the cast is not valid:<br />
+<pre class="java-code">
+package com.mtitek.generics;
+
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? extends Number&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Float&gt;(Float.valueOf(10.0f)); // OK
+
+        Integer intVar1 = (Integer) myGenericClass.getAttr1(); // Runtime error: ClassCastException
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Exception in thread "main" java.lang.ClassCastException: java.lang.Float cannot be cast to java.lang.Integer
+    at com.mtitek.generics.MainClass.main(MainClass.java:9)</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Using the wildcard as a supertype of the generic type</span>
+<div class="tutorialSectionTextDiv1">
+You can assign to the variable any reference whose generic type is the same as or a supertype of the <code class="code1">Integer</code> class.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? super Integer&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Integer&gt;(); // OK
+
+        // Compiler error: Type mismatch: cannot convert from MyGenericClass&lt;Float&gt; to MyGenericClass&lt;? super Integer&gt;
+        myGenericClass = new MyGenericClass&lt;Float&gt;();
+    }
+}</pre>
+You can use the reference created with this syntax to read and modify attributes whose type is generic
+(typically by directly accessing these attributes or invoking methods that return or modify them),
+but you must add an explicit cast to do so:<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? super Integer&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Integer&gt;(); // OK
+
+        Object objVar1 = Integer.valueOf(10);
+
+        // Compiler error: The method setAttr1(capture#2-of ? super Integer) in the type MyGenericClass&lt;capture#2-of ? super Integer&gt; is not applicable for the arguments (Object)
+        myGenericClass.setAttr1(objVar1);
+
+        myGenericClass.setAttr1((Integer) objVar1); // OK: explicit cast required
+
+        // Compiler error: Type mismatch: cannot convert from capture#4-of ? super Integer to Integer
+        Integer intVar1 = myGenericClass.getAttr1();
+
+        Integer intVar2 = (Integer) myGenericClass.getAttr1(); // OK: explicit cast required
+    }
+}</pre>
+Note that the compiler only checks that the type used in the cast is a subtype of the generic type declared.
+This means you may get a runtime error if the cast is not valid:<br />
+<pre class="java-code">
+package com.mtitek.generics;
+
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;? super Integer&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Integer&gt;(); // OK
+
+        Object objVar1 = Float.valueOf(10.0f);
+
+        myGenericClass.setAttr1((Integer) objVar1); // Runtime error: ClassCastException
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Exception in thread "main" java.lang.ClassCastException: java.lang.Float cannot be cast to java.lang.Integer
+    at com.mtitek.generics.MainClass.main(MainClass.java:11)</pre>
+</div>
+</li>
+<li id="sec_id_4_3">
+<span class="tutorialSubSectionTitleSpan1">Using the wildcard to represent any type</span>
+<div class="tutorialSectionTextDiv1">
+In the following example, we can assign to the variable <code class="code1">myGenericClass</code> any reference whose generic type can be any type.<br />
+<pre class="java-code">
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;?&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Integer&gt;(); // OK
+
+        myGenericClass = new MyGenericClass&lt;Object&gt;(); // OK
+    }
+}</pre>
+In fact, the syntax <code class="code1">&lt;?&gt;</code> is equivalent to <code class="code1">&lt;? extends Object&gt;</code>.<br />
+This means it has the same restrictions (see above) as using the wildcard as a subtype of the generic type:<br />
+<ul class="ul_square_1">
+<li>
+You cannot use the reference created with this syntax to modify attributes whose type is generic
+(typically by directly accessing these attributes or by invoking methods that modify them).<br />
+<pre class="java-code">
+MyGenericClass&lt;?&gt; myGenericClass;
+
+myGenericClass = new MyGenericClass&lt;Integer&gt;(Integer.valueOf(10)); // OK
+
+// Compiler error: The method setAttr1(capture#2-of ?) in the type MyGenericClass&lt;capture#2-of ?&gt; is not applicable for the arguments (Integer)
+myGenericClass.setAttr1(Integer.valueOf(10));</pre>
+</li>
+<li>
+You can only use the reference created with this syntax to read attributes whose type is generic
+(typically by directly accessing these attributes or invoking methods that return them),
+but you must add an explicit cast to do so:<br />
+<pre class="java-code">
+// Compiler error: Type mismatch: cannot convert from capture#2-of ? to Integer
+Integer intVar1 = myGenericClass.getAttr1();
+
+Integer intVar2 = (Integer) myGenericClass.getAttr1();</pre>
+Note that the compiler only checks that the cast type is valid for the assignment.
+This means you may get a runtime error if the cast is not valid:<br />
+<pre class="java-code">
+package com.mtitek.generics;
+
+public class MainClass {
+    public static void main(String[] args) {
+        MyGenericClass&lt;?&gt; myGenericClass;
+
+        myGenericClass = new MyGenericClass&lt;Float&gt;(Float.valueOf(10.0f)); // OK
+
+        Integer intVar1 = (Integer) myGenericClass.getAttr1(); // Runtime error: ClassCastException
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+Exception in thread "main" java.lang.ClassCastException: java.lang.Float cannot be cast to java.lang.Integer
+    at com.mtitek.generics.MainClass.main(MainClass.java:9)</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Generic Methods</span>
+<div class="tutorialSectionTextDiv1">
+It is possible to define generic types at the method level.<br />
+The syntax for defining and using the generic type is similar to what we have seen above.<br />
+The only particularity is that the generic type definition must appear just before the method's return type.<br />
+<br />
+The generic type can be specified for the method's return type, its parameters, and its local variables.<br />
+<pre class="java-code">
+public class MainClass {
+    private static &lt;T&gt; T getValue(T value, T defaultValue) {
+        return value != null ? value : defaultValue;
+    }
+
+    private static &lt;R extends Number&gt; Number multiply(R arg1, R arg2) {
+        R var1 = arg1;
+        R var2 = arg2;
+        Number var3 = null;
+
+        if (var1 == null || var2 == null)
+            return null;
+
+        if (var1 instanceof Byte)
+            var3 = var1.byteValue() * var2.byteValue();
+        else if (var1 instanceof Short)
+            var3 = var1.shortValue() * var2.shortValue();
+        else if (var1 instanceof Integer)
+            var3 = var1.intValue() * var2.intValue();
+        else if (var1 instanceof Long)
+            var3 = var1.longValue() * var2.longValue();
+        else if (var1 instanceof Float)
+            var3 = var1.floatValue() * var2.floatValue();
+        else if (var1 instanceof Double)
+            var3 = var1.doubleValue() * var2.doubleValue();
+
+        return var3;
+    }
+
+    public static void main(String[] args) {
+        // explicit syntax: MainClass.&lt;Integer&gt;
+        Integer result1 = MainClass.&lt;Integer&gt;getValue(1, 2);
+        System.out.println(result1);
+
+        // implicit syntax: you can omit the &lt;Integer&gt; type
+        String result2 = getValue(null, "default");
+        System.out.println(result2);
+
+        // another test: you still need an explicit cast; otherwise you get this error: "Type mismatch: cannot convert from Number to Integer"
+        Integer result3 = (Integer) MainClass.&lt;Integer&gt;multiply(10, 5);
+        System.out.println(result3);
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Generic Constructors</span>
+<div class="tutorialSectionTextDiv1">
+Constructors can also define generic types; the syntax is the same as that used for methods.<br />
+<pre class="java-code">
+public class MainClass {
+    Number field1;
+
+    &lt;R extends Number&gt; MainClass(R arg1) {
+        field1 = arg1;
+    }
+
+    public static void main(String[] args) {
+        MainClass mainClass_Integer = new MainClass(Integer.valueOf(10));
+        System.out.println(mainClass_Integer.field1);
+
+        MainClass mainClass_Float = new MainClass(Float.valueOf(10.0f));
+        System.out.println(mainClass_Float.field1);
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Throwing Generic Exceptions</span>
+<div class="tutorialSectionTextDiv1">
+To throw generic exceptions, we use the same syntax to define generic types for methods.<br />
+We use the <code class="code1">throws</code> keyword to throw the exception specified by the generic type.<br />
+The definition of the generic type must specify that the type is a subtype of
+<code class="code1">Throwable</code>, <code class="code1">Error</code>, <code class="code1">Exception</code>, or any class that inherits from them.<br />
+<pre class="java-code">
+package com.mtitek.generics;
+
+import java.util.function.Supplier;
+
+public class MainClass {
+    private static &lt;T extends RuntimeException&gt; void foo(Object arg1, Supplier&lt;T&gt; exceptionSupplier) throws T {
+        if (arg1 == null || !(arg1 instanceof Number)) {
+            throw exceptionSupplier.get();
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            foo(null, (() -&gt; new IllegalArgumentException()));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            foo("NOT A NUMBER", (() -&gt; new NumberFormatException()));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+java.lang.IllegalArgumentException
+    at com.mtitek.generics.MainClass.foo(MainClass.java:20)
+    at com.mtitek.generics.MainClass.main(MainClass.java:6)
+java.lang.NumberFormatException
+    at com.mtitek.generics.MainClass.foo(MainClass.java:22)
+    at com.mtitek.generics.MainClass.main(MainClass.java:12)</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

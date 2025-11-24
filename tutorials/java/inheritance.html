@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Inheritance Tutorial: Superclass, Subclass, Casting &amp; Method Overriding&lt; | MTI TEK</title>
+<meta name="description" content="Learn Java inheritance with clear examples. Understand superclass and subclass relationships, upcasting and downcasting, and method invocation in Java OOP." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Inheritance Tutorial: Superclass, Subclass, Casting &amp; Method Overriding&lt; | MTI TEK" />
+<meta property="og:description" content="Learn Java inheritance with clear examples. Understand superclass and subclass relationships, upcasting and downcasting, and method invocation in Java OOP." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/inheritance.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Inheritance Tutorial: Superclass, Subclass, Casting &amp; Method Overriding&lt; | MTI TEK" />
+<meta name="twitter:description" content="Learn Java inheritance with clear examples. Understand superclass and subclass relationships, upcasting and downcasting, and method invocation in Java OOP." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/inheritance.php",
+        "description": "Learn Java inheritance with clear examples. Understand superclass and subclass relationships, upcasting and downcasting, and method invocation in Java OOP.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/inheritance.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Inheritance</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Inheritance</a></li>
+<li><a href="#sec_id_2">Variable / Reference / Object</a></li>
+<li><a href="#sec_id_3">Casting (UpCasting + DownCasting)</a></li>
+<li><a href="#sec_id_4">Method Invocation</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Inheritance</span>
+<div class="tutorialSectionTextDiv1">
+Inheritance is a fundamental concept in object-oriented programming that allows a class to:
+<ul class="ul_square_1">
+<li>inherit properties and methods from a parent class (superclass),</li>
+<li>override inherited methods to provide specialized behavior,</li>
+<li>and implement abstract methods from abstract classes or interfaces.</li>
+</ul>
+<br />
+<pre class="java-code">
+package com.mtitek.inheritance;
+
+public class SuperClass {
+    protected Integer addOperation(Integer value1, Integer value2) {
+        return value1 + value2;
+    }
+
+    protected Integer multiplyOperation(Integer value1, Integer value2) {
+        return value1 * value2;
+    }
+}</pre>
+<pre class="java-code">
+package com.mtitek.inheritance;
+
+public class SubClass extends SuperClass {
+    @Override
+    public Integer multiplyOperation(Integer value1, Integer value2) {
+        return (value1 * value2) * 10;
+    }
+
+    // new method: not defined in the parent class
+    public Integer subtractOperation(Integer value1, Integer value2) {
+        return (value1 - value2) * 10;
+    }
+}</pre>
+In the example above, the class <code class="code1">SubClass</code> inherits from the class <code class="code1">SuperClass</code>.<br />
+It inherits both methods from the <code class="code1">SuperClass</code> and can use them as if they were defined in <code class="code1">SubClass</code>.<br />
+It can also override the behavior of the superclass methods by redefining them (e.g., <code class="code1">multiplyOperation</code>).<br />
+<br />
+<b>Note:</b> The <code class="code1">@Override</code> annotation is recommended for overridden methods to ensure compile-time checking.<br />
+<br />
+Here's an illustration of the effective structure of <code class="code1">SubClass</code> after inheritance:<br />
+<pre class="java-code">
+SubClass (effective methods):
+    protected Integer [inherited from SuperClass].addOperation(Integer value1, Integer value2) { ... }
+
+    protected Integer [inherited from SuperClass].multiplyOperation(Integer value1, Integer value2) { ... }
+
+    public Integer [overridden in SubClass].multiplyOperation(Integer value1, Integer value2) { ... }
+
+    public Integer [defined in SubClass].subtractOperation(Integer value1, Integer value2) { ... }</pre>
+Overridden methods from the superclass are still accessible using the <code class="code1">super</code> keyword from within the subclass.<br />
+<br />
+<b>Method visibility and access constraints:</b><br />
+When a method in the superclass is declared as <code class="code1">protected</code> and the subclass is in a different package,
+the inherited method can only be accessed within the subclass itself or its subclasses.
+It cannot be directly invoked on subclass instances from outside the inheritance hierarchy
+(e.g., <code class="code1">subClassInstance.protectedMethod()</code> from an unrelated class in a different package).<br />
+<br />
+<b>Important:</b> When overriding, you cannot reduce the visibility of the method (e.g., cannot override a <code class="code1">public</code> method as <code class="code1">protected</code>).
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Variable / Reference / Object</span>
+<div class="tutorialSectionTextDiv1">
+Understanding the relationship between variables, references, and objects is crucial in Java inheritance.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>Variable Declaration:</b><br />
+Declaring a variable establishes the reference type, which determines what types of objects it can point to.<br />
+The reference type of a variable is fixed at compile time and cannot be changed.<br />
+<pre class="java-code">
+public class TestClass {
+    SuperClass superClassRef; // Can reference SuperClass or any of its subclasses
+    SubClass subClassRef; // Can only reference SubClass or its subclasses
+}</pre>
+In the example above, <code class="code1">superClassRef</code> can reference instances of <code class="code1">SuperClass</code> or <code class="code1">SubClass</code> (polymorphism).<br />
+However, <code class="code1">subClassRef</code> can only reference instances of <code class="code1">SubClass</code> or its subclasses.<br />
+<br /></li>
+<li>
+<b>Variable Initialization and Assignment:</b><br />
+Initialization creates an object instance and assigns its reference to the variable.<br />
+The assignment must be compatible: the actual object type must be the same as or a subtype of the variable's declared type.<br />
+Java performs both compile-time (static) and runtime (dynamic) type checking.<br />
+<pre class="java-code">
+public class TestClass {
+    public static void main(String[] args) {
+        SuperClass superClass1 = new SuperClass(); // OK: Same type
+        SuperClass superClass2 = new SubClass(); // OK: SubClass IS-A SuperClass
+
+        SubClass subClass1 = new SubClass(); // OK: Same type
+        SubClass subClass2 = new SuperClass(); // Compiler error: Type mismatch: cannot convert from SuperClass to SubClass
+        SubClass subClass3 = (SubClass) new SuperClass(); // Runtime error: ClassCastException: class SuperClass cannot be cast to class SubClass
+    }
+}</pre>
+</li>
+</ul>
+<b>Array Covariance and ArrayStoreException:</b><br />
+Java arrays are covariant, meaning you can assign an array of a subclass to a variable of superclass array type.
+However, the runtime type of the array remains that of the subclass, leading to potential <code class="code1">ArrayStoreException</code> when storing incompatible objects.<br />
+<pre class="java-code">
+class Parent {
+}
+
+class Child extends Parent {
+    public void childMethod() {
+    }
+}</pre>
+<pre class="java-code">
+Child[] childArray = new Child[1];
+Parent[] parentArray = childArray; // Legal assignment (covariance)
+parentArray[0] = new Parent(); // Runtime error: ArrayStoreException
+</pre>
+This exception is Java's runtime safety mechanism to prevent <code class="code1">ClassCastException</code> when accessing array elements.<br />
+This prevents: <code class="code1">childArray[0].childMethod()</code> - calling a method that doesn't exist in the <b>Parent</b> class.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Casting (UpCasting + DownCasting)</span>
+<div class="tutorialSectionTextDiv1">
+Type casting in inheritance allows conversion between reference types in the inheritance hierarchy.<br />
+In assignment statements (<code class="code1">targetVar = sourceVar;</code>),
+the compiler verifies that the target variable's type is the same as or a superclass of the source variable's type.<br />
+<pre class="java-code">
+package com.mtitek.inheritance;
+
+public class TestClass {
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+
+        TestClass testClass1 = testClass; // OK: Same type
+
+        Object obj = testClass; // OK: Object is superclass of TestClass (upcasting)
+
+        TestClass testClass2 = obj; // Compiler error (implicit downcasting not allowed, requires explicit cast): Type mismatch: cannot convert from Object to TestClass
+
+        String str = obj; // Compiler error: Type mismatch: cannot convert from Object to String
+    }
+}</pre>
+<ul class="ul_square_1">
+<li>
+<b>Upcasting (Widening):</b><br />
+Converting a subclass reference to a superclass reference. Always safe and can be implicit.<br />
+<pre class="java-code">
+Object obj1 = new String("Hello"); // Implicit upcasting
+Object obj2 = (Object) new String("Java"); // Explicit upcasting - unnecessary but valid</pre>
+Upcasting is always safe because a subclass instance IS-A superclass instance.
+The compiler accepts it, and no runtime exceptions occur.
+However, you can only access methods and fields defined in the superclass through the upcasted reference.<br />
+<br /></li>
+<li>
+<b>Downcasting (Narrowing):</b><br />
+Converting a superclass reference to a subclass reference. Potentially unsafe and requires explicit casting.<br />
+<pre class="java-code">
+Object obj = "Hello"; // String object referenced by Object variable
+String str1 = obj; // Compiler error (implicit downcasting not allowed): Type mismatch: cannot convert from Object to String
+String str2 = (String) obj; // OK (explicit downcasting): succeeds at runtime
+
+Object obj2 = new Integer(42);
+String str3 = (String) obj2; // Runtime error: ClassCastException: class Integer cannot be cast to class String</pre>
+Implicit downcasting is always rejected by the compiler for safety.<br />
+Explicit downcasting is accepted by the compiler but checked at runtime.
+The JVM verifies that the actual object type is compatible with the target type;
+if not, it throws <code class="code1">ClassCastException</code>.<br />
+<br />
+<b>Note:</b> Use <code class="code1">instanceof</code> to check type compatibility before downcasting.<br />
+<pre class="java-code">
+if (obj instanceof String) {
+    String str = (String) obj;
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Method Invocation</span>
+<div class="tutorialSectionTextDiv1">
+Method invocation in inheritance involves both compile-time and runtime resolution.<br />
+<br />
+<b>Compile-time Checking (Static Binding):</b><br />
+The compiler only considers the declared (reference) type of the variable, not the actual object type.<br />
+It verifies that the method exists in the reference type or its supertypes (not subtypes).<br />
+If the method is not found, a Compiler error occurs.<br />
+For checked exceptions, the compiler enforces handling based on the method signature in the reference type,
+even if an overridden version in a subclass doesn't throw the exception.<br />
+<br />
+<b>Runtime Execution (Dynamic Binding):</b><br />
+The JVM uses the actual object type to determine which method implementation to execute.<br />
+If the method is overridden in the object's class, that version executes (method overriding/polymorphism).<br />
+<pre class="java-code">
+public class TestClass {
+    public static void main(String[] args) {
+        SuperClass superRef1 = new SuperClass(); // Reference type: SuperClass, Object type: SuperClass
+        SuperClass superRef2 = new SubClass(); // Reference type: SuperClass, Object type: SubClass
+        SubClass subRef1 = new SubClass(); // Reference type: SubClass, Object type: SubClass
+
+        // Runtime: Method resolution based on actual object type
+        superRef1.multiplyOperation(1, 2); // Executes SuperClass.multiplyOperation()
+        superRef2.multiplyOperation(1, 2); // Executes SubClass.multiplyOperation() (overridden)
+        subRef1.multiplyOperation(1, 2); // Executes SubClass.multiplyOperation()
+
+        // superRef2.subtractOperation(1, 2); // Compiler error: The method subtractOperation(int, int) is undefined for the type SuperClass
+
+        subRef1.subtractOperation(1, 2); // OK: subtractOperation exists in SubClass and subRef1's reference type is SubClass
+    }
+}</pre>
+<b>Accessing Superclass Methods:</b><br />
+To invoke the superclass version of an overridden method, use the <code class="code1">super</code> keyword.
+This is only available within the subclass code, not from external callers.<br />
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    @Override
+    public Integer multiplyOperation(Integer value1, Integer value2) {
+        Integer superResult = super.multiplyOperation(value1, value2);
+        return superResult * 10;
+    }
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

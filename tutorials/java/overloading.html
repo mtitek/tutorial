@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Method Overloading Tutorial with Examples | MTI TEK</title>
+<meta name="description" content="Understand Java method overloading with clear examples. Learn how overloaded methods work, method invocation rules, and compile-time resolution in Java." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Method Overloading Tutorial with Examples | MTI TEK" />
+<meta property="og:description" content="Understand Java method overloading with clear examples. Learn how overloaded methods work, method invocation rules, and compile-time resolution in Java." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/overloading.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Method Overloading Tutorial with Examples | MTI TEK" />
+<meta name="twitter:description" content="Understand Java method overloading with clear examples. Learn how overloaded methods work, method invocation rules, and compile-time resolution in Java." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/overloading.php",
+        "description": "Understand Java method overloading with clear examples. Learn how overloaded methods work, method invocation rules, and compile-time resolution in Java.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/overloading.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Method Overloading</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Method Overloading</a></li>
+<li><a href="#sec_id_2">Method Invocation Resolution</a></li>
+<li><a href="#sec_id_3">Ambiguous Method Calls</a></li>
+<li><a href="#sec_id_4">Method Resolution Priority</a></li>
+<li><a href="#sec_id_5">Varargs and Overloading</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Method Overloading</span>
+<div class="tutorialSectionTextDiv1">
+Method overloading is a mechanism that allows defining multiple versions of a method with the same name in the same class.<br />
+<br />
+The fundamental rule is: the parameter list must be different (either in number and/or types of parameters) for each overloaded method.<br />
+<br />
+The return type, modifiers, and exceptions thrown by the overloaded methods can be the same or different; these aspects do not affect overloading resolution.<br />
+<pre class="java-code">
+package com.mtitek.overloading;
+
+public class TestClass {
+    public Integer multiplyOperation(Integer value1, Integer value2) {
+        return value1 * value2;
+    }
+
+    public Double multiplyOperation(Double value1, Double value2) {
+        return value1 * value2;
+    }
+
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+
+        System.out.println(testClass.multiplyOperation(5, 10)); // calls multiplyOperation(Integer, Integer)
+
+        System.out.println(testClass.multiplyOperation(5.0, 10.0)); // calls multiplyOperation(Double, Double)
+    }
+}</pre>
+A method defined in a superclass can be overloaded in a subclass by adding methods with different parameter lists.<br />
+<br />
+<b>Note</b>: Changing a method's parameter list creates overloading, while keeping the same signature but changing the implementation creates overriding.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Method Invocation Resolution</span>
+<div class="tutorialSectionTextDiv1">
+Method invocation for overloaded methods is resolved statically at compile time. The compiler examines the arguments passed in the method call and their types to determine which overloaded method will be invoked at runtime.<br />
+<br />
+When overloading methods with parameter types that have inheritance relationships, the compiler selects the most specific method that matches the argument types.<br />
+<pre class="java-code">
+package com.mtitek.overloading;
+
+public class TestClass {
+    public void doSomething(TestClass testClass) {
+        System.out.println("TestClass parameter: " + testClass.toString());
+    }
+
+    public void doSomething(Object obj) {
+        System.out.println("Object parameter: " + obj.toString());
+    }
+
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+        Object obj = testClass;
+
+        testClass.doSomething(testClass); // calls doSomething(TestClass)
+
+        testClass.doSomething(obj); // calls doSomething(Object) - reference type determines method
+
+        testClass.doSomething((TestClass) obj); // calls doSomething(TestClass) - explicit cast changes compile-time type
+    }
+}</pre>
+<b><i>Note</i></b>: When a method is invoked on a reference (<code class="code1">refVar.method()</code>), the compiler only considers methods available to the declared type of that reference and its supertypes. If the desired method is not accessible through the reference type, a compilation error occurs.<br />
+<br />
+Explicit casting can change the compile-time type of a reference, allowing access to methods specific to the cast type (<code class="code1">(SpecificType) obj</code>).<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Ambiguous Method Calls</span>
+<div class="tutorialSectionTextDiv1">
+Ambiguous method calls occur when the compiler cannot determine which overloaded method to invoke, typically when passing <code class="code1">null</code> values or when multiple methods are equally specific matches.<br />
+<pre class="java-code">
+package com.mtitek.overloading;
+
+public class TestClass {
+    public void doSomething(String str) {
+        System.out.println("String: " + str);
+    }
+
+    public void doSomething(Integer num) {
+        System.out.println("Integer: " + num);
+    }
+
+    public void doSomething(Object obj) {
+        System.out.println("Object: " + obj);
+    }
+
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+
+        // testClass.doSomething(null); // Compiler error: The method doSomething(String) is ambiguous for the type TestClass
+
+        testClass.doSomething((String) null); // OK: Explicit cast
+        testClass.doSomething((Integer) null); // OK: Explicit cast
+        testClass.doSomething((Object) null); // OK: explicit cast
+
+        String str = null;
+        testClass.doSomething(str); // OK: Variable with specific type
+
+        testClass.doSomething("Hello"); // OK: Calls doSomething(String)
+        testClass.doSomething((Object) "Hello"); // OK: Calls doSomething(Object)
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Method Resolution Priority</span>
+<div class="tutorialSectionTextDiv1">
+Java follows a specific priority order when resolving overloaded method calls:<br />
+<ol class="ol_decimal_1">
+<li><b>Exact match</b> - Direct type match.<br /></li>
+<li><b>Widening</b> - Primitive type promotion (int → long → float → double).<br /></li>
+<li><b>Autoboxing</b> - Primitive to wrapper conversion.<br /></li>
+<li><b>Varargs</b> - Variable argument methods.<br /></li>
+</ol>
+<br />
+<pre class="java-code">
+package com.mtitek.overloading;
+
+public class TestClass {
+    public void doSomething(int value) {
+        System.out.println("int: " + value);
+    }
+
+    public void doSomething(long value) {
+        System.out.println("long: " + value);
+    }
+
+    public void doSomething(Integer value) {
+        System.out.println("Integer: " + value);
+    }
+
+    public void doSomething(int... values) {
+        System.out.println("varargs: " + java.util.Arrays.toString(values));
+    }
+
+    public void doSomethingElse(Long value) {
+        System.out.println("Long wrapper: " + value);
+    }
+
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+
+        byte b = 1;
+        testClass.doSomething(b); // Calls doSomething(int) - widening
+        testClass.doSomething(1); // Calls doSomething(int) - exact match
+        testClass.doSomething(1L); // Calls doSomething(long) - exact match
+        testClass.doSomething(Integer.valueOf(1)); // Calls doSomething(Integer) - exact match
+
+        int i = 1;
+        testClass.doSomethingElse(i); // Compiler error: The method doSomethingElse(Long) in the type TestClass is not applicable for the arguments (int)
+
+        Integer j = 1;
+        testClass.doSomethingElse(Integer.valueOf(i)); // Compiler error: The method doSomethingElse(Long) in the type TestClass is not applicable for the arguments (Integer)
+
+        long k = 1l;
+        testClass.doSomethingElse(k); // Calls doSomething(Long) - autoboxing
+
+        testClass.doSomething(Integer.valueOf(1), Integer.valueOf(2)); // Calls doSomething(int...) - varargs match
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Varargs and Overloading</span>
+<div class="tutorialSectionTextDiv1">
+Variable arguments (varargs) introduce special considerations in method overloading. Varargs methods can cause ambiguity when combined with other overloaded methods.<br />
+<pre class="java-code">
+package com.mtitek.overloading;
+
+public class TestClass {
+    public void doSomething(String str) {
+        System.out.println("String: " + str);
+    }
+
+    public void doSomething(String... strs) {
+        System.out.println("String varargs: " + java.util.Arrays.toString(strs));
+    }
+
+    public void doSomething(int... nums) {
+        System.out.println("int varargs: " + java.util.Arrays.toString(nums));
+    }
+
+    public void doSomething(int i, int... nums) {
+        System.out.println("int + int varargs: " + i + ", " + java.util.Arrays.toString(nums));
+    }
+
+    public void doSomethingElse(String... strs) {
+        System.out.println("String varargs: " + java.util.Arrays.toString(strs));
+    }
+
+    public void doSomethingElse(Object... objs) {
+        System.out.println("Object varargs: " + java.util.Arrays.toString(objs));
+    }
+
+    public static void main(String[] args) {
+        TestClass testClass = new TestClass();
+
+        testClass.doSomething("a"); // Calls doSomething(String) - exact match
+        testClass.doSomething("a", "b", "c"); // Calls doSomething(String...) - varargs
+        testClass.doSomething(); // Compiler error: The method doSomething(String[]) is ambiguous for the type TestClass
+
+        testClass.doSomething(1); // Compiler error: The method doSomething(int[]) is ambiguous for the type TestClass
+        testClass.doSomething(1, 2, 3); // Compiler error: The method doSomething(int[]) is ambiguous for the type TestClass
+
+        testClass.doSomethingElse("a", "b"); // Calls doSomethingElse(String...) - varargs
+        testClass.doSomethingElse(new Object(), "test"); // Calls doSomethingElse(Object...) - varargs
+        testClass.doSomethingElse(); // Calls doSomething(String...) - empty varargs
+    }
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

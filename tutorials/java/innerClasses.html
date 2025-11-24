@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Inner Classes Explained: Static, Local &amp; Anonymous&lt; | MTI TEK</title>
+<meta name="description" content="Learn about Java inner classes, including static, local, and anonymous types, with clear examples and rules" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Inner Classes Explained: Static, Local &amp; Anonymous&lt; | MTI TEK" />
+<meta property="og:description" content="Learn about Java inner classes, including static, local, and anonymous types, with clear examples and rules" />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/innerClasses.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Inner Classes Explained: Static, Local &amp; Anonymous&lt; | MTI TEK" />
+<meta name="twitter:description" content="Learn about Java inner classes, including static, local, and anonymous types, with clear examples and rules" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/innerClasses.php",
+        "description": "Learn about Java inner classes, including static, local, and anonymous types, with clear examples and rules",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/innerClasses.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Inner Classes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Inner Classes</a></li>
+<li><a href="#sec_id_2">Static Inner Classes (static nested classes)</a></li>
+<li><a href="#sec_id_3">Local Inner Classes</a></li>
+<li><a href="#sec_id_4">Anonymous Inner Classes</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Defining an Anonymous Class from Another Class</a></li>
+<li><a href="#sec_id_4_2">Defining an Anonymous Class from an Abstract Class</a></li>
+<li><a href="#sec_id_4_3">Defining an Anonymous Class from an Interface</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Inner Classes</span>
+<div class="tutorialSectionTextDiv1">
+An inner class is a class defined inside another class (called the outer class).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    class MyInnerClass { // inner class
+    }
+}</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+The compiler will create two separate files:<br />
+<ul class="ul_circle_1">
+<li>One file for the outer class (<b>MyOuterClass.class</b>),</li>
+<li>and another for the inner class (<b>MyOuterClass$MyInnerClass.class</b>).<br /></li>
+</ul>
+<br /></li>
+<li>
+To declare (within the outer class) a variable of the inner class type,
+or to create an instance of the inner class, use the inner class name just like with regular classes.<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    class MyInnerClass { // inner class
+    }
+
+    MyInnerClass myInnerClass_1 = new MyInnerClass(); // declare a variable and create an instance of the inner class
+
+    void createInstanceOfMyInnerClass() {
+        MyInnerClass myInnerClass_2; // declare variable
+        myInnerClass_2 = new MyInnerClass(); // create instance
+    }
+}</pre>
+It is not possible to instantiate the inner class directly from a static method of the outer class. The compiler will show an error:<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    class MyInnerClass { // inner class
+    }
+
+    static void createInstanceOfMyInnerClass() {
+        MyInnerClass myInnerClass; // OK: declaration is fine
+
+        myInnerClass = new MyInnerClass(); // Compiler error: No enclosing instance of type MyOuterClass is accessible.
+                                            // Must qualify the allocation with an enclosing instance of type MyOuterClass (e.g. x.new A() where x is an instance of MyOuterClass).
+    }
+}</pre>
+As indicated in the compiler error, you must go through an instance of the outer class to instantiate the inner class:<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    class MyInnerClass { // inner class
+    }
+
+    static void createInstanceOfMyInnerClass() {
+        MyInnerClass myInnerClass; // OK: declaration is fine
+
+        MyOuterClass myOuterClass = new MyOuterClass();
+        myInnerClass = myOuterClass.new MyInnerClass(); // OK
+
+        myInnerClass = new MyOuterClass().new MyInnerClass(); // OK: using anonymous outer instance
+    }
+}</pre>
+</li>
+<li>
+An inner class can declare static fields or methods (including compile-time constant fields).<br />
+The inner class is a non-static member of the outer class, so the only way to access it is through an instance of the outer class.<br />
+<pre class="java-code">
+public class MyOuterClass {
+    class MyInnerClass { // inner class
+        private static final int CONSTANT = 0; // OK: compile-time constant
+        private static int var = 0; // OK: The field var can be declared static
+
+        public static int getVar() { // OK: The method getVar can be declared static
+            return var;
+        }
+
+        public void setVar(int var) {
+            this.var = var;
+        }
+    }
+
+    public static void main(String[] args) {
+        MyInnerClass myInnerClass = new MyOuterClass().new MyInnerClass();
+        System.out.println(MyInnerClass.CONSTANT);
+        System.out.println(MyInnerClass.var);
+        myInnerClass.setVar(1);
+        System.out.println(MyInnerClass.getVar());
+    }
+}</pre>
+</li>
+<li>
+You cannot directly declare a variable of the inner class type or instantiate it from outside the outer class;
+you must always reference the inner class through the outer class
+(you must use the outer class name followed by a dot and the inner class name),
+otherwise the compiler will show an error:<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    class MyInnerClass { // inner class
+    }
+}
+
+class MainClass {
+    MyInnerClass myInnerClass1; // Compiler error: MyInnerClass cannot be resolved to a type
+    Object obj1 = new MyInnerClass(); // Compiler error: MyInnerClass cannot be resolved to a type
+
+    MyOuterClass.MyInnerClass myInnerClass2; // OK: declare variable of inner class type
+    Object obj2 = new MyOuterClass().new MyInnerClass(); // OK: using anonymous outer class instance
+
+    {
+        MyOuterClass myOuterClass = new MyOuterClass();
+        Object obj3 = myOuterClass.new MyInnerClass(); // OK: using MyOuterClass instance
+    }
+}</pre>
+</li>
+<li>
+The inner class declaration can use the access modifiers <code class="code1">public</code>, <code class="code1">protected</code>, <code class="code1">private</code>,
+or have no modifier at all (in which case it has <code class="code1">package-private</code> access).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    /*[public|protected|private]*/ class MyInnerClass { // inner class
+    }
+}</pre>
+Visibility rules apply when the inner class is declared as <code class="code1">protected</code> or <code class="code1">private</code>.<br />
+For example, it is not possible to reference the inner class from outside the outer class if it is declared <code class="code1">private</code>.<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    private class MyInnerClass { // private inner class
+        public void doSomething() {
+            System.out.println("MyInnerClass doing something ...");
+        }
+    }
+
+    public MyInnerClass initMyInnerClass() {
+        return new MyInnerClass(); // OK: within outer class
+    }
+
+    public void doSomething() {
+        new MyInnerClass().doSomething(); // OK: within outer class
+    }
+}
+
+class MainClass {
+    public static void main(String[] args) {
+        MyOuterClass myOuterClass = new MyOuterClass();
+
+        myOuterClass.doSomething(); // OK
+
+        myOuterClass.initMyInnerClass().doSomething(); // Compiler error: The type MyOuterClass.MyInnerClass is not visible
+        MyOuterClass.MyInnerClass myInnerClass; // Compiler error: The type MyOuterClass.MyInnerClass is not visible
+        myInnerClass = myOuterClass.new MyInnerClass(); // Compiler error: The type MyOuterClass.MyInnerClass is not visible
+    }
+}</pre>
+</li>
+<li>
+The inner class declaration may use the <code class="code1">abstract</code> or <code class="code1">final</code> modifiers (one or the other, but not both at the same time!).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    /*[abstract|final]*/ class MyInnerClass { // inner class
+    }
+}</pre>
+</li>
+<li>
+It is possible to access the fields and methods of the outer class from the inner class,
+including private members, in the same way you would from the outer class's own methods.<br />
+<br />
+However, if the inner class declares fields or methods with the same names as those in the outer class,
+you must use <code class="code1">OuterClassName.this</code> to reference the outer class members from within the inner class.
+Otherwise, the inner class's members will be used by default.<br />
+<br />
+Note that <code class="code1">this</code> always refers to the instance of the currently executing class (whether it's the inner or the outer class).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    public class MyInnerClass { // inner class
+        private Integer step = 2; // shadows outer class's step field
+
+        public void setNextNumber() {
+            var = var + step; // uses inner class's step (2), outer class's var (1)
+            // equivalent to:
+            MyOuterClass.this.var = MyOuterClass.this.var + this.step;
+        }
+
+        public void setNextNumberUsingOuterStep() {
+            var = var + MyOuterClass.this.step; // explicitly uses outer class's step (1)
+        }
+    }
+
+    private Integer var = 0;
+    private Integer step = 1;
+
+    public Integer getVar() {
+        return var; // equivalent to: return this.var;
+    }
+}
+
+class MainClass {
+    public static void main(String[] args) {
+        MyOuterClass myOuterClass = new MyOuterClass();
+
+        MyOuterClass.MyInnerClass myInnerClass = myOuterClass.new MyInnerClass();
+        myInnerClass.setNextNumber();
+        System.out.println(myOuterClass.getVar());
+
+        myInnerClass.setNextNumberUsingOuterStep();
+        System.out.println(myOuterClass.getVar());
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Static Inner Classes (static nested classes)</span>
+<div class="tutorialSectionTextDiv1">
+A static inner class (also called a static nested class) is a class defined inside another class (outer class).<br />
+<br />
+The static inner class is a static member of the outer class.<br />
+This means it can be accessed without creating an instance of the outer class.<br />
+<br />
+Static inner classes have different access rules compared to non-static inner classes.<br />
+Here are the key characteristics of static inner classes:
+
+<ul class="ul_square_1">
+<li>
+A static inner class can declare both static and non-static members (fields and methods).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    public static class MyInnerClass { // static inner class
+        static Integer var = 0;
+        Integer step = 0;
+
+        void doSomething() {
+        }
+
+        static void doSomethingElse() {
+        }
+    }
+}</pre>
+</li>
+<li>
+It is not necessary to instantiate either the inner class or the outer class to access static members (fields and methods) of the static inner class.<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    public static class MyInnerClass { // static inner class
+        static Integer var = 0;
+        Integer step = 1;
+
+        void doSomething() {
+        }
+
+        static void doSomethingElse() {
+        }
+    }
+}
+
+class MainClass {
+    public static void main(String[] args) {
+        MyOuterClass.MyInnerClass.var = 1;
+
+        MyOuterClass.MyInnerClass.doSomethingElse();
+    }
+}</pre>
+</li>
+<li>
+It is not necessary to instantiate the outer class to create an instance of the static inner class (from outside the outer class).<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    public static class MyInnerClass { // static inner class
+    }
+}
+
+class MainClass {
+    public static void main(String[] args) {
+        MyOuterClass.MyInnerClass myInnerClass = new MyOuterClass.MyInnerClass();
+    }
+}</pre>
+</li>
+<li>
+A static inner class cannot access non-static members (fields and methods) of the outer class directly, because it doesn't have access to an instance of the outer class.<br />
+<pre class="java-code">
+class MyOuterClass { // outer class
+    public static class MyInnerClass { // static inner class
+        void doSomething() {
+            MyOuterClass.var = 1; // OK: accessing static member
+
+            // Cannot make a static reference to the non-static field
+            MyOuterClass.this.step = 1; // Compiler error: No enclosing instance of type MyOuterClass is accessible
+
+            MyOuterClass.initVar(); // OK: calling static method
+
+            // Cannot make a static reference to the non-static method
+            MyOuterClass.this.initStep(); // Compiler error: No enclosing instance of the type MyOuterClass is accessible in scope
+        }
+
+        static void doSomethingElse() {
+            MyOuterClass.var = 1; // OK: accessing static member
+
+            // Cannot make a static reference to the non-static field
+            step = 1; // Compiler error: Cannot make a static reference to the non-static field step
+
+            MyOuterClass.initVar(); // OK: calling static method
+
+            // Cannot make a static reference to the non-static method
+            initStep(); // Compiler error: Cannot make a static reference to the non-static method initStep() from the type MyOuterClass
+        }
+    }
+
+    static Integer var = 0;
+    Integer step = 1;
+
+    static void initVar() {
+        var = 1;
+    }
+
+    void initStep() {
+        step = 1;
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Local Inner Classes</span>
+<div class="tutorialSectionTextDiv1">
+A local inner class is a class defined inside a method or block.<br />
+<pre class="java-code">
+class MainClass {
+    public static void main(String[] args) {
+        class MyLocalInnerClass { // local inner class
+        }
+
+        MyLocalInnerClass myLocalInnerClass = new MyLocalInnerClass();
+    }
+}</pre>
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+The compiler will generate separate class files for each local inner class, with a naming pattern that includes the method order.<br />
+<pre class="java-code">
+class MainClass {
+    public static void main(String[] args) {
+        class MyLocalInnerClass1 { // local inner class
+        }
+
+        class MyLocalInnerClass2 { // local inner class
+        }
+    }
+}</pre>
+In this example, the compiler will generate the following <b>.class</b> files:<br />
+<ul class="ul_circle_1">
+<li><b>MainClass.class</b><br /></li>
+<li><b>MainClass$1MyLocalInnerClass1.class</b><br /></li>
+<li><b>MainClass$2MyLocalInnerClass2.class</b><br /></li>
+</ul>
+<br /></li>
+<li>
+A local class declaration can only use the modifiers <code class="code1">abstract</code> or <code class="code1">final</code> (mutually exclusive).
+Access modifiers like <code class="code1">public</code>, <code class="code1">private</code>, or <code class="code1">protected</code> are not allowed:<br />
+<pre class="java-code">
+class MainClass {
+    public void doSomething() {
+        public class MyLocalInnerClass1 { // Compiler error: Illegal modifier for the local class MyLocalInnerClass; only abstract or final is permitted
+        }
+
+        final class MyLocalInnerClass2 { // OK
+        }
+    }
+}</pre>
+</li>
+<li>
+A local class is only visible within the method or block where it is defined. It can only be referenced and instantiated after its declaration within that scope:<br />
+<pre class="java-code">
+class MainClass {
+    public void doSomething() {
+        MyLocalInnerClass myLocalInnerClass1 = new MyLocalInnerClass(); // Compiler error: MyLocalInnerClass cannot be resolved to a type
+
+        class MyLocalInnerClass { // local inner class
+        }
+
+        MyLocalInnerClass myLocalInnerClass2 = new MyLocalInnerClass(); // OK: after declaration
+    }
+}</pre>
+</li>
+<li>
+A local class can only declare non-static members (fields and methods), except for compile-time constants:<br />
+<pre class="java-code">
+class MainClass {
+    public void doSomething() {
+        class MyLocalInnerClass { // local inner class
+            private static final String CONSTANT = "OK"; // OK: compile-time constant
+            private static Integer var = 0; // Compiler error: static fields only allowed in static or top-level types
+
+            public void instanceMethod() { // OK
+            }
+
+            public static void staticMethod() { // Compiler error: static methods only allowed in static or top-level types
+            }
+        }
+    }
+}</pre>
+</li>
+<li>
+Local classes defined inside static methods can only access static members of the outer class:<br />
+<pre class="java-code">
+class MainClass {
+    private static Integer var1 = 2;
+    private Integer var2 = 2;
+
+    public static void foo1() {
+    }
+
+    public void bar1() {
+    }
+
+    public static void doSomething() {
+        class MyLocalInnerClass { // local inner class
+            public void foo() {
+                Integer localVar1 = var1; // OK: static field
+                Integer localVar2 = var2; // Compiler error: Cannot make a static reference to the non-static field var2
+
+                foo1(); // OK: static method
+                bar1(); // Compiler error: Cannot make a static reference to the non-static method bar1() from the type MainClass
+            }
+        }
+    }
+}</pre>
+However, local classes defined in non-static methods can access both static and non-static members of the outer class:<br />
+<pre class="java-code">
+class MainClass {
+    private static Integer var1 = 2;
+    private Integer var2 = 2;
+
+    public static void foo1() {
+    }
+
+    public void bar1() {
+    }
+
+    public void doSomething() {
+        class MyLocalInnerClass { // local inner class
+            public void foo() {
+                Integer localVar1 = var1; // OK: static field
+                Integer localVar2 = var2; // OK: instance field
+
+                foo1(); // OK: static method
+                bar1(); // OK: instance method
+            }
+        }
+    }
+}</pre>
+</li>
+<li>
+A local class can access local variables and parameters from the enclosing method only if they are effectively final (final or never modified after initialization):<br />
+<pre class="java-code">
+class MainClass {
+    public void doSomething() {
+        final Integer var1 = 2; // explicitly final
+        Integer var2 = 2; // effectively final (never modified)
+        Integer var3 = 3;
+        var3 = 4; // not effectively final
+
+        class MyLocalInnerClass { // local inner class
+            public void foo() {
+                Integer localVar1 = var1; // OK: final
+                Integer localVar2 = var2; // OK: effectively final
+                Integer localVar3 = var3; // Compiler error: Local variable var3 defined in an enclosing scope must be final or effectively final
+            }
+        }
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Anonymous Inner Classes</span>
+<div class="tutorialSectionTextDiv1">
+Anonymous inner classes are classes defined without a name that extend a class or implement an interface.<br />
+<br />
+Anonymous classes are defined at the point of instantiation and cannot be reused elsewhere.<br />
+<br />
+An anonymous inner class is used to create a one-time implementation by extending a class or implementing an interface during instantiation.<br />
+<br />
+An anonymous inner class can be defined anywhere in the code where instantiating a class is allowed.<br />
+<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Defining an anonymous class from another class</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+class MainClass {
+    Object object = new Object() { // anonymous inner class extending Object
+        @Override
+        public String toString() {
+            return "anonymous inner class: toString";
+        }
+    };
+}</pre>
+In this example, a new anonymous class is created that extends the <code class="code1">Object</code> class.<br />
+The anonymous class can override existing methods and define new methods, but new methods are only accessible within the anonymous class scope:<br />
+<pre class="java-code">
+class MainClass {
+    public static void main(String[] args) {
+        Object object = new Object() { // anonymous inner class
+            @Override
+            public String toString() {
+                return toStringAnonymous(); // OK: calling internal method
+            }
+
+            public String toStringAnonymous() {
+                return "anonymous inner class";
+            }
+        };
+
+        System.out.println(object.toString()); // OK: Object method
+        object.toStringAnonymous(); // Compiler error: The method toStringAnonymous() is undefined for the type Object
+    }
+}</pre>
+Anonymous classes can be used as method arguments for more concise code:<br />
+<pre class="java-code">
+class MainClass {
+    public static void main(String[] args) {
+        processObject(new Object() { // anonymous inner class as argument
+            @Override
+            public String toString() {
+                return "anonymous inner class";
+            }
+        });
+    }
+
+    public static void processObject(Object obj) {
+        System.out.println(obj.toString());
+    }
+}</pre>
+<b>Notes:</b><br />
+The compiler generates separate class files for each anonymous inner class with numeric naming:<br />
+<pre class="java-code">
+class MainClass {
+    Object object1 = new Object() { // first anonymous inner class
+    };
+
+    Object object2 = new Object() { // second anonymous inner class
+    };
+}</pre>
+Generated <b>.class</b> files:<br />
+<ul class="ul_circle_1">
+<li><b>MainClass.class</b><br /></li>
+<li><b>MainClass$1.class</b><br /></li>
+<li><b>MainClass$2.class</b><br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Defining an anonymous class from an abstract class</span>
+<div class="tutorialSectionTextDiv1">
+An anonymous class extending an abstract class must implement all abstract methods. Failure to do so results in a compilation error:<br />
+<pre class="java-code">
+abstract class MyAbstractClass {
+    abstract void foo(); // must be implemented
+
+    void doSomething() { // concrete method - can be overridden
+        System.out.println("Concrete method");
+    }
+}
+
+class MainClass {
+    static MyAbstractClass myAbstractClass = new MyAbstractClass() { // anonymous implementation
+        @Override
+        public void foo() {
+            System.out.println("foo implementation");
+        }
+    };
+
+    public static void main(String[] args) {
+        MainClass.myAbstractClass.foo();
+        MainClass.myAbstractClass.doSomething(); // inherited and can be used without override
+    }
+}</pre>
+The compiler throws an error if the implementation is incomplete:<br />
+<pre class="java-code">
+class MainClass {
+    MyAbstractClass incomplete = new MyAbstractClass() { // Compiler error: The type new MyAbstractClass(){} must implement the inherited abstract method MyAbstractClass.foo()
+    };
+}</pre>
+</div>
+</li>
+<li id="sec_id_4_3">
+<span class="tutorialSubSectionTitleSpan1">Defining an anonymous class from an interface</span>
+<div class="tutorialSectionTextDiv1">
+An anonymous class can implement exactly one interface and must provide implementations for all interface methods:<br />
+<pre class="java-code">
+interface MyInterface {
+    void foo();
+
+    default void defaultMethod() { // default method
+        System.out.println("Default implementation");
+    }
+}
+
+class MainClass {
+    public static void main(String[] args) {
+        MyInterface myInterface = new MyInterface() { // anonymous implementation
+            @Override
+            public void foo() {
+                System.out.println("Interface method implementation");
+            }
+        };
+
+        myInterface.foo();
+        myInterface.defaultMethod(); // defaultMethod() is inherited and can be used or overridden
+    }
+}</pre>
+<b>Functional interfaces and lambda expressions:</b><br />
+For functional interfaces (interfaces with a single abstract method), consider using lambda expressions as a more concise alternative:<br />
+<pre class="java-code">
+class MainClass {
+    public static void main(String[] args) {
+        // Anonymous class
+        Runnable runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Runnable 1 Running...");
+            }
+        };
+
+        // Lambda expression
+        Runnable runnable2 = () -> System.out.println("Runnable 2 Running...");
+
+        new Thread(runnable1, "Runnable1").start();
+        new Thread(runnable2, "Runnable2").start();
+    }
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

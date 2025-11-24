@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Modifiers Guide: Class, Method, Variable &amp; Interface | MTI TEK</title>
+<meta name="description" content="Learn Java access and non-access modifiers for classes, methods, variables, and interfaces. Understand public, private, static, final, abstract, and more." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Modifiers Guide: Class, Method, Variable &amp; Interface | MTI TEK" />
+<meta property="og:description" content="Learn Java access and non-access modifiers for classes, methods, variables, and interfaces. Understand public, private, static, final, abstract, and more." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/identifiersModifiers.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Modifiers Guide: Class, Method, Variable &amp; Interface | MTI TEK" />
+<meta name="twitter:description" content="Learn Java access and non-access modifiers for classes, methods, variables, and interfaces. Understand public, private, static, final, abstract, and more." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/identifiersModifiers.php",
+        "description": "Learn Java access and non-access modifiers for classes, methods, variables, and interfaces. Understand public, private, static, final, abstract, and more.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/identifiersModifiers.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Modifiers</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Class Modifiers</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">Access Modifiers: public, package-private</a></li>
+<li><a href="#sec_id_1_2">Other Modifiers: abstract, final</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Interface Modifiers</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1">Access Modifiers: public, package-private</a></li>
+<li><a href="#sec_id_2_2">Other Modifiers: abstract</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_3">Method Modifiers</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Access Modifiers: public, private, protected, package-private</a></li>
+<li><a href="#sec_id_3_2">Other Modifiers: static, abstract, final, synchronized, strictfp, native</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_4">Variable Modifiers</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Access Modifiers: public, private, protected, package-private</a></li>
+<li><a href="#sec_id_4_2">Other Modifiers: static, final, transient, volatile</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Class Modifiers</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">Access Modifiers: public, package-private</span>
+<div class="tutorialSectionTextDiv1">
+A class can have two access levels:
+<code class="code1">public</code> and <code class="code1">package-private</code> (also called default access).<br />
+<ul class="ul_square_1">
+<li>
+The <code class="code1">public</code> access level allows a class to be visible throughout the entire code with no restrictions.<br />
+Anywhere in the code, a <code class="code1">public</code> class can be referenced, instantiated, and extended (through inheritance).<br />
+<pre class="java-code">
+public class MyPublicClass {}</pre>
+</li>
+<li>
+The <code class="code1">package-private</code> access level allows a class to be visible only within its own package.<br />
+There is no explicit modifier for this access level; in fact, if no modifier is used in the class declaration, the class is given the default <code class="code1">package-private</code> access level.<br />
+<pre class="java-code">
+package com.mtitek.modifiers;
+
+class MyDefaultClass {}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">Other Modifiers: abstract, final</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+The <code class="code1">abstract</code> modifier:<br />
+An abstract class is a template class that declares methods (which may also be abstract). It allows other classes to use it (by inheriting from this class) to define specialized behavior.<br />
+An abstract class cannot be instantiated directly.<br />
+An abstract class cannot use the <code class="code1">final</code> modifier.<br />
+<pre class="java-code">
+public abstract class MyAbstractClass {}</pre>
+</li>
+<li>
+The <code class="code1">final</code> modifier:<br />
+The <code class="code1">final</code> keyword prevents a class from being extended, which means its behavior cannot be modified through inheritance.<br />
+A <code class="code1">final</code> class cannot use the <code class="code1">abstract</code> modifier.<br />
+<pre class="java-code">
+public final class MyFinalClass {}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+<b><i>Notes</i></b>:<br />
+<p>Classes cannot be <code class="code1">private</code>.<br />
+You will get a compilation error if you mark a class as <code class="code1">private</code>.</p>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Interface Modifiers</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1">Access Modifiers: public, package-private</span>
+<div class="tutorialSectionTextDiv1">
+An interface can have two access levels: <code class="code1">public</code> and <code class="code1">package-private</code>.<br />
+<ul class="ul_square_1">
+<li>
+The <code class="code1">public</code> access level allows an interface to be visible throughout the entire code with no restrictions.<br />
+Anywhere in the code, a <code class="code1">public</code> interface can be referenced and implemented (through inheritance).<br />
+<pre class="java-code">
+public interface MyPublicInterface {}</pre>
+</li>
+<li>
+The <code class="code1">package-private</code> access level allows an interface to be visible only within its own package.<br />
+There is no explicit modifier for this access level; in fact, if no modifier is used in the interface declaration, the interface is given the default <code class="code1">package-private</code> access level.<br />
+<pre class="java-code">
+package com.mtitek.modifiers;
+
+interface MyDefaultInterface {
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1">Other Modifiers: abstract</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+The <code class="code1">abstract</code> modifier:<br />
+Interfaces are implicitly <code class="code1">abstract</code>.<br />
+This means that it is not necessary to use this modifier when declaring interfaces.<br />
+<pre class="java-code">
+public abstract interface MyAbstractPublicInterface {}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+<b><i>Notes</i></b>:<br />
+<p>Interfaces cannot be <code class="code1">private</code>.<br />
+You will get a compilation error if you mark a interface as <code class="code1">private</code>.</p>
+<p>Interfaces cannot be <code class="code1">final</code>.<br />
+You will get a compilation error if you mark an interface as <code class="code1">final</code>.</p>
+<p>Interface variables are implicitly <code class="code1">public</code>, <code class="code1">static</code>, and <code class="code1">final</code>.<br />
+This means that it is not necessary to use these modifiers when declaring variables in interfaces.<br />
+However, it is forbidden to use any other modifier.</p>
+<p>Interface methods have different default modifiers depending on their type:<br />
+Abstract methods are implicitly <code class="code1">public</code> and <code class="code1">abstract</code>.<br />
+Default methods are implicitly <code class="code1">public</code>.<br />
+Static methods are implicitly <code class="code1">public</code>.<br />
+Private methods must be explicitly marked as <code class="code1">private</code>.</p>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Method Modifiers</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Access Modifiers: public, private, protected, package-private</span>
+<div class="tutorialSectionTextDiv1">
+A method can have four access levels: <code class="code1">public</code>, <code class="code1">private</code>, <code class="code1">protected</code>, and <code class="code1">package-private</code>.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+The <code class="code1">public</code> access modifier allows a method to be accessible throughout the code without any restrictions (provided that the class declaring it is also visible).<br />
+<br /></li>
+<li>
+The <code class="code1">private</code> access modifier allows a method to be accessible only within the code of the class that declares it.<br />
+The <code class="code1">private</code> access does not prevent a subclass from declaring a method with the exact same signature. In this case, we are not talking about overriding the method (inheritance) but rather defining a new method since the superclass method is not visible to the subclass.<br />
+<br /></li>
+<li>
+The <code class="code1">protected</code> access modifier allows a method to be visible within the package of the class that declares it.<br />
+It also allows the method to be visible in the code of subclasses of the class that declares it, even if they are in different packages.<br />
+<br />
+Be aware that the method in the parent class is accessible in the subclass code as if it had been declared in the subclass itself:
+It can be overridden or invoked.<br />
+<br />
+However, it will not be possible for the subclass code to use a reference of an instance of the parent class to invoke the protected method when accessing it from a different package.<br />
+<pre class="java-code">
+package com.mtitek.inheritance.package1;
+
+public class MyParentClass {
+    protected void doFirstThing() {
+        // ...
+    }
+
+    protected void doSecondThing() {
+        // ...
+    }
+}</pre>
+<pre class="java-code">
+package com.mtitek.inheritance.package2;
+
+import com.mtitek.inheritance.package1.MyParentClass;
+
+public class MySubClass extends MyParentClass {
+    @Override
+    protected void doFirstThing() {
+        super.doFirstThing();
+    }
+
+    public void doThirdThing() {
+        doFirstThing(); // OK
+        doSecondThing(); // OK
+
+        MyParentClass myParentClass = new MyParentClass();
+        myParentClass.doFirstThing(); // Compiler error: The method doFirstThing() from the type MyParentClass is not visible
+    }
+}</pre>
+</li>
+<li>
+The <code class="code1">package-private</code> access modifier allows a method to be visible only within the package of the class that declares it.<br />
+There is no explicit modifier for this access; in fact, in the absence of a modifier in the method declaration, it defaults to <code class="code1">package-private</code> access.<br />
+<br /></li>
+</ul>
+Below is a table summarizing the visibility of these methods based on their access modifiers,
+and also depending on the context in which they are invoked
+(considering a class <code class="code1">T</code> that declares methods with the access modifiers
+<code class="code1">public</code>,
+<code class="code1">private</code>,
+<code class="code1">protected</code>,
+and <code class="code1">package-private</code>) :<br />
+<br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1">Visibility of methods in class <code class="code1">T</code></th>
+<th class="cssth1" width="70"><code class="code1">public</code></th>
+<th class="cssth1" width="80"><code class="code1">private</code></th>
+<th class="cssth1" width="90"><code class="code1">protected</code></th>
+<th class="cssth1" width="80"><code class="code1">package-private</code></th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">In the code of class <code class="code1">T</code></td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">Yes</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">In the code of any class (other than class <code class="code1">T</code>) in the same package as class <code class="code1">T</code></td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">No</td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">Yes</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">In the code of any class (not a subclass) in a different package from class <code class="code1">T</code></td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">No</td>
+<td class="csstd1">No</td>
+<td class="csstd1">No</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">In the code of any subclass in the same package as class <code class="code1">T</code></td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">No</td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">Yes</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">In the code of any subclass in a different package from class <code class="code1">T</code></td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">No</td>
+<td class="csstd1">Yes</td>
+<td class="csstd1">No</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Other Modifiers: static, abstract, final, synchronized, strictfp, native</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+The <code class="code1">static</code> modifier:<br />
+A static method can be invoked without creating an instance of the class;
+a static method is accessible when the class is loaded into memory by the JVM.<br />
+A static method cannot use instance variables or invoke instance methods directly (without an object reference).<br />
+<br /></li>
+<li>
+The <code class="code1">abstract</code> modifier:<br />
+An abstract method is a template method that does not implement code;
+it allows other classes to use it (by inheriting from the class that defines this method) to define specialized behavior.<br />
+An abstract method can only be defined in an abstract class or interface.<br />
+An abstract method can have three access levels: <code class="code1">public</code>, <code class="code1">protected</code>, and <code class="code1">package-private</code>.<br />
+An abstract method cannot use the <code class="code1">final</code>, <code class="code1">private</code>, or <code class="code1">static</code> modifiers.<br />
+When a concrete class inherits from an abstract class, it must implement all the abstract methods from the class.<br />
+<pre class="java-code">
+public abstract class MyAbstractClass {
+    public abstract void doSomething();
+}</pre>
+</li>
+<li>
+The <code class="code1">final</code> modifier:<br />
+The <code class="code1">final</code> keyword prevents a method from being overridden; this means that its behavior cannot be changed in subclasses.<br />
+<pre class="java-code">
+public class MyClass {
+    public final void doSomething() {
+        // add code here
+    }
+}</pre>
+</li>
+<li>
+The <code class="code1">synchronized</code> modifier:<br />
+The <code class="code1">synchronized</code> keyword ensures that a method is executed by only one thread at a time.<br />
+<pre class="java-code">
+public class MyClass {
+    public synchronized void doSomething() {
+        // add code here
+    }
+}</pre>
+</li>
+<li>
+The <code class="code1">strictfp</code> modifier:<br />
+The <code class="code1">strictfp</code> keyword ensures that a method complies with the IEEE 754 standard for floating-point number handling.<br />
+<br />
+Some processors might not truncate intermediate results of a computation,
+which can increase the precision of the result but also may lead to different results depending on the processor executing the computation.<br />
+<br />
+If portability is an issue, consider using the <code class="code1">strictfp</code> keyword
+to ensure that all instructions (within a method or a class) use strict floating-point computations.<br />
+<br />
+When using mathematical functions, you might consider using the <code class="code1">StrictMath</code> class (instead of <code class="code1">Math</code>)
+if you expect results to be the same regardless of the processor used to execute the mathematical functions
+(this might impact performance, though).<br />
+<pre class="java-code">
+public class MyClass {
+    public strictfp void doSomething() {
+        // add code here
+    }
+}</pre>
+</li>
+<li>
+The <code class="code1">native</code> modifier:<br />
+The <code class="code1">native</code> keyword indicates that the method is implemented in another language (e.g., C or C++).<br />
+<pre class="java-code">
+public class MyClass {
+    public native void doSomething();
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Modifiers of Variables</span>
+<div class="tutorialSectionTextDiv1">
+<b><i>Note:</i></b> Local variables (declared inside methods) can only use the <code class="code1">final</code> modifier.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Access Modifiers: public, private, protected, package-private</span>
+<div class="tutorialSectionTextDiv1">
+A variable can have four access levels: <code class="code1">public</code>, <code class="code1">private</code>, <code class="code1">protected</code>, and <code class="code1">package-private</code>.<br />
+Access modifiers only apply to instance and class variables.<br />
+Access modifiers do not prevent a subclass from declaring a variable with the same name as a superclass variable and specifying a different access modifier.<br />
+<br />
+Variable hiding (not inheritance) occurs when a subclass declares a variable with the same name as a superclass variable.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+The <code class="code1">public</code> access modifier allows a variable to be accessible throughout the entire code, without any restrictions, as long as the class declaring the variable is also visible.<br />
+<br /></li>
+<li>
+The <code class="code1">private</code> access modifier allows a variable to be accessible only within the code of the class that declares it.<br />
+<br /></li>
+<li>
+The <code class="code1">protected</code> access modifier allows a variable to be visible within the package of the class that declares it.<br />
+It also allows the variable to be visible in the code of subclasses of the class that declares it, even if those subclasses are declared in other packages.<br />
+<br />
+However, note that the parent class's variable is accessible in the subclass code as if it were declared in the subclass.<br />
+On the other hand, it will not be possible for the subclass code to use a reference to an instance of the parent class to reference the protected variable when the reference and the subclass are in different packages.<br />
+<pre class="java-code">
+package com.mtitek.inheritance.package1;
+
+public class MyParentClass {
+    protected Integer var1;
+}</pre>
+<pre class="java-code">
+package com.mtitek.inheritance.package2;
+
+import com.mtitek.inheritance.package1.MyParentClass;
+
+public class MySubClass extends MyParentClass {
+    public void doSomething() {
+        var1 = 10; // OK
+
+        MyParentClass myParentClass = new MyParentClass();
+        myParentClass.var1 = 10; // Compiler error: The field MyParentClass.var1 is not visible
+    }
+}</pre>
+</li>
+<li>
+The <code class="code1">package-private</code> access modifier allows a variable to be visible only within the package of the class that declares it.<br />
+There is no explicit modifier for this access level; in fact, in the absence of any modifier in the variable declaration, it defaults to <code class="code1">package-private</code> access.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Other Modifiers: static, final, transient, volatile</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+The <code class="code1">static</code> modifier:<br />
+The <code class="code1">static</code> keyword means that the variable belongs to the class rather than to any instance of the class, so there is only one copy shared by all instances.<br />
+A static variable can be accessed without creating an instance of the class;
+a static variable is accessible after the class is loaded into memory by the JVM.<br />
+<br /></li>
+<li>
+The <code class="code1">final</code> modifier:<br />
+The <code class="code1">final</code> keyword prevents the modification of the reference contained in a variable
+(applies to class variables, instance variables, local variables inside methods, and method parameters).<br />
+<pre class="java-code">
+public class MyClass {
+    public static final Integer ADD_OPERATION_ID = 0;
+}</pre>
+</li>
+<li>
+The <code class="code1">transient</code> modifier:<br />
+The <code class="code1">transient</code> keyword indicates that the variable should not be considered during the serialization of the object that contains the variable.<br />
+<br /></li>
+<li>
+The <code class="code1">volatile</code> modifier:<br />
+The <code class="code1">volatile</code> keyword ensures that reads and writes to the variable are performed directly on main memory, making the variable's value visible to all threads immediately.<br />
+<br />
+There are specific cases where this keyword can work correctly.
+It should not be used where reading and modifying the variable needs to be an atomic operation
+(for example, incrementing the value of a variable).<br />
+Also, care should be taken when the variable is used in an operation involving another variable
+(for example, checking if the value of the variable is equal to or different from the value of another variable).<br />
+<br />
+Typically, the variable marked with this keyword should be written to in one thread
+and then read by other threads to check for changes in its value.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

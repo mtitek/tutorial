@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Single Thread Scheduled Executor Tutorial | MTI TEK</title>
+<meta name="description" content="Learn Java ExecutorService with Single Thread Scheduled Executor example." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Single Thread Scheduled Executor Tutorial | MTI TEK" />
+<meta property="og:description" content="Learn Java ExecutorService with Single Thread Scheduled Executor example." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/newSingleThreadScheduledExecutor.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Single Thread Scheduled Executor Tutorial | MTI TEK" />
+<meta name="twitter:description" content="Learn Java ExecutorService with Single Thread Scheduled Executor example." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/newSingleThreadScheduledExecutor.php",
+        "description": "Learn Java ExecutorService with Single Thread Scheduled Executor example.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/newSingleThreadScheduledExecutor.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Single Thread Scheduled Executor</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Single Thread Scheduled Executor</a></li>
+<li><a href="#sec_id_1">Example: ScheduledExecutorService::scheduleWithFixedDelay</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Single Thread Scheduled Executor</span>
+<div class="tutorialSectionTextDiv1">
+<code class="code1">ScheduledExecutorService</code> is an interface that extends <code class="code1">ExecutorService</code> and provides methods for scheduling tasks to run after a delay or periodically.<br />
+<br />
+The <code class="code1">newSingleThreadScheduledExecutor()</code> method creates an executor that uses a single worker thread to execute scheduled tasks sequentially.<br />
+<br />
+Here's the minimal dependencies needed in order for the following examples to work ("<b>pom.xml</b>" file):<br />
+<pre class="xml-code">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;
+    &lt;version&gt;3.17.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<b>Note</b>: The Apache Commons Lang3 dependency is included for the <code class="code1">BasicThreadFactory</code> class,
+which provides convenient thread naming and daemon thread configuration.
+While Java's built-in <code class="code1">Executors.newSingleThreadExecutor</code> works without additional dependencies,
+using a custom ThreadFactory allows better thread management and debugging.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Example: ScheduledExecutorService::scheduleWithFixedDelay</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="java-code">
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+public class MainClass {
+    public static void main(String[] args) throws InterruptedException {
+        // The time to wait before the first execution
+        final long INITIAL_DELAY = 500l;
+
+        // The time to wait between the completion of one execution and the start of the next
+        final long DELAY = 1000l;
+
+        final String namingPattern = "_newSingleThreadScheduledExecutor";
+
+        final BasicThreadFactory.Builder builder = new BasicThreadFactory.Builder();
+
+        // Configures thread properties
+        // namingPattern sets custom thread names
+        // daemon(true) makes threads daemon threads (JVM can exit even if these threads are running)
+        final BasicThreadFactory basicThreadFactory = builder.namingPattern(namingPattern).daemon(true).build();
+
+        final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(basicThreadFactory);
+
+        final Runnable runnable = () -&gt; System.out.println(Thread.currentThread().getName() + ": Hello!");
+
+        // Schedules repeated execution with a fixed delay between the end of one execution and the start of the next
+        scheduledExecutorService.scheduleWithFixedDelay(runnable, INITIAL_DELAY, DELAY, TimeUnit.MILLISECONDS);
+
+        // Blocks until all tasks complete or timeout occurs
+        scheduledExecutorService.awaitTermination(5000l, TimeUnit.MILLISECONDS);
+
+        // Initiates orderly shutdown - no new tasks accepted, but previously submitted tasks continue
+        scheduledExecutorService.shutdown();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+_newSingleThreadScheduledExecutor: Hello!
+_newSingleThreadScheduledExecutor: Hello!
+_newSingleThreadScheduledExecutor: Hello!
+_newSingleThreadScheduledExecutor: Hello!
+_newSingleThreadScheduledExecutor: Hello!</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

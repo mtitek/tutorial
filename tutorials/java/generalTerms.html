@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java - Termes généraux | MTI TEK</title>
+<meta name="description" content="Tutorials: Java - Termes généraux" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java - Termes généraux | MTI TEK" />
+<meta property="og:description" content="Tutorials: Java - Termes généraux" />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/generalTerms.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java - Termes généraux | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Java - Termes généraux" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/generalTerms.php",
+        "description": "Tutorials: Java - Termes généraux",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/generalTerms.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">General Terms</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li><b>Identifiers</b>: names of types, variables, methods, packages.<br /><br /></li>
+<li><b>Access Modifiers</b>: <code class="code1">public</code>, <code class="code1">private</code>, <code class="code1">protected</code>, <b>package-private</b> (default).<br /><br /></li>
+<li><b>package</b>: a <b>namespace</b> mechanism to organize related classes and interfaces.<br /><br /></li>
+<li><b>Class</b>: a <b>blueprint</b> or template for creating objects.<br /></li>
+<li><b>Abstract Class</b>: a class that cannot be <b>instantiated</b> and may contain <b>abstract methods</b>.<br /></li>
+<li><b>Interface</b>: a <b>contract</b> that defines methods a class must implement.<br /><br /></li>
+<li><b>Object</b>: an <b>instance</b> of a class.<br /></li>
+<li><b>Instance</b>: a specific occurrence of an object created from a class.<br /><br /></li>
+<li><b>Fields</b>: variables that belong to a class or instance.<br />
+<ul class="ul_circle_1">
+<li><b>Instance Variables</b>: belong to a specific instance.<br /></li>
+<li><b>Class Variables</b> or <b>Static Variables</b>: shared among all instances of a class.<br /></li>
+</ul>
+.<br /></li>
+<li><b>Methods</b>: functions that define behavior of a class.<br />
+<ul class="ul_circle_1">
+<li><b>Instance Methods</b>: operate on instance variables and require an object to be called.<br /></li>
+<li><b>Static Methods</b> or <b>Class Methods</b>: belong to the class itself, not to any instance.<br /></li>
+</ul>
+.<br /></li>
+<li><b>Constructor</b>: special method used to initialize objects when they are created.<br /></li>
+<li><b>Initializer Block</b>: code block that runs when an instance is created.<br /></li>
+<li><b>Static Initialization Block</b>: code block that runs when a class is first loaded.<br /><br /></li>
+<li><b>Object Type</b>: the type of the object is defined by its class.<br /></li>
+<li><b>Object State</b>: the state of the object is defined by its instance and class variables.<br /></li>
+<li><b>Object Behavior</b>: the behavior of the object is defined by its methods.<br /><br /></li>
+<li><b>Variable Declaration</b>: specify a name and type for the variable (syntax: <code class="code1">TYPE VAR_NAME;</code>).<br /></li>
+<li><b>Variable Initialization</b>: assign an initial value to the variable (syntax: <code class="code1">VAR_NAME = VALUE;</code>).<br /></li>
+<li><b>Variable Assignment</b>: assign a new value to an already declared variable.<br /><br /></li>
+<li><b>Method Signature</b>: the method name and parameter types (used for method identification).<br /></li>
+<li><b>Method Declaration</b>: specify a name, return type, parameters, and modifiers for the method.<br /></li>
+<li><b>Method Definition</b>: write the implementation code for the method.<br /><br /></li>
+<li><b>Method Parameters</b>: variables used in the method declaration.<br /></li>
+<li><b>Method Arguments</b>: actual values passed when the method is called.<br /><br /></li>
+<li><b>Varargs Method</b>: a method with a variable number of parameters <code class="code1">method(Object... objs)</code>.<br /></li>
+<li>The <b>Ellipsis</b> <code class="code1">...</code> syntax allows passing zero or more arguments of the specified type.<br /><br /></li>
+<li><b>Inheritance</b>: mechanism where a class inherit properties and behaviors from another class.<br /></li>
+<li><b>Superclass</b> | <b>parent class</b> | <b>base class</b>: the class being inherited from.<br /></li>
+<li><b>Subclass</b> | <b>child class</b> | <b>derived class</b>: the class that inherits from another class.<br /><br /></li>
+<li><b>Extend a Class</b>: inherit from a class using the <code class="code1">extends</code> keyword.<br /></li>
+<li><b>Implement an Interface</b>: provide concrete implementations for interface methods using <code class="code1">implements</code>.<br /><br /></li>
+<li><b>Method Overriding</b>: providing a new implementation for an inherited method.<br />
+Used to customize behavior inherited from the superclass.<br />
+<ul class="ul_circle_1">
+<li><b>Overridden Method</b>: the original method in the superclass.<br /></li>
+<li><b>Overriding Method</b>: the new method in the subclass.<br /></li>
+</ul>
+<br /></li>
+<li><b>Method Overloading</b>: defining multiple methods with the same name but different parameters.<br /><br /></li>
+<li><b>Method Hiding</b>: when a static method in a subclass has the same signature as a static method in the superclass.<br /><br /></li>
+<li><b>Polymorphism</b>: the ability of an object variable to reference objects of different types (superclass reference can point to subclass instances).<br /></li>
+<li><b>Dynamic Binding</b> (<b>late binding</b>): the ability to select the correct method implementation at runtime based on the actual object type.<br /></li>
+<li><b>Static Binding</b> (<b>early binding</b>): the compiler's ability to resolve at compile time which method to call (<code class="code1">private</code>, <code class="code1">static</code>, <code class="code1">final</code> methods, or constructors).<br /><br /></li>
+<li><b>Inlining</b>: optimization where the compiler or JVM replaces method calls with the actual method code for performance.<br /><br /></li>
+<li><b>Cohesion</b>: measure of how closely related the responsibilities of a single module are.<br />
+<ul class="ul_circle_1">
+<li><b>High Cohesion</b> (<b>desirable</b>): elements within a module work toward a single, well-defined task.<br /></li>
+<li><b>Low Cohesion</b> (<b>undesirable</b>): elements within a module have diverse responsibilities.<br /></li>
+</ul>
+.<br /></li>
+<li><b>Coupling</b>: measure of how much one module depends on other modules.<br />
+<ul class="ul_circle_1">
+<li><b>Loose Coupling</b> (<b>desirable</b>): modules have minimal dependencies on each other.<br /></li>
+<li><b>Tight Coupling</b> (<b>undesirable</b>): modules are highly dependent on each other.<br /></li>
+</ul>
+.<br /></li>
+<li><b>Exception</b>: an event that disrupts the normal flow of program execution.<br />
+<ul class="ul_circle_1">
+<li><b>Throw an Exception</b>: explicitly raise an exception using the <code class="code1">throw</code> keyword.<br /></li>
+<li><b>Checked Exception</b>: an exception verified by the compiler, which must be declared by the method or handled in a <code class="code1">try-catch</code> block.<br /></li>
+<li><b>Unchecked Exception</b>: runtime exceptions not checked by the compiler, which don't need to be declared or handled.<br /></li>
+</ul>
+.<br /></li>
+<li><b>Thread</b>: a lightweight subprocess that allows concurrent execution within a program.<br /></li>
+<li><b>Daemon Thread</b>: a background thread that doesn't prevent the JVM from exiting.<br /></li>
+<li><b>Process</b>: an independent program in execution with its own memory space.<br /><br /></li>
+<li><b>Stack</b>: a region of memory that stores method calls, local variables, and partial results.<br /><br /></li>
+<li><b>Generics</b>: feature that provides <b>type safety</b> by allowing parameterized types.<br /></li>
+<li><b>Raw Type</b>: using a generic class without specifying type parameters (<code class="code1">ArrayList</code> instead of <code class="code1">ArrayList&lt;String&gt;</code>).<br /></li>
+<li><b>Diamond Operator</b>: syntax that allows type inference (<code class="code1">new ArrayList&lt;&gt;()</code>).<br /></li>
+<li><b>Parameterized Type</b> | <b>type parameter</b>: the actual type specified for a generic class or method.<br /><br /></li>
+<li><b>Wrapper Class</b>: object representation of primitive types (<code class="code1">Integer</code> is a wrapper class for the <code class="code1">int</code> primitive type).<br /></li>
+<li><b>Autoboxing</b>: automatic conversion between primitive types and their wrapper classes.<br /></li>
+<li><b>Automatic Boxing</b>: primitive to wrapper conversion (<code class="code1">Integer i = 1</code>).<br /></li>
+<li><b>Automatic Unboxing</b>: wrapper to primitive conversion (<code class="code1">int x = i;</code> where i is <code class="code1">Integer</code>).<br /><br /></li>
+<li><code class="code1">{}</code> <b>braces</b>: delimit blocks, method bodies, class bodies, array initialization.<br /></li>
+<li><code class="code1">[]</code> <b>square brackets</b>: array declaration, array element access, annotations.<br /></li>
+<li><code class="code1">'</code> <b>single quote</b>: delimit a character literal.<br /></li>
+<li><code class="code1">"</code> <b>double quote</b>: delimit a string literal.<br /><br /></li>
+<li><b>Long Integer Literals</b> have a suffix <b>l</b> or <b>L</b>: <code class="code1">1l</code>, <code class="code1">1L</code>.<br /></li>
+<li><b>Float Literals</b> have a suffix <b>f</b> or <b>F</b>: <code class="code1">1.0f</code>, <code class="code1">1.0F</code>.<br /></li>
+<li><b>Double Literals</b> can optionally have a suffix <b>d</b> or <b>D</b>: <code class="code1">1.0</code>, <code class="code1">1.0d</code>, <code class="code1">1.0D</code>.<br /></li>
+<li><b>Hexadecimal Literals</b> have a prefix <code class="code1">0x</code> or <code class="code1">0X</code>: <code class="code1">0x1A</code>, <code class="code1">0X1a</code>.<br /></li>
+<li><b>Octal Literals</b> have a prefix <code class="code1">0</code>: <code class="code1">077</code>.<br /></li>
+<li><b>Binary Literals</b> have a prefix <code class="code1">0b</code> or <code class="code1">0B</code>: <code class="code1">0b1010</code>, <code class="code1">0B1010</code>.<br /><br /></li>
+<li><b>Unicode Escape Sequences</b> use the prefix <code class="code1">&#92;u</code>: <code class="code1">&#92;u0041</code> (represents 'A'), <code class="code1">&#92;uFFFF</code>.<br /></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

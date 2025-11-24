@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Method Overriding Explained: Rules, Examples &amp; Interface Implementation | MTI TEK</title>
+<meta name="description" content="Learn Java method overriding with clear rules, code examples, and interface implementation guidelines. Understand access modifiers, return types, and exceptions in overriding." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Method Overriding Explained: Rules, Examples &amp; Interface Implementation | MTI TEK" />
+<meta property="og:description" content="Learn Java method overriding with clear rules, code examples, and interface implementation guidelines. Understand access modifiers, return types, and exceptions in overriding." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/overriding.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Method Overriding Explained: Rules, Examples &amp; Interface Implementation | MTI TEK" />
+<meta name="twitter:description" content="Learn Java method overriding with clear rules, code examples, and interface implementation guidelines. Understand access modifiers, return types, and exceptions in overriding." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/overriding.php",
+        "description": "Learn Java method overriding with clear rules, code examples, and interface implementation guidelines. Understand access modifiers, return types, and exceptions in overriding.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/overriding.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Method Overriding</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Overriding a Method</a></li>
+<li><a href="#sec_id_2">Rules of Method Overriding</a></li>
+<li><a href="#sec_id_3">Implementing Interface Methods</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Overriding a Method</span>
+<div class="tutorialSectionTextDiv1">
+Method overriding allows a subclass to provide a specific implementation of a method already defined in one of its superclasses.<br />
+<br />
+The superclass version of the method can be invoked from the subclass code using the <code class="code1">super</code> keyword (example: <code class="code1">super.doCallOverriddenMethod()</code>).<br />
+<br />
+<b>Note:</b> Overriding is a concept that applies only to methods, not to variables.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Rules of Method Overriding</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Method overriding is only possible for methods that are inheritable.<br />
+For example, a method marked <code class="code1">private</code> is not inheritable and therefore cannot be overridden.<br />
+However, you can define a method in the subclass with the same name, signature (parameters), and return type, but in this case, it's treated as a new method completely unrelated to the one in the superclass.<br />
+<br /></li>
+<li>
+A subclass in the same package as the superclass can override any method that is not marked <code class="code1">private</code> or <code class="code1">final</code>.<br />
+<br /></li>
+<li>
+A subclass in a different package can override only those methods marked <code class="code1">public</code> or <code class="code1">protected</code> (and not marked <code class="code1">final</code>).<br />
+<br /></li>
+<li>
+You cannot override a method marked <code class="code1">final</code>.<br />
+The compiler will show an error: "<b>Cannot override the final method from SuperClass</b>"<br />
+<pre class="java-code">
+public class SuperClass {
+    public final Integer subtractOperation(Integer value1, Integer value2) {
+        return (value1 - value2);
+    }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public Integer subtractOperation(Integer value1, Integer value2) { // compiler error: Cannot override the final method from SuperClass
+        return (value1 - value2) * 10;
+    }
+}</pre>
+</li>
+<li>
+You cannot override a method marked <code class="code1">static</code>.<br />
+The compiler will show an error: "<b>This instance method cannot override the static method from SuperClass</b>"<br />
+<pre class="java-code">
+public class SuperClass {
+    public static Integer subtractOperation(Integer value1, Integer value2) {
+        return (value1 - value2);
+    }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public Integer subtractOperation(Integer value1, Integer value2) { // compiler error: This instance method cannot override the static method from SuperClass
+        return (value1 - value2) * 10;
+    }
+}</pre>
+However, it is valid to declare the subclass method as <code class="code1">static</code> too; in this case, it is a new method that hides the superclass method (method hiding, not overriding).<br />
+When both methods are static, the method version called depends on the declared type of the variable, not the actual object instance.
+
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public static Integer subtractOperation(Integer value1, Integer value2) {
+        return (value1 - value2) * 10;
+    }
+}</pre>
+<pre class="java-code">
+public class TestClass {
+    public static void main(String[] args) {
+        SuperClass superClass1 = new SuperClass();
+        SuperClass superClass2 = new SubClass();
+        SubClass subClass1 = new SubClass();
+
+        System.out.println(superClass1.subtractOperation(5, 2)); // prints 3: uses SuperClass version
+        System.out.println(superClass2.subtractOperation(5, 2)); // prints 3: uses SuperClass version
+        System.out.println(subClass1.subtractOperation(5, 2)); // prints 30: uses SubClass version
+
+        System.out.println();
+
+        System.out.println(SuperClass.subtractOperation(5, 2)); // prints 3
+        System.out.println(SubClass.subtractOperation(5, 2)); // prints 30
+    }
+}</pre>
+</li>
+<li>
+To be considered an overriding method, the method signature must exactly match that of the superclass method.<br />
+The method signature includes the method name and parameter list (number, types, and order of parameters).<br />
+<br />
+Each parameter in the subclass method must be of the same type as the corresponding parameter in the superclass method.<br />
+<br />
+If the number of parameters is different or their types differ (even if it's a subtype), it is not considered overriding but method overloading (a completely new method).<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething(SuperClass superClass) { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething(SuperClass superClass) { } // overriding
+
+    public void doSomething(SubClass subClass) { } // overloading (new method)
+
+    public void doSomething(SubClass subClass1, SubClass subClass2) { } // overloading (new method)
+}</pre>
+Details about method overloading will be discussed on a separate page (<a href="overloading.php">Method Overloading</a>),
+but for now, note that the method selected at compile time depends on the argument types.<br />
+<pre class="java-code">
+public class TestClass {
+    public static void main(String[] args) {
+        SuperClass superClass1 = new SuperClass();
+        SuperClass superClass2 = new SubClass();
+        SubClass subClass1 = new SubClass();
+
+        superClass1.doSomething(superClass1); // calls SuperClass version
+        superClass1.doSomething(subClass1); // calls SuperClass version
+
+        superClass2.doSomething(superClass1); // calls SubClass version
+        superClass2.doSomething(subClass1); // calls SubClass version
+
+        subClass1.doSomething(superClass1); // calls SubClass version
+        subClass1.doSomething(subClass1); // calls overloaded method in SubClass (SubClass parameter)
+
+        subClass1.doSomething(subClass1, subClass1); // calls another overloaded method in SubClass
+    }
+}</pre>
+</li>
+<li>
+The return type of the overriding method must be the same or a subtype of the return type of the superclass method (covariant return type).<br />
+If the return type is incompatible, the compiler will throw an error.<br />
+<pre class="java-code">
+public class SuperClass {
+    public SuperClass doSomething() { return null; }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public Object doSomething() { return null; } // compiler error: The return type is incompatible with SuperClass.doSomething()
+}</pre>
+To fix this, the return type should be changed to either <code class="code1">SuperClass</code> or <code class="code1">SubClass</code>.<br />
+<br />
+Note that if the parameter lists differ, this rule does not apply since it's not considered overriding but overloading.<br />
+<br /></li>
+<li>
+The visibility (access modifier) of the overriding method cannot be more restrictive than that of the superclass method.<br />
+For example, you cannot override a <code class="code1">public</code> method and declare it as <code class="code1">protected</code> or <code class="code1">private</code>:<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    protected void doSomething() { } // compiler error: Cannot reduce the visibility of the inherited method from SuperClass
+}</pre>
+</li>
+<li>
+The visibility of the overriding method can be less restrictive (more accessible).<br />
+For example, you can override a <code class="code1">protected</code> method and declare it as <code class="code1">public</code>:<br />
+<pre class="java-code">
+public class SuperClass {
+    protected void doSomething() { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() { }
+}</pre>
+</li>
+<li>
+The overriding method can throw any unchecked exception (runtime exceptions and errors),
+regardless of whether the superclass method throws an exception or not.<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() throws RuntimeException { }
+}</pre>
+</li>
+<li>
+The overriding method cannot throw checked exceptions that are not declared by the superclass method.<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() throws FileNotFoundException { } // compiler error: Exception FileNotFoundException is not compatible with throws clause in SuperClass.doSomething()
+}</pre>
+</li>
+<li>
+The overriding method may choose not to throw checked exceptions that the superclass method declares.<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() throws FileNotFoundException { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() { }
+}</pre>
+Note that the compiler only considers the declared type of the variable
+when determining whether to require a <code class="code1">try-catch</code> block.<br />
+<pre class="java-code">
+public class TestClass {
+    public static void main(String[] args) {
+        SuperClass superClass1 = new SuperClass();
+        SuperClass superClass2 = new SubClass();
+        SubClass subClass1 = new SubClass();
+
+        superClass1.doSomething(); // compiler error: Unhandled exception type FileNotFoundException
+        superClass2.doSomething(); // compiler error: Unhandled exception type FileNotFoundException
+        subClass1.doSomething(); // OK
+    }
+}</pre>
+</li>
+<li>
+The overriding method can only throw checked exceptions that are the same or subtypes of those thrown by the superclass method.
+
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() throws IOException { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() throws FileNotFoundException, ZipException { }
+}</pre>
+Otherwise, the compiler will display an error:<br />
+<pre class="java-code">
+public class SuperClass {
+    public void doSomething() throws FileNotFoundException { }
+}</pre>
+<pre class="java-code">
+public class SubClass extends SuperClass {
+    public void doSomething() throws IOException { } // compiler error: Exception IOException is not compatible with throws clause in SuperClass.doSomething()
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Implementing Interface Methods</span>
+<div class="tutorialSectionTextDiv1">
+A (non-abstract) class must implement all the methods declared in the interfaces it implements.<br />
+The implementation must follow the same rules outlined above for method overriding.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+The parameter list (and their types) must match exactly those of the interface method.<br />
+<br /></li>
+<li>
+The return type must be the same or a subtype of the interface method's return type.<br />
+<br /></li>
+<li>
+The visibility of the implemented method cannot be more restrictive than the interface method.<br />
+Since interface methods are implicitly <code class="code1">public</code>, the implementing method must be declared <code class="code1">public</code>.<br />
+<br /></li>
+<li>
+The implemented method can throw any unchecked exception,
+regardless of whether the interface method declares it or not.<br />
+<br /></li>
+<li>
+The implemented method cannot throw checked exceptions that are not declared by the interface method.<br />
+<br /></li>
+<li>
+The implemented method may choose not to throw the checked exceptions declared by the interface method.<br />
+<br /></li>
+<li>
+The implemented method can throw only those checked exceptions that are the same or subtypes of those declared by the interface method.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

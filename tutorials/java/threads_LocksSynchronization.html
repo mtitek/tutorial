@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Locks and Synchronization: Synchronized Methods &amp; Blocks | MTI TEK</title>
+<meta name="description" content="Learn how Java handles thread safety using locks, synchronized methods, and code blocks. Understand instance vs. class locking." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Locks and Synchronization: Synchronized Methods &amp; Blocks | MTI TEK" />
+<meta property="og:description" content="Learn how Java handles thread safety using locks, synchronized methods, and code blocks. Understand instance vs. class locking." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/threads_LocksSynchronization.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Locks and Synchronization: Synchronized Methods &amp; Blocks | MTI TEK" />
+<meta name="twitter:description" content="Learn how Java handles thread safety using locks, synchronized methods, and code blocks. Understand instance vs. class locking." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/threads_LocksSynchronization.php",
+        "description": "Learn how Java handles thread safety using locks, synchronized methods, and code blocks. Understand instance vs. class locking.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/threads_LocksSynchronization.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Locks and Synchronization</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction</a></li>
+<li><a href="#sec_id_2">Synchronizing a Method</a></li>
+<li><a href="#sec_id_3">Synchronizing a Code Block</a></li>
+<li><a href="#sec_id_4">Locking an Instance: Class or Object</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction</span>
+<div class="tutorialSectionTextDiv1">
+Locking is a mechanism that allows threads to have exclusive access to the synchronized methods of an instance.
+Synchronized methods of an instance locked by one thread are not accessible to other threads.
+Other threads must wait for the instance to be unlocked before they can attempt to acquire the lock on that instance
+and access its synchronized methods.<br />
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+Each thread can hold one or more locks simultaneously.<br />
+<br /></li>
+<li>
+An instance can be locked by only one thread at a time. This lock does not affect other instances, which can be locked by other threads concurrently.<br />
+<br /></li>
+<li>
+Only the synchronized methods of an instance are affected by the lock acquired on that instance.
+Non-synchronized methods remain accessible to all threads at all times.<br />
+<br /></li>
+<li>
+A thread that obtains a lock on an instance can access all the synchronized methods of that instance without additional locking overhead.<br />
+<br /></li>
+<li>
+Synchronization applies only to methods or code blocks, not to individual variables or fields. However, synchronized methods can safely access and modify instance variables.<br />
+<br /></li>
+<li>
+Java uses intrinsic locks (monitor locks) for synchronization. Every object has an associated monitor that can be locked by at most one thread at a time.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Synchronizing a Method</span>
+<div class="tutorialSectionTextDiv1">
+A method is synchronized when it is marked with the <code class="code1">synchronized</code> keyword.<br />
+<br />
+When a synchronized method is called, the current thread acquires a lock on the instance referred to by that call,
+provided that this instance is not already locked by another thread.<br />
+<br />
+If an instance is already locked by another thread,
+then no other thread can acquire a lock on this instance and, therefore, cannot execute any of its synchronized methods.<br />
+<br />
+Each thread that tries to acquire the lock on an already locked instance will be blocked (put in a waiting state) until the instance is unlocked.<br />
+<br />
+As long as the synchronized method is still executing,
+the thread holding the lock does not release it — even if it is no longer actively running (e.g., if it is sleeping or waiting for I/O).<br />
+<pre class="java-code">
+class MyClassA {
+    private String value;
+
+    public synchronized void foo() { // synchronized method: locks instance 'this'
+        setValue(Thread.currentThread().getName() + " : value");
+
+        try {
+            Thread.sleep(1000); // force the current thread to sleep to give the other thread a chance to run
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupted status
+            e.printStackTrace();
+        }
+
+        System.out.println(getValue());
+    }
+
+    private String getValue() {
+        return value;
+    }
+
+    private void setValue(String value) {
+        this.value = value;
+    }
+}
+
+public class MainClass {
+    public static void main(String[] args) {
+        final MyClassA myClassA = new MyClassA();
+
+        Runnable myRunnable1 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName() + " (start)");
+
+                myClassA.foo(); // the current thread will acquire a lock on the instance referred to by "myClassA"
+
+                System.out.println(Thread.currentThread().getName() + " (end)");
+            }
+        };
+
+        Thread myThread1 = new Thread(myRunnable1, "myFirstThread");
+        Thread myThread2 = new Thread(myRunnable1, "mySecondThread");
+
+        myThread1.start();
+
+        try {
+            Thread.sleep(500); // force the "main" thread to sleep to ensure "myFirstThread" starts before "mySecondThread"
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
+        myThread2.start();
+    }
+}</pre>
+Output:<br />
+<pre class="text-code">
+myFirstThread (start)
+mySecondThread (start)
+myFirstThread : value
+myFirstThread (end)
+mySecondThread : value
+mySecondThread (end)</pre>
+Note that "mySecondThread (start)" prints immediately,
+but "mySecondThread" waits for "myFirstThread" to complete the synchronized method before it can execute <code class="code1">foo()</code>.
+This demonstrates that the thread is blocked when trying to acquire the lock, not when starting.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Synchronizing a Code Block</span>
+<div class="tutorialSectionTextDiv1">
+The difference between synchronizing a method and synchronizing a code block is that the latter allows you to specify which object to use as the lock (monitor);
+whereas method synchronization always locks the instance whose method is being executed (<code class="code1">this</code> for instance methods).<br />
+<br />
+A synchronized method can always be rewritten as a synchronized code block.
+The previous example can be rewritten as follows:<br />
+<pre class="java-code">
+class MyClassA {
+    private String value;
+
+    public void foo() {
+        synchronized (this) // synchronized code block: locks instance 'this'
+        {
+            setValue(Thread.currentThread().getName() + " : value");
+
+            try {
+                Thread.sleep(1000); // force the current thread to sleep to give the other thread a chance to run
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // restore interrupted status
+                e.printStackTrace();
+            }
+
+            System.out.println(getValue());
+        }
+    }
+
+    private String getValue() {
+        return value;
+    }
+
+    private void setValue(String value) {
+        this.value = value;
+    }
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Locking an Instance: Class or Object</span>
+<div class="tutorialSectionTextDiv1">
+When we refer to instances, we typically mean objects that are instances of user-defined classes.
+However, every Java class (source code) also has an associated instance of the <code class="code1">Class</code> class;
+this <code class="code1">Class</code> instance is automatically created by the JVM when the class is first loaded into memory.<br />
+<br />
+A Java class <code class="code1">T</code> can therefore have two types of instances in memory:<br />
+<ul class="ul_square_1">
+<li>
+<b>Class instance (static context):</b> A single instance of the <code class="code1">Class</code> class representing the Java class <code class="code1">T</code>
+is automatically created by the JVM when the class <code class="code1">T</code> is first referenced.<br />
+This instance can also be obtained explicitly using <code class="code1">T.class</code> or <code class="code1">Class.forName("T")</code>.<br />
+This instance serves as the monitor for static synchronized methods.<br />
+When a static method is synchronized, the lock is applied to this <code class="code1">Class</code> instance.<br />
+<pre class="java-code">
+class T {
+    static synchronized void foo() {
+        // Equivalent to: synchronized(T.class) { ... }
+    }
+
+    void bar() {
+        synchronized (T.class) {
+            // Explicitly locking on the Class instance
+        }
+    }
+}</pre>
+</li>
+<li>
+<b>Object instances (instance context):</b> One or more instances representing objects created from the Java class <code class="code1">T</code> using the <code class="code1">new</code> operator (<code class="code1">new T()</code>).<br />
+These instances are used to access non-static members of the class.<br />
+When a non-static method is synchronized, the lock is applied to the specific instance on which the method is being executed (<code class="code1">this</code>).<br />
+<pre class="java-code">
+class R {
+    synchronized void foo() {
+        // Equivalent to: synchronized(this) { ... }
+    }
+
+    void bar() {
+        synchronized (this) {
+            // Explicitly locking on this instance
+        }
+    }
+}</pre>
+</li>
+</ul>
+<b>Note:</b> The lock obtained when calling a synchronized static method of a class
+is completely independent from the lock obtained when calling a synchronized non-static method of the same class.
+Both locks can be held by different threads simultaneously without any interference, as they are locking different objects (Class instance vs. object instance).<br />
+<pre class="java-code">
+class P {
+    static synchronized void staticMethod() {
+        // Locks P.class
+    }
+
+    synchronized void instanceMethod() {
+        // Locks 'this' instance
+    }
+}</pre>
+Two threads can execute <code class="code1">staticMethod()</code> and <code class="code1">instanceMethod()</code> concurrently because they use different monitors.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

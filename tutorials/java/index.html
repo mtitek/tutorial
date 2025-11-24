@@ -1,51 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java SE 23 Tutorial – Complete Guide with Examples | MTI TEK</title>
+<meta name="description" content="Comprehensive Java SE 23 tutorial covering keywords, classes, methods, threads, collections, generics, streams, and more with examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java SE 23 Tutorial – Complete Guide with Examples | MTI TEK" />
+<meta property="og:description" content="Comprehensive Java SE 23 tutorial covering keywords, classes, methods, threads, collections, generics, streams, and more with examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java SE 23 Tutorial – Complete Guide with Examples | MTI TEK" />
+<meta name="twitter:description" content="Comprehensive Java SE 23 tutorial covering keywords, classes, methods, threads, collections, generics, streams, and more with examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/",
+        "description": "Comprehensive Java SE 23 tutorial covering keywords, classes, methods, threads, collections, generics, streams, and more with examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
 <div class="tutorialContentsDiv1">
 <span class="tutorialContentsSpan1">Java - SE 23</span>
 <hr class="tutorialContentsHr1" />
 <ol class="ol_decimal_1">
-<li><a href="javaKeywords.html">Java Keywords</a></li>
-<li><a href="java_operators.html">Java Operators</a></li>
-<li><a href="javaNamingStandards.html">Naming Conventions</a></li>
-<li><a href="types.html">Java Types (primitives, references)</a></li>
-<li><a href="identifiersModifiers.html">Java Modifiers</a></li>
+<li><a href="javaKeywords.php">Java Keywords</a></li>
+<li><a href="java_operators.php">Java Operators</a></li>
+<li><a href="javaNamingStandards.php">Naming Conventions</a></li>
+<li><a href="types.php">Java Types (primitives, references)</a></li>
+<li><a href="identifiersModifiers.php">Java Modifiers</a></li>
 <li><span class="tutorialSectionTitleSpan1">Classes and Objects</span>
 <ol class="ol_lower_latin_1">
-<li><a href="fields.html">Fields</a></li>
-<li><a href="methods.html">Methods</a></li>
-<li><a href="constructors.html">Constructors</a></li>
-<li><a href="initializerBlocks.html">Initializer Blocks</a></li>
-<li><a href="overloading.html">Method Overloading</a></li>
+<li><a href="fields.php">Fields</a></li>
+<li><a href="methods.php">Methods</a></li>
+<li><a href="constructors.php">Constructors</a></li>
+<li><a href="initializerBlocks.php">Initializer Blocks</a></li>
+<li><a href="overloading.php">Method Overloading</a></li>
 </ol>
 </li>
-<li><a href="inheritance.html">Inheritance</a></li>
-<li><a href="overriding.html">Method Overriding</a></li>
-<li><a href="innerClasses.html">Inner Classes</a></li>
-<li><a href="enums.html">Enums</a></li>
-<li><a href="annotations.html">Annotations</a></li>
-<li><a href="exceptions.html">Exceptions</a></li>
-<li><a href="generics.html">Generics</a></li>
+<li><a href="inheritance.php">Inheritance</a></li>
+<li><a href="overriding.php">Method Overriding</a></li>
+<li><a href="innerClasses.php">Inner Classes</a></li>
+<li><a href="enums.php">Enums</a></li>
+<li><a href="annotations.php">Annotations</a></li>
+<li><a href="exceptions.php">Exceptions</a></li>
+<li><a href="generics.php">Generics</a></li>
 <li><span class="tutorialSectionTitleSpan1">Functional Programming</span>
 <ol class="ol_lower_latin_1">
-<li><a href="functionalInterfaces.html">Functional Interfaces</a></li>
-<li><a href="lambdaExpressions.html">Lambda Expressions</a></li>
-<li><a href="streams.html">Streams</a></li>
+<li><a href="functionalInterfaces.php">Functional Interfaces</a></li>
+<li><a href="lambdaExpressions.php">Lambda Expressions</a></li>
+<li><a href="streams.php">Streams</a></li>
 </ol>
 </li>
 <li><span class="tutorialSectionTitleSpan1">Concurrency and Multithreading</span>
 <ol class="ol_lower_latin_1">
-<li><a href="threads.html">Threads</a></li>
-<li><a href="threads_LocksSynchronization.html">Locks and Synchronization</a></li>
-<li><a href="threads_ThreadMethods.html">Thread Class Methods: sleep, join</a></li>
-<li><a href="threads_ObjectMethods.html">Object Class Methods: wait, notify, notifyAll</a></li>
+<li><a href="threads.php">Threads</a></li>
+<li><a href="threads_LocksSynchronization.php">Locks and Synchronization</a></li>
+<li><a href="threads_ThreadMethods.php">Thread Class Methods: sleep, join</a></li>
+<li><a href="threads_ObjectMethods.php">Object Class Methods: wait, notify, notifyAll</a></li>
 <li><span class="tutorialSectionTitleSpan1">java.util.concurrent.ExecutorService</span>
 <ol class="ol_lower_roman_1">
-<li><a href="newSingleThreadExecutor.html">Single Thread Executor</a></li>
-<li><a href="newFixedThreadPool.html">Fixed Thread Pool</a></li>
-<li><a href="newSingleThreadScheduledExecutor.html">Single Thread Scheduled Executor</a></li>
+<li><a href="newSingleThreadExecutor.php">Single Thread Executor</a></li>
+<li><a href="newFixedThreadPool.php">Fixed Thread Pool</a></li>
+<li><a href="newSingleThreadScheduledExecutor.php">Single Thread Scheduled Executor</a></li>
 </ol>
 </li>
 <li><span class="tutorialSectionTitleSpan1">java.util.concurrent.locks</span>
 <ol class="ol_lower_roman_1">
-<li><a href="reentrantLock.html">ReentrantLock</a></li>
+<li><a href="reentrantLock.php">ReentrantLock</a></li>
 </ol>
 </li>
 </ol>
@@ -56,14 +141,86 @@
 <span class="tutorialAnnexesSpan1">Appendix</span>
 <hr class="tutorialAnnexesHr1" />
 <ol class="ol_decimal_1">
-<li><a href="generalTerms.html">General Terms</a></li>
-<li><a href="ubuntu_java_setup.html">Install Java (Ubuntu)</a></li>
+<li><a href="generalTerms.php">General Terms</a></li>
+<li><a href="ubuntu_java_setup.php">Install Java (Ubuntu)</a></li>
 <li><span class="tutorialSectionTitleSpan1">Methods common to all objects</span>
 <ol class="ol_lower_latin_1">
-<li><a href="equals.html">equals() Method</a></li>
-<li><a href="hashCode.html">hashCode() Method</a></li>
-<li><a href="toString.html">toString() Method</a></li>
+<li><a href="equals.php">equals() Method</a></li>
+<li><a href="hashCode.php">hashCode() Method</a></li>
+<li><a href="toString.php">toString() Method</a></li>
 </ol>
 </li>
 </ol>
 </div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Core Java™, Volume I – Fundamentals"
+     src="/images/books/core-java-volume-i-fundamentals.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Core Java™, Volume I – Fundamentals</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Cay S. Horstmann
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Prentice Hall; 13 edition (August 2024)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-0135328378
+</div>
+</div>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Core Java™, Volume II – Advanced Features"
+     src="/images/books/core-java-volume-ii-advanced-features.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Core Java™, Volume II – Advanced Features</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Cay S. Horstmann
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Prentice Hall; 13 edition (August 2024)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-0135371749
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="references-category">
+<h3 class="references-category-title">Documentation & Resources</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Java Platform, Standard Edition & Java Development Kit – Version 23 - API Specification</h4>
+<a href="http://docs.oracle.com/en/java/javase/23/docs/api/" class="reference-link">http://docs.oracle.com/en/java/javase/23/docs/api/</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

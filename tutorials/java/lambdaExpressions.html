@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java Lambda Expressions | MTI TEK</title>
+<meta name="description" content="Learn Java lambda expressions with clear syntax, usage examples, and collection integration." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Java Lambda Expressions | MTI TEK" />
+<meta property="og:description" content="Learn Java lambda expressions with clear syntax, usage examples, and collection integration." />
+<meta property="og:url" content="http://mtitek.com/tutorials/java/lambdaExpressions.php" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Java Lambda Expressions | MTI TEK" />
+<meta name="twitter:description" content="Learn Java lambda expressions with clear syntax, usage examples, and collection integration." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/java/lambdaExpressions.php",
+        "description": "Learn Java lambda expressions with clear syntax, usage examples, and collection integration.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/java/lambdaExpressions.php" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link active" href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.php"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/java/">Java</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Lambda Expressions</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Lambda Expressions</a></li>
+<li><a href="#sec_id_2">Using Lambda Expressions with Collections</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Lambda Expressions</span>
+<div class="tutorialSectionTextDiv1">
+A lambda expression is an anonymous function that can be treated as a value - it can be assigned to variables, passed as arguments, or returned from methods. Lambda expressions provide a concise way to represent functional interfaces (interfaces with a single abstract method).<br />
+<br />
+A lambda expression can be used in several contexts:<br />
+<ul class="ul_square_1">
+<li>
+Initializing a variable of a functional interface type.<br />
+</li>
+<li>
+As method or constructor arguments where a functional interface is expected.<br />
+</li>
+<li>
+As method return values.<br />
+</li>
+<li>
+In conditional expressions "<b>?:</b>" (ternary operator).<br />
+</li>
+</ul>
+<br />
+The syntax of a lambda expression is as follows: <code class="code1">parameters -&gt; body</code><br />
+<br />
+The arrow operator <b>-&gt;</b> separates the parameter list from the body of the lambda expression.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>Parameters:</b> Define the input variables for the lambda expression.<br />
+Parameter types can be omitted if the compiler can infer them from the context (target typing). When types are specified, they must be specified for all parameters or none.<br />
+<br />
+Parentheses around parameters are:<br />
+<ul class="ul_circle_1">
+<li>Required for zero parameters: <code class="code1">()</code><br /></li>
+<li>Optional for exactly one parameter: <code class="code1">x</code> or <code class="code1">(x)</code><br /></li>
+<li>Required for multiple parameters: <code class="code1">(x, y)</code><br /></li>
+</ul>
+<br />
+Examples:<br />
+<ul class="ul_circle_1">
+<li>explicit types: <code class="code1">(Integer i, Integer j) -&gt; i + j</code><br /></li>
+<li>inferred types: <code class="code1">(i, j) -&gt; i + j</code><br /></li>
+<li>no parameters: <code class="code1">() -&gt; Math.random()</code><br /></li>
+<li>single parameter: <code class="code1">i -&gt; i * 2</code><br /></li>
+</ul>
+<br /></li>
+<li>
+<b>Body:</b> Can be either a single expression or a block of statements.<br />
+For single expressions, the <code class="code1">return</code> keyword is implicit. For statement blocks, you must explicitly use <code class="code1">return</code> if the lambda should return a value.<br />
+<br />
+Examples:<br />
+<ul class="ul_circle_1">
+<li>expression body: <code class="code1">(String s) -&gt; s.toUpperCase()</code><br /></li>
+<li>statement block: <code class="code1">(String s) -&gt; { return s.toUpperCase(); }</code><br /></li>
+<li>void lambda: <code class="code1">() -&gt; System.out.println("Hello!")</code><br /></li>
+</ul>
+<br /></li>
+<li>
+<b>Return Type:</b> The return type is inferred by the compiler based on the lambda body and target type.<br />
+Examples:<br />
+<ul class="ul_circle_1">
+<li>returning String: <code class="code1">() -&gt; "hello!"</code><br /></li>
+<li>with explicit return: <code class="code1">() -&gt; { return "hello!"; }</code><br /></li>
+<li>void return: <code class="code1">() -&gt; System.out.println("Hello!")</code><br /></li>
+<li>higher-order function: <code class="code1">x -&gt; y -&gt; x + y</code> (returns a function)<br /></li>
+</ul>
+<br /></li>
+</ul>
+Lambda expressions have some limitations compared to regular methods:<br />
+<ul class="ul_square_1">
+<li>Cannot use <code class="code1">break</code> or <code class="code1">continue</code> statements unless inside a loop within the lambda.<br /></li>
+<li>Cannot throw checked exceptions unless the functional interface's method declares them.<br /></li>
+<li>Must be compatible with the target functional interface's method signature.<br /></li>
+</ul>
+<pre class="java-code">
+import java.util.function.Predicate;
+
+public class TestLambda {
+    public Predicate&lt;Integer&gt; testCheckedException() {
+        Predicate&lt;Integer&gt; predicate = t -&gt; {
+            if (t == 0) {
+                // Runtime exceptions are allowed
+                throw new IllegalStateException("t should not be equal to 0");
+            }
+
+            // Checked exceptions are NOT allowed unless declared in the functional interface
+            if (t % 2 == 0) {
+                throw new Exception("t should be odd"); // Compiler error: Unhandled exception type Exception
+            }
+
+            return t &gt;= 1;
+        };
+
+        return predicate;
+    }
+}</pre>
+Lambda expressions can access variables from their enclosing scope:<br />
+<ul class="ul_square_1">
+<li><b>Local variables:</b> Must be effectively final (not reassigned after initialization).<br /></li>
+<li><b>Instance variables:</b> Can be accessed and modified freely.<br /></li>
+<li><b>Static variables:</b> Can be accessed and modified freely.<br /></li>
+</ul>
+<pre class="java-code">
+import java.util.function.Predicate;
+
+public class TestLambda {
+    private Integer instanceVar = 1;
+    private static Integer classVar = 1;
+
+    public Predicate&lt;Integer&gt; testVariableCapture() {
+        final Integer finalVar = 1;
+        Integer effectivelyFinalVar = 1; // must not be modified after this point
+
+        Predicate&lt;Integer&gt; predicate = t -&gt; {
+            // Can modify instance and static variables
+            instanceVar = t;
+            classVar = t * 2;
+
+            // Can read final and effectively final local variables
+            return t &gt; finalVar &amp;&amp; t &lt; effectivelyFinalVar;
+        };
+
+        // effectivelyFinalVar = 1; // Un-commenting this line will cause a compile error: Local variable effectivelyFinalVar defined in an enclosing scope must be final or effectively final
+
+        return predicate;
+    }
+}</pre>
+<b>Functional Interfaces:</b><br />
+Lambda expressions can only be used where a functional interface is expected. A functional interface has exactly one abstract method.<br />
+<br />
+Examples:<br />
+<ul class="ul_square_1">
+<li><code class="code1">Runnable</code>: <code class="code1">() -&gt; void</code><br /></li>
+<li><code class="code1">Supplier&lt;T&gt;</code>: <code class="code1">() -&gt; T</code><br /></li>
+<li><code class="code1">Consumer&lt;T&gt;</code>: <code class="code1">T -&gt; void</code><br /></li>
+<li><code class="code1">Function&lt;T,R&gt;</code>: <code class="code1">T -&gt; R</code><br /></li>
+<li><code class="code1">Predicate&lt;T&gt;</code>: <code class="code1">T -&gt; boolean</code><br /></li>
+</ul>
+<br />
+Runnable Example:<br />
+<pre class="java-code">
+Runnable task = () -&gt; System.out.println("Task is running...");
+task.run(); // Executes the lambda</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Using Lambda Expressions with Collections</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<b><code class="code1">forEach</code> Method</b><br />
+The <code class="code1">java.lang.Iterable</code> interface provides a default <code class="code1">forEach</code> method that enables functional-style iteration over collections.<br />
+<pre class="java-code">
+public interface Iterable&lt;T&gt; {
+    default void forEach(Consumer&lt;? super T&gt; action) {
+        Objects.requireNonNull(action);
+        for (T t : this) {
+            action.accept(t);
+        }
+    }
+}</pre>
+The <code class="code1">forEach</code> method accepts a <code class="code1">Consumer&lt;T&gt;</code> functional interface, allowing you to specify an action to perform on each element.<br />
+<br />
+Since <code class="code1">java.util.Collection</code> extends <code class="code1">Iterable</code>, all collection classes (List, Set, etc.) inherit this method.<br />
+<br />
+<b>Anonymous Classes vs Lambda Expressions:</b><br />
+<pre class="java-code">
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Consumer;
+
+public class MainClass {
+    public static void main(String[] args) {
+        Collection&lt;String&gt; list = Arrays.asList("A", "B", "C");
+
+        // 1. anonymous inner class
+        list.forEach(new Consumer&lt;String&gt;() {
+            @Override
+            public void accept(String t) {
+                System.out.println(t);
+            }
+        });
+
+        // 2. Lambda with explicit type
+        list.forEach((String t) -&gt; System.out.println(t));
+
+        // 3. Lambda with type inference
+        list.forEach(t -&gt; System.out.println(t));
+
+        // 4. Method reference
+        list.forEach(System.out::println);
+    }
+}</pre>
+<b>Stream Operations with Lambda Expressions:</b><br />
+<pre class="java-code">
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+public class MainClass {
+    public static void main(String[] args) {
+        List&lt;String&gt; names = Arrays.asList("Java", "Lambda", "Expressions");
+
+        // Filter and collect
+        List&lt;String&gt; longNames = names.stream().filter(name -&gt; name.length() &gt; 4).collect(Collectors.toList());
+
+        // Transform and collect
+        List&lt;String&gt; upperNames = names.stream().map(name -&gt; name.toUpperCase()).collect(Collectors.toList());
+
+        // Find first match
+        Optional&lt;String&gt; firstLongName = names.stream().filter(name -&gt; name.length() &gt; 4).findFirst();
+
+        // Reduce operation
+        int totalLength = names.stream().mapToInt(name -&gt; name.length()).sum();
+    }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
