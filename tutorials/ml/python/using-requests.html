@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Making HTTP Requests with requests Library | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Making HTTP Requests with requests Library" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Making HTTP Requests with requests Library | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Making HTTP Requests with requests Library" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/using-requests.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Making HTTP Requests with requests Library | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Making HTTP Requests with requests Library" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/using-requests.html",
+        "description": "Tutorials: Python - Making HTTP Requests with requests Library",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/using-requests.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Making HTTP Requests with requests Library</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+<h5>Installing requests:</h5>
+Install the package requests in a virtual environment (recommended):<br />
+<pre class="sh-code">
+$ pip install requests</pre>
+Alternatively, you can install it for the current user (or globally):<br />
+<pre class="sh-code">
+$ python3 -m pip install --user requests</pre>
+Verify the installation:<br />
+<pre class="python-code">
+import requests
+# Check installed version
+print(requests.__version__)</pre>
+Output:<br />
+<pre class="text-code">
+2.31.0</pre>
+<h5>HTTP Methods:</h5>
+<ul class="ul_square_1">
+<li>
+<h6>GET requests:</h6>
+<pre class="python-code">
+requests.get(url, headers=headers, params=params)</pre>
+</li>
+<li>
+<h6>POST requests:</h6>
+<pre class="python-code">
+# FORM data
+requests.post(url, data=data)
+
+# JSON data
+requests.post(url, json=data)
+
+# Upload files
+requests.post(url, files=files)</pre>
+</li>
+<li>
+<h6>PUT requests:</h6>
+<pre class="python-code">
+requests.put(url, json=data)</pre>
+</li>
+<li>
+<h6>PATCH requests (partial update):</h6>
+<pre class="python-code">
+requests.patch(url, json=data)</pre>
+</li>
+<li>
+<h6>DELETE requests:</h6>
+<pre class="python-code">
+requests.delete(url)</pre>
+</li>
+</ul>
+<h5>Basic GET request:</h5>
+<pre class="python-code">
+# import requests module
+import requests
+
+from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
+
+url = 'http://www.mtitek.com/index.htm'
+
+# adding headers
+headers = {'Accept': 'text/html'}
+
+# adding parameters
+params = {'param1': 'value1'}
+
+try:
+  # GET request
+  response = requests.get(url, headers=headers, params=params)
+
+  print(response) # Output: &lt;Response [200]&gt;
+except HTTPError as e:
+  print(f"HTTP Error: {e}")
+except ConnectionError as e:
+  print(f"Connection Error: {e}")
+except Timeout as e:
+  print(f"Timeout Error: {e}")
+except RequestException as e:
+  print(f"Request Error: {e}")</pre>
+<h5>Response object properties:</h5>
+<pre class="python-code">
+import requests
+
+response = requests.get('http://www.mtitek.com/index.htm')
+
+# response status
+print(f"status code: {response.status_code}") # Output: status code: 200
+print(f"reason: {response.reason}") # Output: reason: OK
+
+# response headers
+print(f"headers keys: {list(dict(response.headers))}") # Output: headers keys: ['Date', 'Server', 'X-Powered-By', 'Connection', 'Transfer-Encoding', 'Content-Type']
+print(f"headers keys/values: {dict(response.headers)}") # Output: headers keys/values: {'Date': 'Tue, 03 Jun 2023 01:49:09 GMT', 'Server': 'Apache', 'X-Powered-By': 'PleskLin', 'Connection': 'close', 'Transfer-Encoding': 'chunked', 'Content-Type': 'text/html'}
+
+# request info
+print(f"request URL: {response.url}") # Output: request URL: http://www.mtitek.com/index.htm
+print(f"request headers keys: {list(dict(response.request.headers))}") # Output: request headers keys: ['User-Agent', 'Accept-Encoding', 'Accept', 'Connection']
+print(f"request headers keys/values: {dict(response.request.headers)}") # Output: request headers keys/values: {'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'}
+
+# response content
+print(f"response content: {response.text}")
+print(f"response raw content: {response.content}")</pre>
+<h5>Authentication:</h5>
+<pre class="python-code">
+import requests
+from requests.auth import HTTPBasicAuth
+
+url = 'http://www.mtitek.com/index.htm'
+
+# basic authentication
+response = requests.get(url, auth=HTTPBasicAuth('user', 'password'))
+print(response) # Output: &lt;Response [200]&gt;
+
+# basic authentication (shorthand)
+response = requests.get(url, auth=('user', 'password'))
+print(response) # Output: &lt;Response [200]&gt;
+
+# bearer token authentication
+headers = {'Authorization': 'Bearer jwttoken'}
+response = requests.get(url, headers=headers)
+print(response) # Output: &lt;Response [200]&gt;</pre>
+<h5>Working with JSON data:</h5>
+<pre class="python-code">
+import requests
+from requests.exceptions import JSONDecodeError
+
+url = 'http://mtitek.com/tutorials/ml/python/data/file.json'
+
+response = requests.get(url)
+
+try:
+  dict_keys = response.json()
+  print(list(dict_keys.keys())) # Output: ['a', 'b', 'c', 'd']
+except JSONDecodeError as e:
+  print(f"Response is not valid JSON: {e}")</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

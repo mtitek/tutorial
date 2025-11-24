@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Defining and Using Functions | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Defining and Using Functions" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Defining and Using Functions | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Defining and Using Functions" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/functions.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Defining and Using Functions | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Defining and Using Functions" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/functions.html",
+        "description": "Tutorials: Python - Defining and Using Functions",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/functions.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Defining and Using Functions</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+<h5>Basic function definition:</h5>
+Use <b>def</b> keyword to define a function.<br />
+Function names should be lowercase (get_message).<br />
+The code inside the function must be indented.<br />
+The colon character (:) is required after the function signature.<br />
+<br />
+Function parameters and arguments:<br />
+Parameters are variables in the function definition.<br />
+Arguments are actual values passed when calling the function.<br />
+<pre class="python-code">
+def hello():
+  """A simple function that print a hello message."""
+  print('Hello!')
+
+# calling hello function
+hello()</pre>
+Output:<br />
+<pre class="text-code">
+Hello!</pre>
+<h5>Return values:</h5>
+<ul class="ul_square_1">
+<li>
+<h6>Single return value.</h6>
+<pre class="python-code">
+def add(i, j):
+  return i+j
+
+print(add(3, 5)) # Output: 8</pre>
+</li>
+<li>
+<h6>Multiple return values.</h6>
+<pre class="python-code">
+def div(i, j):
+  return i//j, i%j
+
+quotient, remainder = div(7, 2)
+print(f'quotient:{quotient}, remainder:{remainder}') # Output: quotient:3, remainder:1</pre>
+</li>
+</ul>
+<h5>Positional arguments:</h5>
+<pre class="python-code">
+def info(firstname, lastname):
+  print(f'firstname: {firstname} | lastname: {lastname}')
+
+# call info function with argument 'A' for the parameter firstname and argument 'B' for the parameter lastname
+info('fn_A', 'ln_B')</pre>
+Output:<br />
+<pre class="text-code">
+firstname: fn_A | lastname: ln_B</pre>
+<h5>Keywords arguments:</h5>
+<pre class="python-code">
+def info(firstname, lastname):
+  print(f'firstname: {firstname} | lastname: {lastname}')
+
+# explicitly naming the parameters of the function
+info(firstname='fn_C', lastname='ln_D')
+
+# the order of the arguments doesn't matter when explicitly naming the parameters
+info(lastname='ln_F', firstname='fn_E')</pre>
+Output:<br />
+<pre class="text-code">
+firstname: fn_C | lastname: ln_D
+firstname: fn_E | lastname: ln_F</pre>
+<h5>Mixing positional and keywords arguments:</h5>
+Positional arguments must be listed first.<br />
+<pre class="python-code">
+def info(firstname, lastname):
+  print(f'firstname: {firstname} | lastname: {lastname}')
+
+# mixed positional and keywords arguments
+info('fn_G', lastname='ln_H')</pre>
+Output:<br />
+<pre class="text-code">
+firstname: fn_G | lastname: ln_H</pre>
+<h5>Arbitrary positional arguments (*args):</h5>
+Passing an arbitrary number of arguments.<br />
+<pre class="python-code">
+# python creates a tuple named values that will contain all the arguments
+def print_values(*values):
+  print(values)
+
+print_values() # Output: ()
+print_values(1) # Output: (1,)
+print_values(1, 2) # Output: (1, 2)
+
+# unpacking lists
+list1 = [1, 2, 3]
+print_values(*list1) # Output: (1, 2, 3)
+
+# unpacking tuples
+tuple1 = (1, 2, 3)
+print_values(*tuple1) # Output: (1, 2, 3)</pre>
+<h5>Mixing regular arguments and *args:</h5>
+<pre class="python-code">
+def print_values(key, *values):
+  print(f'{key}={values}')
+
+# the key argument is required
+#print_values() # Raises TypeError: print_values() missing 1 required positional argument: 'key'
+
+print_values('none') # Output: none=()
+print_values('one', 'a') # Output: one=('a',)
+print_values('two', 'a', 'b') # Output: two=('a', 'b')</pre>
+<h5>Arbitrary keyword arguments (**kwargs)</h5>
+Passing an arbitrary number of key-value pair as arguments.<br />
+<pre class="python-code">
+# python creates a dictionary named values that will contain all the arguments
+def print_values(**values):
+  print(values)
+
+print_values() # Output: {}
+print_values(a=1) # Output: {'a': 1}
+print_values(a=1, b=2) # Output: {'a': 1, 'b': 2}
+print_values(a=1, b=2, c=3) # Output: {'a': 1, 'b': 2, 'c': 3}</pre>
+<h5>Mixing regular arguments and **kwargs:</h5>
+Passing regular and arbitrary number of key-value pair as arguments.<br />
+<pre class="python-code">
+def print_values(key, **values):
+  print(values[key])
+
+# the key argument is required
+#print_values('a') # Raises KeyError: 'a'
+
+print_values('a', a=1) # Output: 1
+print_values('b', a=1, b=2) # Output: 2
+print_values('c', a=1, b=2, c=3) # Output: 3</pre>
+<h5>Combining all parameter types:</h5>
+<pre class="python-code">
+def print_values(msg, *args, **kwargs):
+  print(f'msg:{msg}, args:{args}, kwargs:{kwargs}')
+
+print_values('hello', 1, a=1) # Output: msg:hello, args:(1,), kwargs:{'a': 1}</pre>
+<h5>Default parameters:</h5>
+<pre class="python-code">
+def info(firstname, lastname='unknown'):
+  print(f'firstname: {firstname} | lastname: {lastname}')
+
+# using default with positional argument for the first parameter
+info('fn_A') # the second argument is missing, defaults to 'unknown'
+
+# using default with keyword argument for the first parameter
+info(firstname='fn_B') # the second argument is missing, defaults to 'unknown'
+
+# overriding the default value
+info(firstname='fn_C', lastname='ln_D')</pre>
+Output:<br />
+<pre class="text-code">
+firstname: fn_A | lastname: unknown
+firstname: fn_B | lastname: unknown
+firstname: fn_C | lastname: ln_D</pre>
+<h5>Mutable defaults:</h5>
+You need to avoid mutable defaults like lists or dictionaries.<br />
+<pre class="python-code">
+# using mutable default
+def add_message(msg, messages=[]):
+  messages.append(msg)
+  return messages
+
+print(add_message("hello")) # Output: ['hello']
+print(add_message("python")) # Output: ['hello', 'python']</pre>
+To fix the issue, use None:<br />
+<pre class="python-code">
+def add_message(msg, messages=None):
+  if messages is None:
+    messages = []
+  messages.append(msg)
+  return messages
+
+print(add_message("hello")) # Output: ['hello']
+print(add_message("python")) # Output: ['python']</pre>
+<h5>Passing lists as arguments:</h5>
+<pre class="python-code">
+def pop(x):
+  return x.pop()
+
+y = [1, 2, 3]
+print(pop(y)) # Output: 3
+print(y) # Output: [1, 2]</pre>
+<h5>Passing a copy of a list as an argument:</h5>
+<pre class="python-code">
+def pop(x):
+  return x.pop()
+
+y = [1, 2, 3]
+print(pop(y[:])) # Output: 3 (passing a list slice as argument)
+print(y) # Output: [1, 2, 3]</pre>
+<h5>Working with lists copies:</h5>
+<pre class="python-code">
+def append(i, list1, list2, list3):
+  # modify the original list
+  list1.append(i)
+
+  # create new copy
+  list_copy = list2.copy()
+  list_copy.append(i)
+
+  # create new copy
+  list_another_copy = list3[:]
+  list_another_copy.append(i)
+
+  return list1, list_copy, list_another_copy
+
+y1 = [1]
+y2 = [2]
+y3 = [3]
+z1, z2, z3 = append(4, y1, y2, y3)
+print(f'y1:{y1}, y2:{y2}, y3:{y3}') # Output: y1:[1, 4], y2:[2], y3:[3]
+print(f'z1:{z1}, z2:{z2}, z3:{z3}') # Output: z1:[1, 4], z2:[2, 4], z3:[3, 4]</pre>
+<h5>Local and global variables</h5>
+<pre class="python-code">
+global_var = "hello"
+def use_global_local():
+  local_var = "python!"
+  print(f'{global_var} {local_var}') # Output: hello python!
+
+def update_global():
+  global global_var
+  global_var = "hello python!" # the global variable will be changed
+  print(global_var) # Output: hello python!
+
+def shadow_global():
+  # shadowing the global variable
+  global_var = "hello!" # the global variable won't be changed
+  print(global_var) # Output: hello!
+
+use_global_local()
+print(global_var) # Output: hello
+
+update_global()
+print(global_var) # Output: hello python!
+
+shadow_global()
+print(global_var) # Output: hello python!</pre>
+<h5>Lambda functions</h5>
+<ul class="ul_square_1">
+<li>
+<h6>Basic lambda:</h6>
+<pre class="python-code">
+square = lambda x: x ** 2
+print(square(3)) # Output: 9</pre>
+</li>
+<li>
+<h6>Lambda with multiple arguments:</h6>
+<pre class="python-code">
+add = lambda x, y: x + y
+print(add(3, 6)) # Output: 9</pre>
+</li>
+<li>
+<h6>Lambda with map function:</h6>
+<pre class="python-code">
+print(list(map(lambda x: x ** 2, [1, 2, 3]))) # Output: [1, 4, 9]</pre>
+</li>
+<li>
+<h6>Lambda with filter function:</h6>
+<pre class="python-code">
+print(list(filter(lambda x: x % 2 == 0, [1, 2, 3]))) # Output: [2]</pre>
+</li>
+<li>
+<h6>Sorting with lambda:</h6>
+<pre class="python-code">
+x = ['abcd', 'abc', 'ab', 'a']
+x.sort(key=lambda i: len(i))
+print(x) # Output: ['a', 'ab', 'abc', 'abcd']</pre>
+</li>
+</ul>
+<h5>Using functions as arguments</h5>
+<pre class="python-code">
+def apply(operation, numbers):
+  return [operation(i) for i in numbers]
+
+def square(x):
+  return x ** 2
+
+print(apply(square, [1, 2, 3])) # Output: [1, 4, 9]
+print(apply(lambda x: x ** 2, [1, 2, 3])) # Output: [1, 4, 9]</pre>
+<h5>Return functions</h5>
+<pre class="python-code">
+def apply_lambda(multiplier):
+  return lambda x: x * multiplier
+
+def apply_function(multiplier):
+  def apply(x):
+    return x * multiplier
+  return apply
+
+print(apply_lambda(3)(2)) # Output: 6
+print(apply_function(3)(2)) # Output: 6</pre>
+<h5>Modules and imports</h5>
+<ul class="ul_square_1">
+<li>
+<h6>Creating a module:</h6>
+Create a file <b>function_module_1.py</b> that contains the definition of two functions:
+<pre class="sh-code">
+$ vi function_module_1.py</pre>
+<pre class="python-code">
+def add(i, j):
+  return i+j
+
+def multiply(i, j):
+  return i*j</pre>
+</li>
+<li>
+<h6>Import entire module:</h6>
+Create a file <b>function_import_1.py</b> that imports the module <b>function_module_1</b> (<b>function_module_1.py</b>):
+<pre class="sh-code">
+$ vi function_import_1.py</pre>
+<pre class="python-code">
+# all functions defined in the module function_module_1 will be accessible using the prefix function_module_1
+import function_module_1
+
+# calling the functions in the module function_module_1 using the name of the module name as a prefix
+print(function_module_1.add(2, 3)) # Output: 5
+print(function_module_1.multiply(2, 3)) # Output: 6</pre>
+</li>
+<li>
+<h6>Import specific functions:</h6>
+Create a file <b>function_import_2.py</b> that imports specific functions defined in the module <b>function_module_1</b> (<b>function_module_1.py</b>):
+<pre class="sh-code">
+$ vi function_import_2.py</pre>
+<pre class="python-code">
+# importing the functions add and multiply from the module function_module_1
+from function_module_1 import add, multiply
+
+# calling directly the functions in the module function_module_1 without specifying the module name
+print(add(2, 3)) # Output: 5
+print(multiply(2, 3)) # Output: 6</pre>
+</li>
+<li>
+<h6>Import all:</h6>
+Create a file <b>function_import_3.py</b> that imports all functions defined in the module <b>function_module_1</b> (<b>function_module_1.py</b>):
+<pre class="sh-code">
+$ vi function_import_3.py</pre>
+<pre class="python-code">
+# importing all functions from the module function_module_1
+from function_module_1 import *
+
+# calling directly the functions in the module function_module_1 without specifying the module name
+print(add(2, 3)) # Output: 5
+print(multiply(2, 3)) # Output: 6</pre>
+</li>
+<li>
+<h6>Import with alias (as):</h6>
+Create a file <b>function_import_4.py</b> that imports the module <b>function_module_1</b> (<b>function_module_1.py</b>) and give it an alias <b>f1</b>:
+<pre class="sh-code">
+$ vi function_import_4.py</pre>
+<pre class="python-code">
+# defining the alias f1 for the module function_module_1
+import function_module_1 as f1
+
+# calling the functions in the module function_module_1 using the alias of the module as a prefix
+print(f1.add(2, 3)) # Output: 5
+print(f1.multiply(2, 3)) # Output: 6</pre>
+</li>
+<li>
+<h6>Import specific functions with aliases (as):</h6>
+Create a file <b>function_import_5.py</b> that imports specific functions defined in the module <b>function_module_1</b> (<b>function_module_1.py</b>) and give them aliases:
+<pre class="sh-code">
+$ vi function_import_5.py</pre>
+<pre class="python-code">
+# defining the alias a for the method add and the alias m for the method multiply
+from function_module_1 import add as a, multiply as m
+
+# calling directly the functions in the module function_module_1 using the specified alias for each function
+print(a(2, 3)) # Output: 5
+print(m(2, 3)) # Output: 6</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

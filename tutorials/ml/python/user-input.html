@@ -1,0 +1,64 @@
+<?php
+$absolutePath = $_SERVER['DOCUMENT_ROOT'];
+
+$tutorialTitle = "Python - Handling User Input";
+$tutorialDescription = "Tutorials: " . $tutorialTitle;
+
+
+$menuActive="Python";
+
+include $absolutePath . '/tutorials/sections.header.index.html';
+?>
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Handling User Input</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">User input</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">User input</span>
+<div class="tutorialSectionTextDiv1">
+input() function:
+<pre class="python-code">
+msg = input('Enter a message: ')
+print(msg)</pre>
+<pre class="text-code">
+Enter a message: Hello
+Hello</pre>
+Use while loop with input() function:
+<pre class="python-code">
+msg = ''
+while msg != 'exit':
+  msg = input('Enter a new message: ')
+  if msg != 'exit':
+    print(msg)</pre>
+<pre class="text-code">
+Enter a new message: Hello
+Hello
+Enter a new message: Python
+Python
+Enter a new message: exit</pre>
+Use while loop with input() function:
+<pre class="python-code">
+while True:
+  msg = input('Enter a new message: ')
+  if msg == 'exit':
+    break
+  print(msg)</pre>
+<pre class="text-code">
+Enter a new message: Hello
+Hello
+Enter a new message: Python
+Python
+Enter a new message: exit</pre>
+</div>
+</li>
+</ol>
+</div>
+<?php
+include $absolutePath . '/tutorials/sections.footer.index.html';
+?>

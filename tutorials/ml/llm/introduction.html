@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Large Language Models Guide: Types, Training &amp; Applications | MTI TEK</title>
+<meta name="description" content="Complete guide to Large Language Models (LLMs): encoder-only, decoder-only, and encoder-decoder architectures. Learn training, applications, and examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Large Language Models Guide: Types, Training &amp; Applications | MTI TEK" />
+<meta property="og:description" content="Complete guide to Large Language Models (LLMs): encoder-only, decoder-only, and encoder-decoder architectures. Learn training, applications, and examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/introduction.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Large Language Models Guide: Types, Training &amp; Applications | MTI TEK" />
+<meta name="twitter:description" content="Complete guide to Large Language Models (LLMs): encoder-only, decoder-only, and encoder-decoder architectures. Learn training, applications, and examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/introduction.html",
+        "description": "Complete guide to Large Language Models (LLMs): encoder-only, decoder-only, and encoder-decoder architectures. Learn training, applications, and examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/introduction.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Introduction</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction</a></li>
+<li><a href="#sec_id_2">Representation Models (Encoder-Only)</a></li>
+<li><a href="#sec_id_3">Generative Models (Decoder-Only)</a></li>
+<li><a href="#sec_id_4">Encoder-Decoder Models</a></li>
+<li><a href="#sec_id_5">LLMs Tasks Categories</a></li>
+<li><a href="#sec_id_6">Creating a Language Model</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction</span>
+<div class="tutorialSectionTextDiv1">
+Large Language Models (LLMs) are a class of AI models designed to understand, generate, and interact with human language.
+These models are built to interact with language in human-like ways (e.g., answering questions, writing essays, holding conversations).
+Built on the Transformer architecture,
+LLMs are trained on massive text corpora and learn to capture complex linguistic patterns, semantics, and contextual relationships within language.
+These models consist of neural networks with billions of parameters — numeric values that capture the model's understanding of language.
+During training, these parameters are adjusted to optimize performance on language-specific tasks.<br />
+<br />
+Types of LLMs:<br />
+<ul class="ul_square_1">
+<li>Representation Models (Encoder-Only)<br /></li>
+<li>Generative Models (Decoder-Only)<br /></li>
+<li>Encoder-Decoder Models<br /></li>
+</ul>
+<br />
+Applications of LLMs:<br />
+<ul class="ul_square_1">
+<li>Text generation: Creative writing, content generation, code completion.<br /></li>
+<li>Text classification: Spam detection, sentiment analysis.<br /></li>
+<li>Text clustering: Organizing unstructured data.<br /></li>
+<li>Semantic search: Context-aware information retrieval, question answering.<br /></li>
+<li>Summarization: Document and content summarization.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Representation Models (Encoder-Only)</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>Function: Designed for understanding and encoding language rather than generating it.<br /></li>
+<li>Architecture: Encoder-only Transformer architecture.<br /></li>
+<li>Model type: Sequence-to-vector (for classification) or sequence-to-sequence (for token-level tasks).<br /></li>
+<li>Use case: Takes an input sequence and produces a classification, embedding, or other representations.<br /></li>
+</ul>
+<br />
+These models are commonly used in:<br />
+<ul class="ul_square_1">
+<li>Text classification and sentiment analysis.<br /></li>
+<li>Named entity recognition (NER).<br /></li>
+<li>Text embeddings and similarity tasks.<br /></li>
+</ul>
+<br />
+Examples of representation models:<br />
+<ul class="ul_square_1">
+<li>
+BERT (Bidirectional Encoder Representations from Transformers) – Open-source: 110M-340M parameters<br />
+</li>
+<li>
+RoBERTa (Robustly Optimized BERT Pretraining Approach) - Open-source: 125M-355M parameters<br />
+</li>
+<li>
+DeBERTa (Decoding-enhanced BERT with Disentangled Attention) - Open-source: 140M-1.5B parameters<br />
+</li>
+<li>
+DistilBERT - Open-source: 66M parameters (distilled version of BERT)<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Generative Models (Decoder-Only)</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>Function: Focused on generating coherent and contextually relevant text.<br /></li>
+<li>Architecture: Decoder-only Transformer architecture.<br /></li>
+<li>Model type: Sequence-to-sequence (autoregressive generation).<br /></li>
+<li>Use case: Takes a text input (prompt) and generates a text output (completion).<br /></li>
+</ul>
+<br />
+These models are prompt-driven and require clear instructions to produce useful responses.
+They are not typically task-specific but can be fine-tuned for specific applications.<br />
+<br />
+These models are commonly used in:<br />
+<ul class="ul_square_1">
+<li>Conversational AI and chatbots</li>
+<li>Code generation and programming assistance</li>
+<li>Creative writing and content creation</li>
+<li>Reasoning and problem-solving tasks</li>
+</ul>
+<br />
+Examples of generative models:<br />
+<ul class="ul_square_1">
+<li>
+LLaMA 3 (Large Language Model Meta AI) - Meta AI - Open-source: 8B-70B parameters<br />
+</li>
+<li>
+GPT-4 (Generative Pre-trained Transformer) - OpenAI - Proprietary: ~1.8T parameters (estimated)<br />
+</li>
+<li>
+Gemini - Google - Proprietary: Multiple variants (Ultra, Pro, Nano)<br />
+</li>
+<li>
+Claude - Anthropic - Proprietary: Multiple variants (Opus, Sonnet, Haiku)<br />
+</li>
+<li>
+Mistral - Mistral AI - Open-source: 7B-8x7B parameters<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Encoder-Decoder Models</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>Function: Combine the strengths of both understanding (encoding) and generation (decoding).<br /></li>
+<li>Architecture: Full Transformer (encoder + decoder stacks).<br /></li>
+<li>Model type: Sequence-to-sequence.<br /></li>
+<li>Use case: Effective for tasks that need both comprehension and generation, like translation, summarization, and question answering.<br /></li>
+</ul>
+<br />
+These models are commonly used in:<br />
+<ul class="ul_square_1">
+<li>Translation</li>
+<li>Text summarization</li>
+<li>Question answering</li>
+</ul>
+<br />
+Examples of encoder-decoder models:<br />
+<ul class="ul_square_1">
+<li>T5 (Text-to-Text Transfer Transformer) – Google: 220M-11B parameters</li>
+<li>mT5 (multilingual T5) – Google: 300M-13B parameters</li>
+<li>BART (Bidirectional and Auto-Regressive Transformers) – Facebook: 140M-400M parameters</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">LLMs Tasks Categories</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h5>Generative AI</h5>
+Any AI that creates new content (text, code, images).
+Includes all text generation tasks:<br />
+<ul class="ul_circle_1">
+<li>
+<h6>Completion</h6>
+<ul class="ul_disc_1">
+<li>Use case: Code completion, writing assistance, autocomplete.<br /></li>
+<li>Example: "The weather today is" → "The weather today is sunny".<br /></li>
+</ul>
+</li>
+<li>
+<h6>Chat / Conversation</h6>
+<ul class="ul_disc_1">
+<li>Use case: Chatbots, virtual assistants, customer service.<br /></li>
+<li>Example: Q&amp;A with follow-ups, maintaining conversation history and context.<br /></li>
+</ul>
+</li>
+<li>
+<h6>Instruction Following</h6>
+<ul class="ul_disc_1">
+<li>Use case: Task automation, content processing, specific task completion.<br /></li>
+<li>Example: "Summarize this article in 3 sentences" or "Write a Python function to sort a list".<br /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h5>Non-Generative Tasks</h5>
+<ul class="ul_circle_1">
+<li>
+<h6>Classification</h6>
+<ul class="ul_disc_1">
+<li>Categorize input into predefined labels.<br /></li>
+<li>Example: Text → positive/negative/neutral sentiment.<br /></li>
+</ul>
+</li>
+<li>
+<h6>Embedding/Encoding</h6>
+<ul class="ul_disc_1">
+<li>Convert text to numerical vectors (dense representations).<br /></li>
+<li>Use case: Semantic search, RAG systems, similarity matching.<br /></li>
+</ul>
+</li>
+<li>
+<h6>Named Entity Recognition (NER)</h6>
+<ul class="ul_disc_1">
+<li>Extract and classify entities from text.<br /></li>
+<li>Example: Extract person names, locations, organizations, dates.<br /></li>
+</ul>
+</li>
+<li>
+<h6>Question Answering</h6>
+<ul class="ul_disc_1">
+<li>Extract or generate answers from given context.<br /></li>
+<li>Example: Context + Question → Specific answer span or generated response.<br /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br />
+Depending on the task type, different models are more suitable:<br />
+<ul class="ul_square_1">
+<li><b>Classification / Named Entity Recognition (NER)</b> → BERT-family models (e.g., RoBERTa, DistilBERT, DeBERTa)<br /></li>
+<li><b>Summarization / Translation</b> → T5, mT5, BART<br /></li>
+<li><b>Chat / Code Generation / Instruction Following</b> → LLaMA, GPT-4, Claude, Mistral<br /></li>
+<li><b>Embeddings</b> → SentenceTransformers (e.g., all-MiniLM-L6-v2), or BERT for contextual embeddings<br /></li>
+<li><b>Retrieval-Augmented Generation (RAG)</b> → Embedding models for retrieval + Generative models for response generation<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Creating a Language Model</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Pre-training</h6>
+This is the initial phase where a model learns the structure and patterns of language from a large, diverse dataset.<br />
+<br />
+Characteristics:<br />
+<ul class="ul_circle_1">
+<li>Produces foundation models (also called base models).<br /></li>
+<li>Learns syntax, semantics, world knowledge, and reasoning patterns.<br /></li>
+<li>Focuses on next-token prediction (for generative models) or masked language modeling (for encoder models).<br /></li>
+<li>Utilizes unsupervised learning techniques on unlabeled text data.<br /></li>
+<li>Requires extensive computational resources (GPUs, TPUs, large memory, distributed training).<br /></li>
+<li>Requires vast amounts of data (typically hundreds of billions to trillions of tokens).<br /></li>
+<li>Requires significant training time (weeks to months).<br /></li>
+</ul>
+<br />
+</li>
+<li>
+<h6>Fine-tuning</h6>
+This step customizes the pre-trained model for specific tasks, domains, or behaviors.<br />
+<br />
+Types of fine-tuning:<br />
+<ul class="ul_circle_1">
+<li><b>Supervised Fine-tuning (SFT):</b> Uses labeled datasets for specific tasks.<br /></li>
+<li><b>Instruction Tuning:</b> Trains models to follow human instructions and prompts.<br /></li>
+<li><b>Reinforcement Learning from Human Feedback (RLHF):</b> Aligns model outputs with human preferences.<br /></li>
+</ul>
+<br />
+Characteristics:<br />
+<ul class="ul_circle_1">
+<li>Produces task-specific or instruction-following models.<br /></li>
+<li>Involves supervised learning with smaller datasets.<br /></li>
+<li>Consumes fewer resources compared to pre-training.<br /></li>
+<li>Shorter training times (hours to days).<br /></li>
+<li>Enables models to follow instructions.<br /></li>
+</ul>
+</li>
+</ul>
+<br />
+Training Techniques<br />
+<ul class="ul_square_1">
+<li>
+<h6>Supervised Learning:</h6>
+Uses labeled data for tasks like classification and regression.<br />
+Example: Sentiment analysis where text is labeled as positive, negative, or neutral.<br />
+<br /></li>
+<li>
+<h6>Unsupervised Learning:</h6>
+Uses unlabeled data for discovering patterns and structure.<br />
+Example: Next-token prediction, masked language modeling, or learning text representations.<br />
+<br /></li>
+<li>
+<h6>Masked Language Modeling (MLM)</h6>
+<ul class="ul_circle_1">
+<li>Key technique for training representation models like BERT.<br /></li>
+<li>Randomly masks tokens in input text.<br /></li>
+<li>The model learns to predict the masked tokens based on bidirectional context.<br /></li>
+</ul>
+<br />
+Example:<br />
+<pre class="text-code">
+Input: "[CLS] LLMs are large [MASK] models [SEP]"
+Target: language
+Output: The model predicts "language" for the [MASK] token</pre>
+</li>
+<li>
+<h6>Autoregressive Language Modeling</h6>
+<ul class="ul_circle_1">
+<li>Key technique for training generative models like GPT.<br /></li>
+<li>Predicts the next token in a sequence given previous tokens.<br /></li>
+</ul>
+<br />
+Example:<br />
+<pre class="text-code">
+Input: "The weather today is"
+Model predicts: "sunny" (next most likely token)
+Then: "The weather today is sunny"
+Model predicts: "and"
+Then: "The weather today is sunny and"</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LLM Installation Guide: Python, Hugging Face, llama-cpp-python &amp; LangChain | MTI TEK</title>
+<meta name="description" content="Complete LLM installation tutorial for CPU environments. Learn to install Hugging Face Transformers, llama-cpp-python, and LangChain. Step-by-step guide with code examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="LLM Installation Guide: Python, Hugging Face, llama-cpp-python &amp; LangChain | MTI TEK" />
+<meta property="og:description" content="Complete LLM installation tutorial for CPU environments. Learn to install Hugging Face Transformers, llama-cpp-python, and LangChain. Step-by-step guide with code examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/installation.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="LLM Installation Guide: Python, Hugging Face, llama-cpp-python &amp; LangChain | MTI TEK" />
+<meta name="twitter:description" content="Complete LLM installation tutorial for CPU environments. Learn to install Hugging Face Transformers, llama-cpp-python, and LangChain. Step-by-step guide with code examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/installation.html",
+        "description": "Complete LLM installation tutorial for CPU environments. Learn to install Hugging Face Transformers, llama-cpp-python, and LangChain. Step-by-step guide with code examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/installation.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Installation</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Python Environment Setup</a></li>
+<li><a href="#sec_id_2">Hugging Face CLI</a></li>
+<li><a href="#sec_id_3">Hugging Face Transformers</a></li>
+<li><a href="#sec_id_4">llama-cpp-python</a></li>
+<li><a href="#sec_id_5">LangChain</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Python Environment Setup</span>
+<div class="tutorialSectionTextDiv1">
+See this page for details on installing Python and the minimum libraries required for your development environment:<br />
+<a href="/tutorials/ml/python/install.html">Install Python</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Hugging Face CLI</span>
+<div class="tutorialSectionTextDiv1">
+Access and download models from Hugging Face Hub.<br />
+<br />
+See this page for more details:
+<a href="https://huggingface.co/docs/huggingface_hub/main/en/guides/cli">https://huggingface.co/docs/huggingface_hub/main/en/guides/cli</a><br />
+<br />
+Install Hugging Face CLI:<br />
+<pre class="sh-code">
+$ pip install "huggingface_hub[cli]"</pre>
+Verify installation and check version:<br />
+<pre class="sh-code">
+$ huggingface-cli version</pre>
+<pre class="sh-code">
+huggingface_hub version: 0.30.2</pre>
+You can use the CLI to download models:<br />
+<pre class="sh-code">
+$ huggingface-cli download microsoft/DialoGPT-small</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Hugging Face Transformers</span>
+<div class="tutorialSectionTextDiv1">
+Main library for working with transformer models (BERT, GPT, etc.).<br />
+<br />
+See this page for more details:
+<a href="https://huggingface.co/docs/transformers/en/installation">https://huggingface.co/docs/transformers/en/installation</a><br />
+<br />
+Install transformers:<br />
+<pre class="sh-code">
+$ pip install transformers</pre>
+To install Transformers with PyTorch as the backend (defaults to CPU if no GPU/CUDA is available), run:<br />
+<pre class="sh-code">
+$ pip install 'transformers[torch]'</pre>
+To test if the installation was successful, run the following command. It should return a label and a score for the provided text:
+<pre class="sh-code">
+$ python3 -c "from transformers import pipeline; print(pipeline('sentiment-analysis')('hugging face is the best'))"</pre>
+<pre class="sh-code">
+[{'label': 'POSITIVE', 'score': 0.999839186668396}]</pre>
+Example: Running a model using Hugging Face Transformers:<br />
+<pre class="sh-code">
+$ vi huggingface-llm.py</pre>
+<pre class="python-code">
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+
+print(model)
+print(tokenizer)</pre>
+Run the python script:<br />
+<pre class="sh-code">
+$ python3 huggingface-llm.py</pre>
+Output:<br />
+<pre class="sh-code">
+GPT2TokenizerFast(
+    name_or_path='microsoft/DialoGPT-small',
+    vocab_size=50257,
+    model_max_length=1024,
+    is_fast=True,
+    padding_side='right',
+    truncation_side='right',
+    special_tokens={'bos_token': '&lt;|endoftext|&gt;', 'eos_token': '&lt;|endoftext|&gt;', 'unk_token': '&lt;|endoftext|&gt;'},
+    clean_up_tokenization_spaces=True,
+    added_tokens_decoder={50256: AddedToken("&lt;|endoftext|&gt;", rstrip=False, lstrip=False, single_word=False, normalized=True, special=True),}
+)</pre>
+<pre class="sh-code">
+GPT2LMHeadModel(
+  (transformer): GPT2Model(
+    (wte): Embedding(50257, 1024)
+    (wpe): Embedding(1024, 1024)
+    ...
+  )
+  (lm_head): Linear(in_features=1024, out_features=50257, bias=False)
+)</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">llama-cpp-python</span>
+<div class="tutorialSectionTextDiv1">
+Run optimized LLMs locally with efficient inference.<br />
+<br />
+See these pages for more details:<br />
+<a href="https://pypi.org/project/llama-cpp-python/">https://pypi.org/project/llama-cpp-python/</a><br />
+<a href="https://python.langchain.com/docs/integrations/llms/llamacpp/">https://python.langchain.com/docs/integrations/llms/llamacpp/</a><br />
+<br />
+Install llama-cpp-python:<br />
+<pre class="sh-code">
+$ pip install llama-cpp-python</pre>
+Test llama-cpp-python:<br />
+<br />
+Download a compatible model (GGUF format + supported by llama-cpp-python):<br />
+<pre class="sh-code">
+$ wget https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf/resolve/main/Phi-3-mini-4k-instruct-q4.gguf</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi llama-llm.py</pre>
+<pre class="python-code">
+from llama_cpp import Llama
+
+model = Llama(model_path="./Phi-3-mini-4k-instruct-q4.gguf")</pre>
+Run the python script:<br />
+<pre class="sh-code">
+$ python3 llama-llm.py</pre>
+Output:<br />
+<pre class="sh-code">
+llama_model_loader: loaded meta data with 24 key-value pairs and 195 tensors from Phi-3-mini-4k-instruct-q4.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = phi3
+...
+Using gguf chat template: {{ bos_token }}{% for message in messages %}{% if (message['role'] == 'user') %}{{'&lt;|user|&gt;' + '
+' + message['content'] + '&lt;|end|&gt;' + '
+' + '&lt;|assistant|&gt;' + '
+'}}{% elif (message['role'] == 'assistant') %}{{message['content'] + '&lt;|end|&gt;' + '
+'}}{% endif %}{% endfor %}
+Using chat eos_token: &lt;|endoftext|&gt;
+Using chat bos_token: &lt;s&gt;</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">LangChain</span>
+<div class="tutorialSectionTextDiv1">
+Framework for building applications powered by language models.<br />
+<br />
+See this page for more details:
+<a href="https://python.langchain.com/docs/how_to/installation/">https://python.langchain.com/docs/how_to/installation/</a><br />
+<br />
+To install the main LangChain package (main framework):<br />
+<pre class="sh-code">
+$ pip install langchain</pre>
+To install the LangChain core package:<br />
+<pre class="sh-code">
+$ pip install langchain-core</pre>
+To install the LangChain community package:<br />
+<pre class="sh-code">
+$ pip install langchain-community</pre>
+To install the LangChain command Line Interface (CLI) package:<br />
+<pre class="sh-code">
+$ pip install langchain-cli</pre>
+To test the installation of the LangChain CLI package:<br />
+<pre class="sh-code">
+$ langchain-cli --version</pre>
+<pre class="sh-code">
+langchain-cli 0.0.36</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

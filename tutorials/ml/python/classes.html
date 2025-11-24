@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Object-Oriented Programming: Classes | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Object-Oriented Programming: Classes" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Object-Oriented Programming: Classes | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Object-Oriented Programming: Classes" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/classes.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Object-Oriented Programming: Classes | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Object-Oriented Programming: Classes" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/classes.html",
+        "description": "Tutorials: Python - Object-Oriented Programming: Classes",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/classes.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Object-Oriented Programming: Classes</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+<h5>Basic class definition:</h5>
+Classes are blueprints for creating objects in Python.<br />
+They bundle data (attributes) and behavior (methods), enabling object-oriented programming concepts like encapsulation, inheritance, and polymorphism.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Defining a class:</h6>
+<b>__init__</b>: this constructor method is called automatically when an instance of the class is created.<br />
+<b>self</b>: is a reference to the current instance. It is automatically passed to methods.<br />
+<b>Instance variables</b>: they are variables defined with <b>self</b> and are accessible to all methods in the class and to all instances of the class.<br />
+<pre class="python-code">
+class Math:
+  # class variable (shared by all instances)
+  name = 'Simple Math'
+
+  def __init__(self, i, j):
+    # instance variables
+    self.i = i
+    self.j = j
+
+  def set_i(self, i):
+    self.i = i
+
+  def set_j(self, j):
+    self.j = j
+
+  def add(self):
+    return self.i + self.j
+
+  def multiply(self):
+    return self.i * self.j
+
+  @classmethod
+  def get_name(cls):
+    return cls.name
+
+  @staticmethod
+  def validate_name(name):
+    return isinstance(name, str)
+
+  # string representation (if not defined, __repr__ is used)
+  def __str__(self):
+    return f"Math({self.i}, {self.j})"
+
+  # developer representation (also used as string representation if __str__ is not defined)
+  def __repr__(self):
+    return f"Math(i={self.i}, j={self.j})"</pre>
+</li>
+<li>
+<h6>Creating an instance:</h6>
+<pre class="python-code">
+math1 = Math(2, 3)</pre>
+</li>
+<li>
+<h6>Calling methods:</h6>
+<pre class="python-code">
+print(math1.add()) # Output: 5
+print(math1.multiply()) # Output: 6</pre>
+</li>
+<li>
+<h6>Accessing attributes:</h6>
+<pre class="python-code">
+print(math1.i) # Output: 2
+print(math1.j) # Output: 3</pre>
+</li>
+<li>
+<h6>Modifying attributes:</h6>
+<pre class="python-code">
+math1.i = 3
+math1.set_j(7)
+print(math1.add()) # Output: 10
+print(math1.multiply()) # Output: 21</pre>
+</li>
+<li>
+<h6>String representation</h6>
+<pre class="python-code">
+# string representation
+print(math1) # Output: Math(3, 7)
+
+# developer representation
+print(repr(math1)) # Output: Math(i=3, j=7)</pre>
+</li>
+<li>
+<h6>Using class/static methods/attributes</h6>
+<pre class="python-code">
+# access class variable
+print(Math.name) # Output: Simple Math
+
+# access class method
+print(Math.get_name()) # Output: Simple Math
+
+# access static method
+print(Math.validate_name("Math")) # Output: True</pre>
+</li>
+</ul>
+<h5>Property decorators:</h5>
+<pre class="python-code">
+class Audit:
+  def __init__(self, msg):
+    self._msg = msg
+
+  @property
+  def message(self):
+    return self._msg
+
+  @message.setter
+  def message(self, msg):
+    self._msg = msg
+
+audit = Audit('Hello')
+
+# access property
+print(audit.message) # Output: Hello
+
+# set property
+audit.message = "Python"
+
+print(audit.message) # Output: Python</pre>
+<h5>Inheritance:</h5>
+Inheritance allows a class to inherit attributes and methods from a parent class.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Defining a subclass:</h6>
+<pre class="python-code">
+class Operations(Math):
+  def __init__(self, i, j):
+    super().__init__(i, j)
+    self.code = 'undefined'
+
+  # define new method
+  def set_code(self, code):
+    self.code = code
+
+  # define new method
+  def calculate(self, code='add'):
+    if code == 'add':
+      return super().add()
+    elif code == 'multiply':
+      return super().multiply()
+    else:
+      return 'Unknown operation'</pre>
+</li>
+<li>
+<h6>Creating an instance of the subclass:</h6>
+<pre class="python-code">
+operation = Operations(4, 9)</pre>
+</li>
+<li>
+<h6>Accessing attributes of the subclass:</h6>
+<pre class="python-code">
+print(operation.i) # Output: 4
+print(operation.j) # Output: 9
+print(operation.code) # Output: undefined</pre>
+</li>
+<li>
+<h6>Calling methods of the subclass:</h6>
+<pre class="python-code">
+# calling parent class method
+print(operation.add()) # Output: 13
+
+# calling subclass methods
+print(operation.calculate()) # Output: 13
+print(operation.calculate('multiply')) # Output: 36
+print(operation.calculate('divide')) # Output: Unknown operation</pre>
+</li>
+</ul>
+<h5>Method overriding:</h5>
+Subclasses can override methods from their parent class to provide specialized behavior.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Overriding methods from the parent class:</h6>
+<pre class="python-code">
+class SpecialMath(Math):
+  def __init__(self, i, j, multiplier=10):
+    super().__init__(i, j)
+    self.multiplier = multiplier
+
+  # override parent method
+  def multiply(self):
+    return self.i * self.j * self.multiplier</pre>
+</li>
+<li>
+<h6>Calling override methods of an instance of a subclass:</h6>
+<pre class="python-code">
+specialMath = SpecialMath(4, 6)
+print(specialMath.multiply()) # Output: 240
+
+# custom multiplier
+specialMath = SpecialMath(4, 6, 100)
+print(specialMath.multiply()) # Output: 2400</pre>
+</li>
+</ul>
+<h5>Modules and imports</h5>
+<ul class="ul_square_1">
+<li>
+<h6>Creating a module:</h6>
+Create a file <b>class_module_1.py</b> that contains the definition of two classes:<br />
+<pre class="sh-code">
+$ vi class_module_1.py</pre>
+<pre class="python-code">
+class MyClassA():
+  def __init__(self):
+    self.name = 'My Class A'
+
+class MyClassB():
+  def __init__(self):
+    self.name = 'My Class B'
+
+# Module-level function
+def get_module_file_name():
+  return "class_module_1.py"</pre>
+</li>
+<li>
+<h6>Import entire module:</h6>
+Create a file <b>class_import_1.py</b> that imports the module <b>class_module_1</b> (<b>class_module_1.py</b>):<br />
+<pre class="sh-code">
+$ vi class_import_1.py</pre>
+<pre class="python-code">
+# all classes defined in the module will be accessible using the prefix class_module_1
+import class_module_1
+
+# referencing the classes using the name of the module name as a prefix
+myclassa = class_module_1.MyClassA()
+myclassb = class_module_1.MyClassB()
+
+print(myclassa.name) # Output: My Class A
+print(myclassb.name) # Output: My Class B
+
+# calling module function
+print(class_module_1.get_module_file_name()) # Output: class_module_1.py</pre>
+</li>
+<li>
+<h6>Import specific classes:</h6>
+Create a file <b>class_import_2.py</b> that imports specific classes defined in the module <b>class_module_1</b> (<b>class_module_1.py</b>):<br />
+<pre class="sh-code">
+$ vi class_import_2.py</pre>
+<pre class="python-code">
+# importing the classes MyClassA and MyClassB from the module class_module_1
+from class_module_1 import MyClassA, MyClassB
+
+# referencing directly the classes without specifying the module name
+myclassa = MyClassA()
+myclassb = MyClassB()
+
+print(myclassa.name) # Output: My Class A
+print(myclassb.name) # Output: My Class B</pre>
+</li>
+<li>
+<h6>Import all:</h6>
+Create a file <b>class_import_3.py</b> that imports all classes defined in the module <b>class_module_1</b> (<b>class_module_1.py</b>):<br />
+<pre class="sh-code">
+$ vi class_import_3.py</pre>
+<pre class="python-code">
+# importing all public names from the module class_module_1
+from class_module_1 import *
+
+# referencing directly the classes without specifying the module name
+myclassa = MyClassA()
+myclassb = MyClassB()
+
+print(myclassa.name) # Output: My Class A
+print(myclassb.name) # Output: My Class B
+
+# calling module function without prefix
+print(get_module_file_name()) # Output: class_module_1.py</pre>
+</li>
+<li>
+<h6>Module aliases</h6>
+Using the keyword <b>as</b> to define an alias for a module.<br />
+Create a file <b>class_import_4.py</b> that imports the module <b>class_module_1</b> (<b>class_module_1.py</b>) and give it an alias <b>f1</b>:<br />
+<pre class="sh-code">
+$ vi class_import_4.py</pre>
+<pre class="python-code">
+# defining the alias f1 for the module class_module_1
+import class_module_1 as f1
+
+# referencing the class MyClassA using the alias of the module as a prefix
+myclassa = f1.MyClassA()
+myclassb = f1.MyClassB()
+
+print(myclassa.name) # Output: My Class A
+print(myclassb.name) # Output: My Class B
+
+# calling module function using prefix
+print(f1.get_module_file_name()) # Output: class_module_1.py</pre>
+</li>
+<li>
+<h6>Class aliases:</h6>
+Using the keyword <b>as</b> to define an alias for a class.<br />
+Create a file <b>class_import_5.py</b> that imports specific classes defined in the module <b>class_module_1</b> (<b>class_module_1.py</b>) and give them aliases:<br />
+<pre class="sh-code">
+$ vi class_import_5.py</pre>
+<pre class="python-code">
+# defining the alias A for the class MyClassA and the alias B for the class MyClassB
+from class_module_1 import MyClassA as A, MyClassB as B
+
+# referencing directly the classes using its alias A
+myclassa = A()
+myclassb = B()
+
+print(myclassa.name) # Output: My Class A
+print(myclassb.name) # Output: My Class B</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

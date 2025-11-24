@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Working with Variables | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Working with Variables" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Working with Variables | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Working with Variables" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/variables.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Working with Variables | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Working with Variables" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/variables.html",
+        "description": "Tutorials: Python - Working with Variables",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/variables.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Working with Variables</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Variables</a></li>
+<li><a href="#sec_id_2">Comment</a></li>
+<li><a href="#sec_id_3">Numbers</a></li>
+<li><a href="#sec_id_4">Strings</a></li>
+<li><a href="#sec_id_5">Dates and Times</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Variables</span>
+<div class="tutorialSectionTextDiv1">
+Variables names:<br />
+<ul class="ul_square_1">
+<li>Can contain only letters ([a-zA-Z]), numbers ([0-9]), and/or underscores (_).</li>
+<li>Must start with a letter or underscore.</li>
+<li>Can't start with a number.</li>
+<li>Are case-sensitive.</li>
+<li>Can't use Python reserved keywords (or built-in function names).</li>
+</ul>
+<br />
+As best practices, you should use
+descriptive and lowercase for variable names (e.g., value)
+and use all uppercase for constants (e.g., VALUE).
+You should use underscores to join multi-word variable names (e.g., max_value, MAX_VALUE).<br />
+<br />
+Define a variable:<br />
+<pre class="python-code">
+x = "Hello"
+print(x) # Output: Hello
+
+y = 1
+print(y) # Output: 1
+
+z = False
+print(z) # Output: False</pre>
+Multiple assignment: Assign multiple variables with different values in one instruction:<br />
+<pre class="python-code">
+x, y , z = 'hello', 'python', 3
+print(type(x)) # Output: &lt;class 'str'&gt;
+print(type(y)) # Output: &lt;class 'str'&gt;
+print(type(z)) # Output: &lt;class 'int'&gt;</pre>
+Multiple assignment: Assign same value to multiple variables:<br />
+<pre class="python-code">
+x = y = z = 1</pre>
+Swapping variables:<br />
+<pre class="python-code">
+x, y = 1, 2
+x, y = y, x # x will have the value 2 and y will have the value 1</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Comments</span>
+<div class="tutorialSectionTextDiv1">
+To comment a line or part of a line, use the hash character (<b>#</b>).<br />
+<pre class="python-code">
+# this is a single-line comment
+x = 1 # this is an inline comment</pre>
+For multi-line comments, use triple quotes (''', """):<br />
+<pre class="python-code">
+"""
+this is
+a multi-line
+comment using triple double quotes
+
+"""
+
+'''
+this is
+another multi-line
+comment using triple single quotes
+'''</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Numbers</span>
+<div class="tutorialSectionTextDiv1">
+Integers: -1, 0, 1, 2, 1_000_000, ...<br />
+Floats, 1.0, 2.0, 1.2e-3, ...<br />
+Operators: Addition (+), Subtraction (-), Multiplication (*), Division (/), Modulo (%), Exponentiation (**)<br />
+<br />
+Example - Modulo operator (Remainder operator):<br />
+<pre class="python-code">
+i = 5 % 2
+print(i) # Output: 1</pre>
+Using underscores for readability:<br />
+<pre class="python-code">
+i = 1_000_000
+print(i) # Output: 1000000</pre>
+Complex numbers:<br />
+<pre class="python-code">
+i = 1 + 2j
+print(i) # Output: (1+2j)</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Strings</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Valid Strings:<br />
+<pre class="python-code">
+a = "This is a valid string" # double quotes
+c = 'This is a valid string' # single quotes
+b = "This is a 'valid' string" # mixed quotes
+d = 'This is a "valid" string' # escaped quotes</pre>
+</li>
+<li>
+Multi-line Strings:<br />
+<pre class="python-code">
+a = """This is
+a valid
+multi-line string"""</pre>
+</li>
+<li>
+Changing string case:<br />
+<br />
+The title() function changes each word of a string in title case (begins with a capital letter):<br />
+<pre class="python-code">
+print('hello python'.title()) # Output: Hello Python</pre>
+The upper() function changes a string to all uppercase:<br />
+<pre class="python-code">
+print('hello python'.upper()) # Output: HELLO PYTHON</pre>
+The lower() function changes a string to all lowercase:<br />
+<pre class="python-code">
+print('HELLO PYTHON'.lower()) # Output: hello python</pre>
+</li>
+<li>
+Formatted Strings (f-strings):<br />
+<br />
+To use a variable, expression, or a function inside a string, place the letter <b>f</b> before opening quotation mark.<br />
+Inside the string put any variable or function you want to use and surround it with braces.
+<pre class="python-code">
+x='hello'
+y='python'
+z=f'message: {x} {y.title()}: {2.53 * 2.98:.1f}'
+w=f"message: {x} {y.title()}: {2.53 * 2.98:.1f}"
+print(z) # Output: message: hello Python: 7.5
+print(w) # Output: message: hello Python: 7.5</pre>
+You can also use the format() method:<br />
+<pre class="python-code">
+print("hello {}: {}".format("python", 7.5)) # Output: hello python: 7.5</pre>
+</li>
+<li>
+Adding whitespace to strings with tabs (<b>\t</b>) or newlines (<b>\n</b>):<br />
+<pre class="python-code">
+print("hello\n\n\t\tpython")</pre>
+Output:<br />
+<pre class="text-code">
+hello
+
+                python</pre>
+</li>
+<li>
+Removing whitespace:<br />
+<pre class="python-code">
+x = ' hello python '</pre>
+Use strip() function to remove whitespace from the beginning (left) and the end (right) of a string:<br />
+<pre class="python-code">
+print(f'"{x.strip()}"') # Output: "hello python"</pre>
+Use lstrip() function to remove whitespace from the beginning (left) of a string:<br />
+<pre class="python-code">
+print(f'"{x.lstrip()}"') # Output: "hello python "</pre>
+Use rstrip() function to remove whitespace from the end (right) of a string:<br />
+<pre class="python-code">
+print(f'"{x.rstrip()}"') # Output: " hello python"</pre>
+</li>
+<li>
+Removing prefixes and suffixes:<br />
+<pre class="python-code">
+x = "hello.py"
+print(f'"{x.removeprefix("hello")}"') # Output: ".py"
+print(f'"{x.removesuffix(".py")}"') # Output: "hello"</pre>
+</li>
+<li>
+String splitting:<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+Split by whitespace:<br />
+<pre class="python-code">
+words = 'hello python 3'.split()
+print(f'Number of words: {len(words)} | {words}') # Output: Number of words: 3 | ['hello', 'python', '3']
+for word in words:
+  print(f'word: {word} | length: {len(word)}')</pre>
+Output:<br />
+<pre class="text-code">
+Number of words: 3 | ['hello', 'python', '3']
+word: hello | length: 5
+word: python | length: 6
+word: 3 | length: 1</pre>
+</li>
+<li>
+Split by specific delimeter:<br />
+<pre class="python-code">
+words = 'hello,python,3'.split(',')
+print(f'Number of words: {len(words)} | {words}') # Output: Number of words: 3 | ['hello', 'python', '3']
+for word in words:
+  print(f'word: {word} | length: {len(word)}')</pre>
+Output:<br />
+<pre class="text-code">
+Number of words: 3 | ['hello', 'python', '3']
+word: hello | length: 5
+word: python | length: 6
+word: 3 | length: 1</pre>
+</li>
+<li>
+Split lines:<br />
+<pre class="python-code">
+lines = 'hello\npython\n3'.splitlines()
+print(f'Number of lines: {len(lines)} | {lines}') # Output: Number of lines: 3 | ['hello', 'python', '3']
+for line in lines:
+  print(f'line: {line}')</pre>
+Output:<br />
+<pre class="text-code">
+Number of lines: 3 | ['hello', 'python', '3']
+line: hello
+line: python
+line: 3</pre>
+</li>
+</ul>
+</li>
+<li>
+Type conversion:<br />
+<pre class="python-code">
+x = int('1')
+print(type(x)) # &lt;class 'int'&gt;
+print(x) # Output: 1
+
+y = float('1.2')
+print(type(y)) # &lt;class 'float'&gt;
+print(float('1.2')) # Output: 1.2</pre>
+Handling conversion errors:<br />
+<pre class="python-code">
+try:
+  print(int('a'))
+except ValueError: # ValueError: invalid literal for int() with base 10: 'a'
+  print("invalid number format")</pre>
+Convert numbers to string:<br />
+<pre class="python-code">
+x = str(1.2)
+print(type(x)) # &lt;class 'str'&gt;
+print(x) # Output: 1.2</pre>
+</li>
+<li>
+Other methods:<br />
+<pre class="python-code">
+# join
+print(' '.join(['hello', 'python', '3'])) # Output: hello python 3
+
+# in (membership)
+print('python' in 'hello python 3') # Output: True
+
+# startswith
+print('hello python 3'.startswith('hello')) # Output: True
+
+# endswith
+print('hello python 3'.endswith('3')) # Output: True
+
+# python
+print('hello python 3'.find('python')) # Output: 6 (index position)
+
+# count
+print('hello python 3'.count('o')) # Output: 2
+
+# replace
+print('hello python 3'.replace('3', '3.12.3')) # Output: hello python 3.12.3</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Dates and Times</span>
+<div class="tutorialSectionTextDiv1">
+Date and time format codes:
+<ul class="ul_square_1">
+<li><b>%Y</b>: Year, in four-digit format (2023, ...)</li>
+<li><b>%y</b>: Year, in two-digit format (23, ...)</li>
+<li><b>%m</b>: Month number (01 - 12)</li>
+<li><b>%B</b>: Month name (March)</li>
+<li><b>%b</b>: Month name abbreviated (Mar)</li>
+<li><b>%d</b>: Day of the month (01 - 31)</li>
+<li><b>%A</b>: Weekday name (Friday)</li>
+<li><b>%a</b>: Weekday name abbreviated (Fri)</li>
+<li><b>%H</b>: Hour, in 24-hour format (00 - 23)</li>
+<li><b>%I</b>: Hour, in 12-hour format (00 - 12)</li>
+<li><b>%M</b>: Minutes (00 - 59)</li>
+<li><b>%S</b>: Seconds (00 - 59)</li>
+<li><b>%f</b>: Microseconds (090579)</li>
+<li><b>%p</b>: AM|PM</li>
+<li><b>%z</b>: UTC offset (+0000)</li>
+<li><b>%Z</b>: Timezone name (EST)</li>
+</ul>
+<br />
+Parsing a date string using a specific format:<br />
+<pre class="python-code">
+from datetime import datetime, date, timedelta, timezone</pre>
+<ul class="ul_square_1">
+<li>
+Current date and time:<br />
+<pre class="python-code">
+print(f'{datetime.now()}') # Output: 2023-03-29 06:19:17.217238
+print(f'{date.today()}') # Output: 2023-03-29
+print(f'{datetime.now().time()}') # Output: 06:19:17.217294</pre></li>
+<li>
+Specific date/time:<br />
+<pre class="python-code">
+print(f'{date(2023, 3, 29)}') # Output: 2023-03-29
+print(f'{datetime(2023, 3, 29, 6, 19, 17)}') # Output: 2023-03-29 06:19:17</pre></li>
+<li>
+Parsing date strings:<br />
+<pre class="python-code">
+print(datetime.strptime('05/08/2023 01-16-26 PM', '%d/%m/%Y %I-%M-%S %p')) # Output: 2023-08-05 13:16:26</pre></li>
+<li>
+Dormating dates (timezone):<br />
+<pre class="python-code">
+print(datetime.now(timezone.utc).strftime('%d/%m/%Y %I-%M-%S %p %z %Z')) # Output: 29/05/2023 03-38-45 PM +0000 UTC
+print(datetime.now(timezone(timedelta(hours=-5))).strftime('%d/%m/%Y %I-%M-%S %p %z %Z')) # Output: 29/05/2023 10-38-45 AM -0500 UTC-05:00
+print(f"{datetime.now().year} - {datetime.now().month} - {datetime.now().day} - {datetime.now().hour} - {datetime.now().minute}") # Output: 2023 - 5 - 29 - 11 - 46</pre></li>
+<li>
+Date arithmetic:<br />
+<pre class="python-code">
+print(date.today()) # Output: 2023-05-29
+print(date.today() - timedelta(days=1)) # Output: 2023-05-28
+print(date.today() - timedelta(weeks=1)) # Output: 2023-05-22
+print(date(2023, 3, 29) - date(2000, 3, 29)) # Output: 8400 days, 0:00:00
+print(date(2023, 3, 29) &lt; date(2000, 3, 29)) # Output: False
+print(min([date(2023, 3, 29), date(2000, 3, 29)])) # Output: 2000-03-29
+print(max([date(2023, 3, 29), date(2000, 3, 29)])) # Output: 2023-03-29</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

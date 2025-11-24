@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Running Transformer Models: Hugging Face, OpenAI &amp; More | MTI TEK</title>
+<meta name="description" content="Learn to run, save, and load transformer models using Hugging Face, llama-cpp-python, and OpenAI API. Explore key parameters and implementations." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Running Transformer Models: Hugging Face, OpenAI &amp; More | MTI TEK" />
+<meta property="og:description" content="Learn to run, save, and load transformer models using Hugging Face, llama-cpp-python, and OpenAI API. Explore key parameters and implementations." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/models.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Running Transformer Models: Hugging Face, OpenAI &amp; More | MTI TEK" />
+<meta name="twitter:description" content="Learn to run, save, and load transformer models using Hugging Face, llama-cpp-python, and OpenAI API. Explore key parameters and implementations." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/models.html",
+        "description": "Learn to run, save, and load transformer models using Hugging Face, llama-cpp-python, and OpenAI API. Explore key parameters and implementations.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/models.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Running Models</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Hugging Face Hub</a></li>
+<li><a href="#sec_id_2">Standard Transformer Implementation</a></li>
+<li><a href="#sec_id_3">Pipeline-Based Implementation</a></li>
+<li><a href="#sec_id_4">Run a transformer model using llama-cpp-python</a></li>
+<li><a href="#sec_id_5">Integration with OpenAI API</a></li>
+<li><a href="#sec_id_6">Key Parameters of the Transformer Models</a></li>
+<li><a href="#sec_id_7">Save the Model and its Associated Tokenizer and Configuration Files</a></li>
+<li><a href="#sec_id_8">Load the Saved Model and its Associated Tokenizer and Configuration Files</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Hugging Face Hub</span>
+<div class="tutorialSectionTextDiv1">
+The Hugging Face Hub represents an extensive repository housing over 1 million models designed for text, image, audio, and video processing.
+When selecting an appropriate model for your application, consider these critical factors:<br />
+<br />
+Hugging Face Models:<br />
+<a href="https://huggingface.co/models">https://huggingface.co/models</a><br />
+<br />
+Selecting a model depends on:<br />
+<ul class="ul_square_1">
+<li>Architectural foundation (representation vs. generative capabilities).<br /></li>
+<li>Model size and computational requirements.<br /></li>
+<li>Performance benchmarks and efficacy metrics.<br /></li>
+<li>Task specialization and compatibility.<br /></li>
+<li>Multilingual support.<br /></li>
+<li>...<br /></li>
+</ul>
+<br />
+For comparative analysis of embedding models across languages, the Hugging Face Embedding Leaderboard provides comprehensive benchmarking data:<br />
+<a href="https://huggingface.co/spaces/mteb/leaderboard">https://huggingface.co/spaces/mteb/leaderboard</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Standard Transformer Implementation</span>
+<div class="tutorialSectionTextDiv1">
+You can use the Hugging Face CLI to download a model:
+<pre class="sh-code">
+$ huggingface-cli download microsoft/DialoGPT-small</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-transformers.py</pre>
+<pre class="python-code">
+# import the model and the tokenizer objects from the Transformers library
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# load the model
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+
+# load the model's tokenizer
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+
+# tokenize the input
+input_ids = tokenizer.encode("Hello!" + tokenizer.eos_token, return_tensors='pt')
+
+# generate the text
+output = model.generate(
+    input_ids=input_ids,
+    max_new_tokens=50
+)
+
+# decode generated tokens
+print(tokenizer.decode(output[0]))</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-transformers.py</pre>
+Output:<br />
+<pre class="sh-code">
+Hello!&lt;|endoftext|&gt;Hi!&lt;|endoftext|&gt;</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Pipeline-Based Implementation</span>
+<div class="tutorialSectionTextDiv1">
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-transformers-pipeline.py</pre>
+<pre class="python-code">
+# import the model and the tokenizer objects from the Transformers library
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+
+# load the model
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+
+# load the model's tokenizer
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+
+# create a pipeline object for the "text-generation" task
+generator = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=50
+)
+
+# prompt pipeline with some initial text to generate more text
+output = generator("Hello!" + tokenizer.eos_token)
+
+print(output[0]["generated_text"])</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-transformers-pipeline.py</pre>
+Output:<br />
+<pre class="sh-code">
+Hello!&lt;|endoftext|&gt;Hi!</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Run a transformer model using llama-cpp-python</span>
+<div class="tutorialSectionTextDiv1">
+Download this model:<br />
+<pre class="sh-code">
+$ wget https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf/resolve/main/Phi-3-mini-4k-instruct-q4.gguf</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-llama-cpp.py</pre>
+<pre class="python-code">
+from llama_cpp import Llama
+model = Llama(model_path="./Phi-3-mini-4k-instruct-q4.gguf")
+
+prompt = """
+Question: What's 1+1?
+"""
+
+output = model(
+    prompt,
+    max_tokens=50, # limits the length of the generated text.
+    temperature=0, # controls the randomness of the output. Lower values are more deterministic.
+    top_p=1, # (range should be (0, 1]). controls diversity of the selection of the tokens. Lower values means selecting the most probable tokens.
+    echo=True # includes the prompt in the output if True.
+)
+print(output["choices"][0]["text"])</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-llama-cpp.py</pre>
+Output:<br />
+<pre class="sh-code">
+Question: What's 1+1?
+&lt;|assistant|&gt; 1+1 equals 2.</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Integration with OpenAI API</span>
+<div class="tutorialSectionTextDiv1">
+ChatGPT (OpenAI) is a proprietary model.
+The model can be accessed through OpenAI's API.<br />
+You need to sign-up and create an API key here: <a href="https://platform.openai.com/api-keys">https://platform.openai.com/api-keys</a><br />
+The API key will be used to communicate with OpenAI's API.<br />
+<ul class="ul_square_1">
+<li>
+Try the model using curl:<br />
+<pre class="sh-code">
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "store": true,
+    "messages": [
+      {"role": "user", "content": "What is 1+1?"}
+    ]
+  }'</pre>
+Output:<br />
+<pre class="sh-code">
+{
+  "id": "chatcmpl-BWREFCaHDdorA60Q4ufKWGZ9yY70Z",
+  "object": "chat.completion",
+  "model": "gpt-4o-mini-2024-07-18",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "1 + 1 equals 2.",
+        "refusal": null,
+        "annotations": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 14,
+    "completion_tokens": 9,
+    "total_tokens": 23,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  }
+}</pre>
+</li>
+<li>
+Try the model using Python:<br />
+<br />
+Install the OpenAI Python SDK:<br />
+<pre class="sh-code">
+$ pip install openai</pre>
+Check OpenAI Python SDK installation:<br />
+<pre class="sh-code">
+$ pip show openai</pre>
+<pre class="sh-code">
+Name: openai
+Version: 1.76.0
+...</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-gpt.py</pre>
+<pre class="sh-code">
+import openai
+
+openai.api_key = "YOUR_API_KEY"
+
+completion = openai.chat.completions.create(
+  model="gpt-4o-mini",
+  store=True,
+  messages=[
+    {"role": "user", "content": "What is 1+1?"}
+  ]
+)
+
+print(completion.choices[0].message);</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-gpt.py</pre>
+Output:<br />
+<pre class="sh-code">
+ChatCompletionMessage(
+    content='1 + 1 equals 2.',
+    refusal=None,
+    role='assistant',
+    annotations=[],
+    audio=None,
+    function_call=None,
+    tool_calls=None
+)</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Key Parameters of the Transformer Models</span>
+<div class="tutorialSectionTextDiv1">
+Here are some parameters that can affect the output of the model:<br />
+<ul class="ul_square_1">
+<li>
+Context Length:<br />
+A model has a context length (a.k.a. the context window, context size, token limit): <br />
+<ul class="ul_circle_1">
+<li>The context length represents the maximum number of tokens the model can process.<br /></li>
+<li>Generative models are autoregressive, so the current context length will increase as new tokens are generated.<br /></li>
+</ul>
+<br /></li>
+<li>
+return_full_text:<br />
+If set to "False", only the model output is returned.<br />
+Otherwise, the full text is returned; including the user prompt.<br />
+<br /></li>
+<li>
+max_new_tokens:<br />
+It sets the maximum number of tokens the model can generate.<br />
+<br /></li>
+<li>
+do_sample:<br />
+The model decides the probability of all possible values ​​of the next token.
+It sorts the next possible tokens based on their probability of being chosen.<br />
+<br />
+If the "do_sample" parameter is set to "False", the model selects the most probable next token; this leads to a more predictable and consistent response.
+Otherwise, the model will sample from the probability distribution, leading to a wider variety of possible token outputs.<br />
+<br />
+When we set the "do_sample" parameter to true, we can also use the "temperature" parameter to make the output more "random".
+Hence we can get different output for the same prompt.<br />
+<br /></li>
+<li>
+temperature:<br />
+It controls the probability that the model can choose less likely tokens.<br />
+<br />
+When we set the "temperature" parameter to 0 (deterministic), the model should always generate the same response when given the same prompt.<br />
+<br />
+The closer the value of the "temperature" parameter is to 1 (high randomness), the more likely we are to get a random output.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Save the Model and its Associated Tokenizer and Configuration Files</span>
+<div class="tutorialSectionTextDiv1">
+To save a model, tokenizer, and configuration files, we can use the "save_pretrained" method from the Hugging Face Transformers library.<br />
+<br />
+Ideally, you will save all related files in the same folder.<br />
+<br />
+Note that saving the model also saves its configuration file.<br />
+<ul class="ul_square_1">
+<li>
+Save the model and its associated configuration files:<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-save-model.py</pre>
+<pre class="python-code">
+from transformers import AutoModelForCausalLM
+
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+
+path = "./models/microsoft/model/dialogpt-small"
+
+# model serialization
+model.save_pretrained(path)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-save-model.py</pre>
+This will create a directory containing:<br />
+<pre class="sh-code">
+$ ls -1 models/microsoft/model/dialogpt-small/</pre>
+<pre class="text-code">
+config.json
+generation_config.json
+model.safetensors</pre>
+Files:<br />
+<ul class="ul_circle_1">
+<li>
+config.json: The configuration file of the model.<br />
+<pre class="yaml-code">
+{
+  "architectures": [
+    "GPT2LMHeadModel"
+  ],
+...
+  "transformers_version": "4.51.3",
+  "vocab_size": 50257
+}</pre>
+</li>
+<li>
+model.safetensors: contains the model's weights.<br />
+<br /></li>
+</ul>
+</li>
+<li>
+Save the model tokenizer files:<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-save-tokenizer.py</pre>
+<pre class="python-code">
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+
+path = "./models/microsoft/tokenizer/dialogpt-small"
+
+# tokenizer serialization
+tokenizer.save_pretrained(path)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-save-tokenizer.py</pre>
+This will create a directory containing:<br />
+<pre class="sh-code">
+$ ls -1 models/microsoft/tokenizer/dialogpt-small/</pre>
+<pre class="text-code">
+merges.txt
+special_tokens_map.json
+tokenizer.json
+tokenizer_config.json
+vocab.json</pre>
+Files:<br />
+<ul class="ul_circle_1">
+<li>
+tokenizer_config.json: The configuration file of the tokenizer.<br />
+<pre class="yaml-code">
+{
+  "add_bos_token": false,
+  "add_prefix_space": false,
+  "added_tokens_decoder": {
+    "50256": {
+      "content": "&lt;|endoftext|&gt;",
+      "lstrip": false,
+      "normalized": true,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    }
+  },
+  "bos_token": "&lt;|endoftext|&gt;",
+  "chat_template": "{% for message in messages %}{{ message.content }}{{ eos_token }}{% endfor %}",
+  "clean_up_tokenization_spaces": true,
+  "eos_token": "&lt;|endoftext|&gt;",
+  "errors": "replace",
+  "extra_special_tokens": {},
+  "model_max_length": 1024,
+  "pad_token": null,
+  "tokenizer_class": "GPT2Tokenizer",
+  "unk_token": "&lt;|endoftext|&gt;"
+}</pre>
+</li>
+<li>
+vocab.json, tokenizer.json: contains the vocabulary and the mapping of tokens to IDs.<br />
+<br /></li>
+<li>
+special_tokens_map.json: contains the mapping of special tokens used by the tokenizer.<br />
+<br /></li>
+</ul>
+</li>
+<li>
+Save only the model configuration file:<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-save-model-config.py</pre>
+<pre class="python-code">
+from transformers import AutoConfig
+
+config = AutoConfig.from_pretrained("microsoft/DialoGPT-small")
+
+path = "./models/microsoft/config/dialogpt-small"
+
+# configuration serialization
+config.save_pretrained(path)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-save-model-config.py</pre>
+This will create a directory containing:<br />
+<pre class="sh-code">
+$ ls -1 models/microsoft/config/dialogpt-small/</pre>
+<pre class="text-code">
+config.json</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Load the Saved Model and its Associated Tokenizer and Configuration Files</span>
+<div class="tutorialSectionTextDiv1">
+To load the saved model, tokenizer and configuration files, we can use the "from_pretrained" method from the Hugging Face Transformers library.<br />
+<br />
+Ideally, you will have saved all related files in the same folder.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi llm-load-model-tokenizer-config.py</pre>
+<pre class="python-code">
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
+
+model_path = "./models/microsoft/model/dialogpt-small"
+tokenizer_path = "./models/microsoft/tokenizer/dialogpt-small"
+config_path = "./models/microsoft/config/dialogpt-small"
+
+model = AutoModelForCausalLM.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
+config = AutoConfig.from_pretrained(config_path)
+
+print(model)
+print(tokenizer)
+print(config)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 llm-load-model-tokenizer-config.py</pre>
+Output:<br />
+<pre class="yaml-code">
+GPT2LMHeadModel(
+  (transformer): GPT2Model(
+    (wte): Embedding(50257, 768)
+    (wpe): Embedding(1024, 768)
+...
+  )
+  (lm_head): Linear(in_features=768, out_features=50257, bias=False)
+)</pre>
+<pre class="yaml-code">
+GPT2TokenizerFast(
+    name_or_path='./models/microsoft/tokenizer/dialogpt-small',
+    vocab_size=50257,
+    model_max_length=1024,
+...
+    special_tokens={'bos_token': '&lt;|endoftext|&gt;', 'eos_token': '&lt;|endoftext|&gt;', 'unk_token': '&lt;|endoftext|&gt;'},
+    added_tokens_decoder={50256: AddedToken("&lt;|endoftext|&gt;", rstrip=False, lstrip=False, single_word=False, normalized=True, special=True),}
+)</pre>
+<pre class="yaml-code">
+GPT2Config {
+  "architectures": [
+    "GPT2LMHeadModel"
+  ],
+...
+  "transformers_version": "4.51.3",
+  "vocab_size": 50257
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Lists | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Lists" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Lists | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Lists" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/lists.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Lists | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Lists" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/lists.html",
+        "description": "Tutorials: Python - Lists",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/lists.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Lists</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Notes</a></li>
+<li><a href="#sec_id_1">Creating &amp; Accessing Lists</a></li>
+<li><a href="#sec_id_2">Adding &amp; Modifying Items</a></li>
+<li><a href="#sec_id_3">Removing Items</a></li>
+<li><a href="#sec_id_4">Sorting &amp; Reversing</a></li>
+<li><a href="#sec_id_5">Searching &amp; Indexing</a></li>
+<li><a href="#sec_id_6">Looping &amp; Iteration</a></li>
+<li><a href="#sec_id_7">List Comprehensions</a></li>
+<li><a href="#sec_id_8">Slicing &amp; Copying</a></li>
+<li><a href="#sec_id_9">Other Lists functions</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+A list is a mutable collection of ordered items.<br />
+Items in the list can be of any type, including mixed types within the same list: strings, numbers, dictionaries, lists, objects, ...<br />
+List allow duplicates and elements can be added or removed dynamically.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating &amp; Accessing Lists</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Creating basic lists</h6>
+Use square brackets (<b>[]</b>) to create a list.<br />
+Use commas to separate items in the list.
+<pre class="python-code">
+# empty list
+print([]) # Output: []
+print(list()) # Output: []
+
+# default values
+print(['a', 'b', 'c']) # Output: ['a', 'b', 'c']
+print(["a", "b", "c"]) # Output: ['a', 'b', 'c']
+
+# mixed types
+print([['a', 'b'], ['c', 'd'], 1]) # Output: [['a', 'b'], ['c', 'd'], 1]
+
+# type/isinstance methods
+print(type([])) # Output: &lt;class 'list'&gt;
+print(isinstance([], list)) # Output: True</pre></li>
+<li>
+<h6>Accessing items in a list</h6>
+To access an item in a list, you use square brackets (<b>[]</b>) with the index of that item in the list.<br />
+The index of the first item in the list is 0, and the next one is 1, ...<br />
+You can access items in a list from the last index using negative numbers.<br />
+The index of the last item is -1, and the one before the last one is -2, ...
+<pre class="python-code">
+x = ['a', 'b', 'c']
+print(x[0]) # Output: a
+print(x[1]) # Output: b
+print(x[-1]) # Output: c
+print(x[-2]) # Output: b</pre>
+If the list is empty, using any index to access an item in the list will return an error.<br />
+Using an index that's higher than the list size will return an error.<br />
+<pre class="python-code">
+y = []
+# Raise IndexError: list index out of range
+#y[0]
+#y[1]
+#y[-1
+
+z = ["a"]
+# Raise IndexError: list index out of range
+#z[1]
+#z[-2]</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Adding &amp; Modifying Items</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Appending items to the end of a list</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c']
+x.append('d')
+print(x) # Output: ['a', 'b', 'c', 'd']</pre></li>
+<li>
+<h6>Inserting items into a list at specific position</h6>
+<pre class="python-code">
+x.insert(0, 'x')
+print(x) # Output: ['x', 'a', 'b', 'c', 'd']</pre></li>
+<li>
+<h6>Adding items from list</h6>
+<pre class="python-code">
+x.extend(['y', 'z'])
+print(x) # Output: ['x', 'a', 'b', 'c', 'd', 'y', 'z']</pre></li>
+<li>
+<h6>Adding lists (new list created)</h6>
+<pre class="python-code">
+print(['a', 'b'] + ['c', 'd']) # Output: ['a', 'b', 'c', 'd']</pre></li>
+<li>
+<h6>Modifying items in a list</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+# you can modify an item from any position in the list
+x[0] = 'A'
+print(x) # Output: ['A', 'b', 'c', 'd']</pre></li>
+<li>
+<h6>Modifying multiple items with slicing</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+x[1:3] = ['B', 'C']
+print(x) # Output: ['a', 'B', 'C', 'd']</pre></li>
+<li>
+<h6>Inserting multiple items with slicing</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+x[2:2] = ['X', 'Y']
+print(x) # Output: ['a', 'b', 'X', 'Y', 'c', 'd']</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Removing Items</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Removing an item using the del method</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+# you can remove an item from any position in the list
+del x[0]
+print(x) # Output: ['b', 'c', 'd']</pre></li>
+<li>
+<h6>Removing item using the del method and slicing</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+# you can remove an item from any position in the list
+del x[1:3]
+print(x) # Output: ['a', 'd']</pre></li>
+<li>
+<h6>Removing the last item in a list</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+# the item removed can be assigned or printed if needed
+last = x.pop()
+print(last) # Output: d
+print(x) # Output: ['a', 'b', 'c']</pre></li>
+<li>
+<h6>Removing an item from a specific position in a list</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+# the item removed can be assigned or printed if needed
+second = x.pop(1)
+print(second) # Output: b
+print(x) # Output: ['a', 'c', 'd']</pre></li>
+<li>
+<h6>Removing an item by its value from a list</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'c']
+# the function remove deletes only the first occurrence of the value
+x.remove('c')
+print(x) # Output: ['a', 'b', 'c']</pre></li>
+<li>
+<h6>Removing all items</h6>
+<pre class="python-code">
+x = ['a', 'b', 'c', 'd']
+x.clear()
+print(x) # Output: []</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Sorting &amp; Reversing</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Sorting permanently a list: sort()</h6>
+<pre class="python-code">
+x = ['b', 'd', 'a', 'c']
+
+x.sort()
+print(x) # Output: ['a', 'b', 'c', 'd']
+
+x.sort(reverse=True)
+print(x) # Output: ['d', 'c', 'b', 'a']</pre></li>
+<li>
+<h6>Sorting temporarily a list: sorted()<br /></h6>
+<pre class="python-code">
+x = ['b', 'd', 'a', 'c']
+print(sorted(x)) # Output: ['a', 'b', 'c', 'd']
+print(sorted(x, reverse=True)) # Output: ['d', 'c', 'b', 'a']
+print(x) # Output: ['b', 'd', 'a', 'c']</pre></li>
+<li>
+<h6>Sorting with key function</h6>
+<pre class="python-code">
+# sort by length
+x = ['a', 'ab', 'abc', 'abcd']
+x.sort(key=len, reverse=True)
+print(x) # Output: ['abcd', 'abc', 'ab', 'a']
+
+# case-insensitive sorting
+x = ['Abcd', 'abC', 'aB', 'A']
+x.sort(key=str.lower)
+print(x) # Output: ['A', 'aB', 'abC', 'Abcd']
+
+# using lambda
+x = ['a', 'ab', 'abc', 'abcd']
+x.sort(key=lambda i: len(i), reverse=True)
+print(x) # Output: ['abcd', 'abc', 'ab', 'a']</pre></li>
+<li>
+<h6>Reversing items of a list (no sorting)</h6>
+<pre class="python-code">
+x = ['b', 'd', 'a', 'c']
+x.reverse()
+print(x) # Output: ['c', 'a', 'd', 'b']
+x.reverse()
+print(x) # Output: ['b', 'd', 'a', 'c']</pre></li>
+<li>
+<h6>Reversing items of a list using slicing (no sorting)</h6>
+<pre class="python-code">
+x = ['b', 'd', 'a', 'c']
+y = x[::-1] # new list created
+print(y) # Output: ['c', 'a', 'd', 'b']
+print(x) # Output: ['b', 'd', 'a', 'c']</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Searching &amp; Indexing</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Finding first occurrence of an element</h6>
+<pre class="python-code">
+# index(ITEM) - returns first index of item
+x = ['a', 'a', 'b']
+print(x.index('a')) # Output: 0
+
+# index(ITEM, START_INDEX) - returns first index of item starting from START_INDEX
+print(x.index('a', 1)) # Output: 1
+
+# index(ITEM, START_INDEX, END_INDEX) - returns first index of item between START_INDEX and END_INDEX
+print(x.index('a', 1, 2)) # Output: 1</pre></li>
+<li>
+<h6>Membership</h6>
+<pre class="python-code">
+print('A' in ['A', 'B']) # Output: True
+print('A' not in ['A', 'B']) # Output: False</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Looping &amp; Iteration</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Looping through a list</h6>
+<pre class="python-code">
+x = ['b', 'd', 'a', 'c']
+for y in x:
+  print(y)</pre>
+Output:<br />
+<pre class="text-code">
+b
+d
+a
+c</pre></li>
+<li>
+<h6>Using the range() function</h6>
+The range function has two parameters.<br />
+The value of the first parameter is inclusive in the range.<br />
+The value of the second parameter is exclusive from the range.<br />
+<pre class="python-code">
+for x in range(1, 3): # in language C, this is similar to: for (int i=1, i &lt; 3, i++) ...
+  print(x)</pre>
+Output:<br />
+<pre class="text-code">
+1
+2</pre></li>
+<li>
+<h6>Making a list of numbers using range() function</h6>
+<pre class="python-code">
+x = list(range(0, 4))
+print(x) # Output: [0, 1, 2, 3]
+
+x = list(range(1, 4))
+print(x) # Output: [1, 2, 3]</pre></li>
+<li>
+<h6>The enumerate() function</h6>
+The enumerate() function returns a key-value pair for each item in a list.<br />
+the key is the index of the item in the list and the value is the item.
+<pre class="python-code">
+x = ["a", "b", "c"]
+for index, item in enumerate(x):
+  print(f"{index}:{item}")</pre>
+Output:<br />
+<pre class="text-code">
+0:a
+1:b
+2:c</pre></li>
+<li>
+<h6>Starting enumerate from a specific number</h6>
+<pre class="python-code">
+x = ["a", "b", "c"]
+for index, item in enumerate(x, start=1):
+  print(f"{index}:{item}")</pre>
+Output:<br />
+<pre class="text-code">
+1:a
+2:b
+3:c</pre></li>
+<li>
+<h6>Using zip() to iterate over multiple lists</h6>
+<pre class="python-code">
+x = [1, 2]
+y = ["a", "b"]
+z = ["A", "B"]
+for i, j, k in zip(x, y, z):
+  print(f"{i}:{j}:{k}")</pre>
+Output:<br />
+<pre class="text-code">
+1:a:A
+2:b:B</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">List Comprehensions</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>List comprehensions</h6>
+<pre class="python-code">
+# traditional approach
+y = []
+for x in range(1, 3):
+  y.append(x ** 2)
+print(y) # Output: [1, 4]
+
+# list comprehension
+z = [(x ** 2) for x in range(1, 3)]
+print(z) # Output: [1, 4]</pre></li>
+<li>
+<h6>List comprehension with conditional filtering</h6>
+<pre class="python-code">
+w = [(x ** 2) for x in range(1, 3) if x % 2 == 0]
+print(w) # Output: [4]</pre></li>
+<li>
+<h6>List comprehension with conditional expression</h6>
+<pre class="python-code">
+w = [1, -2]
+z = [x if x >=0 else -x for x in w]
+print(z) # Output: [1, 2]</pre></li>
+<li>
+<h6>List comprehension with string methods</h6>
+<pre class="python-code">
+w = ['a', 'b']
+z = [x.upper() for x in w]
+print(z) # Output: ['A', 'B']</pre></li>
+<li>
+<h6>Nested list comprehension</h6>
+<pre class="python-code">
+x = [[1, 2], [3, 4]]
+y = [row for row in x]
+print(y) # Output: [[1, 2], [3, 4]]
+flattened = [num for row in x for num in row]
+print(flattened) # Output: [1, 2, 3, 4]</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Slicing &amp; Copying</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Slicing a list ([start:end:step])</h6>
+<pre class="python-code">
+x = [0, 1, 2, 3, 4, 5]</pre>
+You can specify the index of the first item (inclusive) and the last item (exclusive):<br />
+<pre class="python-code">
+print(x[1:3]) # Output: [1, 2]</pre>
+You can skip the index of the first item (defaults to 0)
+<pre class="python-code">
+print(x[:4]) # Output: [0, 1, 2, 3]</pre>
+You can skip the index of the last item (defaults to the length of the list):<br />
+<pre class="python-code">
+print(x[3:]) # Output: [3, 4, 5]</pre>
+You can skip the index of the first and last item (useful to copy a list): index of the first item default to 0 and the last defaults to the length of the list
+<pre class="python-code">
+print(x[:]) # Output: [0, 1, 2, 3, 4, 5]</pre>
+To get the slice of the last items, you can use a negative index:<br />
+<pre class="python-code">
+print(x[-3:]) # Output: [3, 4, 5]
+print(x[:-3]) # Output: [0, 1, 2]</pre>
+You can decide how many items to skip between items in the specified range by setting a third index in the brackets:<br />
+<pre class="python-code">
+print(x[0:6:2]) # Output: [0, 2, 4]
+
+# first:last:step=2
+print(x[::2]) # Output: [0, 2, 4]
+
+# reverse slicing
+print(x[::-1]) # Output: [5, 4, 3, 2, 1, 0]
+print(x[::-2]) # Output: [5, 3, 1]</pre></li>
+<li>
+<h6>Looping through a slice</h6>
+<pre class="python-code">
+for y in x[0:6:2]:
+  print(y)</pre>
+Output:<br />
+<pre class="text-code">
+0
+2
+4</pre></li>
+<li>
+<h6>Copying lists</h6>
+<pre class="python-code">
+x = [1, 2, [3, 4]]</pre>
+Copy by reference:<br />
+<pre class="python-code">
+y = x # both x and y reference the same list
+y[0] = 0
+print(x[0]) # Output: 0</pre>
+Copy by value:<br />
+Basic types don't affect the original values.<br />
+Nested objects are still references to the items in the original list and hence updates affect the original value.<br />
+Replacing the entire nested object reference does NOT affect the original object.<br />
+<pre class="python-code">
+y = x[:] # new copy but nested objects are still references to the items in the original list
+z = x.copy() # new copy but nested objects are still references to the items in the original list
+w = list(x) # new copy but nested objects are still references to the items in the original list
+y[0] = 'a'
+z[0] = 'b'
+w[0] = 'c'
+print(x[0]) # Output: 0
+print(y[0]) # Output: a
+print(z[0]) # Output: b
+print(w[0]) # Output: c
+
+# replacing the entire nested object reference does NOT affect the original object
+y[2] = [6, 7]
+print(x[2]) # Output: [3, 4]
+
+# nested objects are references and hence updates affect the original value
+z[2][1] = 5
+print(x[2]) # Output: [3, 5]</pre>
+Deep copy: create complete new list including nested objects<br />
+<pre class="python-code">
+import copy
+y = copy.deepcopy(x)
+y[2] = ['a', 'b']
+print(x[2]) # Output: [3, 5]
+print(y[2]) # Output: ['a', 'b']</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Other Lists functions</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+x = [1, 2, 0, 9, 8, 7]
+
+# length
+print(len(x)) # Output: 6
+
+# min
+print(min(x)) # Output: 0
+
+# max
+print(max(x)) # Output: 9
+
+# sum
+print(sum(x)) # Output: 27
+
+# counting occurrences of an element
+print(x.count(9)) # Output: 1
+
+# check if all elements are true (0 isn't)
+print(all(x)) # Output: False
+
+# check if all elements are true with conditions
+print(all(i > 1 for i in x)) # Output: False
+
+# check if any element is true
+print(any(x)) # Output: True
+
+# check if any element is true with conditions
+print(any(i > 1 for i in x)) # Output: True</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Error and Exception Handling | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Error and Exception Handling" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Error and Exception Handling | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Error and Exception Handling" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/handling-exceptions.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Error and Exception Handling | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Error and Exception Handling" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/handling-exceptions.html",
+        "description": "Tutorials: Python - Error and Exception Handling",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/handling-exceptions.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Error and Exception Handling</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+Exception handling lets your program gracefully manage errors and unexpected situations, instead of crashing abruptly.<br />
+<br />
+<h5>Basic exception handling structure:</h5>
+The core structure of exception handling in Python involves <b>try</b>, <b>except</b>, <b>else</b>, and <b>finally</b> blocks.<br />
+<pre class="python-code">
+try:
+  # code that might raise exceptions
+except FirstException as e:
+  # code to handle FirstException
+except SecondException as e:
+  # code to handle SecondException
+except Exception as e:
+  # code to handle any other exception
+else:
+  # code to execute if no exception was raised
+finally:
+  # code to execute no matter what (exception or not)</pre>
+<h5>Basic exception handling example:</h5>
+<pre class="python-code">
+def divide(i, j):
+  try:
+    d = i / j
+  except ZeroDivisionError as e:
+    print(f'ZeroDivisionError: {e}')
+    return None
+  except TypeError as e:
+    print(f'TypeError: {e}')
+    return None
+  else:
+    print(d)
+    return d
+  finally:
+    print('done')
+
+divide(2, 1) # correct division
+divide(2, 0) # zero division
+divide(2, 'a') # type error</pre>
+Output:<br />
+<pre class="text-code">
+2.0
+done
+ZeroDivisionError: division by zero
+done
+TypeError: unsupported operand type(s) for /: 'int' and 'str'
+done</pre>
+<h5>Failing silently:</h5>
+<pre class="python-code">
+try:
+  i = 1 / 0
+except ZeroDivisionError:
+  pass # special statement that tells python to swallow the exception</pre>
+<h5>Custom exception class example:</h5>
+<pre class="python-code">
+class CustomZeroDivisionError(ZeroDivisionError):
+    """Custom exception for zero division errors."""
+    def __init__(self, message, dividend=None, divisor=None):
+        super().__init__(message + f" | dividend:{dividend}, divisor:{divisor}")
+
+try:
+  raise CustomZeroDivisionError('division by zero', 1, 0)
+except CustomZeroDivisionError as e:
+  print(e)</pre>
+Output:<br />
+<pre class="text-code">
+division by zero | dividend:1, divisor:0</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

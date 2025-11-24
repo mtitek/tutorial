@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Topic Modeling with LLMs: Examples &amp; Label Generation | MTI TEK</title>
+<meta name="description" content="Learn how to perform topic modeling using large language models (LLMs), explore practical examples, and discover methods for generating topic labels." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Topic Modeling with LLMs: Examples &amp; Label Generation | MTI TEK" />
+<meta property="og:description" content="Learn how to perform topic modeling using large language models (LLMs), explore practical examples, and discover methods for generating topic labels." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/topic-modeling.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Topic Modeling with LLMs: Examples &amp; Label Generation | MTI TEK" />
+<meta name="twitter:description" content="Learn how to perform topic modeling using large language models (LLMs), explore practical examples, and discover methods for generating topic labels." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/topic-modeling.html",
+        "description": "Learn how to perform topic modeling using large language models (LLMs), explore practical examples, and discover methods for generating topic labels.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/topic-modeling.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Topic Modeling</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding Topic Modeling</a></li>
+<li><a href="#sec_id_2">Implementing Basic Topic Modeling with BERTopic</a></li>
+<li><a href="#sec_id_3">Advanced Topic Labeling with Language Models</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding Topic Modeling</span>
+<div class="tutorialSectionTextDiv1">
+Topic modeling is an unsupervised machine learning technique that automatically discovers abstract topics within a collection of documents.
+It identifies patterns in word usage and groups documents that share similar themes, providing insights into the underlying structure of large text corpora.<br />
+<br />
+Key Benefits:<br />
+<ul class="ul_square_1">
+<li>Automatically organize large document collections.<br /></li>
+<li>Discover hidden themes and patterns in text data.<br /></li>
+<li>Reduce dimensionality of text data for more efficient analysis and visualization.<br /></li>
+<li>Enable content recommendation systems and improve search functionality.<br /></li>
+<li>Support exploratory data analysis of textual content across various domains.<br /></li>
+</ul>
+<br />
+Example (to simplify, I used one-word sentences):<br />
+<pre class="text-code">
+Cluster 0: ['cats', 'dogs', 'elephants', 'birds'] ==> topic: animals
+Cluster 1: ['cars', 'trains', 'planes'] ==> topic: transportation</pre>
+BERTopic is a modern topic modeling technique that leverages transformer-based embeddings to create more semantically meaningful topics.
+Unlike classical approaches that rely on bag-of-words representations, BERTopic uses contextual embeddings that capture semantic relationships between words and phrases.
+In BERTopic, document clusters are formed based on semantic similarity in high-dimensional embedding space and then interpreted as coherent topics.<br />
+<br />
+The topic modeling pipeline in BERTopic follows these sequential steps:<br />
+<ul class="ul_square_1">
+<li>
+Document Embeddings: Convert documents into high-dimensional vector representations using pre-trained transformer models like BERT, RoBERTa, or sentence transformers. These embeddings capture semantic meaning and context.<br />
+<br /></li>
+<li>
+Dimensionality Reduction: Use UMAP (Uniform Manifold Approximation and Projection) to reduce embedding dimensions while preserving local neighborhood structure and global topology of the data.<br />
+<br /></li>
+<li>
+Clustering: Apply HDBSCAN (Hierarchical Density-Based Spatial Clustering of Applications with Noise) to group similar documents into dense clusters, automatically determining the number of topics.<br />
+<br /></li>
+<li>
+Topic Representation: Extract representative keywords for each cluster using TF-IDF weighting or other representation models to create interpretable topic descriptions.<br />
+<br /></li>
+</ul>
+<br />
+Key characteristics that distinguish BERTopic:<br />
+<ul class="ul_square_1">
+<li>
+Semantic Understanding: Uses contextual embeddings that capture word meaning, synonyms, and contextual relationships better than traditional bag-of-words approaches.<br />
+<br /></li>
+<li>
+Hierarchical Structure: Supports topic hierarchies and subtopics, allowing for multi-level topic exploration and analysis.<br />
+<br /></li>
+<li>
+Modular Flexibility: Modular design allows customization of each component (embedding model, dimensionality reduction, clustering algorithm) to suit specific use cases.<br />
+<br /></li>
+<li>
+Rich Visualization: Comprehensive visualization capabilities for topic exploration, including interactive plots, topic hierarchies, and temporal topic evolution.<br /></li>
+</ul>
+<br />
+See this page for more details about BERTopic:<br />
+<a href="https://maartengr.github.io/BERTopic/index.html">https://maartengr.github.io/BERTopic/index.html</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Implementing Basic Topic Modeling with BERTopic</span>
+<div class="tutorialSectionTextDiv1">
+Let's start with a basic example using individual words to understand the fundamental concepts.
+This simplified example demonstrates the core functionality.<br />
+<br />
+Install the required modules:<br />
+<pre class="sh-code">
+$ pip install bertopic</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi topic-modeling.py</pre>
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+from umap import UMAP
+from hdbscan import HDBSCAN
+from bertopic import BERTopic
+
+# sample data - in practice, you'd use full sentences or documents
+sentences = ['cats', 'dogs', 'elephants', 'birds', 'cars', 'trains', 'planes']
+
+# initialize the sentence transformer model
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L12-v2")
+
+# generate embeddings
+embeddings = embedding_model.encode(sentences)
+
+# configure BERTopic with custom parameters + fit the model
+topic_model = BERTopic(
+    embedding_model=embedding_model,
+    umap_model=UMAP(n_components=5, random_state=42),
+    hdbscan_model=HDBSCAN(min_cluster_size=2),
+    verbose=True
+).fit(sentences, embeddings)
+
+# display results
+print("Topics info:")
+print(topic_model.get_topic_info())
+
+print("Topic 0 info:")
+print(topic_model.get_topic(0))
+
+print("Topic 1 info:")
+print(topic_model.get_topic(1))
+
+# create and save visualizations
+fig = topic_model.visualize_barchart()
+fig.write_html("bertopic-barchart-figure.html")</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 topic-modeling.py</pre>
+Output:<br />
+<pre class="text-code">
+Topics info:
+       Topic  Count    Name                         Representation                                 Representative_Docs
+0      0      4        0_cats_birds_elephants_dogs  [cats, birds, elephants, dogs, , , , , , ]     [birds, cats, dogs]
+1      1      3        1_cars_trains_planes_        [cars, trains, planes, , , , , , , ]           [planes, cars, trains]
+
+Topic 0 info:
+[
+    ('cats', np.float64(0.34657359027997264)),
+    ('birds', np.float64(0.34657359027997264)),
+    ('elephants', np.float64(0.34657359027997264)),
+    ('dogs', np.float64(0.34657359027997264)),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05)
+]
+
+Topic 1 info:
+[
+    ('cars', np.float64(0.46209812037329684)),
+    ('trains', np.float64(0.46209812037329684)),
+    ('planes', np.float64(0.46209812037329684)),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05),
+    ('', 1e-05)
+]</pre>
+Topics are represented by the main keywords extracted from the clustered documents, ranked by their importance scores (TF-IDF weights).
+Each topic name is automatically generated by concatenating the most representative keywords using underscores ("_").
+The scores indicate how strongly each word represents the topic, with higher scores meaning stronger association.
+A special topic labeled "-1" may also appear, which typically includes outliers and documents that do not clearly fit into any specific topic cluster.
+This outlier category helps identify noise in the data or documents that require different clustering parameters.<br />
+<br />
+Chart of the topics (Topic Word Scores): bertopic-barchart-figure.html<br />
+<img alt="Topics Plot" src="img/bertopic_plot.png" />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Advanced Topic Labeling with Language Models</span>
+<div class="tutorialSectionTextDiv1">
+One of BERTopic's most powerful features is the ability to generate human-readable topic labels using language models.
+Instead of relying solely on keyword concatenation, this approach leverages the natural language understanding capabilities of transformer models to create more intuitive and descriptive topic names.<br />
+<br />
+The labeling process uses a carefully crafted prompt template that combines two key information sources:<br />
+<ul class="ul_square_1">
+<li>
+Representative Documents: A subset of documents that best represent each topic will be inserted using the [DOCUMENTS] placeholder. These provide contextual examples of the topic's content.<br />
+</li>
+<li>
+Topic Keywords: The most important keywords that define the topic cluster will be inserted using the [KEYWORDS] placeholder. These provide additional context that helps the language model better understand the meaning of the text.<br />
+</li>
+</ul>
+<pre class="text-code">
+INPUT TEMPLATE:
++ Representative documents from the topic
++ Keywords that define the topic
+
+Documents: [DOCUMENTS]
+Keywords: [KEYWORDS]
+Task: Generate a concise, descriptive label for this topic.</pre>
+<pre class="text-code">
+OUTPUT:
+&lt;human-readable topic labels&gt;</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi label-topic-modeling.py</pre>
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+from umap import UMAP
+from hdbscan import HDBSCAN
+from bertopic import BERTopic
+from transformers import pipeline
+from bertopic.representation import TextGeneration
+
+sentences = ['cats', 'dogs', 'elephants', 'birds', 'cars', 'trains', 'planes']
+
+# initialize the sentence transformer model
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L12-v2")
+
+# create embeddings
+embeddings = embedding_model.encode(sentences)
+
+# configure BERTopic with custom parameters + fit the model
+topic_model = BERTopic(
+    embedding_model=embedding_model,
+    umap_model=UMAP(n_components=5, random_state=42),
+    hdbscan_model=HDBSCAN(min_cluster_size=2),
+    verbose=True
+).fit(sentences, embeddings)
+
+# prompt for topic labeling
+prompt = """These documents belong to the same topic:
+[DOCUMENTS]
+
+These keywords give details about the topic: '[KEYWORDS]'.
+
+Given these documents and keywords, what is this topic about?"""
+
+# initialize text generation pipeline
+# use a model ("google/flan-t5-small") to label the topics
+generator = pipeline("text2text-generation", model="google/flan-t5-small")
+
+# create representation model
+representation_model = TextGeneration(
+    generator,
+    prompt=prompt,
+    doc_length=50,
+    tokenizer="whitespace"
+)
+
+# update topics with the generated labels
+topic_model.update_topics(sentences, representation_model=representation_model)
+
+# print the topic labels
+print(topic_model.get_topic_info())</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 label-topic-modeling.py</pre>
+Output:<br />
+<pre class="text-code">
+       Topic  Count          Name           Representation                 Representative_Docs
+0      0      4              0_animals___  [animals, , , , , , , , , ]     [birds, cats, dogs]
+1      1      3              1_car___      [car, , , , , , , , , ]         [planes, cars, trains]</pre>
+The actual output may show "car" instead of "transportation" due to the small dataset size and the language model's interpretation.
+With only 3 transportation-related words, the model may focus on the most frequent or representative term.
+In real-world applications with larger, more diverse datasets, language models typically generate more comprehensive and accurate topic labels.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

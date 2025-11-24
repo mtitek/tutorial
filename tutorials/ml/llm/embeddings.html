@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Embeddings in LLMs: Token &amp; Text Embedding Techniques Explained | MTI TEK</title>
+<meta name="description" content="Learn how embeddings work in large language models (LLMs), including how to create token and text embeddings to power NLP applications." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Embeddings in LLMs: Token &amp; Text Embedding Techniques Explained | MTI TEK" />
+<meta property="og:description" content="Learn how embeddings work in large language models (LLMs), including how to create token and text embeddings to power NLP applications." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/embeddings.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Embeddings in LLMs: Token &amp; Text Embedding Techniques Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn how embeddings work in large language models (LLMs), including how to create token and text embeddings to power NLP applications." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/embeddings.html",
+        "description": "Learn how embeddings work in large language models (LLMs), including how to create token and text embeddings to power NLP applications.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/embeddings.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Embeddings</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Embeddings</a></li>
+<li><a href="#sec_id_2">Example: Create Token Embeddings</a></li>
+<li><a href="#sec_id_3">Example: Create Text Embeddings</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Embeddings</span>
+<div class="tutorialSectionTextDiv1">
+Embeddings are the foundation of modern NLP, enabling machines to work with human language in a mathematically meaningful way.
+Understanding how to create, use, and optimize embeddings is essential for any text-processing application.<br />
+<br />
+Embeddings are numerical representations that transform discrete tokens (words, subwords, characters) into continuous vector spaces.
+Think of them as a way to give computers a mathematical understanding of language meaning.<br />
+<br />
+Alternative names: embedding vectors, vector representations, dense representations, distributed representations<br />
+<br />
+Key Characteristics:
+<ul class="ul_square_1">
+<li>Dense vectors: Each embedding is a list of real numbers (typically 64-12,288 dimensions).<br /></li>
+<li>Semantic capture: Similar words have similar embeddings in vector space.<br /></li>
+<li>Contextual: Modern embeddings consider surrounding context, not just the word itself.<br /></li>
+<li>Fixed dimensionality: All embeddings from a model have the same number of dimensions.<br /></li>
+</ul>
+<br />
+By converting words to vectors, we enable:<br />
+<ul class="ul_square_1">
+<li>Semantic similarity: Measuring how similar two pieces of text are.<br /></li>
+<li>Information retrieval: Finding relevant documents or passages.<br /></li>
+<li>Machine learning: Using text as input to neural networks.<br /></li>
+</ul>
+<br />
+Types of Embeddings<br />
+<ul class="ul_square_1">
+<li>
+Token Embeddings<br />
+<ul class="ul_circle_1">
+<li>Scope: Individual tokens (words, subwords, characters).<br /></li>
+<li>Use case: Building blocks for language models.<br /></li>
+<li>Example: "language" → [0.1, -0.1, 0.2, ..., 0.3]<br /></li>
+</ul>
+<br /></li>
+<li>
+Sentence Embeddings<br />
+<ul class="ul_circle_1">
+<li>Scope: Complete sentences or short passages.<br /></li>
+<li>Use case: Semantic search, text classification, clustering.<br /></li>
+<li>Example: "Hello Embeddings!" → [0.4, -0.3, 0.7, ..., 0.8]<br /></li>
+</ul>
+<br /></li>
+<li>
+Document Embeddings<br />
+<ul class="ul_circle_1">
+<li>Scope: Entire documents or long passages.<br /></li>
+<li>Use case: Document classification, recommendation systems.<br /></li>
+</ul>
+</li>
+</ul>
+<br />
+Contextual vs. Static Embeddings<br />
+<ul class="ul_square_1">
+<li>
+Static Embeddings (Word2Vec, GloVe):
+Same vector for a word regardless of context.<br />
+</li>
+<li>
+Contextual Embeddings (BERT, GPT, etc.):
+Different vectors based on surrounding context.<br />
+</li>
+</ul>
+<br />
+Training Process<br />
+<ul class="ul_square_1">
+<li>Initialization: Start with random vectors for each token.<br /></li>
+<li>Context learning: Model learns from massive text datasets.<br /></li>
+<li>Optimization: Vectors adjust to capture semantic relationships.<br /></li>
+<li>Convergence: Final embeddings encode learned patterns.<br /></li>
+</ul>
+<br />
+Practical Applications<br />
+<ul class="ul_square_1">
+<li>
+Text Generation<br />
+<ul class="ul_circle_1">
+<li>Language models use embeddings as input representations.<br /></li>
+<li>Enable models to understand and generate coherent text.<br /></li>
+</ul>
+<br /></li>
+<li>
+Text Classification<br />
+<ul class="ul_circle_1">
+<li>Convert documents to embeddings.<br /></li>
+<li>Train classifiers on vector representations.<br /></li>
+<li>Examples: sentiment analysis, spam detection.<br /></li>
+</ul>
+<br /></li>
+<li>
+Semantic Search &amp; RAG<br />
+<ul class="ul_circle_1">
+<li>Convert queries and documents to embeddings.<br /></li>
+<li>Find similar content using vector similarity.<br /></li>
+<li>Power recommendation systems and search engines.<br /></li>
+</ul>
+<br /></li>
+<li>
+Text Clustering<br />
+<ul class="ul_circle_1">
+<li>Group similar documents using embedding similarity.<br /></li>
+<li>Organize large text collections.<br /></li>
+<li>Discover hidden themes in data.<br /></li>
+</ul>
+</li>
+</ul>
+<br />
+Strategies for combining token embeddings into sentence embeddings:<br />
+<ul class="ul_square_1">
+<li>Mean pooling: Average all token vectors.<br /></li>
+<li>Max pooling: Take maximum value across each dimension.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Create Token Embeddings</span>
+<div class="tutorialSectionTextDiv1">
+First, download the model
+(this may not be necessary since the model will be automatically downloaded using <code class="code1">from_pretrained()</code>):<br />
+<pre class="sh-code">
+$ huggingface-cli download microsoft/deberta-v3-xsmall</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi token-embeddings.py</pre>
+<pre class="python-code">
+from transformers import AutoModel, AutoTokenizer
+
+# load model and tokenizer
+model = AutoModel.from_pretrained("microsoft/deberta-v3-xsmall")
+tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-base") # TODO: got an error when I tried to use "microsoft/deberta-v3-xsmall"
+
+# tokenize input text
+tokens = tokenizer('Hello Embeddings!', return_tensors='pt')
+
+# decode tokens to see how text was split
+print('Tokens:')
+for token in tokens['input_ids'][0]:
+  # convert the input token id to it corresponding token
+  print(tokenizer.decode(token))
+
+# generate embeddings
+output = model(**tokens)[0]
+
+# shape: [batch_size, number_of_tokens, embeddings_dimension]
+print('\nOutput shape:')
+print(output.shape) # torch.Size([1, 7, 384])
+
+# display output embeddings
+print('\nOutput embeddings:')
+print(output)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 token-embeddings.py</pre>
+Output:<br />
+<pre class="sh-code">
+Tokens:
+[CLS]
+Hello
+ Emb
+edd
+ings
+!
+[SEP]
+
+Output shape:
+torch.Size([1, 7, 384])
+
+Output embeddings:
+tensor([[[-3.3186,  0.1003, -0.1506,  ..., -0.2840, -0.3882, -0.1670],
+         [-0.5446,  0.7986, -0.4200,  ...,  0.1163, -0.3322, -0.3622],
+         [-0.1689,  0.6443, -0.0145,  ...,  0.0207, -0.5754,  1.3607],
+         ...,
+         [ 0.0366,  0.0818, -0.0607,  ..., -0.4793, -0.7831, -0.9185],
+         [-0.0555,  0.3136,  0.2662,  ...,  0.3092, -0.4876, -0.3294],
+         [-3.1255,  0.1324, -0.0899,  ..., -0.1426, -0.5295,  0.0731]]],
+       grad_fn=&lt;NativeLayerNormBackward0&gt;)</pre>
+Note that the created embeddings have the  size "1, 7, 384" (may vary based on input and tokenization):<br />
+<ul class="ul_square_1">
+<li>1: the batch dimension<br /></li>
+<li>7: seven tokens<br /></li>
+<li>384: each token is embedded in a vector of 384 values<br /></li>
+</ul>
+<br />
+The batch dimension can be larger than 1 in cases when multiple sentences are given to the model to be processed at the same time.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Create Text Embeddings</span>
+<div class="tutorialSectionTextDiv1">
+Install the Sentence Transformers library:<br />
+<pre class="sh-code">
+$ pip install sentence-transformers</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi text-embeddings.py</pre>
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+
+# load pre-trained sentence transformer
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# example sentences
+sentences = ["Hello Sentence Transformers library!", "Generate sentence embeddings!"]
+
+# generate embeddings
+embeddings = model.encode(sentences)
+
+# output shape: [number_of_sentences, embeddings_dimension]
+print('Output shape:')
+print(embeddings.shape) # (2, 384) → 2 sentences, each with a 384 dimension embedding
+
+# output embeddings
+print('\nOutput embeddings:')
+print(embeddings)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 text-embeddings.py</pre>
+Output:<br />
+<pre class="sh-code">
+Output shape:
+(2, 384)
+
+Output embeddings:
+[[-6.70545474e-02 -3.04300548e-03  3.52957926e-04  4.17553373e-02
+   5.08048979e-04  1.49061205e-02  1.29256323e-02  5.43267690e-02
+...
+   1.12174535e-02  1.13273829e-01  5.92597015e-02 -1.89474523e-02]]</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

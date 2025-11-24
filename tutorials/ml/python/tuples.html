@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Tuples | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Tuples" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Tuples | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Tuples" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/tuples.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Tuples | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Tuples" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/tuples.html",
+        "description": "Tutorials: Python - Tuples",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/tuples.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Tuples</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+A Tuple is an immutable collection of ordered items.<br />
+Items in the tuple can be of any type, including mixed types within the same tuple: strings, numbers, dictionaries, lists, sets, objects, tuples, ...<br />
+Tuples allow duplicates.<br />
+Items of tuples can be accessed by position (0-based indexing).<br />
+<br />
+<h5>Creating basic lists:</h5>
+Use parentheses (<b>()</b>) to create a tuple.<br />
+Use commas to separate items in the tuple.
+<pre class="python-code">
+x = (0, 1, 2, 3)
+print(type(x)) # Output: &lt;class 'tuple'&gt;
+
+print(x) # Output: (0, 1, 2, 3)
+print(x[1]) # Output: 1</pre>
+<h5>Tuples with one item:</h5>
+<pre class="python-code">
+# must use the comma after the single element of the tuple
+y = (0,)
+print(y) # Output: (0,)
+
+# alternative syntax for single-item tuple
+y = 0,
+print(y) # Output: (0,)
+
+# missing the comma will create an object that is not a tuple
+not_a_tuple = (10)
+print(not_a_tuple) # Output: 10
+print(type(not_a_tuple)) # Output: &lt;class 'int'&gt;</pre>
+<h5>Empty tuples:</h5>
+<pre class="python-code">
+y = ()
+z = tuple()
+print(f'{y} - {len(y)}') # Output: () - 0
+print(f'{z} - {len(z)}') # Output: () - 0</pre>
+<h5>Nested tuples:</h5>
+<pre class="python-code">
+y = (0,)
+z = (x, y, 'a')
+print(z) # Output: ((0, 1, 2, 3), (0,), 'a')</pre>
+<h5>Immutability:</h5>
+If you try to modify a tuple you get an error:<br />
+<pre class="python-code">
+# Raises TypeError: 'tuple' object does not support item assignment
+x[0] = 3</pre>
+<h5>Tuples packing and unpacking:</h5>
+<pre class="python-code">
+# packing
+x = 1, 2, 3  # equivalent to x = (1, 2, 3)
+print(x) # Output: (1, 2, 3)
+
+# unpacking
+a, b, c = x
+print(a) # Output: 1
+print(b) # Output: 2
+print(c) # Output: 3</pre>
+<h5>Indexing:</h5>
+Accessing elements using square brackets with zero-based indexing:<br />
+<pre class="python-code">
+x = ('A', 'B', 'C', 'D')
+print(x[0]) # Output: A
+print(x[1]) # Output: B
+print(x[-1]) # Output: D
+print(x[-2]) # Output: C</pre>
+<h5>Slicing:</h5>
+Extract parts of a tuple:<br />
+<pre class="python-code">
+x = (0, 1, 2, 3, 4, 5)
+
+# [i:j]: slice staring from index i, until j excluded
+print(x[2:4]) # Output: (2, 3)
+
+# [:i]: slice up to index i excluded
+print(x[:2]) # Output: (0, 1)
+
+# [i:]: slice staring from index i included, until last element of the tuple
+print(x[3:]) # Output: (3, 4, 5)
+
+# [::i]: slice staring from index 0, including every second element
+print(x[::2]) # Output: (0, 2, 4)
+
+# [::-1]: tuple with elements reversed
+print(x[::-1]) # Output: (5, 4, 3, 2, 1, 0)</pre>
+<h5>Tuple built-in methods:</h5>
+<ul class="ul_square_1">
+<li>
+<h6>Common operations:</h6>
+<pre class="python-code">
+# count(ITEM) - returns number of occurences
+print(('A', 'A', 'B').count('A')) # Output: 2
+
+# length
+print(len(('A', 'B'))) # Output: 2
+
+# Min/Max/Sum (comparable elements)
+print(min((1, 2, 3))) # Output: 1
+print(max((1, 2, 3))) # Output: 3
+print(sum((1, 2, 3))) # Output: 6
+
+# Concatenation
+print(('A', 'B') + ('B', 'C')) # Output: ('A', 'B', 'B', 'C')
+
+# Repetition
+print(('A', 'B') * 2) # Output: ('A', 'B', 'A', 'B')
+
+# Membership
+print('A' in ('A', 'B')) # Output: True
+print('A' not in ('A', 'B')) # Output: False</pre>
+</li>
+<li>
+<h6>Finding elements:</h6>
+<pre class="python-code">
+# index(ITEM) - returns first index of item
+print(('A', 'A', 'B').index('B')) # Output: 2
+
+# index(ITEM, START_INDEX) - returns first index of item starting from START_INDEX
+print(('A', 'A', 'B').index('A', 1)) # Output: 1
+
+# index(ITEM, START_INDEX, END_INDEX) - returns first index of item between START_INDEX and END_INDEX
+print(('A', 'A', 'B').index('A', 1, 2)) # Output: 1</pre>
+</li>
+<li>
+<h6>Creating tuples:</h6>
+<pre class="python-code">
+# from string
+print(tuple('AB')) # Output: ('A', 'B')
+
+# from range
+print(tuple(range(2))) # Output: (0, 1)
+
+# from list
+print(tuple(['A', 'B'])) # Output: ('A', 'B')
+
+# from set (reminder that sets are unordered)
+print(tuple({'A', 'B'})) # Output: ('B', 'A')</pre>
+</li>
+<li>
+<h6>Converting tuples:</h6>
+<pre class="python-code">
+# to list
+print(list(('A', 'B'))) # Output: ['A', 'B']
+
+# from set (reminder that sets are unordered)
+print(set(('A', 'B'))) # Output: {'B', 'A'}</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

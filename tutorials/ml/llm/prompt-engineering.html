@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prompt Engineering Guide: Techniques, Examples &amp; Best Practices | MTI TEK</title>
+<meta name="description" content="Learn prompt engineering for LLMs with clear examples and techniques, including instruction prompts, prompt chaining, and effective prompt design." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Prompt Engineering Guide: Techniques, Examples &amp; Best Practices | MTI TEK" />
+<meta property="og:description" content="Learn prompt engineering for LLMs with clear examples and techniques, including instruction prompts, prompt chaining, and effective prompt design." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/prompt-engineering.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Prompt Engineering Guide: Techniques, Examples &amp; Best Practices | MTI TEK" />
+<meta name="twitter:description" content="Learn prompt engineering for LLMs with clear examples and techniques, including instruction prompts, prompt chaining, and effective prompt design." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/prompt-engineering.html",
+        "description": "Learn prompt engineering for LLMs with clear examples and techniques, including instruction prompts, prompt chaining, and effective prompt design.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/prompt-engineering.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Prompt Engineering</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction to Prompt Engineering</a></li>
+<li><a href="#sec_id_2">Core Components of Effective Prompts</a></li>
+<li><a href="#sec_id_3">Prompt Types and Advanced Techniques</a></li>
+<li><a href="#sec_id_4">Example: Basic Prompts</a></li>
+<li><a href="#sec_id_5">Example: Instruction Prompts</a></li>
+<li><a href="#sec_id_6">Example: Simple Prompt Chaining</a></li>
+<li><a href="#sec_id_7">Example: Multi-Step Prompt Chaining</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction to Prompt Engineering</span>
+<div class="tutorialSectionTextDiv1">
+Prompt engineering is the systematic process of designing, refining, and optimizing input prompts to guide large language models (LLMs) toward generating desired outputs.
+It requires an understanding of both the model's capabilities and the specific task requirements, as well as knowledge of how different prompt structures influence model behavior.<br />
+<br />
+Good prompts provide several key benefits that directly impact the quality and utility of AI-generated content.
+They significantly improve output quality and relevance by providing clear context and expectations.
+They ensure consistent results across similar tasks, reducing variability in model responses.
+Additionally, they provide better control over model behavior, output format, and adherence to specific guidelines or constraints.<br />
+<br />
+The practice of prompt engineering involves iterative refinement, testing different approaches, and understanding how models interpret various types of instructions.
+Success often depends on finding the right balance between specificity and flexibility, providing enough guidance without over-constraining the model's creative capabilities.<br />
+<br />
+As models continue to evolve, prompt engineering techniques must also adapt.
+What works well for one model architecture may need adjustment for another, making this a dynamic field that requires continuous learning and experimentation.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Core Components of Effective Prompts</span>
+<div class="tutorialSectionTextDiv1">
+Effective prompts consist of several key components that work together to guide the model toward desired outcomes.
+Understanding these components allows for more systematic and successful prompt construction.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Role Definition:<br />
+Establish the model's role or persona to provide context for the type of response expected.
+This helps the model understand the perspective and expertise level it should adopt.<br />
+<pre class="text-code">
+You are a software engineer with 10 years of experience in backend systems.</pre></li>
+<li>
+Task Instructions:<br />
+Provide specific, unambiguous instructions that clearly define what the model should do.
+Use action verbs and be explicit about the desired outcome.<br />
+<pre class="text-code">
+Review the following code and identify any issues that may affect performance.
+Focus on algorithmic complexity and resource utilization.</pre></li>
+<li>
+Context and Background:<br />
+Supply relevant background information that helps the model understand the broader situation and make more informed decisions.<br />
+<pre class="text-code">
+Context: This review is necessary due to a significant performance regression in our production environment.
+The system handles 1000 concurrent users and processes 1M requests per hour.</pre></li>
+<li>
+Input Data:<br />
+Present the data that needs to be processed in a clear, structured format.
+Consider using delimiters or formatting to separate the input from instructions.<br />
+<pre class="text-code">
+Code to review:
+[Insert the code here]</pre></li>
+<li>
+Output Specifications:<br />
+Define the desired format, length, tone, and structure of the response.
+This ensures consistency and makes the output more useful for downstream processes.<br />
+<pre class="text-code">
+Format: Provide a structured review with:
+- Executive Summary (2-3 sentences)
+- Issues Found (bullet points with severity levels)
+- Recommended Actions (prioritized list)
+- Implementation Timeline (estimated effort)</pre></li>
+<li>
+Constraints and Guidelines:<br />
+Set boundaries and specify any limitations or requirements.
+This includes ethical guidelines, factual accuracy requirements, or stylistic preferences.<br />
+<pre class="text-code">
+Constraints:
+- Keep review objective and data-driven
+- Avoid speculation beyond provided code
+- Include code snippets for suggested improvements
+- Limit response to 500 words maximum</pre></li>
+<li>
+Examples (Optional):<br />
+Provide sample inputs and outputs to demonstrate expected behavior.
+This is particularly useful for complex tasks or when a specific format is required.<br />
+</ul>
+<br />
+The placement and ordering of these components can significantly impact effectiveness.
+Instructions can be framed as questions, requests, or statements, and they should clearly and specifically describe the task to be performed.
+Instructions can be placed at either the beginning or end of the prompt, with beginning placement often providing better results for complex tasks.<br />
+<br />
+When accuracy is critical, it's best to instruct the model to respond only if it is confident in its answer.
+This can be achieved by adding phrases like "If you're not certain, please indicate your uncertainty" or "Only provide answers you can support with evidence."<br />
+<br />
+For complex tasks, consider breaking the prompt into smaller, simpler prompts and using them across multiple model calls—a technique known as chain prompting.
+The output from one model can be used as input for the next, potentially involving different models at each step.
+This approach can lead to more accurate results and better handling of multi-step reasoning tasks.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Prompt Types and Advanced Techniques</span>
+<div class="tutorialSectionTextDiv1">
+Different types of prompts serve different purposes and work better for specific kinds of tasks.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Basic Prompts:<br />
+The simplest form of interaction where the prompt can be a direct question or sentence with minimal guidelines.
+The model interprets the intent and responds accordingly.
+These work well for straightforward factual questions or simple completion tasks.<br />
+<pre class="text-code">
+Input: What is the capital of Canada?</pre>
+<pre class="text-code">
+Output: The capital of Canada is Ottawa.</pre>
+Input/Output:<br />
+<pre class="yaml-code">
+[
+    {'role': 'user', 'content': 'What is the capital of Canada?'},
+    {'role': 'assistant', 'content': 'The capital of Canada is Ottawa.'}
+]</pre>
+</li>
+<li>
+Instruction Prompts:<br />
+Structured prompts with clear role definition and specific instructions.
+These prompts separate the instruction from the data, providing better control over the model's behavior and output format.<br />
+<br />
+Template Structure:<br />
+<pre class="text-code">
+Role: You are a [expert] [role]
+Task: [clear instruction]
+Input: [data to be processed]
+Output: [format/structure]</pre>
+<pre class="text-code">
+Input:
+&lt;Instruction&gt; You are a helpful assistant. You will classify the text into negative or positive.
+&lt;data&gt; The weather is great today!</pre>
+<pre class="text-code">
+Output: Positive</pre>
+Input/Output:<br />
+<pre class="yaml-code">
+[
+    {'role': 'system', 'content': 'You are a helpful assistant. You will classify the text into negative or positive.'},
+    {'role': 'user', 'content': 'The weather is great today!'},
+    {'role': 'assistant', 'content': 'Positive'}
+]</pre>
+</li>
+<li>
+Instruction Prompts with Indicators:<br />
+Enhanced instruction prompts that include specific indicators or definitions to guide the LLM toward the desired output.
+These are particularly useful when dealing with domain-specific terminology or nuanced tasks.<br />
+<pre class="text-code">
+Input:
+&lt;Instruction&gt; You are a helpful assistant. You will extract entities from the text.
+&lt;indicator&gt; Definition: an entity is an organization, a person, or a location.
+&lt;data&gt; The capital of Canada is Ottawa.</pre>
+Output:<br />
+<pre class="yaml-code">
+[
+    {'role': 'system', 'content': 'You are a helpful assistant. You will extract entities from the text.'},
+    {'role': 'system', 'content': 'Definition: an entity is an organization, a person, or a location.'},
+    {'role': 'user', 'content': 'The capital of Canada is Ottawa.'},
+    {'role': 'assistant', 'content': 'Ottawa - Location (capital of Canada)'}
+]</pre>
+</li>
+<li>
+Few-Shot Prompting:<br />
+A powerful technique that provides examples to demonstrate the desired input-output pattern.
+This approach leverages the model's ability to learn from patterns and apply similar reasoning to new inputs.<br />
+<br />
+Structure Categories:<br />
+<ul class="ul_circle_1">
+<li>Zero-shot prompting: No examples provided, relying entirely on instructions.<br /></li>
+<li>One-shot prompting: Single example provided to establish the pattern.<br /></li>
+<li>Few-shot prompting: Multiple examples provided to reinforce the pattern and handle edge cases.<br /></li>
+</ul>
+<pre class="text-code">
+Input:
+&lt;question&gt; What's the capital of Canada?
+&lt;answer&gt; Ottawa is the capital of Canada and is located in Ontario.
+&lt;Instruction&gt; You are a helpful assistant. Answer the following question?
+&lt;data&gt;: What's the capital of France?</pre>
+Input/Output:<br />
+<pre class="yaml-code">
+[
+    {'role': 'system', 'content': 'You are a helpful assistant. Answer the following questions.'},
+    {'role': 'user', 'content': 'What is the capital of Canada?'},
+    {'role': 'assistant', 'content': 'Ottawa is the capital of Canada and is located in Ontario.'},
+    {'role': 'user', 'content': 'What is the capital of France?'},
+    {'role': 'assistant', 'content': 'Paris is the capital of France. It is not only the political center but also a major cultural and ...'}
+]</pre>
+</li>
+<li>
+Chain-of-Thought Prompting:<br />
+An advanced technique that encourages the model to show its reasoning process step-by-step.
+This approach significantly improves performance on complex reasoning tasks and makes the model's decision-making process more transparent and verifiable.<br />
+<br />
+Example Application:<br />
+<pre class="text-code">
+Problem: I have five apples. If I ate one in the morning and three in the afternoon, how many apples do I have left?
+
+Let's solve this step by step:
+1. Calculate the total number of apples eaten: 1 (morning) + 3 (afternoon) = 4
+2. Subtract the total eaten from the original amount: 5 - 4 = 1
+3. Answer: I have 1 apple left.</pre>
+</li>
+<li>
+Prompt Chaining:<br />
+A sophisticated approach that breaks complex tasks into smaller, sequential prompts where each output feeds into the next prompt.
+This technique is particularly effective for multi-step processes and can improve accuracy by allowing the model to focus on one aspect of the problem at a time.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Example: Basic Prompts</span>
+<div class="tutorialSectionTextDiv1">
+Let's work on this simple basic prompt using a local LLM implementation.<br />
+<br />
+Let's download the model:<br />
+<pre class="sh-code">
+$ wget https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf/resolve/main/Phi-3-mini-4k-instruct-q4.gguf</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi prompt.py</pre>
+<pre class="python-code">
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
+
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+
+llm = LlamaCpp(
+    model_path="./Phi-3-mini-4k-instruct-q4.gguf",
+    temperature=0,
+    max_tokens=50,
+    top_p=0,
+    callback_manager=callback_manager,
+    verbose=False
+)
+
+prompt = "What's 1+1?"
+
+llm.invoke(prompt)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 prompt.py</pre>
+Output:<br />
+<pre class="text-code">
+&lt;|assistant|&gt; 1+1 equals 2.</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Example: Instruction Prompts</span>
+<div class="tutorialSectionTextDiv1">
+Let's work on this simple instruction prompt using the Transformers library with a more recent model.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi instruction-prompt.py</pre>
+<pre class="python-code">
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+
+model = AutoModelForCausalLM.from_pretrained("microsoft/Phi-4-mini-instruct")
+tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-4-mini-instruct")
+
+generator = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer
+)
+
+generation_args = {
+    "max_new_tokens": 10,
+    "return_full_text": False,
+    "do_sample": False,
+}
+
+prompt = [
+    {"role": "system", "content": "You are a helpful assistant. You will answer questions in a concise and informative manner."},
+    {"role": "user", "content": "What's the capital of Canada?"}
+]
+
+output = generator(prompt, **generation_args)
+
+print(output[0]["generated_text"]) # Ottawa
+
+#prompt_template = generator.tokenizer.apply_chat_template(prompt, tokenize=False)
+#print(prompt_template)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 instruction-prompt.py</pre>
+Output:<br />
+<pre class="sh-code">
+Ottawa</pre>
+If we set the "return_full_text" parameter to "True", we can see the full chat text:<br />
+<pre class="yaml-code">
+[
+    {'role': 'system', 'content': 'You are a helpful assistant. You will answer questions in a concise and informative manner.'},
+    {'role': 'user', 'content': "What's the capital of Canada?"},
+    {'role': 'assistant', 'content': 'Ottawa'}
+]</pre>
+If you uncomment these two lines in the code above, you will see the prompt template as created by the pipeline from the prompt:<br />
+<pre class="python-code">
+prompt_template = generator.tokenizer.apply_chat_template(prompt, tokenize=False)
+print(prompt_template)</pre>
+Output:<br />
+<pre class="text-code">
+&lt;|system|&gt;You are a helpful assistant. You will answer questions in a concise and informative manner.&lt;|end|&gt;
+&lt;|user|&gt;What's the capital of Canada?&lt;|end|&gt;
+&lt;|endoftext|&gt;</pre>
+Note the special tokens: |system|, |user|, |assistant|<br />
+<ul class="ul_square_1">
+<li>
+System: provides guidelines for the model<br />
+<pre class="text-code">
+&lt;|system|&gt;: Start of guidelines
+You are a helpful assistant. You will answer questions in a concise and informative manner.: guidelines
+&lt;|end|&gt;: end of guidelines</pre>
+</li>
+<li>
+User: provides the user input<br />
+<pre class="text-code">
+&lt;|user|&gt;: Start of prompt
+What's the capital of Canada?: prompt
+&lt;|end|&gt;: end of prompt</pre>
+</li>
+<li>
+Assistant: gives the generated output<br />
+<pre class="text-code">
+&lt;|assistant|&gt;: start of output
+Ottawa: output
+&lt;|end|&gt;: end of output</pre>
+</li>
+<li>
+The end of text:<br />
+<pre class="text-code">
+&lt;|endoftext|&gt;: end of the model output</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Example: Simple Prompt Chaining</span>
+<div class="tutorialSectionTextDiv1">
+Let's use LangChain to create a simple chain between a prompt template and a model.
+This demonstrates how to structure prompts for more complex reasoning tasks.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi chain-prompt.py</pre>
+<pre class="python-code">
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
+from langchain_core.prompts import PromptTemplate
+
+template = """Question: {question}
+
+Answer: Explain how you arrived at the correct answer."""
+
+prompt = PromptTemplate.from_template(template)
+
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+
+llm = LlamaCpp(
+    model_path="./Phi-3-mini-4k-instruct-q4.gguf",
+    temperature=0,
+    max_tokens=100,
+    top_p=0,
+    callback_manager=callback_manager,
+    verbose=False
+)
+
+llm_chain = prompt | llm
+
+llm_chain.invoke({"question": "What's 1+1?"})</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 chain-prompt.py</pre>
+Output:<br />
+<pre class="text-code">
+&lt;|assistant|&gt; To arrive at the correct answer for 1+1, we start with the number 1 and add another 1 to it.
+When you combine one unit with another unit, you get a total of two units.
+Therefore, 1 + 1 equals 2.
+This is based on basic arithmetic addition where combining quantities results in their sum.
+```</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Example: Multi-Step Prompt Chaining</span>
+<div class="tutorialSectionTextDiv1">
+Let's use LangChain to chain the execution of two prompts, demonstrating how the output of one prompt can be processed by another to create more sophisticated workflows.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi multiple-chain-prompt.py</pre>
+<pre class="python-code">
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
+from langchain_core.prompts import PromptTemplate
+
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+
+llm = LlamaCpp(
+    model_path="./Phi-3-mini-4k-instruct-q4.gguf",
+    temperature=0,
+    max_tokens=100,
+    top_p=0,
+    callback_manager=callback_manager,
+    verbose=False
+)
+
+sentiment_template = """&lt;|user|&gt;
+Analyze the following sentence whether it is positive or negative {sentence}.&lt;|end|&gt;
+&lt;|assistant|&gt;"""
+
+sentiment_prompt = PromptTemplate(
+    template=sentiment_template,
+    input_variables=["sentence"]
+)
+
+sentiment_llmchain = sentiment_prompt | llm
+
+sentiment_refined_template = """&lt;|user|&gt;
+If the sentiment of the sentence is negative, rewrite the sentence {sentence} to sound positive.&lt;|end|&gt;
+&lt;|assistant|&gt;"""
+
+sentiment_refined_prompt = PromptTemplate(
+    template=sentiment_refined_template,
+    input_variables=["sentence"]
+)
+
+sentiment_refined_llmchain = sentiment_refined_prompt | llm
+
+llm_chain = sentiment_llmchain | sentiment_refined_llmchain
+
+llm_chain.invoke("Not a good day today. I don't feel like going out!")</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 multiple-chain-prompt.py</pre>
+Output:<br />
+<pre class="text-code">
+The sentence "Not a good day today. I don't feel like going out!" is negative.
+It expresses dissatisfaction with the current day and a lack of desire to engage in social activities, indicating an overall unfavorable mood or sentiment.
+
+Despite today not being as vibrant as I'd hoped, it presents a perfect opportunity for some cozy indoor activities that I truly enjoy!</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

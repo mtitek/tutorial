@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Text Clustering with Large Language Models | Word Clustering Example | MTI TEK</title>
+<meta name="description" content="Learn how to perform text clustering using large language models (LLMs), including a hands-on word clustering example." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Text Clustering with Large Language Models | Word Clustering Example | MTI TEK" />
+<meta property="og:description" content="Learn how to perform text clustering using large language models (LLMs), including a hands-on word clustering example." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/clustering.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Text Clustering with Large Language Models | Word Clustering Example | MTI TEK" />
+<meta name="twitter:description" content="Learn how to perform text clustering using large language models (LLMs), including a hands-on word clustering example." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/clustering.html",
+        "description": "Learn how to perform text clustering using large language models (LLMs), including a hands-on word clustering example.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/clustering.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Text Clustering</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Text Clustering</a></li>
+<li><a href="#sec_id_2">Example: Word Clustering</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Text Clustering</span>
+<div class="tutorialSectionTextDiv1">
+Text clustering is an unsupervised machine learning technique that groups documents or text snippets based on their semantic similarity.
+Unlike classification, clustering doesn't require labeled data—instead, it discovers hidden patterns and structures within text collections.
+This makes it invaluable for exploratory data analysis, content organization, and understanding large text corpora.<br />
+<br />
+Key Applications:<br />
+<ul class="ul_square_1">
+<li>Topic modeling and theme discovery<br /></li>
+<li>Document organization and categorization<br /></li>
+<li>Customer feedback analysis<br /></li>
+<li>News article grouping<br /></li>
+<li>Academic paper classification<br /></li>
+<li>Social media content analysis<br /></li>
+<li>Market research and trend detection<br /></li>
+<li>Duplicate content detection<br /></li>
+</ul>
+<br />
+Example (to simplify, I used one-word sentences):<br />
+<pre class="text-code">
+INPUT (unstructured textual data): ['cats', 'dogs', 'elephants', 'birds', 'cars', 'trains', 'planes']</pre>
+<pre class="text-code">
+OUTPUT (clusters of semantically similar data):
+Cluster 0: ['cats', 'dogs', 'elephants', 'birds'],
+Cluster 1: ['cars', 'trains', 'planes']</pre>
+To cluster documents we follow these three steps:<br />
+<ul class="ul_square_1">
+<li>
+Text Embedding Generation:<br />
+The foundation of semantic clustering lies in converting text into numerical representations that capture meaning.
+Modern embedding models use transformer architectures trained on vast text corpora to understand semantic relationships.
+These dense vector representations encode semantic information in high-dimensional space.<br />
+<br />
+Popular Embedding Models:<br />
+<ul class="ul_circle_1">
+<li>all-MiniLM-L12-v2: Fast, efficient, good general performance (384 dimensions)</li>
+<li>all-mpnet-base-v2: Higher quality, slightly slower (768 dimensions)</li>
+<li>text-embedding-3-small/large (OpenAI): Commercial options with excellent performance</li>
+<li>multilingual-E5-large: For multilingual applications</li>
+<li>sentence-t5-base: Strong performance for sentence-level tasks</li>
+</ul>
+<br />
+Example (illustrative values):<br />
+<pre class="text-code">
+INPUT: texts
+['cats', 'dogs', ...]</pre>
+<pre class="text-code">
+OUTPUT: embeddings (384-dimensional vectors)
+cats: [0.10, -0.40, 0.80, 0.01, 0.50, ...],
+dogs: [0.20, -0.30, 0.90, 0.03, 0.60, ...],
+...</pre>
+Example Implementation:<br />
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+
+# load embedding model
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L12-v2")
+
+# generate embeddings
+texts = ['cats', 'dogs', 'elephants', 'birds', 'cars', 'trains', 'planes']
+embeddings = embedding_model.encode(texts)
+
+print(f'Embedding shape: {embeddings.shape}') # Embedding shape: (7, 384)
+print(f'Embedding type: {type(embeddings)}') # Embedding type: &lt;class 'numpy.ndarray'&gt;</pre>
+</li>
+<li>
+Dimensionality Reduction (optional but recommended):<br />
+High-dimensional embeddings (typically 384-1536 dimensions) can face the "curse of dimensionality" in clustering,
+where increasing dimensions require exponentially more data to capture patterns accurately,
+leading to issues like data sparsity, distance concentration, and overfitting.<br />
+<br />
+High-dimensional embeddings can benefit from dimensionality reduction for clustering tasks.
+This process reduces computational complexity and can improve clustering performance by eliminating noise, though it may cause some information loss.<br />
+<br />
+Dimensionality reduction techniques help by:<br />
+<ul class="ul_circle_1">
+<li>Reducing computational complexity and memory usage</li>
+<li>Eliminating noise and redundant features</li>
+<li>Improving clustering algorithm performance</li>
+<li>Enabling visualization in 2D/3D space</li>
+<li>Mitigating the curse of dimensionality</li>
+</ul>
+<br />
+Example (illustrative values):<br />
+<pre class="text-code">
+INPUT (embedding with 384 dimensions): [0.10, -0.40, 0.80, ...]</pre>
+<pre class="text-code">
+OUTPUT (compressed embedding with 50 dimensions): [0.80, -0.10, 0.40, ...]</pre>
+UMAP (Uniform Manifold Approximation and Projection) is preferred because it:<br />
+<ul class="ul_circle_1">
+<li>Preserves both local and global structure</li>
+<li>Handles non-linear relationships effectively</li>
+<li>Maintains cluster separation better</li>
+<li>Provides more interpretable low-dimensional representations</li>
+</ul>
+<br />
+UMAP Configuration Guidelines:<br />
+<pre class="python-code">
+from umap import UMAP
+
+# conservative reduction for clustering
+reducer = UMAP(
+    n_components=50,     # Moderate reduction
+    n_neighbors=15,      # Local neighborhood size
+    min_dist=0.0,        # Tight clusters
+    metric='cosine',     # Good for text embeddings
+    random_state=42      # Reproducibility
+)
+
+reduced_embeddings = reducer.fit_transform(embeddings)</pre>
+See this page for more details about UMAP (Uniform Manifold Approximation and Projection) for dimension reduction:<br />
+<a href="https://umap-learn.readthedocs.io/en/latest/index.html">https://umap-learn.readthedocs.io/en/latest/index.html</a><br />
+<br />
+</li>
+<li>
+Clustering Algorithm Selection:<br />
+The final step is to apply a clustering algorithm to group the embeddings into semantically similar clusters.
+The choice of algorithm depends on your data characteristics and requirements.<br />
+<br />
+Example (illustrative values):<br />
+<pre class="text-code">
+INPUT: (embeddings): [0.80, -0.10, 0.40], [0.90, -0.01, 0.50], ...</pre>
+<pre class="text-code">
+OUTPUT:
+Cluster 0: ['cats', 'dogs', 'elephants', 'birds'],
+Cluster 1: ['cars', 'trains', 'planes']</pre>
+HDBSCAN (Hierarchical Density-Based Spatial Clustering) excels at text clustering because it:<br />
+<ul class="ul_circle_1">
+<li>Automatically determines the number of clusters</li>
+<li>Handles clusters of varying densities and shapes</li>
+<li>Identifies outliers and noise points</li>
+<li>Provides hierarchical cluster structure</li>
+<li>Doesn't assume spherical clusters</li>
+</ul>
+<br />
+HDBSCAN Parameter Tuning:<br />
+<pre class="python-code">
+from hdbscan import HDBSCAN
+
+clusterer = HDBSCAN(
+    min_cluster_size=5,            # Minimum points per cluster
+    min_samples=3,                 # Core point threshold (default: min_cluster_size)
+    metric='euclidean',            # Distance metric ('euclidean', 'manhattan', 'cosine')
+    cluster_selection_method='eom' # Excess of Mass ('eom' or 'leaf')
+)</pre>
+See this page for more details about the HDBSCAN clustering Library:<br />
+<a href="https://hdbscan.readthedocs.io/en/latest/index.html">https://hdbscan.readthedocs.io/en/latest/index.html</a><br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Word Clustering</span>
+<div class="tutorialSectionTextDiv1">
+To simplify, I used one-word sentences in this example.
+For real-world applications, you would typically work with documents.<br />
+<br />
+Install the required modules:<br />
+<pre class="sh-code">
+$ pip install umap-learn
+$ pip install hdbscan
+$ pip install matplotlib
+$ pip install numpy</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi clustering.py</pre>
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+from umap import UMAP
+from hdbscan import HDBSCAN
+import matplotlib.pyplot as plt
+import numpy as np
+
+# load embedding model
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L12-v2")
+
+# generate embeddings
+texts = ['cats', 'dogs', 'elephants', 'birds', 'cars', 'trains', 'planes']
+embeddings = embedding_model.encode(texts)
+
+print(f'Number of embedded documents and their dimensions: {embeddings.shape}')
+
+# reduce the embeddings dimensions
+reduced_embeddings = UMAP(n_components=5, random_state=42).fit_transform(embeddings)
+
+print(f'Number of embedded documents and their reduced dimensions: {reduced_embeddings.shape}')
+
+# create an hdbscan object and fit the model to the data
+cluster_labels = HDBSCAN(min_cluster_size=2, metric='euclidean').fit_predict(reduced_embeddings)
+
+# get the number of clusters (excluding noise points labeled as -1)
+n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
+n_noise = list(cluster_labels).count(-1)
+
+print(f'Number of clusters: {n_clusters}')
+print(f'Number of noise points: {n_noise}')
+
+# print cluster results
+for cluster_id in set(cluster_labels):
+    if cluster_id == -1:
+        print(f"\nNoise points:")
+    else:
+        print(f"\nCluster {cluster_id}:")
+
+    cluster_indices = np.where(cluster_labels == cluster_id)[0]
+    for index in cluster_indices:
+        print(f'- {texts[index]}')
+
+# plot the results (using first 2 components for visualization)
+plt.figure(figsize=(10, 8))
+scatter = plt.scatter(reduced_embeddings[:, 0], reduced_embeddings[:, 1],
+                     c=cluster_labels, cmap='Spectral', s=100)
+plt.colorbar(scatter)
+plt.title('HDBSCAN Clustering Results')
+plt.xlabel('UMAP Component 1')
+plt.ylabel('UMAP Component 2')
+
+# annotate points with text labels
+for i, text in enumerate(texts):
+    plt.annotate(text, (reduced_embeddings[i, 0], reduced_embeddings[i, 1]),
+                xytext=(5, 5), textcoords='offset points', fontsize=9)
+
+plt.tight_layout()
+plt.savefig('hdbscan_cluster_plot.png', dpi=300, bbox_inches='tight')
+print("\nPlot saved as 'hdbscan_cluster_plot.png'")</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 clustering.py</pre>
+Output:<br />
+<pre class="text-code">
+Number of embedded documents and their dimensions: (7, 384)
+
+Number of embedded documents and their reduced dimensions: (7, 5)
+
+Number of clusters: 2
+Number of noise points: 0
+
+Cluster 0:
+- cats
+- dogs
+- elephants
+- birds
+
+Cluster 1:
+- cars
+- trains
+- planes
+
+Plot saved as 'hdbscan_cluster_plot.png'</pre>
+Chart of the clusters: hdbscan_cluster_plot.png<br />
+<img alt="Clusters Plot" src="img/hdbscan_cluster_plot.png" width="600" />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

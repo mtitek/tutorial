@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Reading and Writing Files | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Reading and Writing Files" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Reading and Writing Files | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Reading and Writing Files" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/files.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Reading and Writing Files | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Reading and Writing Files" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/files.html",
+        "description": "Tutorials: Python - Reading and Writing Files",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/files.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Reading and Writing Files</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Writing and reading text files</a></li>
+<li><a href="#sec_id_2">File existence and properties</a></li>
+<li><a href="#sec_id_3">Get file information</a></li>
+<li><a href="#sec_id_4">Writing and reading binary files</a></li>
+<li><a href="#sec_id_5">Writing and reading JSON files</a></li>
+<li><a href="#sec_id_6">Writing and reading CSV files</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Writing and reading text files</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+# import Path class
+from pathlib import Path
+
+# create path object - the path can be relative or absolute
+path = Path('data/file.txt')
+
+try:
+  # create parent directory if it doesn't exist
+  path.parent.mkdir(parents=True, exist_ok=True)
+
+  # write content to file (create/overwrite)
+  path.write_text('Hello Python', encoding='utf-8')
+
+  # append content to file
+  with path.open('a', encoding='utf-8') as f:
+    f.write("\n!")
+
+  # read content from file
+  text = path.read_text(encoding='utf-8')
+
+  print(text)
+except FileNotFoundError:
+  print("File not found")
+except PermissionError:
+  print("Permission denied")
+except Exception as e:
+  print(f"An error occurred: {e}")</pre>
+Output:<br />
+<pre class="text-code">
+Hello Python
+!</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">File existence and properties</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+from pathlib import Path
+
+path = Path('data/file.txt')
+
+# check if file exists
+if path.exists():
+  print(f'the file \'{path}\' exists')
+else:
+  print(f'the file \'{path}\' doesn\'t exists')</pre>
+Output:<br />
+<pre class="text-code">
+the file 'data/file.txt' exists</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Get file information</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+from pathlib import Path
+
+path = Path('data/file.txt')
+
+print(f'is file: {path.is_file()}')
+print(f'is directory : {path.is_dir()}')
+print(f'file info: {path.stat()}')</pre>
+Output:<br />
+<pre class="text-code">
+is file: True
+is directory : False
+file info: os.stat_result(st_mode=33204, st_ino=17898, st_dev=2080, st_nlink=1, st_uid=1000, st_gid=1000, st_size=14, st_atime=1748889846, st_mtime=1748889817, st_ctime=1748889817)</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Writing and reading binary files</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+from pathlib import Path
+
+path = Path('data/file.bin')
+
+path.parent.mkdir(parents=True, exist_ok=True)
+
+# write binary data to file (create/overwrite)
+path.write_bytes('Hello Python'.encode('utf-8'))
+
+# read binary data from file
+data = path.read_bytes()
+
+print(data.decode('utf-8'))</pre>
+Output:<br />
+<pre class="text-code">
+Hello Python</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Writing and reading JSON files</span>
+<div class="tutorialSectionTextDiv1">
+Writing/reading to/from a json file:
+<pre class="python-code">
+from pathlib import Path
+
+# import json module
+import json
+
+# data
+x = { 'a': 1, 'b': 2 }
+y = { 'a': 11, 'b': 22 }
+z = [x, y] # list of dictionaries
+w = { 'r': x, 's': y, 't': z } # dictionary of list, set, and dictionaries
+
+path = Path('data/file.json')
+
+# write JSON to file
+path.write_text(json.dumps(w, indent=2), encoding='utf-8')
+
+# read JSON file
+text_indented = path.read_text(encoding='utf-8')
+
+print(text_indented)
+
+text_json = json.loads(path.read_text(encoding='utf-8'))
+
+print(list(text_json.keys())) # Output: ['r', 's', 't']
+
+print(text_json['t'][0]['b']) # Output: 2</pre>
+Output:<br />
+<pre class="text-code">
+{
+  "r": {
+    "a": 1,
+    "b": 2
+  },
+  "s": {
+    "a": 11,
+    "b": 22
+  },
+  "t": [
+    {
+      "a": 1,
+      "b": 2
+    },
+    {
+      "a": 11,
+      "b": 22
+    }
+  ]
+}
+['r', 's', 't']
+2</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Writing and reading CSV files</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="python-code">
+from pathlib import Path
+
+# import csv module
+import csv
+
+data = [
+  ['name', 'score'],
+  ['a', 10],
+  ['b', 15]
+]
+
+path = Path('data/file.csv')
+
+# write CSV
+with path.open('w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(data)
+
+# read CSV
+with path.open('r', encoding='utf-8') as f:
+  reader = csv.reader(f)
+  # read headers
+  headers = next(reader)
+  print(f"headers: {headers}")
+
+  for i, line in enumerate(reader, 1):
+    print(f"line {i}: {dict(zip(headers, line))}")</pre>
+Output:<br />
+<pre class="text-code">
+headers: ['name', 'score']
+line 1: {'name': 'a', 'score': '10'}
+line 2: {'name': 'b', 'score': '15'}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Semantic Search with FAISS and LangChain Examples | MTI TEK</title>
+<meta name="description" content="Learn how semantic search works using FAISS and LangChain. Explore hands-on examples with direct indexing and vector stores." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Semantic Search with FAISS and LangChain Examples | MTI TEK" />
+<meta property="og:description" content="Learn how semantic search works using FAISS and LangChain. Explore hands-on examples with direct indexing and vector stores." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/semantic-search.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Semantic Search with FAISS and LangChain Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how semantic search works using FAISS and LangChain. Explore hands-on examples with direct indexing and vector stores." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/semantic-search.html",
+        "description": "Learn how semantic search works using FAISS and LangChain. Explore hands-on examples with direct indexing and vector stores.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/semantic-search.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Semantic Search</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction to Semantic Search</a></li>
+<li><a href="#sec_id_2">Vector Embeddings and Similarity Metrics</a></li>
+<li><a href="#sec_id_3">Text Chunking Strategies</a></li>
+<li><a href="#sec_id_4">Implementation: Direct FAISS Index</a></li>
+<li><a href="#sec_id_5">Implementation: LangChain with FAISS Vector Store</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction to Semantic Search</span>
+<div class="tutorialSectionTextDiv1">
+Semantic search revolutionizes information retrieval by understanding the meaning and context of queries rather than relying solely on keyword matching.
+Traditional keyword-based search systems often miss relevant documents that use different terminology or fail to capture the user's true intent.
+Semantic search addresses these limitations by leveraging machine learning to understand the conceptual relationships between words and phrases.<br />
+<br />
+The fundamental advantage of semantic search lies in its ability to bridge the vocabulary gap between queries and documents.
+For example, a search for "automobile" can successfully retrieve documents about "cars" or "vehicles" even when these exact terms don't appear in the query.
+This contextual understanding makes search results more comprehensive and relevant to user needs.<br />
+<br />
+Modern semantic search systems typically follow a two-phase architecture:<br />
+<ul class="ul_square_1">
+<li>Indexing Phase:
+<pre class="text-code">
+Documents → Text Preprocessing → Chunking → Embedding Model → Vectors → Vector Database</pre></li>
+<li>Search Phase:
+<pre class="text-code">
+Query → Embedding Model → Query Vector → Similarity Search → Ranked Results</pre>
+</li>
+</ul>
+The preprocessing step may include text cleaning, normalization, and language detection.
+The chunking process divides long documents into manageable segments that preserve semantic coherence.<br />
+<br />
+Search results can be further enhanced using Large Language Models (LLMs) through techniques such as re-ranking and Retrieval-Augmented Generation (RAG).
+Re-ranking uses more sophisticated models to refine the initial similarity-based results, while RAG combines retrieved information with generative models to provide comprehensive answers.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Vector Embeddings and Similarity Metrics</span>
+<div class="tutorialSectionTextDiv1">
+Vector embeddings transform text into numerical representations that capture semantic meaning in high-dimensional space.
+These dense vectors encode contextual relationships, allowing documents with similar meanings to cluster together regardless of exact word matches.<br />
+<br />
+The quality of embeddings directly impacts search performance.
+Domain-specific models often outperform general-purpose embeddings for specialized applications.<br />
+<br />
+<b>Similarity Metrics:</b><br />
+<ul class="ul_square_1">
+<li>
+Cosine Similarity: Measures the angle between two vectors, ranging from -1 to 1.
+Values closer to 1 indicate higher similarity.<br />
+<br /></li>
+<li>
+Euclidean Distance (L2): Measures straight-line distance between vectors in high-dimensional space.
+Lower distances indicate higher similarity.<br />
+</li>
+</ul>
+<br />
+<b>Search Algorithms:</b><br />
+<ul class="ul_square_1">
+<li>
+k-Nearest Neighbors (kNN): Performs exact search by computing similarities with all vectors in the database.
+Guarantees finding the true nearest neighbors but becomes computationally expensive for large datasets.<br />
+<br /></li>
+<li>
+Approximate Nearest Neighbors (ANN): Uses indexing structures and approximation algorithms to achieve faster search with slight accuracy trade-offs.
+Essential for large-scale applications with millions of embeddings.
+FAISS is a popular ANN library.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Text Chunking Strategies</span>
+<div class="tutorialSectionTextDiv1">
+When indexing documents in a vector database, generating a single embedding for an entire document can result in loss of contextual information and can make important meanings less clear.
+Long documents often contain multiple topics or concepts that may not be effectively captured in a single vector representation.
+To address this limitation, documents are typically split into smaller, semantically coherent chunks, with each chunk receiving its own embedding vector.<br />
+<br />
+The choice of chunking strategy significantly impacts search quality and system performance.
+Smaller chunks provide more precise matches but may lack sufficient context, while larger chunks offer more context but may make important meanings less clear.
+The optimal chunk size often depends on the embedding model's context window and the nature of the documents being indexed.<br />
+<br />
+<b>Text Chunking Strategies:</b><br />
+<ul class="ul_square_1">
+<li>
+Fixed-Size Chunking<br />
+<ul class="ul_circle_1">
+<li>
+Character-based: Split at fixed character counts (e.g., 512, 1024 characters).
+Simple to implement but may break sentences or paragraphs mid-thought, potentially losing semantic coherence.<br />
+<br /></li>
+<li>
+Token-based: Split at fixed token counts, respecting embedding model limits (e.g., 256, 512 tokens).
+More aligned with model constraints but still risks breaking semantic units.<br />
+</li>
+</ul>
+<br /></li>
+<li>
+Semantic Chunking<br />
+<ul class="ul_circle_1">
+<li>
+Sentence-based: Maintains sentence boundaries to preserve complete thoughts.
+Combines sentences until reaching desired chunk size.
+Better semantic coherence but variable chunk sizes.<br />
+<br /></li>
+<li>
+Paragraph-based: Preserves logical document structure by keeping paragraphs intact.
+Ideal for well-structured documents but may create very large or small chunks.<br />
+<br /></li>
+<li>
+Topic-based: Uses natural language processing to identify topic boundaries and create chunks around coherent themes.
+More sophisticated but computationally expensive.<br />
+</li>
+</ul>
+<br /></li>
+<li>
+Overlapping Windows<br />
+<ul class="ul_circle_1">
+<li>
+Maintains context continuity between adjacent chunks by including shared content.
+Helps capture information that spans chunk boundaries.<br />
+<br /></li>
+<li>
+Typical overlap ranges from 10-20% of chunk size.
+Balance between context preservation and storage efficiency.<br />
+</li>
+</ul>
+<br /></li>
+<li>
+Advanced Techniques<br />
+<ul class="ul_circle_1">
+<li>
+LLM-guided chunking: Uses language models to identify optimal split points based on semantic coherence and topic boundaries.
+More accurate but resource-intensive.<br />
+<br /></li>
+<li>
+Metadata enrichment: Augments chunks with summaries, keywords, extracted entities, or document structure information to improve retrieval accuracy.<br />
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Implementation: Direct FAISS Index</span>
+<div class="tutorialSectionTextDiv1">
+FAISS (Facebook AI Similarity Search) is a highly optimized library for efficient similarity search and clustering of dense vectors.<br />
+<br />
+This example demonstrates building a semantic search system using FAISS directly, providing fine-grained control over the indexing and search process.
+The direct approach is ideal when you need custom index configurations or want to minimize dependencies.<br />
+<br />
+Install the required modules:<br />
+<pre class="sh-code">
+$ pip install faiss-cpu sentence-transformers pandas numpy</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi faiss-semantic-search.py</pre>
+<pre class="python-code">
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
+import pandas as pd
+
+# sample corpus (BBC article titles)
+corpus = [
+    "Researchers in Japan and the US have unlocked the 60-year mystery of what gives these cats their orange colour.",
+    "Astronomers have spotted around a dozen of these weird, rare blasts. Could they be signs of a special kind of black hole?",
+    "The world's largest cloud computing company plans to spend £8bn on new data centres in the UK over the next four years.",
+    "The Caribbean island is building a power station that will use steam naturally heated by volcanic rock.",
+    "As Barcelona celebrate winning La Liga, Spanish football expert Guillem Balague looks at how manager Hansi Flick turned his young side into champions.",
+    "Venezuela's Jhonattan Vegas leads the US PGA Championship with several European players close behind, but Rory McIlroy endures a tough start.",
+    "Locals and ecologists are troubled by the potential impacts a looming seawall could have on the biodiverse Japanese island of Amami Ōshima.",
+    "The government has made little progress in preparing the UK for rising temperatures, climate watchdog the CCC says.",
+    "Half a century after the world's first deep sea mining tests picked nodules from the seafloor off the US east coast, the damage has barely begun to heal.",
+    "The Cuyahoga River was so polluted it regularly went up in flames. Images of one dramatic blaze in 1952 shaped the US's nascent environmental movement, long after the flames went out."
+]
+
+# initialize embedding model
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# generate corpus embeddings
+corpus_embeddings = embedding_model.encode(corpus)
+
+# build FAISS index
+index = faiss.IndexFlatL2(corpus_embeddings.shape[1])
+faiss.normalize_L2(corpus_embeddings)
+index.add(corpus_embeddings)
+
+# perform search
+query = "major achievement"
+query_embeddings = embedding_model.encode(query)
+
+# search for top 5 similar documents
+distances , results = index.search(np.float32([query_embeddings]), 5)
+
+# print results as pandas DataFrame
+corpus_np_array = np.array(corpus)
+data = {'Results':corpus_np_array[results[0]], 'Distances':distances[0]}
+results_df = pd.DataFrame(data)
+print(results_df)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 faiss-semantic-search.py</pre>
+Output:<br />
+<pre class="text-code">
+                                             Results  Distances
+0  As Barcelona celebrate winning La Liga, Spanis...   1.628376
+1  The Cuyahoga River was so polluted it regularl...   1.827289
+2  Venezuela's Jhonattan Vegas leads the US PGA C...   1.839513
+3  Half a century after the world's first deep se...   1.871128
+4  Astronomers have spotted around a dozen of the...   1.902063</pre>
+The results demonstrate semantic understanding: the query "major achievement" successfully retrieves articles about sports victories and environmental breakthroughs without requiring exact keyword matches.
+Lower distance values indicate higher similarity, with Barcelona's La Liga victory ranking highest due to its achievement-related content.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Implementation: LangChain with FAISS Vector Store</span>
+<div class="tutorialSectionTextDiv1">
+LangChain provides a higher-level abstraction for working with vector stores, offering built-in document handling, metadata management, and integration with various embedding models.
+This approach simplifies development and provides additional features like metadata filtering, making it ideal for production applications where you need robust document management capabilities.<br />
+<br />
+The LangChain implementation automatically handles document preprocessing, embedding generation, and index management.
+It also supports advanced features like persistent storage, batch operations, and seamless integration with LLM chains for RAG applications.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi langchain-semantic-search.py</pre>
+<pre class="python-code">
+from langchain_huggingface.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores.faiss import FAISS
+from langchain_community.docstore.in_memory import InMemoryDocstore
+from langchain_core.documents import Document
+from uuid import uuid4
+import faiss
+
+# create document objects with metadata (BBC article titles)
+documents = [
+    Document(page_content="Researchers in Japan and the US have unlocked the 60-year mystery of what gives these cats their orange colour.", metadata={"source":"bbc"}),
+    Document(page_content="Astronomers have spotted around a dozen of these weird, rare blasts. Could they be signs of a special kind of black hole?", metadata={"source":"bbc"}),
+    Document(page_content="The world's largest cloud computing company plans to spend £8bn on new data centres in the UK over the next four years.", metadata={"source":"bbc"}),
+    Document(page_content="The Caribbean island is building a power station that will use steam naturally heated by volcanic rock.", metadata={"source":"bbc"}),
+    Document(page_content="As Barcelona celebrate winning La Liga, Spanish football expert Guillem Balague looks at how manager Hansi Flick turned his young side into champions.", metadata={"source":"bbc"}),
+    Document(page_content="Venezuela's Jhonattan Vegas leads the US PGA Championship with several European players close behind, but Rory McIlroy endures a tough start.", metadata={"source":"bbc"}),
+    Document(page_content="Locals and ecologists are troubled by the potential impacts a looming seawall could have on the biodiverse Japanese island of Amami Ōshima.", metadata={"source":"bbc"}),
+    Document(page_content="The government has made little progress in preparing the UK for rising temperatures, climate watchdog the CCC says.", metadata={"source":"bbc"}),
+    Document(page_content="Half a century after the world's first deep sea mining tests picked nodules from the seafloor off the US east coast, the damage has barely begun to heal.", metadata={"source":"bbc"}),
+    Document(page_content="The Cuyahoga River was so polluted it regularly went up in flames. Images of one dramatic blaze in 1952 shaped the US's nascent environmental movement, long after the flames went out.", metadata={"source":"bbc"})
+]
+
+# configure embedding model
+model_name = "all-MiniLM-L6-v2"
+model_kwargs = {'device': 'cpu'}
+encode_kwargs = {'normalize_embeddings': False}
+embedding_model = HuggingFaceEmbeddings(
+    model_name=model_name,
+    model_kwargs=model_kwargs,
+    encode_kwargs=encode_kwargs
+)
+
+# initialize FAISS index
+index = faiss.IndexFlatL2(len(embedding_model.embed_query("hello semantic search")))
+
+# create vector store
+vector_store = FAISS(
+    embedding_function=embedding_model,
+    index=index,
+    docstore=InMemoryDocstore(),
+    index_to_docstore_id={},
+)
+
+# add documents with unique IDs
+uuids = [str(uuid4()) for _ in range(len(documents))]
+
+# add documents to vector store
+vector_store.add_documents(documents=documents, ids=uuids)
+
+# perform filtered search
+query = "major achievement"
+
+# similarity search (+ use metadata filter)
+results = vector_store.similarity_search(
+    query,
+    k=2,
+    filter={"source": "bbc"},
+)
+
+for res in results:
+    print(f"{res.page_content}")</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 langchain-semantic-search.py</pre>
+Output:<br />
+<pre class="text-code">
+As Barcelona celebrate winning La Liga, Spanish football expert Guillem Balague looks at how manager Hansi Flick turned his young side into champions.
+The Cuyahoga River was so polluted it regularly went up in flames.
+Images of one dramatic blaze in 1952 shaped the US's nascent environmental movement, long after the flames went out.</pre>
+This implementation showcases several advantages of the LangChain approach: automatic document handling with metadata support, built-in filtering capabilities, and simplified API for common operations.
+The metadata filtering allows for sophisticated search scenarios, such as restricting results to specific sources, document types, or time periods.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

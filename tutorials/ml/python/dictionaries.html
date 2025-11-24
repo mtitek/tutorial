@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Dictionaries | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Dictionaries" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Dictionaries | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Dictionaries" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/dictionaries.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Dictionaries | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Dictionaries" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/dictionaries.html",
+        "description": "Tutorials: Python - Dictionaries",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/dictionaries.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Dictionaries</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+A dictionary is a mutable collection of ordered key-value pairs.<br />
+Keys must be unique (no duplicate keys) and immutable (strings, numbers, tuples)
+The values can be of any type, including mixed types within the same dictionary: strings, numbers, dictionaries, lists, objects, ...<br />
+<br />
+Creating basic dictionaries:<br />
+Use braces (<b>{}</b>) to create a dictionary.<br />
+Use commas to separate items in the dictionary.<br />
+<br />
+<h5>Empty dictionary:</h5>
+<pre class="python-code">
+x = {}
+y = dict()
+print(type(x)) # Output: &lt;class 'dict'&gt;
+print(x) # Output: {}</pre>
+<h5>A dictionary with one key-value pair:</h5>
+<pre class="python-code">
+print({'a': 1}) # Output: {'a': 1}</pre>
+<h5>A dictionary with multiple key-value pairs:</h5>
+<pre class="python-code">
+print({'a': 1, 'b': 2}) # Output: {'a': 1, 'b': 2}</pre>
+<h5>Mixed data types:</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 'B', 'c': [1, 2], 'd': (1, 2), 'e': {1, 2}, 'f': {'w': 10}}
+print(x) # Output: {'a': 1, 'b': 'B', 'c': [1, 2], 'd': (1, 2), 'e': {1, 2}, 'f': {'w': 10}}</pre>
+<h5>List/Set/Dictionary of dictionaries:</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 2}
+y = {'c': 2, 'd': 3}
+
+# list of dictionaries
+z = [x, y]
+
+# dictionary of list, set, and dictionaries
+d = {'r': x, 's': y, 't': z}
+
+# dictionaries cannot be elements of sets because they're mutable and therefore unhashable
+#w = {x, y} # Raises TypeError: unhashable type: 'dict'
+
+print(z) # Output: [{'a': 1, 'b': 2}, {'c': 2, 'd': 3}]
+print(z[0]['b']) # Output: 2
+
+print(d) # Output: {'r': {'a': 1, 'b': 2}, 's': {'c': 2, 'd': 3}, 't': [{'a': 1, 'b': 2}, {'c': 2, 'd': 3}]}
+print(d['t'][0]['b']) # Output: 2</pre>
+<h5>Create dictionaries using dict() with keyword arguments:</h5>
+<pre class="python-code">
+print(dict(a='A', b='B')) # Output: {'a': 'A', 'b': 'B'}</pre>
+<h5>Create dictionaries using dict() with list of tuples:</h5>
+<pre class="python-code">
+print(dict([('a', 'A'), ('b', 'B')])) # Output: {'a': 'A', 'b': 'B'}</pre>
+<h5>Create dictionaries using dictionary comprehension:</h5>
+<pre class="python-code">
+print({x: x**2 for x in range(3)}) # Output: {0: 0, 1: 1, 2: 4}</pre>
+<h5>Tuples as dictionary keys:</h5>
+This is possible because tuples are immutable.<br />
+<pre class="python-code">
+numbers = {(0, 0):0, (0, 1):1, (1, 0):2, (1, 1):3}
+print(numbers[(0,1)]) # Output: 1
+print(numbers.get((0,1))) # Output: 1
+print(numbers.get((0,2))) # Output: None
+print(numbers.get((0,2), "undetermined")) # Output: undetermined</pre>
+<h5>Accessing keys in a dictionary:</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 2}
+print(x['a']) # Output: 1</pre>
+<h5>Accessing a key that doesn't exist throws an error:</h5>
+<pre class="python-code">
+print(x['d']) # Raises KeyError: 'd'
+
+# to handle the KeyError: use try/except
+try:
+  print(x['d'])
+except KeyError as e:
+  print(f"key not found: {e}") # Output: key not found: 'd'
+
+# to handle the KeyError: check if key exists
+if 'd' in x:
+  print(x['d'])
+else:
+  print("key 'd' not found")</pre>
+<h5>Using the get function:</h5>
+It returns default/custom value if the key doesn't exist.<br />
+<pre class="python-code">
+print(x.get('a')) # Output: 1
+
+# return None if key doesn't exist
+print(x.get('d')) # Output: None
+
+# return custom value if key doesn't exist
+print(x.get('d','key not found')) # Output: key not found</pre>
+<h5>Adding new key-value pairs:</h5>
+<pre class="python-code">
+x['c'] = 3
+print(x) # Output: {'a': 1, 'b': 2, 'c': 3}
+
+# use setdefault() to add a key-value pair only if the key doesn't exist
+x.setdefault('c', 33)
+x.setdefault('d', 4)
+print(x) # Output: {'a': 1, 'b': 2, 'c': 3, 'd': 4}</pre>
+<h5>Modifying values in a dictionary:</h5>
+<pre class="python-code">
+x['a'] = 0
+print(x['a']) # Output: 0</pre>
+<h5>Using update() method:</h5>
+<pre class="python-code">
+# update using dictionaries
+x.update({'a': 'A', 'b': 'B'})
+print(x) # Output: {'a': 'A', 'b': 'B', 'c': 3, 'd': 4}
+
+# update using keyword arguments
+x.update(c='C', d='D')
+print(x) # Output: {'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D'}</pre>
+<h5>Removing key-value pairs:</h5>
+<pre class="python-code">
+# using del statement
+del x['d']
+print(x) # Output: {'a': 'A', 'b': 'B', 'c': 'C'}
+
+# you get a KeyError if the key doesn't exist; need to handle the exception or check if the key exists
+del x['d'] # Raises KeyError: 'd'</pre>
+<h5>Removing a specific key and returning its value:</h5>
+<pre class="python-code">
+# using pop() method to remove a specific key
+print(x.pop('c')) # Output: 'C'
+print(x) # Output: {'a': 'A', 'b': 'B'}
+
+# you get a KeyError if the key doesn't exist; need to handle the exception or check if the key exists
+print(x.pop('c')) # Raises KeyError: 'c'</pre>
+<h5>Removing a specific key and returning a tuple with key/value:</h5>
+<pre class="python-code">
+# using popitem() method to remove last item
+print(x.popitem()) # Output: ('b', 'B')
+print(x) # Output: {'a': 'A'}
+
+# you get a KeyError if the dictionary is empty: need to handle the exception or check the length of the dictionary
+print(x.popitem()) # Output: ('a', 'A')
+print(x) # Output: {}
+print(x.popitem()) # Raises KeyError: 'popitem(): dictionary is empty'</pre>
+<h5>Clear dictionary (remove all items):</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 2, 'c': 3}
+x.clear()
+print(x) # Output: {}</pre>
+<h5>Looping through all key-value pairs:</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 2, 'c': 3}
+for key, value in x.items():
+  print(f'key:{key} | value:{value}')</pre>
+Output:<br />
+<pre class="text-code">
+key:a | value:1
+key:b | value:2
+key:c | value:3</pre>
+<h5>Looping through all keys in a dictionary:</h5>
+<pre class="python-code">
+# default behavior
+for key in x:
+  print(f'key:{key} | value:{x[key]}')
+
+print()
+
+# explicitly iterate over keys
+for key in x.keys(): # calling the keys() function is similar to looping on the dictionary itself
+  print(f'key:{key} | value:{x[key]}')</pre>
+Output:<br />
+<pre class="text-code">
+key:a | value:1
+key:b | value:2
+key:c | value:3
+
+key:a | value:1
+key:b | value:2
+key:c | value:3</pre>
+<h5>Looping through all values in a dictionary:</h5>
+<pre class="python-code">
+for value in x.values():
+  print(f'value:{value}')</pre>
+Output:<br />
+<pre class="text-code">
+value:1
+value:2
+value:3</pre>
+<h5>Looping through all sorted keys:</h5>
+<pre class="python-code">
+for key in sorted(x.keys()):
+  print(f'key:{key} | value:{x[key]}')</pre>
+Output:<br />
+<pre class="text-code">
+key:a | value:1
+key:b | value:2
+key:c | value:3</pre>
+<h5>Looping through all sorted keys (reversed order):</h5>
+<pre class="python-code">
+for key in sorted(x.keys(), reverse=True):
+  print(f'key:{key} | value:{x[key]}')</pre>
+Output:<br />
+<pre class="text-code">
+key:c | value:3
+key:b | value:2
+key:a | value:1</pre>
+<h5>Looping through all sorted values (reversed order):</h5>
+<pre class="python-code">
+for key in sorted(x, key=x.get):
+  print(f'key:{key} | value:{x[key]}')</pre>
+Output:<br />
+<pre class="text-code">
+key:a | value:1
+key:b | value:2
+key:c | value:3</pre>
+<h5>Looping through all the unique values in a dictionary:</h5>
+<pre class="python-code">
+x = {'a': 1, 'b': 2, 'c': 2}
+for value in set(x.values()):
+  print(f'value:{value}')</pre>
+Output:<br />
+<pre class="text-code">
+value:1
+value:2</pre>
+<h5>Dictionary comprehensions:</h5>
+<pre class="python-code">
+x = [1, 2, 3]
+
+# create dictionary from list
+print({k: k**2 for k in x}) # Output: {1: 1, 2: 4, 3: 9}
+
+# create dictionary from list with condition
+print({k: k**2 for k in x if k % 2 == 1}) # Output: {1: 1, 3: 9}
+
+# create dictionary from two lists
+y = ['a', 'b', 'c']
+print({k: v for k, v in zip(x, y)}) # Output: {1: 'a', 2: 'b', 3: 'c'}</pre>
+<h5>Merging Dictionaries:</h5>
+Conflicting keys will be resolved by taking the values from the last dictionary in the list of dictionaries to merge:<br />
+<pre class="python-code">
+x = {'a': 'A', 'b': 'B'}
+y = {'b': 'b', 'd': 'D'}
+
+# using ** operator: new dictionary created
+print({**x, **y}) # Output: {'a': 'A', 'b': 'b', 'd': 'D'}
+
+# using | operator: new dictionary created
+print(x | y) # Output: {'a': 'A', 'b': 'b', 'd': 'D'}
+
+# using update method: original dictionary updated
+x.update(y)
+print(x) # Output: {'a': 'A', 'b': 'b', 'd': 'D'}</pre>
+<h5>Copying dictionaries:</h5>
+<pre class="python-code">
+x = {'r': {'a': 1, 'b': 2}, 's': {'c': 2, 'd': 3}, 't': [{'a': 1, 'b': 2}, {'c': 2, 'd': 3}]}
+
+# copy by reference
+y = x # both x and y reference the same dictionary
+y['r'] = 0
+print(x['r']) # Output: 0
+
+# copy by value
+z = x.copy() # new copy
+w = dict(x) # new copy
+z['s'] = 3
+print(x['s']) # Output: {'c': 2, 'd': 3}
+print(z['s']) # Output: 3
+print(w['s']) # Output: {'c': 2, 'd': 3}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

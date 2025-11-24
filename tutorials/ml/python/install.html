@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Installing Python | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Installing Python" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Installing Python | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Installing Python" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/install.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Installing Python | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Installing Python" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/install.html",
+        "description": "Tutorials: Python - Installing Python",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/install.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Installing Python</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">References</a></li>
+<li><a href="#sec_id_1">Python Installation (<code class="code1">3.12.3</code>)</a></li>
+<li><a href="#sec_id_2">Creating a virtual environment</a></li>
+<li><a href="#sec_id_3">Activating a virtual environment</a></li>
+<li><a href="#sec_id_4">Deactivating a virtual environment</a></li>
+<li><a href="#sec_id_5">Package Management</a></li>
+<li><a href="#sec_id_6">The Zen of Python, by Tim Peters</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">References</span>
+<div class="tutorialSectionTextDiv1">
+The official home of the Python Programming Language:<br />
+<a href="https://python.org">https://python.org</a><br />
+<br />
+Python Developer’s Guide:<br />
+<a href="https://devguide.python.org">https://devguide.python.org</a><br />
+<br />
+Visual Studio Code: source-code editor, by Microsoft:<br />
+<a href="https://code.visualstudio.com">https://code.visualstudio.com</a><br />
+<br />
+PyCharm: the Python IDE, by JetBrains:<br />
+<a href="https://www.jetbrains.com/pycharm">https://www.jetbrains.com/pycharm</a><br />
+<br />
+Jupyter:<br />
+<a href="https://jupyter.org">https://jupyter.org</a><br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Python Installation</span>
+<div class="tutorialSectionTextDiv1">
+You can use your os package manger to install Python and any other optional packages.<br />
+<br />
+Ubuntu:<br />
+<pre class="sh-code">
+$ sudo apt install python3 python3-dev python3-pip python3-venv</pre>
+Red Hat:<br />
+<pre class="sh-code">
+$ sudo dnf install python3 python3-devel python3-pip python3-venv</pre>
+You can also install Python from source: <a href="https://devguide.python.org/getting-started/setup-building/">https://devguide.python.org/getting-started/setup-building/</a><br />
+<br />
+Check your installation:<br />
+<pre class="sh-code">
+$ python3 --version</pre>
+<pre class="text-code">
+Python 3.12.3</pre>
+<pre class="sh-code">
+$ pip --version</pre>
+<pre class="text-code">
+pip 24.0 from /usr/lib/python3/dist-packages/pip (python 3.12)</pre>
+Run a simple script from the command line:<br />
+<pre class="sh-code">
+$ python3 -c "print('hello python')"</pre>
+<pre class="text-code">
+hello python</pre>
+Create and run a simple script:<br />
+<pre class="sh-code">
+$ echo "print('Hello Python')" > hello.py</pre>
+<pre class="sh-code">
+$ python3 hello.py</pre>
+<pre class="text-code">
+Hello Python</pre>
+Accessing Python Shell:<br />
+<pre class="sh-code">
+$ python3</pre>
+<pre class="python-code">
+Python 3.12.3 (main, Feb  4 2025, 14:48:35) [GCC 13.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> print('Hello Python')
+Hello Python
+>>> quit()</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Creating a virtual environment</span>
+<div class="tutorialSectionTextDiv1">
+A virtual environment is an environment where all new installed packages are isolated and independent from the Python base installation.
+Within the virtual environment you can use packages that have already been installed in the Python base installation.<br />
+<br />
+To create a virtual environment, you need run the "<b>venv</b>" virtual environment module from a specific location of your project.
+You need to provide a location and name for the virtual environment.<br />
+<br />
+See this page for more details about the venv module: <a href="https://docs.python.org/3/library/venv.html">https://docs.python.org/3/library/venv.html</a><br />
+<br />
+Create project directory:<br />
+<pre class="sh-code">
+$ mkdir -p ~/dev/python/my_project
+$ cd ~/dev/python/my_project</pre>
+Create virtual environment:<br />
+<pre class="sh-code">
+$ python3 -m venv .venv</pre>
+Directory structure:<br />
+<pre class="sh-code">
+$ tree -L 1 .venv</pre>
+<pre class="text-code">
+.venv/
+├── bin
+├── include
+├── lib
+└── pyvenv.cfg</pre>
+Python project structure:<br />
+<pre class="text-code">
+my_project/
+├── .venv/                 # virtual environment
+├── src/
+│   └── my_package/
+│       ├── __init__.py
+│       └── main.py
+├── tests/
+│   ├── __init__.py
+│   └── test_main.py
+├── docs/
+├── .gitignore            # exclude .venv, __pycache__, ...
+├── README.md
+├── requirements.txt      # production dependencies
+├── requirements-dev.txt  # development dependencies
+├── pytest.ini            # pytest configuration
+├── setup.py              # package configuration
+└── pyproject.toml        # packaging tools configuration</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Activating a virtual environment</span>
+<div class="tutorialSectionTextDiv1">
+To activate a virtual environment, you need to execute the command "<b>activate</b>" in "<b>.venv/bin/</b>":
+<pre class="sh-code">
+$ source .venv/bin/activate
+(.venv) $</pre>
+When the virtual environment is active, you will see the name of the environment in parentheses ("<b>(.venv)</b>").<br />
+<br />
+Environment verification:<br />
+<pre class="sh-code">
+(.venv) $ which python
+~/dev/python/my_project/.venv/bin/python</pre>
+<pre class="sh-code">
+(.venv) $ python3 --version
+Python 3.12.3</pre>
+<pre class="sh-code">
+(.venv) $ pip list
+Package Version
+------- -------
+pip     24.0</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Deactivating a virtual environment</span>
+<div class="tutorialSectionTextDiv1">
+To deactivate and stop using a virtual environment, you need to execute the command "<b>deactivate</b>":
+<pre class="sh-code">
+(.venv) $ deactivate
+$</pre>
+You can also deactivate the virtual environment by closing the terminal it's running in.<br />
+<br />
+The packages installed in the virtual environment will not be available when the environment is deactivated.<br />
+<br />
+To clean the virtual environment in your project directory, you can simply delete the virtual environment folder:<br />
+<pre class="sh-code">
+$ rm -rf ~/dev/python/my_project/.venv/</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Package Management</span>
+<div class="tutorialSectionTextDiv1">
+Install a package:<br />
+<pre class="sh-code">
+$ python3 -m pip install package-name</pre>
+Use "<b>--user</b>" to install the package for the current user only:
+<pre class="sh-code">
+$ python3 -m pip install --user package-name</pre>
+Install a specific version of a package:<br />
+<pre class="sh-code">
+$ python3 -m pip install package-name==package-version</pre>
+Install packages from requirements file:<br />
+<pre class="sh-code">
+$ python3 -m pip install -r requirements.txt</pre>
+List installed packages:
+<pre class="sh-code">
+$ python3 -m pip list</pre>
+Show package information:
+<pre class="sh-code">
+$ python3 -m pip show package-name</pre>
+Upgrade a package:
+<pre class="sh-code">
+$ python3 -m pip install --upgrade package-name</pre>
+Upgrade pip itself:
+<pre class="sh-code">
+$ python3 -m pip install --upgrade pip</pre>
+Uninstall a package:
+<pre class="sh-code">
+$ python3 -m pip uninstall package-name</pre>
+Create a requirements file:
+<pre class="sh-code">
+$ python3 -m pip freeze > requirements.txt</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">The Zen of Python, by Tim Peters</span>
+<div class="tutorialSectionTextDiv1">
+Python's guiding principles:<br />
+<pre class="python-code">
+$ python</pre>
+<pre class="python-code">
+>>> import this
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+>>></pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

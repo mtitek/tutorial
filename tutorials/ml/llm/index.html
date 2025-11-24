@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Large Language Models (LLMs) Tutorial: From Installation to Prompt Engineering | MTI TEK</title>
+<meta name="description" content="Comprehensive tutorial on Large Language Models (LLMs) covering installation, tokenization, embeddings, classification, semantic search, and prompt engineering." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Large Language Models (LLMs) Tutorial: From Installation to Prompt Engineering | MTI TEK" />
+<meta property="og:description" content="Comprehensive tutorial on Large Language Models (LLMs) covering installation, tokenization, embeddings, classification, semantic search, and prompt engineering." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Large Language Models (LLMs) Tutorial: From Installation to Prompt Engineering | MTI TEK" />
+<meta name="twitter:description" content="Comprehensive tutorial on Large Language Models (LLMs) covering installation, tokenization, embeddings, classification, semantic search, and prompt engineering." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/",
+        "description": "Comprehensive tutorial on Large Language Models (LLMs) covering installation, tokenization, embeddings, classification, semantic search, and prompt engineering.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialContentsDiv1">
+<span class="tutorialContentsSpan1">Large Language Models (LLMs)</span>
+<hr class="tutorialContentsHr1" />
+In this tutorial, I focus only on CPU-based LLM development, which is well-suited for learning and experimentation.<br />
+<ol class="ol_decimal_1">
+<li><a href="introduction.html">Introduction</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="models.html">Running Models</a></li>
+<li><a href="tokenization.html">Tokenization</a></li>
+<li><a href="embeddings.html">Embeddings</a></li>
+<li><a href="text-classification.html">Text Classification</a></li>
+<li><a href="clustering.html">Text Clustering</a></li>
+<li><a href="topic-modeling.html">Topic Modeling</a></li>
+<li><a href="semantic-search.html">Semantic Search</a></li>
+<li><a href="rag.html">Retrieval-Augmented Generation (RAG)</a></li>
+<li><a href="prompt-engineering.html">Prompt Engineering</a></li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Appendix</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li><a href="/tutorials/ml/python/">Python</a></li>
+</ol>
+</div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Hands-On Large Language Models"
+     src="/images/books/hands-on-large-language-models.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Hands-On Large Language Models</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Jay Alammar, Marten Grootendorst
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> O'Reilly Media (September 2024)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1098150969
+</div>
+</div>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Generative AI in Action"
+     src="/images/books/generative-ai-in-action.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Generative AI in Action</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Amit Bahree
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Manning (October 2024)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1633436947
+</div>
+</div>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Building LLM Powered Applications"
+     src="/images/books/building-llm-powered-applications.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Building LLM Powered Applications</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Valentina Alto
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Packt Publishing (May 2024)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1835462317
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

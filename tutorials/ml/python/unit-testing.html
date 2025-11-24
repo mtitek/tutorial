@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Unit Testing | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Unit Testing" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Unit Testing | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Unit Testing" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/unit-testing.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Unit Testing | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Unit Testing" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/unit-testing.html",
+        "description": "Tutorials: Python - Unit Testing",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/unit-testing.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Unit Testing</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+<b>pytest</b> is one of the most popular testing frameworks in Python.
+It makes writing and running tests simple and efficient.<br />
+<br />
+See the official documentation for more details: <a href="https://docs.pytest.org/en/stable/index.html">https://docs.pytest.org/en/stable/index.html</a><br />
+<br />
+<h5>Installing pytest:</h5>
+To install <b>pytest</b> for the current user:<br />
+<pre class="sh-code">
+$ python3 -m pip install --user pytest</pre>
+Alternatively, to install it globally on Ubuntu:<br />
+<pre class="sh-code">
+$ sudo apt install python3-pytest</pre>
+To verify the installation:<br />
+<pre class="sh-code">
+$ pytest --version</pre>
+Output:<br />
+<pre class="text-code">
+pytest 7.4.4</pre>
+<h5>pytest.ini:</h5>
+The pytest.ini file is used to configure pytest behavior.
+It takes precedence, even when empty, over other config files.
+You may also use a hidden version named .pytest.ini.<br />
+<br />
+Create a pytest.ini file in your project's root directory:<br />
+<pre class="sh-code">
+$ vi pytest.ini</pre>
+<pre class="text-code">
+[pytest]
+minversion = 6.0
+addopts = -ra -q
+testpaths =
+  tests
+  integration</pre>
+<h5>Assertions:</h5>
+Assertions are used to validate conditions in unit tests.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Basic assertions:</h6>
+<pre class="python-code">
+assert output                              # Assert that 'output' is truthy (i.e., evaluates to True)
+assert not output                          # Assert that 'output' is falsy (i.e., evaluates to False)
+assert output == value                     # Assert that 'output' is equal to 'value' (assert equality)
+assert output != value                     # Assert that 'output' is not equal to 'value' (assert inequality)
+assert output is None                      # Assert that 'output' is None
+assert output is not None                  # Assert that 'output' is not None</pre>
+</li>
+<li>
+<h6>Collection assertions:</h6>
+<pre class="python-code">
+assert item in collection                  # Assert that 'item' is in the 'collection' (assert membership)
+assert item not in collection              # Assert that 'item' is not in the 'collection' (assert non membership)
+assert len(collection) == value            # Assert that the length of the 'collection' is equal to 'value' (assert collection length)
+assert all(collection)                     # Assert that all items in the 'collection' are truthy
+assert any(collection)                     # Assert that at least one item in the 'collection' is truthy</pre>
+</li>
+<li>
+<h6>Numeric assertions:</h6>
+<pre class="python-code">
+assert output &gt; value                      # Assert that 'output' is greater than 'value'
+assert output &gt;= value                     # Assert that 'output' is greater than or equal to 'value'
+assert output &lt; value                      # Assert that 'output' is less than 'value'
+assert output &lt;= value                     # Assert that 'output' is less than or equal to 'value'
+assert abs(output - value) &lt; 0.001         # Assert that 'output' is approximately equal to 'value' (floating-point comparison)</pre>
+</li>
+<li>
+<h6>Type assertions:</h6>
+<pre class="python-code">
+assert isinstance(output, specific_type)   # Assert that 'output' is of type 'specific_type' (i.e., str)
+assert hasattr(obj, 'method_name')         # Assert that 'obj' has the attribute 'method_name'</pre>
+</li>
+<li>
+<h6>Exception assertions:</h6>
+<pre class="python-code">
+with pytest.raises(ValueError):
+    function_that_should_raise_value_error()
+
+with pytest.raises(ValueError, match="invalid input"):
+    function_with_specific_error_message()</pre>
+</li>
+</ul>
+<h5>Simple unit test:</h5>
+<ul class="ul_square_1">
+<li>
+Create a file <b>hello.py</b> that contains a simple function 'hello':<br />
+<pre class="sh-code">
+$ vi hello.py</pre>
+<pre class="python-code">
+def hello(name):
+  if not isinstance(name, str):
+    raise TypeError("Arguments must be strings")
+  elif name == '':
+    raise ValueError("Arguments cannot be empty")
+  else:
+    return name</pre>
+</li>
+<li>
+Create a unit test file <b>test_hello.py</b>:<br />
+<pre class="sh-code">
+$ vi test_hello.py</pre>
+<pre class="python-code">
+import pytest
+from hello import hello
+
+def test_hello():
+  """hello unit test"""
+  with pytest.raises(TypeError, match="Arguments must be strings"):
+    hello(123)
+
+  with pytest.raises(ValueError):
+    hello('')
+
+  output = hello('abc')
+  assert output == 'abc'</pre>
+</li>
+<li>
+To execute the unit test, open a terminal and run 'pytest' command from the project folder:<br />
+<pre class="sh-code">
+$ pytest</pre>
+Output:<br />
+<pre class="text-code">
+================================================================================ test session starts ================================================================================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+rootdir: ~/dev/python/my_project
+collected 1 item
+
+test_hello.py .                                                                                                                                                               [100%]
+
+================================================================================= 1 passed in 0.01s =================================================================================</pre>
+</li>
+<li>
+If the test encounters a failed assertion or an unexpected exception, pytest will report the test as failed or errored.<br />
+<br />
+Here's an example of a unit test that will fail:<br />
+<pre class="python-code">
+import pytest
+from hello import hello
+
+def test_hello():
+  """hello unit test"""
+  with pytest.raises(ValueError, match="Arguments must be strings"):
+    hello(123)
+
+  with pytest.raises(TypeError, match="Arguments should be strings"):
+    hello(123)
+
+  with pytest.raises(TypeError):
+    hello('')
+
+  output = hello('abc')
+  assert output == 'xyz'</pre>
+Running pytest on this test will produce the following errors:<br />
+<pre class="text-code">
+>       raise TypeError("Arguments must be strings")
+E       TypeError: Arguments must be strings</pre>
+<pre class="text-code">
+>     with pytest.raises(TypeError, match="Arguments should be strings"):
+E     AssertionError: Regex pattern did not match.
+E      Regex: 'Arguments should be strings'
+E      Input: 'Arguments must be strings'</pre>
+<pre class="text-code">
+>       raise ValueError("Arguments cannot be empty")
+E       ValueError: Arguments cannot be empty</pre>
+<pre class="text-code">
+>     assert output == 'xyz'
+E     AssertionError: assert 'abc' == 'xyz'
+E       - xyz
+E       + abc</pre>
+</li>
+</ul>
+<h5>Using Fixtures:</h5>
+Fixtures (<b>@pytest.fixture</b>) in pytest provide a flexible way to
+set up test data,
+create and inject mock objects into unit tests,
+and establish reusable test environments across multiple test functions.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Create a file <b>addition.py</b> that contains a simple class 'Addition':<br />
+<pre class="sh-code">
+$ vi addition.py</pre>
+<pre class="python-code">
+class Addition:
+  def __init__(self, i, j):
+    self.i = i
+    self.j = j
+
+  def add(self):
+    return self.i + self.j</pre>
+</li>
+<li>
+Create a unit test file <b>test_addition.py</b>:<br />
+<pre class="sh-code">
+$ vi test_addition.py</pre>
+<pre class="python-code">
+import pytest
+from addition import Addition
+
+@pytest.fixture
+def addition():
+  addition = Addition(4, 6)
+  return addition
+
+def test_add(addition):
+  """add unit test"""
+  output = addition.add()
+  assert output == 10</pre>
+</li>
+<li>
+To execute the unit test, open a terminal and run 'pytest' command from the project folder:<br />
+<pre class="sh-code">
+$ pytest</pre>
+<pre class="text-code">
+================================================================================ test session starts ================================================================================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+rootdir: ~/dev/python/my_project
+collected 1 item
+
+test_addition.py .                                                                                                                                                            [100%]
+
+================================================================================= 1 passed in 0.01s =================================================================================</pre>
+</li>
+</ul>
+<h5>Fixture Scopes:</h5>
+Fixtures can have different scopes to optimize test execution.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<h6>Fixtures recreated for each test (default):</h6>
+<pre class="python-code">
+@pytest.fixture(scope="function")
+def addition():
+  addition = Addition(4, 6)
+  return addition</pre>
+</li>
+<li>
+<h6>Fixtures shared across all tests in a class:</h6>
+<pre class="python-code">
+@pytest.fixture(scope="class")
+def addition():
+  addition = Addition(4, 6)
+  return addition</pre>
+</li>
+<li>
+<h6>Fixtures shared across all tests in a module:</h6>
+<pre class="python-code">
+@pytest.fixture(scope="module")
+def addition():
+  addition = Addition(4, 6)
+  return addition</pre>
+</li>
+<li>
+<h6>Fixtures shared across entire test session:</h6>
+<pre class="python-code">
+@pytest.fixture(scope="session")
+def addition():
+  addition = Addition(4, 6)
+  return addition</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

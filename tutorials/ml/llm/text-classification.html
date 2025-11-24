@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Text Classification with LLMs: Methods &amp; Examples | MTI TEK</title>
+<meta name="description" content="Explore text classification using LLMs, including sentiment analysis and GPT-based approaches. Learn practical, task-specific applications." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Text Classification with LLMs: Methods &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Explore text classification using LLMs, including sentiment analysis and GPT-based approaches. Learn practical, task-specific applications." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/text-classification.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Text Classification with LLMs: Methods &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Explore text classification using LLMs, including sentiment analysis and GPT-based approaches. Learn practical, task-specific applications." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/text-classification.html",
+        "description": "Explore text classification using LLMs, including sentiment analysis and GPT-based approaches. Learn practical, task-specific applications.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/text-classification.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Text Classification</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Text Classification</a></li>
+<li><a href="#sec_id_2">Example: Task-Specific Model (Sentiment Analysis)</a></li>
+<li><a href="#sec_id_3">Example: Text Classification with Generative Models (OpenAI GPT)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Text Classification</span>
+<div class="tutorialSectionTextDiv1">
+Text classification is a fundamental natural language processing task that assigns predefined labels or categories to text documents.
+This supervised learning technique enables machines to automatically categorize text based on its content.<br />
+<br />
+Modern text classification leverages two primary approaches with Large Language Models:<br />
+<ul class="ul_square_1">
+<li>
+<b>Representation Models</b><br />
+These models convert text into numerical representations (embeddings) that capture semantic meaning:<br />
+<ul class="ul_circle_1">
+<li>
+<b>Task-Specific Models:</b>
+Fine-tuned for particular classification tasks (e.g., sentiment analysis, spam detection).
+These models are trained on domain-specific datasets and optimized for specific use cases.
+<br /></li>
+<li>
+<b>Embedding Models:</b>
+Generate general-purpose text embeddings
+that can be used with traditional machine learning classifiers or similarity-based approaches.
+Examples include sentence-transformers, OpenAI's text-embedding models, and Google's Universal Sentence Encoder.
+<br /></li>
+</ul>
+<br />
+Both types typically start with pre-trained transformer models like BERT, RoBERTa, DeBERTa, or DistilBERT, which are then fine-tuned on task-specific datasets.<br />
+<br />
+</li>
+<li>
+<b>Generative Models</b><br />
+Large language models like GPT-4, Claude, Gemini, or LLaMA can perform text classification through:<br />
+<ul class="ul_circle_1">
+<li><b>Zero-shot Classification:</b> Classifying text without task-specific training using natural language instructions.<br /></li>
+<li><b>Few-shot Learning:</b> Providing a few examples to guide the model's classification behavior.<br /></li>
+<li><b>Prompt Engineering:</b> Crafting effective prompts to elicit accurate classifications.<br /></li>
+</ul>
+</li>
+</ul>
+<br />
+<b>Advantages of Task-Specific Models</b><br />
+<ul class="ul_square_1">
+<li><b>High Accuracy:</b> Optimized for specific tasks with domain-relevant training data.<br /></li>
+<li><b>Fast Inference:</b> Efficient processing with smaller model sizes and lower computational requirements.<br /></li>
+<li><b>Consistent Performance:</b> Reliable results for the trained task with predictable behavior.<br /></li>
+</ul>
+<br />
+<b>Advantages of Generative Models</b><br />
+<ul class="ul_square_1">
+<li><b>Flexibility:</b> Handle diverse classification tasks without retraining.<br /></li>
+<li><b>Zero-shot Capability:</b> Classify into new categories without examples.<br /></li>
+<li><b>Reasoning:</b> Provide explanations for classifications and handle complex reasoning tasks.<br /></li>
+</ul>
+<br />
+<b>Common Applications:</b><br />
+<ul class="ul_square_1">
+<li><b>Sentiment Analysis:</b> Determining emotional tone (positive, negative, neutral) in reviews, social media posts, or customer feedback.<br /></li>
+<li><b>Topic Classification:</b> Categorizing documents by subject matter (sports, politics, technology, etc.).<br /></li>
+<li><b>Spam Detection:</b> Filtering unwanted emails or messages.<br /></li>
+<li><b>Content Moderation:</b> Identifying inappropriate or harmful content.<br /></li>
+<li><b>Document Classification:</b> Organizing legal documents, research papers, or business reports.<br /></li>
+<li><b>Language Detection:</b> Identifying the language of a given text.<br /></li>
+<li><b>Intent Classification:</b> Understanding user intentions in chatbots and virtual assistants.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Task-Specific Model (Sentiment Analysis)</span>
+<div class="tutorialSectionTextDiv1">
+Task-specific models offer high accuracy and efficiency for well-defined classification tasks.
+Here's an example using a fine-tuned RoBERTa model for sentiment analysis.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi representation-sentiment.py</pre>
+<pre class="python-code">
+from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification
+import numpy as np
+from scipy.special import softmax
+import torch
+
+MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+try:
+  # load the pre-trained sentiment analysis model, tokenizer, and configuration
+  model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+  tokenizer = AutoTokenizer.from_pretrained(MODEL)
+  config = AutoConfig.from_pretrained(MODEL)
+
+  # Tokenize input text
+  encoded_input = tokenizer("The weather today is great!", return_tensors='pt', truncation=True, padding=True)
+
+  # analyze sentiment of input text and return predictions
+  with torch.no_grad(): # disable gradient computation for inference
+    output = model(**encoded_input)
+
+  # extract and normalize scores using softmax
+  scores = output.logits[0].detach().numpy()
+  scores = softmax(scores)
+
+  # rank predictions by confidence (highest to lowest)
+  ranking = np.argsort(scores)[::-1]
+
+  for i in range(len(scores)):
+    label = config.id2label[ranking[i]]
+    score = scores[ranking[i]]
+    print(f"{i+1}) {label.capitalize()}: {np.round(float(score), 4)}")
+
+except Exception as e:
+  print(f"Error: {e}")</pre>
+Run the Python script:<br />
+<pre class="sh-code">$ python3 representation-sentiment.py</pre>
+Output:<br />
+<pre class="text-code">
+1) Positive: 0.9899
+2) Neutral: 0.0068
+3) Negative: 0.0033</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Text Classification with Generative Models (OpenAI GPT)</span>
+<div class="tutorialSectionTextDiv1">
+Generative models provide flexibility and can handle diverse classification tasks without task-specific training.
+Here's an implementation using OpenAI's GPT models.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi generative-sentiment.py</pre>
+<pre class="python-code">
+import openai
+
+openai.api_key = "YOUR_API_KEY"
+
+prompt = """Can you tell if the following sentence is a positive, negative, or neutral statement:
+
+The weather today is great!
+
+If it is positive return Positive. If it is negative return Negative. Otherwise return Neutral.
+Also return the confidence score of your prediction.
+"""
+
+messages=[
+    { "role": "user", "content": prompt}
+]
+
+output = openai.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=messages,
+    temperature=0
+)
+
+print(output.choices[0].message.content)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 generative-sentiment.py</pre>
+Output:<br />
+<pre class="sh-code">
+The sentence "The weather today is great!" is a positive statement.
+
+Prediction: Positive
+Confidence Score: 0.95</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

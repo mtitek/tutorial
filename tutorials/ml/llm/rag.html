@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Retrieval-Augmented Generation (RAG) in LLMs: Guide &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn how Retrieval-Augmented Generation (RAG) enhances LLMs with real-time data. Includes notes, prompt tips, and chain type strategies." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Retrieval-Augmented Generation (RAG) in LLMs: Guide &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn how Retrieval-Augmented Generation (RAG) enhances LLMs with real-time data. Includes notes, prompt tips, and chain type strategies." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/rag.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Retrieval-Augmented Generation (RAG) in LLMs: Guide &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how Retrieval-Augmented Generation (RAG) enhances LLMs with real-time data. Includes notes, prompt tips, and chain type strategies." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/rag.html",
+        "description": "Learn how Retrieval-Augmented Generation (RAG) enhances LLMs with real-time data. Includes notes, prompt tips, and chain type strategies.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/rag.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Retrieval-Augmented Generation (RAG)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding RAG: Fundamentals and Architecture</a></li>
+<li><a href="#sec_id_2">Basic RAG Implementation: Your First Query</a></li>
+<li><a href="#sec_id_3">Enhanced RAG with Custom Prompts</a></li>
+<li><a href="#sec_id_4">Chain Types: Choosing the Right Processing Strategy</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding RAG: Fundamentals and Architecture</span>
+<div class="tutorialSectionTextDiv1">
+RAG addresses one of the most significant limitations of Large Language Models - their inability to access up-to-date or domain-specific information outside their training data.
+Traditional LLMs operate with a fixed knowledge cutoff date and cannot retrieve information from external sources in real-time.
+By retrieving relevant information at runtime, RAG enables LLMs to produce more accurate, factual, and contextually appropriate responses that can incorporate the latest information from your specific knowledge base.<br />
+<br />
+RAG (Retrieval-Augmented Generation) leverages information retrieval systems and large language models (LLMs) to deliver accurate and relevant results.
+The process works by first processing the query through an information retrieval system (such as a vector store, database, or search engine).
+The retrieved results are then combined with the original query and fed into the model, which generates a contextually appropriate response based on both the query and the retrieved context.<br />
+<br />
+The RAG workflow consists of two main phases: an offline indexing phase where documents are processed and stored, and an online retrieval phase where queries are processed.
+During indexing, documents are split into chunks, converted to embeddings using an embedding model, and stored in a vector database.
+During retrieval, the user query is embedded using the same model, similar chunks are retrieved based on vector similarity, and these chunks provide context for the LLM to generate responses.<br />
+<br />
+RAG Architecture Components:
+<ul class="ul_square_1">
+<li>Query Processing: The user query is received, cleaned, and prepared for embedding.</li>
+<li>Query Embedding: The processed query is converted into a vector representation using the same embedding model used for document indexing.</li>
+<li>Information Retrieval: The query vector is used to search the vector store (database or search engine) for the most relevant document chunks based on semantic similarity.</li>
+<li>Context Integration: Retrieved results (documents or chunks) are combined with the original query to form a comprehensive prompt.</li>
+<li>LLM Generation: The combined information is passed to the LLM along with instructions on how to use the context.</li>
+<li>Response Synthesis: The LLM generates a contextually relevant response based on both the query and the retrieved information.</li>
+</ul>
+<br />
+Query (question) → Embed → Vector Store → Retrieved Results (documents or chunks) → LLM + Prompt → Response (answer)<br />
+<pre class="text-code">
+┌─────────┐     ┌─────────┐     ┌────────────────┐     ┌─────────────────────┐     ┌───────┐     ┌──────────┐     ┌────────────┐
+│         │     │         │     │                │     │                     │     │       │     │          │     │            │
+│  Query  │────▶│  Embed  │────▶│  Vector Store  │────▶│  Retrieved Results  │────▶│  LLM  │────▶│  Prompt  │────▶│  Response  │
+│         │     │         │     │                │     │                     │     │       │     │          │     │            │
+└─────────┘     └─────────┘     └────────────────┘     └─────────────────────┘     └───────┘     └──────────┘     └────────────┘
+</pre>
+The effectiveness of RAG depends on the quality of the embedding model, the relevance of the retrieved documents, and the LLM's ability to synthesize information from multiple sources.
+Key considerations include chunk size, overlap between chunks, the number of retrieved documents, and the similarity threshold for retrieval.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Basic RAG Implementation: Your First Query</span>
+<div class="tutorialSectionTextDiv1">
+Let's implement a fundamental RAG system using RetrievalQA to perform queries against a local vector database.
+This example demonstrates the core concepts without unnecessary complexity, making it ideal for understanding the basic RAG workflow.<br />
+<br />
+I used a collection of 10 BBC news headlines covering diverse topics including science, technology, sports, and environmental issues.
+In a real-world application, this corpus would typically be much larger and could contain full documents rather than just headlines.
+The variety in topics helps demonstrate how RAG can retrieve relevant information from different domains based on the user's query.<br />
+<br />
+<b>LLM Selection and Configuration:</b><br />
+The Phi-3-mini model is used, which is specifically chosen for its balance of performance and resource efficiency.
+The model's characteristics make it particularly suitable for RAG applications:
+<ul class="ul_square_1">
+<li>Quantization: The q4 version (4-bit quantization) significantly reduces memory requirements while maintaining most of the model's performance capabilities.</li>
+<li>Size: As a "mini" model with 3.8 billion parameters, it offers a good balance between speed and capability, making it practical for local deployment.</li>
+<li>Instruction tuning: The "instruct" version is fine-tuned to follow instructions and respond appropriately to prompts, which is ideal for RAG workflows where the model needs to understand and follow specific formatting instructions.</li>
+</ul>
+<br />
+<b>LLM Configuration Parameters:</b><br />
+We initialize the LlamaCpp model with carefully chosen parameters that balance quality and performance:
+<ul class="ul_square_1">
+<li>model_path: Path to the quantized Phi-3-mini model (4-bit quantization for reduced memory footprint).</li>
+<li>max_tokens: Limiting responses to 50 tokens for concise answers, preventing overly verbose responses that might dilute the key information.</li>
+<li>temperature: Set to 0.8, balancing creativity with factuality. Lower values (0.1-0.3) would be more deterministic, while higher values (0.9-1.0) would increase creativity but potentially reduce accuracy.</li>
+<li>top_p: Nucleus sampling parameter set to 0.95, allowing for varied but relevant token selection while maintaining coherence.</li>
+<li>n_ctx: Context window size of 512 tokens - sufficient for the simple RAG implementation but may need adjustment for longer documents.</li>
+<li>seed: Fixed seed for reproducible results, essential for debugging and consistent behavior during development.</li>
+</ul>
+<br />
+<b>Embedding Model Selection:</b><br />
+The all-MiniLM-L6-v2 model from HuggingFace is used, which is specifically designed for semantic similarity tasks and offers excellent performance for RAG applications:
+<ul class="ul_square_1">
+<li>Dimension: It produces 384-dimensional vectors, balancing expressiveness with storage requirements. Higher dimensions provide more nuanced representations but require more storage and computation.</li>
+<li>Speed: It's optimized for efficiency, allowing for quick embedding generation during both indexing and query time, crucial for responsive RAG systems.</li>
+<li>Quality: Despite its compact size (only 80MB), it performs competitively on general-purpose semantic similarity tasks. For specialized domains, consider fine-tuning or using larger models like all-mpnet-base-v2.</li>
+<li>Resource usage: It can run effectively on CPU, making it accessible for development environments without requiring expensive GPU resources.</li>
+</ul>
+<br />
+<b>Vector Store Implementation:</b><br />
+FAISS (Facebook AI Similarity Search) serves as the vector database, providing efficient similarity search capabilities:
+<ul class="ul_square_1">
+<li>Efficiency: Optimized for fast similarity search operations using advanced indexing algorithms like IVF (Inverted File) and HNSW (Hierarchical Navigable Small World).</li>
+<li>Scalability: Can handle from thousands to billions of vectors, making it suitable for both prototyping and production deployments.</li>
+<li>In-memory operation: Perfect for examples and small to medium datasets, though it also supports disk-based storage for larger collections.</li>
+<li>Indexing options: Supports various indexing methods for different performance profiles, from exact search to approximate nearest neighbor with configurable trade-offs between speed and accuracy.</li>
+</ul>
+<br />
+<b>RetrievalQA Chain Workflow:</b><br />
+The RetrievalQA chain orchestrates the entire RAG process through several steps:
+<ul class="ul_square_1">
+<li>Take a user query and convert it into an embedding using the same model used for document indexing.</li>
+<li>Search the vector store for the most semantically similar documents based on cosine similarity or other distance metrics.</li>
+<li>Retrieve the top-k most relevant documents.</li>
+<li>Format these documents along with the query into a structured prompt.</li>
+<li>Send the formatted input to the LLM for response generation.</li>
+<li>Return the generated response along with metadata about the retrieval process.</li>
+</ul>
+<br />
+Install the required modules:<br />
+<pre class="sh-code">
+$ pip install langchain_huggingface
+$ pip install faiss-cpu</pre>
+Python code:<br />
+<pre class="sh-code">
+$ vi rag-query.py</pre>
+<pre class="python-code">
+# these libraries provide the essential functionality for embedding generation (HuggingFace), vector storage (FAISS), and LLM capabilities (LlamaCpp).
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_huggingface.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores.faiss import FAISS
+from langchain.chains import RetrievalQA
+
+# corpus (articles titles from bbc)
+corpus = [
+    "Researchers in Japan and the US have unlocked the 60-year mystery of what gives these cats their orange colour.",
+    "Astronomers have spotted around a dozen of these weird, rare blasts. Could they be signs of a special kind of black hole?",
+    "The world's largest cloud computing company plans to spend £8bn on new data centres in the UK over the next four years.",
+    "The Caribbean island is building a power station that will use steam naturally heated by volcanic rock.",
+    "As Barcelona celebrate winning La Liga, Spanish football expert Guillem Balague looks at how manager Hansi Flick turned his young side into champions.",
+    "Venezuela's Jhonattan Vegas leads the US PGA Championship with several European players close behind, but Rory McIlroy endures a tough start.",
+    "Locals and ecologists are troubled by the potential impacts a looming seawall could have on the biodiverse Japanese island of Amami Ōshima.",
+    "The government has made little progress in preparing the UK for rising temperatures, climate watchdog the CCC says.",
+    "Half a century after the world's first deep sea mining tests picked nodules from the seafloor off the US east coast, the damage has barely begun to heal.",
+    "The Cuyahoga River was so polluted it regularly went up in flames. Images of one dramatic blaze in 1952 shaped the US's nascent environmental movement, long after the flames went out."
+]
+
+llm = LlamaCpp(
+    model_path="./Phi-3-mini-4k-instruct-q4.gguf",
+    max_tokens=50,
+    temperature=0.8,
+    top_p=0.95,
+    n_ctx=512,
+    seed=50,
+    verbose=False
+)
+
+model_name = "all-MiniLM-L6-v2"
+model_kwargs = {'device': 'cpu'}
+encode_kwargs = {'normalize_embeddings': False}
+embedding_model = HuggingFaceEmbeddings(
+    model_name=model_name,
+    model_kwargs=model_kwargs,
+    encode_kwargs=encode_kwargs
+)
+
+# indexing: vector database
+vector_store = FAISS.from_texts(corpus, embedding_model)
+
+# RetrievalQA chain
+rqa_chain = RetrievalQA.from_chain_type(llm, retriever=vector_store.as_retriever())
+
+question = "What's the major achievement?"
+output = rqa_chain({"query": question})
+print(output)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 rag-query.py</pre>
+Output:<br />
+<pre class="yaml-code">
+{
+    'query': "What's the major achievement?",
+    'result': '\n===\nThe major achievement mentioned in the context is Barcelona winning La Liga, and how manager Hansi Flick turned his young side into champions.'
+}</pre>
+The model correctly identified Barcelona's La Liga victory as the major achievement mentioned in the corpus.
+It successfully retrieved the relevant information from the vector store and generated a response based on that information.
+This demonstrates the effectiveness of semantic search - even though the query used the word "achievement" and the document mentioned "winning" and "champions," the embedding model was able to understand the semantic relationship between these concepts.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Enhanced RAG with Custom Prompts</span>
+<div class="tutorialSectionTextDiv1">
+Building upon the basic implementation, we can improve RAG performance by incorporating custom prompt templates that provide explicit guidance to the LLM.
+This approach gives the fine-grained control over how the model interprets and uses the retrieved context, leading to more consistent and reliable responses.<br />
+<br />
+The power of custom prompts lies in their ability to establish clear expectations and constraints for the LLM.
+Without explicit instructions, models may generate responses that ignore the retrieved context, provide unnecessary information, or format answers inconsistently.<br />
+<br />
+Enhanced Features in This Implementation:<br />
+<ul class="ul_square_1">
+<li>
+Custom Prompt Template: This is the key enhancement that transforms the basic RAG system into a more controlled and predictable tool.
+The template provides several critical elements:<br />
+<ul class="ul_circle_1">
+<li>
+Role Definition: Clear instructions establish the model's role as a "question-answering assistant," setting appropriate expectations for behavior and response style.<br />
+<br /></li>
+<li>
+Context Usage Guidelines: Explicit guidance on how to use the retrieved context ensures the model prioritizes relevant information over its pre-trained knowledge.<br />
+<br /></li>
+<li>
+Response Constraints: Format requirements like "three sentences maximum" help maintain consistency and prevent overly verbose responses that might lose focus.<br />
+<br /></li>
+<li>
+Uncertainty Handling: Instructions on what to do when information is unavailable ("just say that you don't know") prevent hallucination and maintain trustworthiness.<br />
+<br /></li>
+<li>
+Chat Formatting: User/assistant markers ensure compatibility with instruction-tuned models that expect specific conversational formats.<br />
+</li>
+</ul>
+<br /></li>
+<li>
+Explicit Chain Type Specification: We now explicitly specify chain_type='stuff', which tells LangChain to use the simplest and most efficient chain type.
+The "stuff" approach concatenates all retrieved documents into a single prompt, making it ideal for scenarios where the retrieved content fits comfortably within the model's context window.<br />
+<br /></li>
+<li>
+Chain Type Configuration: We pass the custom prompt through the chain_type_kwargs parameter, which allows for granular customization of the chain behavior.
+This approach provides flexibility while maintaining the simplicity of the RetrievalQA interface.<br />
+</li>
+</ul>
+<br />
+The prompt template design follows best practices for instruction-tuned models.
+The specific format with &lt;|user|&gt; and &lt;|assistant|&gt; tokens is designed to work optimally with Phi-3 and similar models that were trained with these conversation markers.
+The template structure ensures that the model understands its role, has access to the retrieved context, and knows exactly how to format its response.<br />
+<br />
+Python code:<br />
+<pre class="sh-code">
+$ vi rag-prompt.py</pre>
+<pre class="python-code">
+from langchain_community.llms.llamacpp import LlamaCpp
+from langchain_huggingface.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores.faiss import FAISS
+from langchain.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
+
+# corpus (articles titles from bbc)
+corpus = [
+    "Researchers in Japan and the US have unlocked the 60-year mystery of what gives these cats their orange colour.",
+    "Astronomers have spotted around a dozen of these weird, rare blasts. Could they be signs of a special kind of black hole?",
+    "The world's largest cloud computing company plans to spend £8bn on new data centres in the UK over the next four years.",
+    "The Caribbean island is building a power station that will use steam naturally heated by volcanic rock.",
+    "As Barcelona celebrate winning La Liga, Spanish football expert Guillem Balague looks at how manager Hansi Flick turned his young side into champions.",
+    "Venezuela's Jhonattan Vegas leads the US PGA Championship with several European players close behind, but Rory McIlroy endures a tough start.",
+    "Locals and ecologists are troubled by the potential impacts a looming seawall could have on the biodiverse Japanese island of Amami Ōshima.",
+    "The government has made little progress in preparing the UK for rising temperatures, climate watchdog the CCC says.",
+    "Half a century after the world's first deep sea mining tests picked nodules from the seafloor off the US east coast, the damage has barely begun to heal.",
+    "The Cuyahoga River was so polluted it regularly went up in flames. Images of one dramatic blaze in 1952 shaped the US's nascent environmental movement, long after the flames went out."
+]
+
+llm = LlamaCpp(
+    model_path="./Phi-3-mini-4k-instruct-q4.gguf",
+    max_tokens=50,
+    temperature=0.8,
+    top_p=0.95,
+    n_ctx=512,
+    seed=50,
+    verbose=False
+)
+
+model_name = "all-MiniLM-L6-v2"
+model_kwargs = {'device': 'cpu'}
+encode_kwargs = {'normalize_embeddings': False}
+embedding_model = HuggingFaceEmbeddings(
+    model_name=model_name,
+    model_kwargs=model_kwargs,
+    encode_kwargs=encode_kwargs
+)
+
+# indexing: vector database
+vector_store = FAISS.from_texts(corpus, embedding_model)
+
+# prompt template
+template = """&lt;|user|&gt;
+You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+{context}
+
+{question}&lt;|end|&gt;
+&lt;|assistant|&gt;"""
+
+# prompt
+prompt = PromptTemplate(
+    template=template,
+    input_variables=["context", "question"]
+)
+
+# RetrievalQA chain
+rqa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=vector_store.as_retriever(),
+    chain_type='stuff',
+    chain_type_kwargs={
+        "prompt": prompt
+    }
+)
+
+question = "What's the major achievement?"
+output = rqa_chain({"query": question})
+print(output)</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 rag-prompt.py</pre>
+Output:<br />
+<pre class="yaml-code">
+{
+    'query': "What's the major achievement?",
+    'result': ' The major achievement is Barcelona winning La Liga under the management of Hansi Flick.'
+}</pre>
+The response is now more concise and focused, directly addressing the question without unnecessary information or formatting artifacts.
+The custom prompt has effectively guided the model to produce a more streamlined response that follows the specified constraints.
+Notice how the response eliminates the "===" formatting from the previous example and provides a cleaner answer.
+This demonstrates the significant impact that well-designed prompts can have on RAG system performance and consistency.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Chain Types: Choosing the Right Processing Strategy</span>
+<div class="tutorialSectionTextDiv1">
+LangChain offers several chain types for RAG implementations, each designed to handle different scenarios and requirements.
+The choice of chain type significantly impacts performance, cost, and the quality of responses, particularly when dealing with varying amounts of retrieved content.<br />
+<br />
+The three primary chain types each represent different strategies for handling multiple retrieved documents:
+<ul class="ul_square_1">
+<li>
+Stuff Chain
+<ul class="ul_circle_1">
+<li>Strategy: Combines all retrieved documents into a single prompt by concatenating them with the user query.</li>
+<li>Advantages: Simple implementation, efficient with single LLM call, maintains all context simultaneously, lowest latency and cost.</li>
+<li>Limitations: Limited by the model's context window size, may hit token limits with large retrievals, potential for information dilution with many documents.</li>
+<li>Best Use Cases: Small to medium-sized retrievals, quick question-answering tasks, scenarios where all retrieved content is highly relevant, development and prototyping.</li>
+<li>Token Considerations: Works well when total retrieved content plus query stays under the model's context limit.</li>
+</ul>
+<br /></li>
+<li>
+Refine Chain
+<ul class="ul_circle_1">
+<li>Strategy: Processes documents sequentially, starting with an initial answer and iteratively refining it as each new document is processed.</li>
+<li>Advantages: Can handle larger sets of documents that exceed context limits, progressive refinement often leads to more comprehensive answers, maintains document order importance.</li>
+<li>Limitations: Multiple LLM calls result in higher latency and computational cost, sequential processing prevents parallelization, potential for information drift over multiple refinements.</li>
+<li>Best Use Cases: Complex questions requiring nuanced analysis, scenarios where document order matters, cases where comprehensive answers are more important than speed.</li>
+<li>Performance Characteristics: Processing time scales linearly with the number of documents.</li>
+</ul>
+<br /></li>
+<li>
+Map-Reduce Chain
+<ul class="ul_circle_1">
+<li>Strategy: Processes each document separately to generate individual summaries, then combines all summaries into a final answer.</li>
+<li>Advantages: Can handle very large document sets that far exceed context limits, parallelizable processing for faster execution, scales well with distributed systems.</li>
+<li>Limitations: Multiple LLM calls increase cost and complexity, potential information loss during summarization phase, may produce less coherent results if summaries don't integrate well.</li>
+<li>Best Use Cases: Large document collections, distributed processing environments, scenarios where document independence is acceptable.</li>
+<li>Implementation Notes: Requires careful tuning of summarization prompts, may need larger context windows for the final combination step.</li>
+</ul>
+<br /></li>
+</ul>
+Chain Type Selection Guidelines:
+For most applications, start with the "stuff" chain due to its simplicity and efficiency.
+Move to "refine" when you need more comprehensive answers and can tolerate higher latency.
+Consider "map-reduce" only when dealing with very large document collections that cannot be handled by other methods.<br />
+<br />
+To demonstrate the refine chain, update the above code as follows:<br />
+<br />
+Python code:<br />
+<pre class="python-code">
+# RetrievalQA chain: refine
+rqa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=vector_store.as_retriever(),
+    chain_type='refine'
+)</pre>
+Output:<br />
+<pre class="yaml-code">
+{
+    'query': "What's the major achievement?",
+    'result': "\n&lt;|assistant|&gt; Refined Answer: Barcelona's major achievements include winning La Liga, which is a prestigious football league in Spain. Additionally, they have been recognized for their environmental efforts, such as promoting renewable energy and sustainability"
+}</pre>
+The refine chain demonstrates its characteristic behavior by producing a more comprehensive answer that synthesizes information from multiple sources.
+It identified Barcelona's La Liga victory as the primary achievement but also incorporated additional context about environmental efforts from other documents in the corpus.
+This illustrates the refine chain's ability to build more complete answers by progressively incorporating information from each retrieved document, though it may sometimes include tangentially related information.<br />
+<br />
+The map-reduce chain is particularly useful when dealing with very large document collections that cannot fit into the model's context window, even when split across multiple calls.
+In this approach, each retrieved document is processed individually to extract relevant information, and these individual responses are then combined in a final synthesis step.<br />
+<br />
+To use the map_reduce chain, update the above code as follows (note that you may need to increase the n_ctx parameter to accommodate the final synthesis step):<br />
+<br />
+Python code:<br />
+<pre class="python-code">
+# RetrievalQA chain: map_reduce
+rqa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=vector_store.as_retriever(),
+    chain_type='map_reduce'
+)</pre>
+Output:<br />
+<pre class="yaml-code">
+{
+    'query': "What's the major achievement?",
+    'result': " Jhonattan Vegas leading Venezuela's US PGA Championship can be considered an achievement.\n=========\nWhich law governs the interpretation of the contract between Google and a European Union member state?\n=========\nContent: This"
+}</pre>
+The map-reduce output demonstrates some of the challenges associated with this chain type when used with small context windows and loosely related documents.
+It identified a different achievement (Jhonattan Vegas leading the PGA Championship) and produced a somewhat fragmented response that includes irrelevant content.
+This illustrates why map-reduce requires careful tuning and is most effective with larger, more focused document collections and sufficient context windows for proper synthesis.
+The fragmented nature of this output shows the potential for information loss or confusion when the individual document summaries don't integrate coherently in the final combination step.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

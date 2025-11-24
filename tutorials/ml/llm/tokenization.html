@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tokenization in LLMs: How Large Language Models Understand Text | MTI TEK</title>
+<meta name="description" content="Learn how tokenization powers Large Language Models (LLMs) with practical examples. Discover how tokenizers break text into meaningful units." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Tokenization in LLMs: How Large Language Models Understand Text | MTI TEK" />
+<meta property="og:description" content="Learn how tokenization powers Large Language Models (LLMs) with practical examples. Discover how tokenizers break text into meaningful units." />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/llm/tokenization.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Tokenization in LLMs: How Large Language Models Understand Text | MTI TEK" />
+<meta name="twitter:description" content="Learn how tokenization powers Large Language Models (LLMs) with practical examples. Discover how tokenizers break text into meaningful units." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/llm/tokenization.html",
+        "description": "Learn how tokenization powers Large Language Models (LLMs) with practical examples. Discover how tokenizers break text into meaningful units.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/llm/tokenization.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link active" href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/llm">LLMs</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Tokenization</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Tokenization: the Foundation of Large Language Models</a></li>
+<li><a href="#sec_id_2">Example: Working with Tokenizers</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Tokenization: the Foundation of Large Language Models</span>
+<div class="tutorialSectionTextDiv1">
+Tokenization is the critical first step in natural language processing where text is broken down into smaller units called tokens.
+These tokens can be characters, words, or sub-words,
+and they form the basic building blocks that Large Language Models (LLMs) use to understand and generate language.<br />
+<br />
+A tokenizer serves two essential functions:<br />
+<ul class="ul_square_1">
+<li>Converting raw text into a sequence of tokens, then into numerical token IDs (encoding).<br /></li>
+<li>Converting token IDs back into tokens and reconstructed text (decoding).<br /></li>
+</ul>
+<br />
+The vocabulary of a tokenizer is a comprehensive mapping between tokens and their unique numeric IDs. For example:<br />
+<ul class="ul_square_1">
+<li>Tokens: "large", "language", "model", "Ġthe" (where Ġ represents a space prefix), "##ing" (subword suffix)<br /></li>
+<li>Token IDs: 123, 456, 789, 262, 345<br /></li>
+</ul>
+<br />
+When a tokenizer encounters a word not in its vocabulary, it employs subword tokenization strategies.
+This approach allows LLMs to handle a virtually unlimited range of words by decomposing them into known subword units.<br />
+For example (the exact splits depend on the specific tokenizer and its training):<br />
+<ul class="ul_square_1">
+<li>"tokenizers" → ["token", "izers"]<br /></li>
+<li>"transformers" → ["transform", "ers"]<br /></li>
+</ul>
+<br />
+Common Tokenization Algorithms:<br />
+<ul class="ul_square_1">
+<li><b>Byte Pair Encoding (BPE):</b> Iteratively merges most frequent character pairs. Used by GPT models.<br /></li>
+<li><b>WordPiece:</b> Similar to BPE but uses likelihood-based merging. Used by BERT.<br /></li>
+<li><b>SentencePiece:</b> Language-agnostic approach that works directly on raw text. Used by T5, mT5.<br /></li>
+</ul>
+<br />
+<b>Tokenization Challenges:</b><br />
+<ul class="ul_square_1">
+<li><b>Capitalization:</b> "Hello" vs "hello" (may be treated as different tokens).<br /></li>
+<li><b>Numbers:</b> Efficient representation of numerical values.<br /></li>
+<li><b>Multiple languages:</b> Support for cross-lingual text.<br /></li>
+<li><b>Unicode and Emojis:</b> Proper handling of non-ASCII characters and special symbols.<br /></li>
+<li><b>Whitespace:</b> Critical in many tokenization schemes (especially leading spaces, tabs, newlines).<br /></li>
+<li><b>Programming code:</b> Special handling for code syntax, indentation, and keywords.<br /></li>
+</ul>
+<br />
+<b>Types of Tokens:</b><br />
+<ul class="ul_square_1">
+<li><b>Complete words:</b> Common words that have their own token (e.g., "hello", "world").<br /></li>
+<li><b>Subwords:</b> Parts of words, often with prefixes indicating position (e.g., "un", "Ġexpect", "##ed").<br /></li>
+<li><b>Punctuation:</b> Commas, periods, etc. typically have dedicated tokens.<br /></li>
+<li><b>Special tokens:</b> System tokens with specific functions in the model architecture.<br /></li>
+<li><b>Whitespace tokens:</b> Many tokenizers use space-prefixed tokens (Ġ) to mark word boundaries.<br /></li>
+</ul>
+<br />
+<b>Tokenizer Parameters:</b><br />
+<ul class="ul_square_1">
+<li><b>Vocabulary size:</b> Typically 30K-100K tokens.<br /></li>
+<li><b>Maximum sequence length:</b> Context window size (512, 2K, 4K, 8K, 32K, 128K+ tokens).<br /></li>
+<li><b>Special tokens:</b> Model-specific control tokens for different tasks.<br /></li>
+<li><b>Tokenization algorithm:</b> BPE, WordPiece, SentencePiece.<br /></li>
+<li><b>Pre-tokenization rules:</b> How raw text is initially segmented before subword tokenization.<br /></li>
+<li><b>Normalization:</b> Text cleaning steps (lowercasing, accent removal, etc.).<br /></li>
+</ul>
+<br />
+<b>Special Tokens:</b><br />
+<ul class="ul_square_1">
+<li><b>End of Sequence [EOS]:</b> Signals completion of generation or input.<br /></li>
+<li><b>Padding [PAD]:</b> Fills sequences to uniform length for batch processing.<br /></li>
+<li><b>Classification [CLS]:</b> Used for sentence-level classification tasks (BERT-style).<br /></li>
+<li><b>Mask [MASK]:</b> Used in masked language modeling for training.<br /></li>
+<li><b>Separator [SEP]:</b> Separates distinct text segments in multi-part inputs.<br /></li>
+<li><b>System tokens:</b> For chat models, tokens like &lt;|system|&gt;, &lt;|user|&gt;, &lt;|assistant|&gt;.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example: Working with Tokenizers</span>
+<div class="tutorialSectionTextDiv1">
+Let's explore a practical implementation of tokenization using the Hugging Face Transformers library:<br />
+<pre class="sh-code">
+$ vi tokenizer.py</pre>
+<pre class="python-code">
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# load a pre-trained model and its tokenizer
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+
+# Add padding token if not present
+if tokenizer.pad_token is None:
+  tokenizer.pad_token = tokenizer.eos_token
+
+# display tokenizer properties
+print(f"Vocab size: {tokenizer.vocab_size}")
+print(f"Model max length: {tokenizer.model_max_length}")
+print(f"Special tokens: {tokenizer.special_tokens_map}")
+
+# display tokens directly without decoding
+tokens = tokenizer.tokenize("Hello Tokenizers!")
+
+# display the tokens
+print(f"\nTokens: {tokens}")
+
+# encode text into token IDs + return attention mask
+tokens = tokenizer("Hello Tokenizers!", return_tensors='pt', return_attention_mask=True)
+input_ids = tokens["input_ids"]
+attention_mask = tokens["attention_mask"]
+
+# display the token IDs
+print("\nInput token IDs:", input_ids)
+
+# display the attention mask
+print("Attention mask:", attention_mask)
+
+# encode text into token IDs (similar to the above)
+# input_ids = tokenizer.encode("Hello Tokenizers!", return_tensors='pt')
+
+# display individual tokens by converting IDs to text
+print("\nIndividual input tokens:")
+for i, token_id in enumerate(input_ids[0]):
+  token = tokenizer.decode([token_id])
+  print(f"Token {i}: ID {token_id} -> '{token}'")
+
+# generate text from the model based on the input
+# attention mask used to avoid this warning 'The attention mask is not set and cannot be inferred from input because pad token is same as eos token.'
+output = model.generate(
+  input_ids=input_ids,
+  attention_mask=attention_mask,
+  max_new_tokens=10,
+  do_sample=False,
+  pad_token_id=tokenizer.eos_token_id
+)
+
+# display the output token IDs
+print(f"\nOutput token IDs: {output}")
+
+# display individual output tokens
+print("\nIndividual output tokens:")
+for i, token_id in enumerate(output[0]):
+  token = tokenizer.decode([token_id])
+  print(f"Token {i}: ID {token_id} -> '{token}'")
+
+# convert token IDs to their corresponding text
+generated_text = tokenizer.decode(output[0], skip_special_tokens=False)
+print(f"\nGenerated text: {generated_text}")
+
+# convert token IDs to their corresponding text without special tokens
+generated_clean_text = tokenizer.decode(output[0], skip_special_tokens=True)
+print(f"\nGenerated clean text: {generated_clean_text}")</pre>
+Run the Python script:<br />
+<pre class="sh-code">
+$ python3 tokenizer.py</pre>
+Output:<br />
+<pre class="sh-code">
+Vocab size: 50257
+Model max length: 1024
+Special tokens: {'bos_token': '&lt;|endoftext|&gt;', 'eos_token': '&lt;|endoftext|&gt;', 'unk_token': '&lt;|endoftext|&gt;'}
+
+Tokens: ['Hello', 'ĠToken', 'izers', '!']
+
+Input token IDs: tensor([[15496, 29130, 11341,     0]])
+Attention mask: tensor([[1, 1, 1, 1]])
+
+Individual input tokens:
+Token 0: ID 15496 -&gt; 'Hello'
+Token 1: ID 29130 -&gt; ' Token'
+Token 2: ID 11341 -&gt; 'izers'
+Token 3: ID 0 -&gt; '!'
+
+Output token IDs: tensor([[15496, 29130, 11341,     0, 50256]])
+
+Individual output tokens:
+Token 0: ID 15496 -&gt; 'Hello'
+Token 1: ID 29130 -&gt; ' Token'
+Token 2: ID 11341 -&gt; 'izers'
+Token 3: ID 0 -&gt; '!'
+Token 4: ID 50256 -&gt; '&lt;|endoftext|&gt;'
+
+Generated text: Hello Tokenizers!&lt;|endoftext|&gt;
+
+Generated clean text: Hello Tokenizers!</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

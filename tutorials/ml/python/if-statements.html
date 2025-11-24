@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python - Conditional Statements (if, elif, else) | MTI TEK</title>
+<meta name="description" content="Tutorials: Python - Conditional Statements (if, elif, else)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python - Conditional Statements (if, elif, else) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Python - Conditional Statements (if, elif, else)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/ml/python/if-statements.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Python - Conditional Statements (if, elif, else) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Python - Conditional Statements (if, elif, else)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/ml/python/if-statements.html",
+        "description": "Tutorials: Python - Conditional Statements (if, elif, else)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/ml/python/if-statements.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/ml/python">Python</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Conditional Statements (if, elif, else)</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+The if statement evaluates expressions to either True or False and executes different code blocks accordingly.<br />
+If the expression evaluates to True, then the code block of the if statement will be executed.<br />
+<br />
+<h5>Basic if statement structure:</h5>
+<pre class="python-code">
+if &lt;if_condition&gt;:
+  # code to execute if &lt;if_condition&gt; evaluates to True
+elif &lt;elif_condition&gt;:
+  # code to execute if &lt;elif_condition&gt; evaluates to True
+else:
+  # code to execute if none of the above conditions evaluate to True</pre>
+<h5>Values that evaluate to False by default:</h5>
+These values evaluate to False:
+None, False, 0, 0.0, '' (empty string), [] (empty list), () (empty tuple), {} (empty dictionary), set() (empty set)<br />
+<pre class="python-code">
+x = None
+if not x:
+  print(f'Not True: {x}')
+
+x = False
+if not x:
+  print(f'Not True: {x}')
+
+x = 0
+if not x:
+  print(f'Not True: {x}')
+
+x = 0.0
+if not x:
+  print(f'Not True: {x}')
+
+# empty string
+x = ''
+if not x:
+  print(f'Not True: {x}')
+
+# empty list
+x = []
+if not x:
+  print(f'Not True: {x}')
+
+# empty tuple
+x = ()
+if not x:
+  print(f'Not True: {x}')
+
+# empty dictionary
+x = {}
+if not x:
+  print(f'Not True: {x}')
+
+# empty set
+x = set()
+if not x:
+  print(f'Not True: {x}')</pre>
+<h5>Simple if statements:</h5>
+<pre class="python-code">
+x = True
+if x:
+  print('x is True')</pre>
+<h5>if-else statements:</h5>
+<pre class="python-code">
+x = 0
+if x == 0:
+  print('zero')
+else:
+  print('not zero')</pre>
+<h5>if-elif-else statements:</h5>
+<pre class="python-code">
+x = 0
+if x == 0:
+  print('zero')
+elif x > 0:
+  print('positive')
+else:
+  print('negative')</pre>
+<h5>Nested if statements:</h5>
+<pre class="python-code">
+x = 0
+if x == 0:
+  print('zero')
+elif x &gt; 0:
+  if x &gt; 1_000_000:
+    print('big positive number')
+  else:
+    print('small positive number')
+else:
+  if x &lt; -1_000_000:
+    print('big negative number')
+  else:
+    print('small negative number')</pre>
+<h5>Better Practices for None Comparisons:</h5>
+<pre class="python-code">
+x = None
+if x is None: # don't use x == None
+  print('x is None')</pre>
+<h5>The not operator:</h5>
+<pre class="python-code">
+x = False
+if not x:
+  print('x is False')</pre>
+<h5>Ternary operator (conditional expression):</h5>
+<pre class="python-code">
+x = True
+y = 'true' if x else 'false'
+print(f'x is {y}')</pre>
+<h5>Equality operator (==):</h5>
+<pre class="python-code">
+x = 0
+if x == 0:
+  print('zero')</pre>
+<h5>Inequality operator (!=):</h5>
+<pre class="python-code">
+x = 1
+if x != 0:
+  print('not zero')</pre>
+<h5>Comparison operators:</h5>
+<pre class="python-code">
+x = 0
+
+# greater than
+if x &gt; 0:
+  print('positive number')
+
+# greater than or equal to
+if x &gt;= 0:
+  print('positive number including zero')
+
+# less than
+if x &lt; 0:
+  print('negative number')
+
+# less than or equal to
+if x &lt;= 0:
+  print('negative number including zero')</pre>
+<h5>Logical and operator:</h5>
+<pre class="python-code">
+x = 1
+y = 1
+if x &gt; 0 and y &gt; 0:
+  print('both x and y are positive numbers')</pre>
+<h5>Logical or operator:</h5>
+<pre class="python-code">
+x = 1
+y = 1
+if x &gt; 0 or y &gt; 0:
+  print('either or both x and y are positive numbers')</pre>
+Complex conditions with parentheses:<br />
+<pre class="python-code">
+x = 1
+y = 1
+if (x &gt; 0 and y &gt; 0) or (x &lt; 0 and y &lt; 0):
+  print('either both x and y are positive numbers or both negative numbers')</pre>
+<h5>Membership operator (in):</h5>
+Checking if a value is in a list.<br />
+<pre class="python-code">
+x = [0, 1, 2, 3]
+y = 0
+if y in x:
+  print(f'{y} is in the list {x}')</pre>
+Checking if a value is in a dictionary.<br />
+<pre class="python-code">
+x = {'a': 1, 'b': 2}
+y = 'a'
+if y in x:
+  print(f'{y} is in the dictionary {x}')</pre>
+Checking if a value is in a string.<br />
+<pre class="python-code">
+x = "hello python!"
+y = "hello"
+if y in x:
+  print(f'{y} is in the string {x}')</pre>
+<h5>Negative membership operator (not in):</h5>
+Checking if a value is not in a list.<br />
+<pre class="python-code">
+x = [0, 1, 2, 3]
+y = 5
+if y not in x:
+  print(f'{y} is not in the list {x}')</pre>
+Checking if a value is not in a dictionary.<br />
+<pre class="python-code">
+x = {'a': 1, 'b': 2}
+y = 'c'
+if y not in x:
+  print(f'{y} is not in the dictionary {x}')</pre>
+Checking if a value is not in a string.<br />
+<pre class="python-code">
+x = "hello python!"
+y = "world"
+if y not in x:
+  print(f'{y} is not in the string {x}')</pre>
+<h5>Checking if a list is empty:</h5>
+<pre class="python-code">
+x = [0, 1, 2, 3]
+if x: # python return True if the list contains at least one item
+  print(f'{x} is not empty')
+
+# using len method
+if len(x) &gt; 0:
+  print(f'{x} is not empty')</pre>
+<h5>Using if statements with any/all methods:</h5>
+<pre class="python-code">
+x = [0, 1, 2, 3]
+
+# any
+if any(i &gt; 0 for i in x):
+  print(f'{x} contain a positive number')
+
+# all
+if not all(i &lt; 0 for i in x):
+  print(f'not all numbers are negative in {x}')</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
