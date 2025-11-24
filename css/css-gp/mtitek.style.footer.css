@@ -1,0 +1,102 @@
+.menuFooterDiv1 {
+margin: 0;
+padding: 10px 0;
+font-size: 15px;
+font-style: inherit;
+text-align: center;
+vertical-align: middle;
+color: var(--text-secondary);
+background: var(--subtle-bg);
+border-top: 1px solid var(--border-light);
+position: relative;
+}
+
+.menuFooterDiv1::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: var(--secondary-gradient);
+opacity: 1;
+}
+
+.footer-content {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+text-align: center;
+}
+
+.copyright {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+.copyright-text {
+color: var(--text-muted);
+font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+line-height: 1.7;
+font-weight: 500;
+}
+
+.footer-logo {
+text-decoration: none;
+transition: transform 0.3s ease;
+display: inline-block;
+}
+
+.footer-logo:hover {
+transform: scale(1.05);
+text-decoration: none;
+}
+
+.footer-logo:focus-visible {
+outline: 3px solid var(--accent-cyan);
+outline-offset: 3px;
+border-radius: var(--border-radius-sm);
+}
+
+.logo-mti {
+color: var(--text-primary);
+font-size: clamp(1.1rem, 3vw, 1.25rem);
+font-weight: 800;
+}
+
+.logo-tek {
+color: var(--accent-purple);
+font-size: clamp(1.1rem, 3vw, 1.25rem);
+font-weight: 800;
+}
+
+.menuFooterDiv1 a:link, .menuFooterDiv1 a:visited {
+color: var(--accent-purple);
+text-decoration: none;
+transition: all 0.3s ease;
+}
+
+.menuFooterDiv1 a:hover {
+color: var(--accent-cyan);
+text-decoration: none;
+}
+
+.menuFooterAdDiv1 {
+margin: 0;
+padding: 5px 0 0 0;
+}
+
+.menuFooterAdDiv11 {
+margin: 0;
+padding: 0;
+}
+
+.menuFooterAdDiv2 {
+margin: 0;
+padding: 0;
+}
