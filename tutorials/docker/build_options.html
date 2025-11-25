@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Build Options | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Build Options" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Build Options | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Build Options" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/build_options.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Build Options | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Build Options" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/build_options.html",
+        "description": "Tutorials: Docker - Build Options",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/build_options.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Build Options</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">--no-cache</a></li>
+<li><a href="#sec_id_2">--file</a></li>
+<li><a href="#sec_id_3">--build-arg</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">--no-cache</span>
+<div class="tutorialSectionTextDiv1">
+You can use the option '<b>--no-cache</b>' to instruct Docker to not use cache when building the image.<br />
+<br />
+Docker help:<br />
+<pre class="sh-code">
+--no-cache                      Do not use cache when building the image
+--no-cache-filter stringArray   Do not cache specified stages</pre>
+Let's use this Dockerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek</pre>
+The first time we build the Dockerfile we will get the following output:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-test-no-cache:latest .</pre>
+<pre class="sh-code">
+[+] Building 1.3s (7/7) FINISHED                                                                                                                                      docker:default
+ =&gt; [internal] load build definition from Dockerfile                                                                                                                            0.0s
+ =&gt; =&gt; transferring dockerfile: 133B                                                                                                                                            0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubuntu:latest                                                                                                                0.0s
+ =&gt; [internal] load .dockerignore                                                                                                                                               0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                                                                                 0.0s
+ =&gt; [1/2] FROM docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.6s
+ =&gt; =&gt; resolve docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.5s
+ =&gt; [auth] library/ubuntu:pull token for registry-1.docker.io                                                                                                                   0.0s
+
+ =&gt; [2/2] RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek                                                                                           0.3s
+
+ =&gt; exporting to image                                                                                                                                                          0.2s
+ =&gt; =&gt; exporting layers                                                                                                                                                         0.1s
+ =&gt; =&gt; exporting manifest sha256:d29add6517c260a07d37781e4e70158572711a701f5fa40331a65191c93251dc                                                                               0.0s
+ =&gt; =&gt; exporting config sha256:45a4fd31c91fcf641818459d9f29164134d1b3cbc6e1af3a05bd88cb5e6270a4                                                                                 0.0s
+ =&gt; =&gt; exporting attestation manifest sha256:f12ad540e9c0fa11fcaed029b79691aa4af6489b67f4e7553ba99ef58e95ca3f                                                                   0.0s
+ =&gt; =&gt; exporting manifest list sha256:85e0ea95caa6802f8c74485c302e965f00f2c1a934ca6a359181c0aa60a8f281                                                                          0.0s
+ =&gt; =&gt; naming to docker.io/library/ubuntu-test-no-cache:latest                                                                                                                  0.0s
+ =&gt; =&gt; unpacking to docker.io/library/ubuntu-test-no-cache:latest</pre>
+If we build again the Dockerfile (with no changes) we will get the following output:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-test-no-cache:latest .</pre>
+<pre class="sh-code">
+[+] Building 0.2s (6/6) FINISHED                                                                                                                                      docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                            0.0s
+ => => transferring dockerfile: 133B                                                                                                                                            0.0s
+ => [internal] load metadata for docker.io/library/ubuntu:latest                                                                                                                0.0s
+ => [internal] load .dockerignore                                                                                                                                               0.0s
+ => => transferring context: 2B                                                                                                                                                 0.0s
+ => [1/2] FROM docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.0s
+ => => resolve docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.0s
+
+ => CACHED [2/2] RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek                                                                                    0.0s
+
+ => exporting to image                                                                                                                                                          0.1s
+ => => exporting layers                                                                                                                                                         0.0s
+ => => exporting manifest sha256:d29add6517c260a07d37781e4e70158572711a701f5fa40331a65191c93251dc                                                                               0.0s
+ => => exporting config sha256:45a4fd31c91fcf641818459d9f29164134d1b3cbc6e1af3a05bd88cb5e6270a4                                                                                 0.0s
+ => => exporting attestation manifest sha256:9949898eb53d54d07c3d0371e9bfdcbd52bf65d28e24154ec4d642e3fe80befa                                                                   0.0s
+ => => exporting manifest list sha256:97d14803e7398851c1dcef5ab7f563a7481d3f83abaf1a65308d38d4c4e1c179                                                                          0.0s
+ => => naming to docker.io/library/ubuntu-test-no-cache:latest                                                                                                                  0.0s
+ => => unpacking to docker.io/library/ubuntu-test-no-cache:latest</pre>
+You can notice that the step 2 has the mention '<b>=> CACHED ...</b>' which means that Docker just used the already built layer from this step.<br />
+<br />
+Using local cache can speed up build time; especially when avoiding rebuilding image layers that take long time to build or take up large amounts of disk space.<br />
+<br />
+In some cases (either to play safe or because we encountered some issues with the build) we might want to disable the cache, for that we use the option <b>--no-cache</b>:<br />
+<pre class="sh-code">
+$ docker build --no-cache -t ubuntu-test-no-cache:latest .</pre>
+<pre class="sh-code">
+[+] Building 0.7s (6/6) FINISHED                                                                                                                                      docker:default
+ =&gt; [internal] load build definition from Dockerfile                                                                                                                            0.0s
+ =&gt; =&gt; transferring dockerfile: 133B                                                                                                                                            0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubuntu:latest                                                                                                                0.0s
+ =&gt; [internal] load .dockerignore                                                                                                                                               0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                                                                                 0.0s
+ =&gt; CACHED [1/2] FROM docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                   0.0s
+ =&gt; =&gt; resolve docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.0s
+
+ =&gt; [2/2] RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek                                                                                           0.4s
+
+ =&gt; exporting to image                                                                                                                                                          0.2s
+ =&gt; =&gt; exporting layers                                                                                                                                                         0.1s
+ =&gt; =&gt; exporting manifest sha256:19e6fa37eb98759c1537c4054008142026c2205a10c90945780dccbbd00c4678                                                                               0.0s
+ =&gt; =&gt; exporting config sha256:745759414b5a46cb7295ca50fb37ce6c986285036bf464238354c743fe52f234                                                                                 0.0s
+ =&gt; =&gt; exporting attestation manifest sha256:54b9a2afd02045d1c4d8c84aee04541666464bedf9ddc0f8c60c8423ab74c6ec                                                                   0.0s
+ =&gt; =&gt; exporting manifest list sha256:81f25bc23c19f2ef72d48daa0490e210f66a3c5e062a7b71ff35e57083c91249                                                                          0.0s
+ =&gt; =&gt; naming to docker.io/library/ubuntu-test-no-cache:latest                                                                                                                  0.0s
+ =&gt; =&gt; unpacking to docker.io/library/ubuntu-test-no-cache:latest</pre>
+You can notice that the step 2 has no cache mention which means that Docker is rebuilding again the image layer for that step.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">--file</span>
+<div class="tutorialSectionTextDiv1">
+You can use the option '<b>-f </b>' (<b>--file</b>) to let Docker use a Dockerfile with a different name and/or a different path.<br />
+<br />
+By default Docker will use the Dockerfile in the current directory ('<b>./Dockerfile</b>').<br />
+<br />
+Docker help:<br />
+<pre class="sh-code">
+-f, --file string                   Name of the Dockerfile (default: "PATH/Dockerfile")</pre>
+Syntax: <code class="code1">docker build --file FILE_NAME|FILE_LOCATION</code><br />
+<br />
+Let's create a Dockerfile named '<b>Dockerfile1</b>':<br />
+<pre class="sh-code">
+$ vi Dockerfile1</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest</pre>
+To use the Dockerfile '<b>Dockerfile1</b>' (located in the current directory):<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-custom-dockerfile1:latest --file Dockerfile1 .</pre>
+You can also provide the full path where Dockerfile1 is located (e.g. '<b>/opt/dockerfiles/</b>'):<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-custom-dockerfile1:latest --file /opt/dockerfiles/Dockerfile1 .</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">--build-arg</span>
+<div class="tutorialSectionTextDiv1">
+You can use the option '<b>--build-arg</b>' to set build arguments.<br />
+<br />
+Docker help:<br />
+<pre class="sh-code">
+--build-arg stringArray         Set build-time variable</pre>
+Let's use this Dokerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+ARG UBUNTU_VERSION=latest
+
+FROM ubuntu:$UBUNTU_VERSION
+
+ARG GROUP_ID=1001
+ARG USER_ID=1001
+
+RUN groupadd -r mtitek --gid=$GROUP_ID &amp;&amp; useradd -r -g mtitek --uid=$USER_ID mtitek</pre>
+We defined three arguments: <b>UBUNTU_VERSION</b>, <b>GROUP_ID</b>, and <b>USER_ID</b><br />
+<br />
+Note that the arguments:<br />
+- are defined as following: <code class="code1">ARG ARG_NAME=ARG_DEFAULT_VALUE</code>.<br />
+- are used as variables (<b>$ARG_NAME</b>) in the Dockerfile.<br />
+- can also be used with the <b>FROM</b> instruction to define the base image.<br />
+<br />
+If you don't specify a value for an argument in the build command, then the default values in the Dockerfile will be used:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-build-arg:latest .</pre>
+<pre class="sh-code">
+[+] Building 0.7s (6/6) FINISHED                                                                                                                                      docker:default
+ =&gt; [internal] load build definition from Dockerfile                                                                                                                            0.0s
+ =&gt; =&gt; transferring dockerfile: 208B                                                                                                                                            0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubuntu:latest                                                                                                                0.0s
+ =&gt; [internal] load .dockerignore                                                                                                                                               0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                                                                                 0.0s
+ =&gt; [1/2] FROM docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.0s
+ =&gt; =&gt; resolve docker.io/library/ubuntu:latest@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233                                                          0.0s
+ =&gt; [2/2] RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek                                                                                           0.3s
+ =&gt; exporting to image                                                                                                                                                          0.2s
+ =&gt; =&gt; exporting layers                                                                                                                                                         0.1s
+ =&gt; =&gt; exporting manifest sha256:dcbc23fdd1ae888418bedda08462acafecc16c28b465f43bfddb24f95b0b0341                                                                               0.0s
+ =&gt; =&gt; exporting config sha256:0bc1d44b52b012cd2552301187f3bd87273e08a67705ce2cdde64c40169978dc                                                                                 0.0s
+ =&gt; =&gt; exporting attestation manifest sha256:27b183d3ed31f046d51efc8b38ff75afe0b0ea3665aa92acdcf1e6e252aeb5b3                                                                   0.0s
+ =&gt; =&gt; exporting manifest list sha256:a88fcd493df552d9d29985bda7d7c2374293d17185f140660f3f7d691081bf27                                                                          0.0s
+ =&gt; =&gt; naming to docker.io/library/ubuntu-build-arg:latest                                                                                                                      0.0s
+ =&gt; =&gt; unpacking to docker.io/library/ubuntu-build-arg:latest</pre>
+To pass values for the arguments, use the option '<b>--build-arg</b>':<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-build-arg:20.04 \
+    --build-arg UBUNTU_VERSION=20.04 \
+    --build-arg GROUP_ID=1002 \
+    --build-arg USER_ID=1003 \
+    .</pre>
+<pre class="sh-code">
+[+] Building 3.3s (6/6) FINISHED                                                                                                                                      docker:default
+ =&gt; [internal] load build definition from Dockerfile                                                                                                                            0.0s
+ =&gt; =&gt; transferring dockerfile: 208B                                                                                                                                            0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubuntu:20.04                                                                                                                 0.7s
+ =&gt; [internal] load .dockerignore                                                                                                                                               0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                                                                                 0.0s
+ =&gt; [1/2] FROM docker.io/library/ubuntu:20.04@sha256:8feb4d8ca5354def3d8fce243717141ce31e2c428701f6682bd2fafe15388214                                                           1.8s
+ =&gt; =&gt; resolve docker.io/library/ubuntu:20.04@sha256:8feb4d8ca5354def3d8fce243717141ce31e2c428701f6682bd2fafe15388214                                                           0.0s
+ =&gt; =&gt; sha256:13b7e930469f6d3575a320709035c6acf6f5485a76abcf03d1b92a64c09c2476 27.51MB / 27.51MB                                                                                1.1s
+ =&gt; =&gt; extracting sha256:13b7e930469f6d3575a320709035c6acf6f5485a76abcf03d1b92a64c09c2476                                                                                       0.7s
+ =&gt; [2/2] RUN groupadd -r mtitek --gid=1002 &amp;&amp; useradd -r -g mtitek --uid=1003 mtitek                                                                                           0.5s
+ =&gt; exporting to image                                                                                                                                                          0.2s
+ =&gt; =&gt; exporting layers                                                                                                                                                         0.1s
+ =&gt; =&gt; exporting manifest sha256:5ca3bfdc27c756df4bd8d127a44191d675479749f7d2005ef377a80d5b95f70e                                                                               0.0s
+ =&gt; =&gt; exporting config sha256:9dcc3baa28a145138fcca9c21aa747b578738fda66dfd2c1bafb4cab02d27365                                                                                 0.0s
+ =&gt; =&gt; exporting attestation manifest sha256:18fda102bd6e25c89d35cf20ebe951d7e0043fc50170f47e44b83cc7cd89221e                                                                   0.0s
+ =&gt; =&gt; exporting manifest list sha256:13169fde11d8f8591db98f904243681eb189398f5cd029863a352673225a9603                                                                          0.0s
+ =&gt; =&gt; naming to docker.io/library/ubuntu-build-arg:20.04                                                                                                                       0.0s
+ =&gt; =&gt; unpacking to docker.io/library/ubuntu-build-arg:20.04</pre>
+Check that the arguments were used as expected:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-build-arg:20.04 /bin/bash -c 'cat /etc/passwd | grep mtitek'</pre>
+<pre class="sh-code">
+mtitek:x:1003:1002::/home/mtitek:/bin/sh</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

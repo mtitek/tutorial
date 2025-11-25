@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Glossary | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Glossary" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Glossary | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Glossary" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/generalTerms.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Glossary | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Glossary" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/generalTerms.html",
+        "description": "Tutorials: Kubernetes - Glossary",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/generalTerms.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Glossary</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+This page is based on information available in this site:
+<a href="https://kubernetes.io/docs/reference/glossary/">https://kubernetes.io/docs/reference/glossary/</a><br />
+<br />
+- <b>Cluster</b><br />
+- <b>Master node</b><br />
+- <b>Worker node</b><br />
+- <b>Pod</b><br />
+- <b>Container</b><br />
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Cluster</b>:<br />
+<p>A set of machines, called nodes, that run containerized applications managed by Kubernetes.<br />
+A cluster has at least one <b>master node</b> and at least one <b>worker node</b>.<br />
+The master node(s) manages the worker nodes and the pods in the cluster.<br />
+Multiple master nodes are used to provide a cluster with failover and high availability.<br />
+The worker node(s) host the pods that are the components of the application.<br /></p>
+</li>
+<li>
+<b>Node</b>:<br />
+<p>A node is a machine in Kubernetes.<br />
+A node may be a VM or physical machine, depending on the cluster.<br />
+It has local daemons or services necessary to run Pods and is managed by the control plane.<br />
+The daemons on a node include <b>kubelet</b>, <b>kube-proxy</b>, and a <b>container runtime</b> (implementing the CRI such as Docker).<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Pod</b>:<br />
+<p>The smallest and simplest Kubernetes object.<br />
+A Pod represents a set of running containers on your cluster.<br />
+A Pod is typically set up to run a single primary container.<br />
+It can also run optional <b>sidecar containers</b> that add supplementary features like logging.<br />
+Pods are commonly managed by a Deployment.<br /></p>
+</li>
+<li>
+<b>Container</b>:<br />
+<p>A lightweight and portable executable image that contains software and all of its dependencies.<br />
+Containers decouple applications from underlying host infrastructure to make deployment easier in different cloud or OS environments, and for easier scaling.<br /></p>
+</li>
+<li>
+<b>Init Container</b>:<br />
+<p>One or more initialization containers that must run to completion before any application containers run.<br />
+Initialization (init) containers are like regular application containers, with one difference:
+initialization containers must run to completion before any application containers can start.<br />
+Initialization containers run in series:
+each initialization container must run to completion before the next initialization container begins.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>kube-proxy</b>:<br />
+<p>kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept.<br />
+kube-proxy maintains network rules on nodes.<br />
+These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.<br />
+kube-proxy uses the operating system packet filtering layer if there is one and it’s available.<br />
+Otherwise, kube-proxy forwards the traffic itself.<br /></p>
+</li>
+<li>
+<b>Kubelet</b>:<br />
+<p>An agent that runs on each node in the cluster.<br />
+It makes sure that containers are running in a pod.<br />
+The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy.<br />
+The kubelet doesn’t manage containers which were not created by Kubernetes.<br /></p>
+</li>
+<li>
+<b>kube-controller-manager</b>:<br />
+<p>Component on the master that runs controllers.<br />
+Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.<br /></p>
+</li>
+<li>
+<b>Controller</b>:<br />
+<p>In Kubernetes, controllers are control loops that watch the state of your cluster, then make or request changes where needed.<br />
+Each controller tries to move the current cluster state closer to the desired state.<br />
+Controllers watch the shared state of your cluster through the apiserver (part of the Control Plane).<br />
+Some controllers also run inside the control plane, providing control loops that are core to Kubernetes’ operations.<br />
+For example: the deployment controller, the daemonset controller, the namespace controller, and the persistent volume controller (and others) all run within the kube-controller-manager.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Kubectl</b>:<br />
+<p>A command line tool for communicating with a Kubernetes API server.<br />
+You can use kubectl to create, inspect, update, and delete Kubernetes objects.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Control Plane</b>:<br />
+<p>The container orchestration layer that exposes the API and interfaces to define, deploy, and manage the lifecycle of containers.<br /></p>
+</li>
+<li>
+<b>API server (aka:kube-apiserver)</b>:<br />
+<p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API.<br />
+The API server is the front end for the Kubernetes control plane.<br />
+The main implementation of a Kubernetes API server is kube-apiserver.<br />
+kube-apiserver is designed to scale horizontally—that is, it scales by deploying more instances.<br />
+You can run several instances of kube-apiserver and balance traffic between those instances.<br /></p>
+</li>
+<li>
+<b>Kubernetes API</b>:<br />
+<p>The application that serves Kubernetes functionality through a RESTful interface and stores the state of the cluster.<br />
+Kubernetes resources and “records of intent” are all stored as API objects, and modified via RESTful calls to the API.<br />
+The API allows configuration to be managed in a declarative way.<br />
+Users can interact with the Kubernetes API directly, or via tools like kubectl.<br />
+The core Kubernetes API is flexible and can also be extended to support custom resources.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Deployment</b>:<br />
+<p>An API object that manages a replicated application.<br />
+Each replica is represented by a Pod, and the Pods are distributed among the nodes of a cluster.<br /></p>
+</li>
+<li>
+<b>StatefulSet</b>:<br />
+<p>Manages the deployment and scaling of a set of Pods, and provides guarantees about the ordering and uniqueness of these Pods.<br />
+Like a Deployment, a StatefulSet manages Pods that are based on an identical container spec.<br />
+Unlike a Deployment, a StatefulSet maintains a sticky identity for each of their Pods.<br />
+These pods are created from the same spec, but are not interchangeable: each has a persistent identifier that it maintains across any rescheduling.<br /></p>
+</li>
+<li>
+<b>ReplicaSet</b>:<br />
+<p>A ReplicaSet (aims to) maintain a set of replica Pods running at any given time.<br />
+Workload objects such as Deployment make use of ReplicaSets to ensure that the configured number of Pods are running in your cluster, based on the spec of that ReplicaSet.<br /></p>
+</li>
+<li>
+<b>DaemonSet</b>:<br />
+<p>Ensures a copy of a Pod is running across a set of nodes in a cluster.<br />
+Used to deploy system daemons such as log collectors and monitoring agents that typically must run on every Node.<br /></p>
+</li>
+<li>
+<b>Job</b>:<br />
+<p>A finite or batch task that runs to completion.<br />
+Creates one or more Pod objects and ensures that a specified number of them successfully terminate.<br />
+As Pods successfully complete, the Job tracks the successful completions.<br /></p>
+</li>
+<li>
+<b>Service</b>:<br />
+<p>An abstract way to expose an application running on a set of Pods as a network service.<br />
+The set of Pods targeted by a Service is (usually) determined by a selector.<br />
+If more Pods are added or removed, the set of Pods matching the selector will change.<br />
+The Service makes sure that network traffic can be directed to the current set of Pods for the workload.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Workload</b>:<br />
+<p>A workload is an application running on Kubernetes.<br />
+Various core objects that represent different types or parts of a workload include the DaemonSet, Deployment, Job, ReplicaSet, and StatefulSet objects.<br />
+For example, a workload that has a web server and a database might run the database in one StatefulSet and the web server in a Deployment.<br /></p>
+</li>
+<li>
+<b>Data Plane</b>:<br />
+<p>The layer that provides capacity such as CPU, memory, network, and storage so that the containers can run and connect to a network.<br /></p>
+</li>
+<li>
+<b>Applications</b>:<br />
+<p>The layer where various containerized applications run.<br /></p>
+</li>
+<li>
+<b>Manifest</b>:<br />
+<p>Specification of a Kubernetes API object in JSON or YAML format.<br />
+A manifest specifies the desired state of an object that Kubernetes will maintain when you apply the manifest.<br />
+Each configuration file can contain multiple manifests.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Container Environment Variables</b>:<br />
+<p>Container environment variables are name=value pairs that provide useful information into containers running in a Pod.<br />
+Container environment variables provide information that is required by the running containerized applications along with information about important resources to the Containers.<br />
+For example, file system details, information about the container itself, and other cluster resources such as service endpoints.<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>cgroup (control group)</b>:<br />
+<p>A group of Linux processes with optional resource isolation, accounting and limits.<br />
+cgroup is a Linux kernel feature that limits, accounts for, and isolates the resource usage (CPU, memory, disk I/O, network) for a collection of processes.<br /></p>
+</li>
+<li>
+<b>Container Runtime</b>:<br />
+<p>The container runtime is the software that is responsible for running containers.<br />
+Kubernetes supports several container runtimes: Docker, containerd, cri-o, rktlet and any implementation of the Container Runtime Interface (CRI).<br /></p>
+</li>
+</ul>
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Image</b>:<br />
+<p>Stored instance of a container that holds a set of software needed to run an application.<br />
+A way of packaging software that allows it to be stored in a container registry, pulled to a local system, and run as an application.<br />
+Meta data is included in the image that can indicate what executable to run, who built it, and other information.<br /></p>
+</li>
+<li>
+<b>Docker</b>:<br />
+<p>Docker (specifically, Docker Engine) is a software technology providing operating-system-level virtualization also known as containers.<br />
+Docker uses the resource isolation features of the Linux kernel such as cgroups and kernel namespaces,
+and a union-capable file system such as OverlayFS and others to allow independent containers to run within a single Linux instance,
+avoiding the overhead of starting and maintaining virtual machines (VMs).<br /></p>
+</li>
+<li>
+<b>Resource Quotas</b>:<br />
+<p>Provides constraints that limit aggregate resource consumption per Namespace.<br />
+Limits the quantity of objects that can be created in a namespace by type, as well as the total amount of compute resources that may be consumed by resources in that project.<br /></p>
+</li>
+<li>
+<b>Volume</b>:<br />
+<p>A directory containing data, accessible to the containers in a pod.<br />
+A Kubernetes volume lives as long as the pod that encloses it.<br />
+Consequently, a volume outlives any containers that run within the pod, and data is preserved across container restarts.<br /></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

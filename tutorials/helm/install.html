@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Install Helm | MTI TEK</title>
+<meta name="description" content="Install Helm" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Install Helm | MTI TEK" />
+<meta property="og:description" content="Install Helm" />
+<meta property="og:url" content="http://mtitek.com/tutorials/helm/install.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Install Helm | MTI TEK" />
+<meta name="twitter:description" content="Install Helm" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/helm/install.html",
+        "description": "Install Helm",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/helm/install.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Install Helm</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Installing Helm</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Installing Helm</span>
+<div class="tutorialSectionTextDiv1">
+Helm is the package manager for Kubernetes.<br />
+It allows configuring, installing, upgrading, deleting, and monitoring Kubernetes' deployments.<br />
+<br />
+Downloading Helm: <a href="https://github.com/helm/helm/releases">https://github.com/helm/helm/releases</a><br />
+<ul class="ul_square_1">
+<li>Windows: zip archive contains "helm.exe" file</li>
+<li>macOS, Linux: gzipped tar archive (.tar.gz) contains "helm" file</li>
+</ul>
+<br />
+To decide the binaries to downlaod, run this command "<b>uname -m</b>":
+<ul class="ul_square_1">
+<li>armv5 ==> armv5</li>
+<li>armv6 ==> armv6</li>
+<li>armv7 ==> arm</li>
+<li>aarch64 ==> arm64</li>
+<li>x86 ==> 386</li>
+<li>x86_64 ==> amd64</li>
+<li>i686 ==> 386</li>
+<li>i386 ==> 386</li>
+</ul>
+<br />
+For example, for Linux x86_64, download:
+<a href="https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz">https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz</a> <br />
+<br />
+To uncopmress the tar.gz file:
+<pre class="sh-code">
+$ mkdir helm-v3.17.3-linux-amd64
+$ tar -xvzf helm-v3.17.3-linux-amd64.tar.gz -C helm-v3.17.3-linux-amd64</pre>
+Besides the binary file helm, the download archive file contains also the files README.md and LICENSE.<br />
+<br />
+Installing Helm:<br />
+<ul class="ul_square_1">
+<li>The binary file (<b>helm</b>) is the only file you need to use Helm.</li>
+<li>It can be put in any folder on your system.</li>
+<li>On macOS/Linux you might need to mark it as an executable: <b>chmod +x ./helm-v3.17.3-linux-amd64/linux-amd64/helm</b></li>
+<li>Move <b>helm</b> to <b>/usr/local/bin/</b>: <b>sudo mv ./helm-v3.17.3-linux-amd64/linux-amd64/helm /usr/local/bin/helm</b></li>
+</ul>
+<br />
+"<b>helm</b>" is the command line-tool of Helm (written in Go language).<br />
+<br />
+You need to distinguish between the version of the <b>helm</b> command-line client and the version of the helm chart:<br />
+<ul class="ul_square_1">
+<li>Helm version: 3</li>
+<li>Helm Chart version: 2</li>
+</ul>
+<br />
+To test the Helm installation, run the command:
+<pre class="sh-code">
+$ helm version</pre>
+<pre class="sh-code">
+version.BuildInfo{Version:"v3.17.3", GitCommit:"e4da49785aa6e6ee2b86efd5dd9e43400318262b", GitTreeState:"clean", GoVersion:"go1.23.7"}</pre>
+To connect to Kubernetes cluster (Kubernetes API server),
+Helm uses, by default, the same configuration file used by <b>kubectl</b> (the Kubernetes command-line client).<br />
+<br />
+Helm will read the <b>kubectl</b> configuration file either from:<br />
+<ul class="ul_square_1">
+<li>the environment variable <b>KUBECONFIG</b>.</li>
+<li>or from the default locations where the <b>kubectl</b> configuration file is stored (.i.e. <b>$HOME/.kube/config</b>).</li>
+</ul>
+<br />
+You can override the location of the configuration file either by:
+<ul class="ul_square_1">
+<li>setting the environment variable <b>HELM_KUBECONTEXT</b>.</li>
+<li>or using the command-line flag <b>--kube-context</b>.</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

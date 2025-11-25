@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - StatefulSets (statefulsets|sts) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - StatefulSets (statefulsets|sts)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - StatefulSets (statefulsets|sts) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - StatefulSets (statefulsets|sts)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-statefulsets.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - StatefulSets (statefulsets|sts) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - StatefulSets (statefulsets|sts)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-statefulsets.html",
+        "description": "Tutorials: Kubernetes - StatefulSets (statefulsets|sts)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-statefulsets.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">StatefulSets (statefulsets|sts)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">StatefulSets (statefulsets|sts)</a></li>
+<li><a href="#sec_id_3">Pods' Names</a></li>
+<li><a href="#sec_id_4">Pods' Hostnames</a></li>
+<li><a href="#sec_id_5">Headless Services</a></li>
+<li><a href="#sec_id_6">Pods' Volumes</a></li>
+<li><a href="#sec_id_7">Pods Creation/Deletion</a></li>
+<li><a href="#sec_id_8">Rolling Updates</a></li>
+<li><a href="#sec_id_10">Example of a StatefulSet</a></li>
+<li><a href="#sec_id_11">DNS Resolution</a></li>
+<li><a href="#sec_id_9">Delete StatefulSets</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about StatefulSets:<br />
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/</a><br />
+<a href="https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/">https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/</a><br />
+<a href="https://kubernetes.io/docs/concepts/security/controlling-access/">https://kubernetes.io/docs/concepts/security/controlling-access/</a><br />
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">StatefulSets (statefulsets|sts)</span>
+<div class="tutorialSectionTextDiv1">
+StatefulSets allow deploying Pods that require unique names, hostnames, and volumes.<br />
+<br />
+Once a Pod of a StatefulSet is deployed, its name, hostname, and volumes will last for the lifetime of the StatefulSet.<br />
+<br />
+Unlike a Deployment, a StatefulSet maintains a sticky identity for each of its Pods.<br />
+<br />
+If a Pod get restarted (including failures) or rescheduled (including when it's deployed on a new node),
+it will still keep the same information (name, hostname, volumes).<br />
+<br />
+If the StatefulSet get scaled down (Pods terminated) and then scaled up (new Pods), the new Pods will get back the same state as the old Pods.<br />
+<br />
+To create/deploy a StatefulSet, you need first to create a manifest YAML file.
+The manifest file describe the StatefulSet and its components (name, Pods, ...).
+You can use "<b>kubectl</b>" (or any rest client tool) to post the manifest file to the API server
+If applicable, the API server verifies that the request is authenticated, validates it's authorized, and runs the admission controllers on it.
+The API server verifies the manifest file and, if no issues, it writes a record for that manifest in the cluster store (etcd).
+The scheduler will then read the record and deploy the Pod of the StatefulSet to a healthy worker node with enough available resources.<br />
+<br />
+The same behaviour, described above, applies if you use the imperative command ("kubectl create") to create the StatefulSet.<br />
+<br />
+A StatefulSet run as a control loop that watches the state of the cluster through the API Server
+and if it notices that the current state is different from the desired state defined for the StatefulSet,
+it will tries to get the current state aligned with the desired state.
+For example, if a Pod get terminated, a new one will be created (with same name and hostname and attached to the same volume).<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Pods' Names</span>
+<div class="tutorialSectionTextDiv1">
+Each Pod of the StatefulSet will get a unique name.<br />
+<br />
+The name is constructed from the StatefulSet's name and the Pod's ordinal: &lt;StatefulSet-Name&gt;-&lt;Pod-Ordinal&gt;<br />
+<br />
+The Pod's ordinal is an integer number that starts from 0.<br />
+<br />
+The first Pod to be created for the StatefulSet will get the ordinal 0, the second Pod 1, the third Pod 2, ...<br />
+<br />
+For example, if a StatefulSet has the name "nginx" and defines 3 replicas, then the Pods will have the following names: "nginx-0", "nginx-1", "nginx-1".<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Pods' Hostnames</span>
+<div class="tutorialSectionTextDiv1">
+Each Pod of the StatefulSet will get a unique hostname.<br />
+<br />
+The name is constructed from the StatefulSet's name and the Pod's ordinal: &lt;StatefulSet-Name&gt;-&lt;Pod-Ordinal&gt;<br />
+<br />
+The Pod's ordinal is an integer number that starts from 0.<br />
+<br />
+The first Pod to be created for the StatefulSet will get the ordinal 0, the second Pod 1, the third Pod 2, ...<br />
+<br />
+For example, if a StatefulSet has the name "nginx" and defines 3 replicas, then the Pods will have the following hostnames: "nginx-0", "nginx-1", "nginx-1".<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Headless Services</span>
+<div class="tutorialSectionTextDiv1">
+A Kubernetes Service has a stable IP address/DNS name that are exposed on the network.
+It maintains the list of Pods associated with it and to which it will route requests.<br />
+<br />
+A headless Service is a regular Service without a ClusterIP (the "spec.<b>clusterIP</b>" set to "<b>none</b>).<br />
+The headless Service must be listed in the "spec.<b>serviceName</b>" field of the StaefulSet.<br />
+The Pods, that match the StatefulSet's label selector, will have unique DNS hostnames that allow applications to request directly a Pod.<br />
+A DNS SRV record will be created for each Pod that matches the label selectors of the headless Service.<br />
+A DNS query, using the name of the headless Service, allows retrieving the list of the Pods associated to the headless Service.<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Pods' Volumes</span>
+<div class="tutorialSectionTextDiv1">
+Each Pod of the StatefulSet will get its own volume created at the same time when the Pod is created.<br />
+<br />
+StatefulSets use Volume Claim Templates to provision dynamically volumes.
+A Persistent Volume Claim is created for each Pod.<br />
+<br />
+The name is constructed from the Volume Template Claim name, the StatefulSet's name and the Pod's ordinal:<br />
+&lt;VolumeClaimTemplate-Name&gt;-&lt;StatefulSet-Name&gt;-&lt;Pod-Ordinal&gt;<br />
+or: &lt;VolumeClaimTemplate-Name&gt;-&lt;Pod-Name&gt;<br />
+<br />
+The Pod's ordinal is an integer number that starts from 0.<br />
+<br />
+The first Pod to be created for the StatefulSet will get the ordinal 0, the second Pod 1, the third Pod 2, ...<br />
+<br />
+For example, if a StatefulSet has the name "nginx" and defines Volume Template Claim with the name "pv-data", and defines 3 replicas,
+then the Pods will have the following hostnames:<br />
+"pv-data-nginx-0", "pv-data-nginx-1", "pv-data-nginx-1".<br />
+<br />
+The volumes won't be deleted if you delete the Pods or the StatefulSet.<br />
+If you scale down and scale up again the StatefulSet, any existing volumes will be associated to the new Pods based on their names.<br />
+<br />
+Once you are done with a StatefulSet, you can delete the volume manually.<br />
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Pods Creation/Deletion</span>
+<div class="tutorialSectionTextDiv1">
+StatefulSets provides two means to control how their Pods are created and deleted.<br />
+<br />
+The "spec.<b>podManagementPolicy</b>" field accept two values: <b>OrderedReady</b> (default), <b>Parallel</b>.<br />
+The <b>OrderedReady</b> setting allows an ordered creation and deletion of the Pods of a StatefulSet.<br />
+The <b>Parallel</b> setting allows a parallel creation and deletion of the Pods of a StatefulSet
+(still the Pods preserve their uniqueness and identity guarantees).<br />
+<br />
+Unlike Deployments that delegate the scaling and self healing of Pods to the ReplicaSets controllers (which allow creating Pods in parallel),
+StatefulSets manage directly the Pods' creation and deletion.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+OrderedReady:<br />
+When deploying a StatefulSet, the Pods will be created in order and each Pod must be running and ready before the next one can be created.
+If a Pod fails to start, it will be retried again and the next Pods won't be created if the failure is not fixed.<br />
+<br />
+The same apply when scaling up the StatefulSet, new Pods will be created in order and each new Pod must be running and ready before the next one can be created.<br />
+<br />
+When deleting a StatefulSet, the Pods will be terminated in a reverse order.
+The Pod with the highest ordinal will be terminated first and each Pod must be completely terminated before the next one can be terminated.
+If a Pod fails to terminate, it will be retried again and the next Pods won't be terminated if the failure is not fixed.<br />
+<br />
+The same apply when scaling down the StatefulSet, Pods with the highest ordinal will be terminated first
+and each Pod must be completely terminated before the next one can be terminated.<br />
+<br />
+The "spec.template.spec.<b>terminationGracePeriodSeconds</b>" field allows configuring a grace period to ensure that Pods are terminated gracefully,
+before forcing the termination in case the Pods was not terminated by then.<br />
+<br /></li>
+<li>
+Parallel:<br />
+This allow StatefulSets to create and terminate pods in parallel.<br />
+This settings does not apply when rolling updates.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Rolling Updates</span>
+<div class="tutorialSectionTextDiv1">
+When performing rolling updates, the Pods will be updated in a reverse order.
+The Pod with the highest ordinal will be updated first and each Pod must be running and ready before the next one can be updated.
+If a Pod fails to get updated, it will be retried again and the next Pods won't be updated if the failure is not fixed.<br />
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Example of a StatefulSet</span>
+<div class="tutorialSectionTextDiv1">
+Let's define a simple StatefulSet to deploy nginx "hello-nginx-statefulset":<br />
+<pre class="sh-code">
+$ vi hello-nginx-statefulset.yaml</pre>
+<pre class="yaml-code">
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx # must be a valid DNS name. it will be used to create the name of the Pods: nginx-0, nginx-1, ...
+spec:
+  selector:
+    matchLabels:
+      app: nginx # needs to match spec.template.metadata.labels
+  serviceName: "nginx" # needs to match the name of the headless Service
+  replicas: 2 # by default is 1. Will create two pods: nginx-0, nginx-1
+  template:
+    metadata:
+      labels:
+        app: nginx # needs to match spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - name: nginx
+          containerPort: 80
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www # will be used to name the PVCs of the pods: www-nginx-0, www-nginx-1, ...
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class-name" # needs to match the storage class name
+      resources:
+        requests:
+          storage: 1Gi</pre>
+If you are using Kubernetes on Docker Desktop, you will need to adjust the volumeClaimTemplates section as following:<br />
+<pre class="yaml-code">
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "hostpath" # needs to match the storage class name
+      resources:
+        requests:
+          storage: 1Gi
+      selector:
+        matchLabels:
+          type: local</pre>
+If you are using Kubernetes on Docker Desktop, you also need to define a Persistent Volume (hostPath) for each Pod replica.<br />
+For more details, see <a href="k8s-volumes.html">Volumes</a>.<br />
+<pre class="sh-code">
+$ vi hello-nginx-statefulset-pv.yaml</pre>
+<pre class="yaml-code">
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: www-nginx-0
+  labels:
+    type: local
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: "/mnt/mydata/nginx-pv-data"
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: www-nginx-1
+  labels:
+    type: local
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: "/mnt/mydata/nginx-pv-data"</pre>
+Let's define the headless Service:<br />
+<pre class="sh-code">
+$ vi hello-nginx-headless-service.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - name: nginx
+    port: 80
+  clusterIP: None # indicates a headless Service
+  selector:
+    app: nginx</pre>
+Let's create the Persistent Volumes (again this is needed only for Kubernetes on Docker Desktop):<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-statefulset-pv.yaml</pre>
+<pre class="sh-code">
+persistentvolume/www-nginx-0 created
+persistentvolume/www-nginx-1 created</pre>
+View the Persistent Volumes (the STATUS is Available):<br />
+<pre class="sh-code">
+$ kubectl get pv</pre>
+<pre class="sh-code">
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+www-nginx-0   1Gi        RWO            Retain           Available           hostpath                17s
+www-nginx-1   10Gi       RWO            Retain           Available           hostpath                17s</pre>
+Let's create the StatefulSet:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-statefulset.yaml</pre>
+<pre class="sh-code">
+statefulset.apps/nginx created</pre>
+Check the Pods creation:<br />
+<pre class="sh-code">
+$ kubectl get pods --watch</pre>
+<pre class="sh-code">
+NAME      READY   STATUS              RESTARTS   AGE
+nginx-0   0/1     ContainerCreating   0          2s
+nginx-0   1/1     Running             0          19s
+nginx-1   0/1     Pending             0          0s
+nginx-1   0/1     Pending             0          0s
+nginx-1   0/1     Pending             0          3s
+nginx-1   0/1     ContainerCreating   0          3s
+nginx-1   1/1     Running             0          5s</pre>
+Check the Persistent Volume Claims:<br />
+<pre class="sh-code">
+$ kubectl get pvc</pre>
+<pre class="sh-code">
+NAME          STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+www-nginx-0   Bound    www-nginx-0   1Gi        RWO            hostpath       79s
+www-nginx-1   Bound    www-nginx-1   10Gi       RWO            hostpath       60s</pre>
+Check again the Persistent Volumes (the STATUS should be Bound now):<br />
+<pre class="sh-code">
+$ kubectl get pv</pre>
+<pre class="sh-code">
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
+www-nginx-0   1Gi        RWO            Retain           Bound    default/www-nginx-0   hostpath                4m5s
+www-nginx-1   10Gi       RWO            Retain           Bound    default/www-nginx-1   hostpath                4m5s</pre>
+Let's create the headless Service:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-headless-service.yaml</pre>
+<pre class="sh-code">
+service/nginx created</pre>
+Check the headless Service:<br />
+<pre class="sh-code">
+$ kubectl get service nginx</pre>
+<pre class="sh-code">
+NAME    TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+nginx   ClusterIP   None         &lt;none&gt;        80/TCP    5m6s</pre>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">DNS Resolution</span>
+<div class="tutorialSectionTextDiv1">
+See more details about Kubernetes DNS Service (and dnsutils utility) in this page:
+<a href="k8s-cluster.html">Kubernetes Cluster</a><br />
+<br />
+See more details about Kubernetes Services in this page:
+<a href="k8s-services.html">Services (services|svc)</a><br />
+<br />
+Let's check the headless Service:<br />
+<pre class="sh-code">
+$ kubectl exec -i -t dnsutils -- nslookup nginx.default.svc.cluster.local</pre>
+<pre class="sh-code">
+Server:  10.96.0.10
+Address: 10.96.0.10#53
+
+Name:    nginx.default.svc.cluster.local
+Address: 10.1.0.150
+Name:    nginx.default.svc.cluster.local
+Address: 10.1.0.151</pre>
+The previous provided the IP addresses of the Pods of the StatefullSet.<br />
+<br />
+Let's resolve the fully qualified DNS names of the Pods:<br />
+<pre class="sh-code">
+$ kubectl exec -i -t dnsutils -- host 10.1.0.150</pre>
+<pre class="sh-code">
+150.0.1.10.in-addr.arpa domain name pointer nginx-0.nginx.default.svc.cluster.local.</pre>
+<pre class="sh-code">
+$ kubectl exec -i -t dnsutils -- host 10.1.0.151</pre>
+<pre class="sh-code">
+151.0.1.10.in-addr.arpa domain name pointer nginx-1.nginx.default.svc.cluster.local.</pre>
+Kubernetes constructs DNS sub-domains as follow: &lt;POD-NAME&gt;.&lt;HEADLESS-SERVICE-NAME&gt;.&lt;NAMESPACE&gt;.svc.cluster.local<br />
+<br />
+The pods of the StatefulSet, as shown above, have the following fully qualified DNS names:<br />
+nginx-0.nginx.default.svc.cluster.local<br />
+nginx-1.nginx.default.svc.cluster.local<br />
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Delete StatefulSets</span>
+<div class="tutorialSectionTextDiv1">
+To delete a StatefulSet using its manifest file:<br />
+<pre class="sh-code">
+$ kubectl delete -f hello-nginx-statefulset.yaml</pre>
+<pre class="sh-code">
+statefulset.apps "nginx" deleted</pre>
+To delete a StatefulSet using its name:<br />
+<pre class="sh-code">
+$ kubectl delete statefulset sfs1</pre>
+When deleting the StatefulSet, all Pods will be terminated in parallel.<br />
+<br />
+If you need that the Pods get deleted in order, then you need first to scale down the StatefulSet to 0 replicas and then delete it.<br />
+<br />
+Scale down the StatefulSet to 0 replicas:<br />
+<pre class="sh-code">
+$ kubectl scale statefulset sfs1 --replicas=0</pre>
+Check that the StatefulSet has no replicas before deleting the StatefulSet:<br />
+<pre class="sh-code">
+$ kubectl get statefulset sfs1</pre>
+<pre class="sh-code">
+NAME    READY
+sfs1    0/0</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

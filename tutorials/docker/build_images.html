@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Build Images | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Build Images" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Build Images | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Build Images" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/build_images.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Build Images | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Build Images" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/build_images.html",
+        "description": "Tutorials: Docker - Build Images",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/build_images.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Build Images</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Build an image</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more information:<br />
+<a href="https://docs.docker.com/reference/cli/docker/buildx/build/">https://docs.docker.com/reference/cli/docker/buildx/build/</a><br />
+<a href="https://docs.docker.com/build/building/multi-stage/">https://docs.docker.com/build/building/multi-stage/</a><br />
+<br />
+Docker introduced a new backend for building images called Buildkit, which does not expose intermediate build steps in the same way as the legacy builder.
+To view intermediate build steps and containers using the legacy builder,
+set the environment variable <code class="code1">DOCKER_BUILDKIT=0</code> before using the <code class="code1">docker build</code> command:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build [OPTIONS] PATH | URL | -</pre>
+This disables Docker BuildKit, which is now the default builder and offers improved performance, output, and caching.
+It's recommended to enable BuildKit (<code class="code1">DOCKER_BUILDKIT=1</code>) or simply omit the variable.
+However, for some examples on this page, we will disable BuildKit to show intermediate build steps and containers.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Build an image</span>
+<div class="tutorialSectionTextDiv1">
+The '<b>docker build</b>' command has the following syntax:<br />
+<pre class="sh-code">
+$ docker build [OPTIONS] PATH | URL | -</pre>
+Let's use this Dockerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN apt-get -y update
+
+RUN apt-get -y install curl
+RUN apt-get -y install nginx
+
+RUN groupadd -r mtitek --gid=1001
+RUN useradd -r -g mtitek --uid=1001 mtitek</pre>
+To build an image from a Dockerfile:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t ubuntu-nginx:latest .</pre>
+The option '<b>-t IMAGE_NAME:IMAGE_TAG</b>' instructs Docker to create an image with the specified image name (e.g., <b>ubuntu-nginx</b>) and image tag (e.g., <b>latest</b>).<br />
+<br />
+The character '<b>.</b>' at the end of the <b>docker build</b> command specifies the current directory.
+You can specify any path you want.
+It represents the path where Docker looks for all files and directories managed in the Dockerfile.<br />
+<br />
+By default, Docker will look for a Dockerfile with the name '<b>Dockerfile</b>' in the current directory.
+You can use the '<b>-f</b>' option to specify an alternate location and a custom Dockerfile name.<br />
+<br />
+You can add a ".dockerignore" file where you can list files and directories that you want to be excluded when building the image.
+Therefore, these files and directories are not sent to the builder, which can help improve build speed (especially when using a remote Docker host).<br />
+<br />
+The build command produces the following output:<br>
+<pre class="sh-code">
+Sending build context to Docker daemon  10.75kB
+Step 1/6 : FROM ubuntu:latest
+ ---> 6015f66923d7
+Step 2/6 : RUN apt-get -y update
+ ---> Running in 780f40abb5cf
+...
+ ---> Removed intermediate container 780f40abb5cf
+ ---> b34542b1b9fb
+Step 3/6 : RUN apt-get -y install curl
+ ---> Running in be38cb7e6c21
+...
+ ---> Removed intermediate container be38cb7e6c21
+ ---> 9e0f805a3972
+Step 4/6 : RUN apt-get -y install nginx
+ ---> Running in 9317535ed169
+...
+ ---> Removed intermediate container 9317535ed169
+ ---> 01756a2038d9
+Step 5/6 : RUN groupadd -r mtitek --gid=1001
+ ---> Running in fb8aa37f4f7f
+ ---> Removed intermediate container fb8aa37f4f7f
+ ---> 41ca8f17b674
+Step 6/6 : RUN useradd -r -g mtitek --uid=1001 mtitek
+ ---> Running in 0769c8d01f3e
+useradd warning: mtitek's uid 1001 is greater than SYS_UID_MAX 999
+ ---> Removed intermediate container 0769c8d01f3e
+ ---> 7b666fb64cbe
+Successfully built 7b666fb64cbe
+Successfully tagged ubuntu-nginx:latest</pre>
+In this case it's the first time the image is built.
+All the steps are executed and no cache was used by Docker.<br />
+<br />
+To list the images:<br />
+<pre class="sh-code">
+$ docker image ls ubuntu*</pre>
+<pre class="sh-code">
+REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+ubuntu-nginx   latest    7b666fb64cbe   2 minutes ago   226MB
+ubuntu         latest    6015f66923d7   5 weeks ago     117M</pre>
+We can see the image we created "ubuntu-nginx" and the parent image "ubuntu".<br />
+<br />
+Note that the following commands are equivalent:
+<b>docker image ls</b>,
+<b>docker image list</b>,
+<b>docker images</b><br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

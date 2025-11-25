@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Prometheus | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Prometheus" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Prometheus | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Prometheus" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/prometheus.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Prometheus | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Prometheus" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/prometheus.html",
+        "description": "Tutorials: Docker - Prometheus",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/prometheus.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Prometheus</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Configure Docker</a></li>
+<li><a href="#sec_id_3">Start Prometheus</a></li>
+<li><a href="#sec_id_4">Use Prometheus</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more information: <a href="https://docs.docker.com/config/daemon/prometheus/">https://docs.docker.com/config/daemon/prometheus/</a><br />
+<br />
+Prometheus is an open-source systems monitoring.
+It gathers information from endpoints.
+You can configure Docker as a Prometheus target.
+You can only monitor Docker itself.
+You cannot currently monitor your application using the Docker target.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Configure Docker</span>
+<div class="tutorialSectionTextDiv1">
+Docker integration with Prometheus is experimental and not enabled in the dockerd server by default.
+You need to configure the dockerd server to enabled the experimental features and expose the metrics address.
+The configuration can be done using the "<b>experimental</b>" and "<b>metrics-addr</b>" options.<br />
+<br />
+The options "<b>--experimental</b>" and "<b>--metrics-addr</b>" can be set on the command line (systemd) when starting the dockerd server (<b>/lib/systemd/system/docker.service</b>).<br />
+<br />
+They can also be put into the "<b>daemon.json</b>" file.
+The "<b>daemon.json</b>" file can be located in: "<b>/etc/docker/daemon.json</b>".
+Note that it might not be created by default when you install Docker.<br />
+<pre class="sh-code">
+$ vi /etc/docker/daemon.json</pre>
+<pre class="sh-code">
+daemon.json:
+{
+  "metrics-addr": "0.0.0.0:9323",
+  "experimental": true
+}</pre>
+Restart Docker:<br />
+<pre class="sh-code">
+$ sudo service docker restart</pre>
+Prometheus will connect to the port "<b>9323</b>" to get metrics (a listener will be listening on all addresses on port 9323).<br />
+<br />
+To validate the endpoint:<br />
+<pre class="sh-code">
+$ curl -s http://localhost:9323/metrics | head -5</pre>
+<pre class="sh-code">
+# HELP builder_builds_failed_total Number of failed image builds
+# TYPE builder_builds_failed_total counter
+builder_builds_failed_total{reason="build_canceled"} 0
+builder_builds_failed_total{reason="build_target_not_reachable_error"} 0
+builder_builds_failed_total{reason="command_not_supported_error"} 0</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Start Prometheus</span>
+<div class="tutorialSectionTextDiv1">
+Copy the following configuration and save it to "<b>/tmp/prometheus.yml</b>":<br />
+<pre class="sh-code">
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'codelab-monitor'
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first.rules"
+  # - "second.rules"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ['192.168.2.22:9090']
+
+  - job_name: 'docker'
+         # metrics_path defaults to '/metrics'
+         # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ['192.168.2.22:9323']</pre>
+Start Prometheus container:<br />
+<pre class="sh-code">
+$ docker container run -d -p 9090:9090 -v /tmp/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Use Prometheus</span>
+<div class="tutorialSectionTextDiv1">
+Verify that the Docker target is listed at <a href="http://192.168.2.22:9090/targets/">http://192.168.2.22:9090/targets/</a>:<br />
+<img alt="Prometheus - Targets" src="img/prometheus-targets.png" width="600" /><br />
+<br />
+Click on Graph an select a metric and click Execute: <a href="http://192.168.2.22:9090/graph">http://192.168.2.22:9090/graph</a><br />
+<img alt="Prometheus - Graph" src="img/prometheus-graph.png" width="600" />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

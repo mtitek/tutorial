@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker CLI - Docker Build Command | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker CLI - Docker Build Command" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker CLI - Docker Build Command | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker CLI - Docker Build Command" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/docker_cli_build.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker CLI - Docker Build Command | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker CLI - Docker Build Command" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/docker_cli_build.html",
+        "description": "Tutorials: Docker CLI - Docker Build Command",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/docker_cli_build.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Docker CLI: Docker Build Command</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Docker Build Command</a></li>
+<li><a href="#sec_id_2">Usage</a></li>
+<li><a href="#sec_id_3">Options</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Docker Build Command</span>
+<div class="tutorialSectionTextDiv1">
+The Docker CLI (Command-Line Interface) <b>docker build</b> builds an image from a Dockerfile.<br />
+To list the command options, type: <b>docker build --help</b><br />
+<br />
+Docker introduced a new backend for building images called Buildkit, which does not expose intermediate build steps in the same way as the legacy builder.
+To view intermediate build steps and containers using the legacy builder,
+set the environment variable <code class="code1">DOCKER_BUILDKIT=0</code> before using the <code class="code1">docker build</code> command:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build [OPTIONS] PATH | URL | -</pre>
+This disables Docker BuildKit, which is now the default builder and offers improved performance, output, and caching.
+It's recommended to enable BuildKit (<code class="code1">DOCKER_BUILDKIT=1</code>) or simply omit the variable.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Usage</span>
+<div class="tutorialSectionTextDiv1">
+Usage: <b>docker build [OPTIONS] PATH | URL | -</b><br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Options</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+  -t, --tag list                Name and optionally a tag in the 'name:tag' format
+
+  -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')
+
+  -q, --quiet                   Suppress the build output and print image ID on success
+
+      --no-cache                Do not use cache when building the image
+      --cache-from strings      Images to consider as cache sources
+
+      --pull                    Always attempt to pull a newer version of the image
+
+      --build-arg list          Set build-time variables
+
+      --add-host list           Add a custom host-to-IP mapping (host:ip)
+
+      --rm                      Remove intermediate containers after a successful build (default true)
+      --force-rm                Always remove intermediate containers
+
+      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
+      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
+  -c, --cpu-shares int          CPU shares (relative weight)
+      --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
+      --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
+
+  -m, --memory bytes            Memory limit
+      --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+
+      --cgroup-parent string    Optional parent cgroup for the container
+      --compress                Compress the build context using gzip
+      --disable-content-trust   Skip image verification (default true)
+      --iidfile string          Write the image ID to the file
+      --isolation string        Container isolation technology
+      --label list              Set metadata for an image
+      --network string          Set the networking mode for the RUN instructions during build (default "default")
+  -o, --output stringArray      Output destination (format: type=local,dest=path)
+      --platform string         Set platform if server is multi-platform capable
+      --progress string         Set type of progress output (auto, plain, tty). Use plain to show container output (default "auto")
+      --secret stringArray      Secret file to expose to the build (only if BuildKit enabled): id=mysecret,src=/local/secret
+      --security-opt strings    Security options
+      --shm-size bytes          Size of /dev/shm
+      --squash                  Squash newly built layers into a single new layer
+      --ssh stringArray         SSH agent socket or keys to expose to the build (only if BuildKit enabled) (format: default|&lt;id&gt;[=&lt;socket&gt;|&lt;key&gt;[,&lt;key&gt;]])
+      --stream                  Stream attaches to server to negotiate build context
+      --target string           Set the target build stage to build.
+      --ulimit ulimit           Ulimit options (default [])</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

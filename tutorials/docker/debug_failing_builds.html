@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Debug Failing Builds | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Debug Failing Builds" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Debug Failing Builds | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Debug Failing Builds" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/debug_failing_builds.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Debug Failing Builds | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Debug Failing Builds" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/debug_failing_builds.html",
+        "description": "Tutorials: Docker - Debug Failing Builds",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/debug_failing_builds.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Debug Failing Builds</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Debug Failing Builds</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Debug Failing Builds</span>
+<div class="tutorialSectionTextDiv1">
+Let's use this Dockerfile above (notice the typo with the useradd command):<br />
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN groupadd -r mtitek --gid=1001 &amp;&amp; userad -r -g mtitek --uid=1001 mtitek</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t ubuntu-nginx:latest .</pre>
+<pre class="sh-code">
+Sending build context to Docker daemon  2.048kB
+
+Step 1/2 : FROM ubuntu:latest
+ ---> 1e4467b07108
+
+Step 2/2 : RUN groupadd -r mtitek --gid=1001 &amp;&amp; userad -r -g mtitek --uid=1001 mtitek
+ ---> Running in b27947fe0a34
+/bin/sh: 1: userad: not found
+The command '/bin/sh -c groupadd -r mtitek --gid=1001 &amp;&amp; userad -r -g mtitek --uid=1001 mtitek' returned a non-zero code: 127</pre>
+In this case we can see the build complains about the command '<b>userad</b>'.<br />
+<br />
+In some cases the error might not be very clear from the build output,
+so a nice feature in Docker is that you can use an intermediate layer of the image to start a container and debug any failing command.<br />
+<br />
+For example, we can run a container from the created layer '<b>1e4467b07108</b>' (see above) and execute commands directly in the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it 1e4467b07108 /bin/bash</pre>
+<pre class="sh-code">
+root@31367b5e6cf0:/# groupadd -r mtitek --gid=1001 &amp;&amp; userad -r -g mtitek --uid=1001 mtitek
+bash: userad: command not found</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

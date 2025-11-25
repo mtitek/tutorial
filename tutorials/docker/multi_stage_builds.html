@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Multi-Stage Builds | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Multi-Stage Builds" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Multi-Stage Builds | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Multi-Stage Builds" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/multi_stage_builds.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Multi-Stage Builds | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Multi-Stage Builds" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/multi_stage_builds.html",
+        "description": "Tutorials: Docker - Multi-Stage Builds",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/multi_stage_builds.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Multi-Stage Builds</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Multi-Stage Builds</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Multi-stage builds</span>
+<div class="tutorialSectionTextDiv1">
+Multi-stage builds feature allow you to add multiple FROM instructions in the Dockerfile.
+The FROM instructions are basicaly the same as the regular single FROM instructions that we have used previously.<br />
+<br />
+Each FROM instruction define a build stage that has its base image and a set of instructions to build images layers.
+A FROM instruction should have a name which can be used by other FROM instructions as a reference.
+The FROM instruction that references another one, will be able to copy artifacts created within that staging build.<br />
+<br />
+A staging build can be considered as a temporary build that we can use in the next staging builds to copy only the artifacts that we need and discards everything else.
+The goal is to have an optimized final stage (in term of disk space) that in theory will be the one that we will use for the image we want to create.<br />
+<br />
+Let's use this Dokerfile (not a very useful one but it's simple enough to demonstrate the multi-stage builds feature):<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+#stage 0
+FROM alpine:latest AS stage0
+
+RUN apk add --no-cache curl tar
+
+RUN curl -fSL -o /tmp/apache-zookeeper-3.6.1-bin.tar.gz https://archive.apache.org/dist/zookeeper/zookeeper-3.6.1/apache-zookeeper-3.6.1-bin.tar.gz
+
+RUN tar -xzf /tmp/apache-zookeeper-3.6.1-bin.tar.gz -C /tmp/
+
+#final stage
+FROM alpine:latest
+
+COPY --from=stage0 /tmp/apache-zookeeper-3.6.1-bin /opt/</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t zookeeper-multi-stage:3.6.1 .</pre>
+<pre class="sh-code">
+Sending build context to Docker daemon  2.048kB
+
+Step 1/6 : FROM alpine:latest AS stage0
+latest: Pulling from library/alpine
+df20fa9351a1: Pull complete
+Digest: sha256:185518070891758909c9f839cf4ca393ee977ac378609f700f60a771a2dfe321
+Status: Downloaded newer image for alpine:latest
+ ---> a24bb4013296
+
+Step 2/6 : RUN apk add --no-cache curl tar
+ ---> Running in 97a752789c85
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/APKINDEX.tar.gz
+(1/6) Installing ca-certificates (20191127-r4)
+(2/6) Installing nghttp2-libs (1.41.0-r0)
+(3/6) Installing libcurl (7.69.1-r0)
+(4/6) Installing curl (7.69.1-r0)
+(5/6) Installing libacl (2.2.53-r0)
+(6/6) Installing tar (1.32-r1)
+Executing busybox-1.31.1-r16.trigger
+Executing ca-certificates-20191127-r4.trigger
+OK: 8 MiB in 20 packages
+Removing intermediate container 97a752789c85
+ ---> 5d10ef835956
+
+Step 3/6 : RUN curl -fSL -o /tmp/apache-zookeeper-3.6.1-bin.tar.gz https://archive.apache.org/dist/zookeeper/zookeeper-3.6.1/apache-zookeeper-3.6.1-bin.tar.gz
+ ---> Running in 636240e89a86
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11.8M  100 11.8M    0     0  7515k      0  0:00:01  0:00:01 --:--:-- 7510k
+Removing intermediate container 636240e89a86
+ ---> 5341fb2f8fe0
+
+Step 4/6 : RUN tar -xzf /tmp/apache-zookeeper-3.6.1-bin.tar.gz -C /tmp/
+ ---> Running in 27a216de9588
+Removing intermediate container 27a216de9588
+ ---> 5425d0ccdc19
+
+Step 5/6 : FROM alpine:latest
+ ---> a24bb4013296
+
+Step 6/6 : COPY --from=stage0 /tmp/apache-zookeeper-3.6.1-bin /opt/
+ ---> c54f88c3c573
+
+Successfully built c54f88c3c573
+Successfully tagged zookeeper-multi-stage:3.6.1</pre>
+Let's have a look at the image history:<br />
+<pre class="sh-code">
+$ docker image history zookeeper-multi-stage:3.6.1 --no-trunc</pre>
+<pre class="sh-code">
+IMAGE                                                                     CREATED              CREATED BY                                                                                              SIZE                COMMENT
+sha256:c54f88c3c573930fb26ea047d5953a842a702bb39289618f3f3cfc013edf337d   About a minute ago   /bin/sh -c #(nop) COPY dir:420ba2bd6abb5a0706062b95eb13c8e9c1cb7a7d9c19f1e88eab87c425d65877 in /opt/    35.3MB
+sha256:a24bb4013296f61e89ba57005a7b3e52274d8edd3ae2077d04395f806b63d83e   2 months ago         /bin/sh -c #(nop)  CMD ["/bin/sh"]                                                                      0B
+&lt;missing&gt;                                                                 2 months ago         /bin/sh -c #(nop) ADD file:c92c248239f8c7b9b3c067650954815f391b7bcb09023f984972c082ace2a8d0 in /        5.57MB</pre>
+As you can see, the image does contain only the layers of the base image (alpine) and the layer of the COPY instruction.<br />
+<br />
+Notes:<br />
+<ul class="ul_square_1">
+<li>
+Assigning a name to a stage build is recommended but not mandatory.
+Instead of using the name of the stage build you can reference it by its number.
+The first FROM instruction in the Dockerfile has the number 0 and the following will be numbered 1,2,3, and so on.
+To reference the first build stage, you do: <code class="code1">COPY --from=0 ...</code><br />
+<pre class="dockerfile-code">
+#stage 0
+FROM alpine:latest
+
+RUN apk add --no-cache curl tar
+
+RUN curl -fSL -o /tmp/apache-zookeeper-3.6.1-bin.tar.gz https://archive.apache.org/dist/zookeeper/zookeeper-3.6.1/apache-zookeeper-3.6.1-bin.tar.gz
+
+RUN tar -xzf /tmp/apache-zookeeper-3.6.1-bin.tar.gz -C /tmp/
+
+#final stage
+FROM alpine:latest
+
+COPY --from=0 /tmp/apache-zookeeper-3.6.1-bin /opt/</pre>
+</li>
+<li>
+It's also possible to copy artifacts from external images (kind of using the image as a stage):<br />
+<pre class="sh-code">
+COPY --from=zookeeper:3.6.1 /apache-zookeeper-3.6.1-bin /opt/zookeper</pre>
+</li>
+<li>
+You can also use a stage build as a base image for the FROM instruction (<code class="code1">FROM stage0 AS stage1</code>):<br />
+<pre class="dockerfile-code">
+#stage 0
+FROM alpine:latest AS stage0
+
+RUN apk add --no-cache curl tar
+
+#stage 1
+FROM stage0 AS stage1
+
+RUN curl -fSL -o /tmp/apache-zookeeper-3.6.1-bin.tar.gz https://archive.apache.org/dist/zookeeper/zookeeper-3.6.1/apache-zookeeper-3.6.1-bin.tar.gz
+
+RUN tar -xzf /tmp/apache-zookeeper-3.6.1-bin.tar.gz -C /tmp/
+
+#final stage
+FROM alpine:latest
+
+COPY --from=stage1 /tmp/apache-zookeeper-3.6.1-bin /opt/</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

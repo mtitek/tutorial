@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - List Containers | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - List Containers" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - List Containers | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - List Containers" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/list_containers.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - List Containers | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - List Containers" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/list_containers.html",
+        "description": "Tutorials: Docker - List Containers",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/list_containers.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">List Containers</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">docker container ls</a></li>
+<li><a href="#sec_id_3">docker container ls -a ('--all')</a></li>
+<li><a href="#sec_id_4">docker container ls -s ('--size')</a></li>
+<li><a href="#sec_id_5">docker container ls --no-trunc</a></li>
+<li><a href="#sec_id_7">docker container ls --format</a></li>
+<li><a href="#sec_id_8">docker container ls -f ('--filter')</a></li>
+<li><a href="#sec_id_6">docker container ls -q ('--quiet')</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more information:<br />
+<a href="https://docs.docker.com/reference/cli/docker/container/ls/">https://docs.docker.com/reference/cli/docker/container/ls/</a><br />
+<br />
+For the following sections we will use the nginx and ubuntu images as examples to show how to use docker commands to list containers.<br />
+<br />
+Let's run the nginx image:<br />
+<pre class="sh-code">
+$ docker container run -d nginx:latest</pre>
+<pre class="sh-code">
+02404a9bc24bc3f7222035a9b7eaa698557bb53f660222858c7f590556762730</pre>
+Let's run the ubuntu image:<br />
+<pre class="sh-code">
+$ docker container run ubuntu:latest</pre>
+<pre class="sh-code">
+318bb50490ab5ebf49f633f36f14ca3e65c343bad8c87fb189e968ab6e038bea</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls</b></span>
+<div class="tutorialSectionTextDiv1">
+The '<b>docker container ls</b>' command has the following syntax:<br />
+<pre class="sh-code">
+$ docker container ls [OPTIONS]</pre>
+Note that the following commands are equivalent:
+<b>docker container ls</b>,
+<b>docker container list</b>,
+<b>docker container ps</b>,
+<b>docker ps</b><br />
+<br />
+The '<b>docker container ls</b>' command has the following options:<br />
+<pre class="sh-code">
+-a, --all             Show all containers (default shows just running)
+
+-n, --last int        Show n last created containers (includes all states) (default -1)
+-l, --latest          Show the latest created container (includes all states)
+
+    --no-trunc        Don't truncate output
+
+-q, --quiet           Only display container IDs
+
+-s, --size            Display total file sizes
+
+-f, --filter filter   Filter output based on conditions provided
+
+    --format string   Format output using a custom template:
+                      'table':            Print output in table format with column headers (default)
+                      'table TEMPLATE':   Print output in table format using the given Go template
+                      'json':             Print in JSON format
+                      'TEMPLATE':         Print output using the given Go template.
+                      Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates</pre>
+Let's verify that nginx is up and running:<br />
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS    NAMES
+02404a9bc24b   nginx:latest   "/docker-entrypoint.…"   4 seconds ago   Up 3 seconds   80/tcp   competent_sutherland</pre>
+Note that the Ubuntu container was started and executed the command <b>/bin/bash</b>,
+but then exited because no process was running in the foreground or background.<br />
+<br />
+The Container ID shows the short ID (truncated) but you can use the <b>--no-trunc</b> to see the full ID.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls -a</b> ('<b>--all</b>')</span>
+<div class="tutorialSectionTextDiv1">
+The '<b>docker container ls</b>' command lists only running containers.
+To list all containers including stopped (or paused, failed, ...), use the option '<b>-a</b>' ('<b>--all</b>'):<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                     PORTS    NAMES
+02404a9bc24b   nginx:latest   "/docker-entrypoint.…"   9 seconds ago   Up 9 seconds               80/tcp   competent_sutherland
+318bb50490ab   ubuntu:latest  "/bin/bash"              5 seconds ago   Exited (0) 5 seconds ago            sleepy_brahmagupta</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls -s</b> ('<b>--size</b>')</span>
+<div class="tutorialSectionTextDiv1">
+To print the size of the container, use the option '<b>-s</b>' ('<b>--size</b>'):<br />
+<pre class="sh-code">
+$ docker container ls -s</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS    NAMES                   SIZE
+02404a9bc24b   nginx:latest   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes   80/tcp   competent_sutherland    1.12kB (virtual 132MB)</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls --no-trunc</b></span>
+<div class="tutorialSectionTextDiv1">
+To print the full container ID and the whole command, use the option '<b>--no-trunc</b>':<br />
+<pre class="sh-code">
+$ docker container ls --no-trunc</pre>
+<pre class="sh-code">
+CONTAINER ID                                                       IMAGE          COMMAND                                          CREATED         STATUS         PORTS    NAMES
+02404a9bc24bc3f7222035a9b7eaa698557bb53f660222858c7f590556762730   nginx:latest   "/docker-entrypoint.sh nginx -g 'daemon off;'"   37 minutes ago  Up 37 minutes  80/tcp   competent_sutherland</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls --format</b></span>
+<div class="tutorialSectionTextDiv1">
+To format the output of the command, use the option '<b>--format</b>'.<br />
+You can use either json or GO template to format the output.<br />
+<br />
+First let's find out the available data that we can format (the trick is to print the output of the '<b>docker container ls</b>' command as json):<br />
+<pre class="sh-code">
+$ docker container ls --format json | jq
+$ docker container ls --format "{{json .}}" | jq</pre>
+<pre class="sh-code">
+{
+  "Command": "\"/docker-entrypoint.…\"",
+  "CreatedAt": "12:11:11 -0400 EDT",
+  "ID": "02404a9bc24b",
+  "Image": "nginx:latest",
+  "Labels": "maintainer=NGINX Docker Maintainers &lt;docker-maint@nginx.com&gt;",
+  "LocalVolumes": "0",
+  "Mounts": "",
+  "Names": "heuristic_black",
+  "Networks": "bridge",
+  "Ports": "80/tcp",
+  "RunningFor": "10 minutes ago",
+  "Size": "0B",
+  "Status": "Up 10 minutes"
+}</pre>
+To print only the container ID and the image name:<br />
+<pre class="sh-code">
+$ docker container ls -a --format "{{.ID}}\t{{.Image}}"</pre>
+<pre class="sh-code">
+"02404a9bc24b"    "nginx:latest"
+"318bb50490ab"    "ubuntu:latest"</pre>
+We can use the Go template to format the output:<br />
+<pre class="sh-code">
+$ docker container ls -a --format "table {{.ID}}\t{{.Image}}\t{{.State}}\t{{.Status}}"</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE           STATE     STATUS
+02404a9bc24b   nginx:latest    running   Up 9 seconds
+318bb50490ab   ubuntu:latest   exited    Exited (0) 5 seconds ago</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls -f</b> ('<b>--filter</b>')</span>
+<div class="tutorialSectionTextDiv1">
+To filter the output based on some conditions, use the option '<b>-f</b>' ('<b>--filter</b>'):<br />
+<pre class="sh-code">
+$ docker container ls -a --format "table {{.ID}}\t{{.Image}}" -f "id=02404a9bc24b"</pre>
+<pre class="sh-code">
+CONTAINER ID        IMAGE
+02404a9bc24b        nginx:latest</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1"><b>docker container ls -q</b> ('<b>--quiet</b>')</span>
+<div class="tutorialSectionTextDiv1">
+To print only the container ID, use the option '<b>-q</b>' ('<b>--quiet</b>'):<br />
+<pre class="sh-code">
+$ docker container ls -q</pre>
+<pre class="sh-code">
+02404a9bc24b</pre>
+The option '<b>-q</b>' can be useful for example in case you want to write scripts to do some actions on the containers.<br />
+<br />
+For example, if you want to stop all running container:
+<pre class="sh-code">
+$ docker container stop `docker container ls -q --no-trunc`</pre>
+<pre class="sh-code">
+02404a9bc24bc3f7222035a9b7eaa698557bb53f660222858c7f590556762730</pre>
+To remove all containers:
+<pre class="sh-code">
+$ docker container rm `docker container ls -q -a --no-trunc`</pre>
+<pre class="sh-code">
+02404a9bc24bc3f7222035a9b7eaa698557bb53f660222858c7f590556762730
+318bb50490ab5ebf49f633f36f14ca3e65c343bad8c87fb189e968ab6e038bea</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

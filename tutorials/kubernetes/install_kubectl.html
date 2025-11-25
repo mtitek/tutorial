@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - kubectl | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - kubectl" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - kubectl | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - kubectl" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/install_kubectl.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - kubectl | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - kubectl" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/install_kubectl.html",
+        "description": "Tutorials: Kubernetes - kubectl",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/install_kubectl.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">kubectl</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Install kubectl</a></li>
+<li><a href="#sec_id_3">kubectl configuration file</a></li>
+<li><a href="#sec_id_4">kubectl auto completion</a></li>
+<li><a href="#sec_id_5">View Kubernetes resources</a></li>
+<li><a href="#sec_id_6">Uninstall kubectl</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+kubectl is the Kubernetes CLI (Command-Line Interface) tool that can be used to interact with the Kubernetes API server.<br />
+<br />
+It can be used to manage the Kubernetes objects (Pods, ...) and the Kubernetes cluster components.<br />
+<br />
+See this page for more details on how to install kubectl:
+<a href="https://kubernetes.io/docs/tasks/tools/">https://kubernetes.io/docs/tasks/tools/</a><br />
+<br />
+Cloud providers also provide their own CLIs:<br />
+<ul class="ul_square_1">
+<li>
+AWS Command Line Interface ("aws"):
+<a href="https://aws.amazon.com/cli/">https://aws.amazon.com/cli/</a><br />
+<br /></li>
+<li>
+Azure Command-Line Interface ("az"):
+<a href="https://learn.microsoft.com/en-us/cli/azure/">https://learn.microsoft.com/en-us/cli/azure/</a><br />
+<br /></li>
+<li>
+Google Cloud Command Line Interface ("gcloud"):
+<a href="https://cloud.google.com/cli">https://cloud.google.com/cli</a><br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Install kubectl</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Check if any update (Ubuntu):<br />
+<pre class="sh-code">
+$ sudo apt update</pre>
+</li>
+<li>
+<b>[Optional]</b> Install packages to allow apt to use a repository over HTTPS (Ubuntu):<br />
+<pre class="sh-code">
+$ sudo apt install \
+    apt-transport-https \
+    curl</pre>
+</li>
+<li>
+Download <b>kubectl</b>:<br />
+<pre class="sh-code">
+$ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"</pre>
+</li>
+<li>
+Make <b>kubectl</b> executable:<br />
+<pre class="sh-code">
+$ chmod +x ./kubectl</pre>
+</li>
+<li>
+Move <b>kubectl</b> to <b>/usr/local/bin/</b>:<br />
+<pre class="sh-code">
+$ sudo mv ./kubectl /usr/local/bin/kubectl</pre>
+</li>
+<li>
+Verify <b>kubectl</b>:<br />
+<pre class="sh-code">
+$ kubectl version --client</pre>
+<pre class="sh-code">
+Client Version: v.1.32.3</pre>
+</li>
+</ul>
+<br />
+You can use the help command to see details information about the commands supported by kubectl:<br />
+<pre class="sh-code">
+$ kubectl help</pre>
+Use "<b>kubectl &lt;command&gt; --help</b>" for more information about a given command.<br />
+<pre class="sh-code">
+$ kubectl describe --help</pre>
+<pre class="sh-code">
+Show details of a specific resource or group of resources.
+...</pre>
+Use "<b>kubectl options</b>" for a list of global command-line options (applies to all commands).<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">kubectl configuration file</span>
+<div class="tutorialSectionTextDiv1">
+The kubectl configuration file is located at "$HOME/.kube/config".<br />
+<br />
+You might want to backup the kubectl configuration file before modifying it (either manually or through kubectl):<br />
+<pre class="sh-code">
+$ cp "$HOME/.kube/config" "$HOME/.kube/config.bak"</pre>
+If you have installed Kubernetes with Docker Desktop, you should see something similar to the following:<br />
+<pre class="sh-code">
+$ cat $HOME/.kube/config</pre>
+<pre class="sh-code">
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://kubernetes.docker.internal:6443
+  name: docker-desktop
+contexts:
+- context:
+    cluster: docker-desktop
+    user: docker-desktop
+  name: docker-desktop
+current-context: docker-desktop
+kind: Config
+preferences: {}
+users:
+- name: docker-desktop
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED</pre>
+The configuration file might have multiple contexts.<br />
+A context regroup information about a Kubernetes cluster, the user credentials to authenticate against the cluster, and a namespace.<br />
+<br />
+Kubernetes uses namespaces to regroup some of the Kubernetes objects.<br />
+By default the "default" namespace is created and the kubectl command-line tool uses it to interacts with the Kubernetes API server.<br />
+<br />
+To create a new namespace:<br />
+<pre class="sh-code">
+$ kubectl create namespace my-namespace</pre>
+<pre class="sh-code">
+namespace/my-namespace created</pre>
+To list all namespaces:<br />
+<pre class="sh-code">
+$ kubectl get namespaces</pre>
+<pre class="sh-code">
+NAME                   STATUS   AGE
+default                Active   16d
+kube-node-lease        Active   16d
+kube-public            Active   16d
+kube-system            Active   16d
+kubernetes-dashboard   Active   7d20h
+my-namespace           Active   3s</pre>
+To associate a namespace with a context:<br />
+<pre class="sh-code">
+$ kubectl config set-context docker-desktop --namespace=my-namespace</pre>
+<pre class="sh-code">
+Context "docker-desktop" modified.</pre>
+To view the information about the context (the context "docker-desktop" was associated to the namespace "my-namespace"):<br />
+<pre class="sh-code">
+$ kubectl config view --minify</pre>
+<pre class="sh-code">
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://kubernetes.docker.internal:6443
+  name: docker-desktop
+contexts:
+- context:
+    cluster: docker-desktop
+    namespace: my-namespace
+    user: docker-desktop
+  name: docker-desktop
+current-context: docker-desktop
+kind: Config
+preferences: {}
+users:
+- name: docker-desktop
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED</pre>
+You can create new contexts with the "<b>kubectl config set-context</b>" command:<br />
+<pre class="sh-code">
+$ kubectl config set-context docker-desktop-new-context --namespace=my-namespace</pre>
+<pre class="sh-code">
+Context "docker-desktop-new-context" created.</pre>
+The "<b>--cluster</b>" and "<b>--user</b>" flags can be used to set a specific cluster and user to the context:<br />
+<pre class="sh-code">
+$ kubectl config set-context docker-desktop-new-context --cluster=docker-desktop --user=docker-desktop</pre>
+<pre class="sh-code">
+Context "docker-desktop-new-context" modified.</pre>
+To make a context as the current context:<br />
+<pre class="sh-code">
+$ kubectl config use-context docker-desktop-new-context</pre>
+<pre class="sh-code">
+Switched to context "docker-desktop-new-context".</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">kubectl auto completion</span>
+<div class="tutorialSectionTextDiv1">
+To use auto completion with kubectl you need first to install the bash-completion package (Ubuntu):<br />
+<pre class="sh-code">
+$ sudo apt-get install bash-completion</pre>
+To enable auto completion for kubectl:<br />
+<pre class="sh-code">
+$ source &lt;(kubectl completion bash)</pre>
+To enable auto completion permanently for a user:<br />
+<pre class="sh-code">
+$ echo "source &lt;(kubectl completion bash)" &gt;&gt; ~/.bashrc</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">View Kubernetes resources</span>
+<div class="tutorialSectionTextDiv1">
+kubernetes API server provides RESTful endpoints that allow kubectl to make HTTP requests to view and manage Kubernetes resources and their objects.<br />
+<br />
+The URI of the endpoints can be constructed using the name of a resource (this will return the info of its objects), and can be narrowed by using the name of an object of the resource.
+The URI can be further detailed if the object regroup other resources and hence the URI can be expanded by adding the name of the resource and any of its objects.<br />
+<br />
+For example, the following endpoint returns information about all Pods in the default namespace:<br />
+<a href="http://localhost:8001/api/v1/namespaces/default/pods/">http://localhost:8001/api/v1/namespaces/default/pods/</a><br />
+<br />
+If you access <a href="http://localhost:8001/">http://localhost:8001/</a> you should see all the endpoints accessible at the ROOT level.<br />
+<br />
+To see the version of the API server, oen <a href="http://localhost:8001/version">http://localhost:8001/version</a><br />
+<pre class="text-code">
+{
+  "major": "1",
+  "minor": "19",
+  "gitVersion": "v1.19.7",
+  "gitCommit": "1dd5338295409edcfff11505e7bb246f0d325d15",
+  "gitTreeState": "clean",
+  "buildDate": "2021-01-13T13:15:20Z",
+  "goVersion": "go1.15.5",
+  "compiler": "gc",
+  "platform": "linux/amd64"
+}</pre>
+You can use the "<b>kubectl get &lt;resource-name&gt;</b>" command to view information about the objects of a kubernetes resource.<br />
+You can specify an object name "<b>kubectl get &lt;resource-name&gt; &lt;object-name&gt;</b>" to view information about that object.<br />
+<br />
+By default you can view resources of the current namespace configured for the kubectl config
+(the "<b>default</b>" namespace is used if none is configured).<br />
+<br />
+To confugure another namespace for the current context you can use the commande:
+"<b>kubectl config set-context my-context --namespace=my-namespace</b>"<br />
+<br />
+You can also override the namespace by using the "<b>--namespace</b>" flag ("<b>-n</b>"):
+"<b>kubectl get &lt;resource-name&gt; -n another-namespace</b>"<br />
+<br />
+You can also use the "<b>--all-namespaces</b>" flag to view information about resources from all the namespaces of the cluster:
+"<b>kubectl get &lt;resource-name&gt; --all-namespaces</b>"<br />
+<br />
+To see information about the Pods resource:<br />
+<pre class="sh-code">
+$ kubectl get Pods</pre>
+<pre class="sh-code">
+NAME       READY   STATUS    RESTARTS   AGE
+dnsutils   1/1     Running   0          12d</pre>
+You can use the "<b>-o wide</b>" flag  to get more information about the resource.<br />
+You can also remove the headers from the output by adding the "<b>--no-headers</b>" flag.
+This can be useful if you want to do custom actions on the output.<br />
+<pre class="sh-code">
+$ kubectl get Pods -o wide --no-headers | awk {'print $1 " | " $6 " | " $7 '}</pre>
+<pre class="sh-code">
+dnsutils | 10.1.0.152 | docker-desktop</pre>
+By default, kubectl doesn't show the full response of the API server.<br />
+You can print the full response in either YAML or JSON formats by using the "<b>-o yaml</b>" or "<b>-o json</b>" flags.<br />
+<pre class="sh-code">
+$ kubectl get Pods -o json</pre>
+<pre class="text-code">
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            ...
+        }
+        ...
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+    }
+}</pre>
+You get a similar response by targeting directly the API server endpoint: <a href="http://localhost:8001/api/v1/namespaces/default/pods/">http://localhost:8001/api/v1/namespaces/default/pods/</a><br />
+<pre class="text-code">
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/namespaces/default/pods/",
+    "resourceVersion": "2967265"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "dnsutils",
+        "namespace": "default",
+        ...
+       }
+       ...
+     }
+     ...
+   ]
+}</pre>
+You can get detail of an abject by specifying its name after the resource.<br />
+kubectl: "<b>kubectl get Pods dnsutils -o json</b>"<br />
+API Server endpoint: <a href="http://localhost:8001/api/v1/namespaces/default/pods/dnsutils">http://localhost:8001/api/v1/namespaces/default/pods/dnsutils</a><br />
+<br />
+You can use the "<b>-o jsonpath</b>" flag that allows you to use the JSONPath expressions to filter on specific fields in the JSON object
+<a href="https://kubernetes.io/docs/reference/kubectl/jsonpath/">https://kubernetes.io/docs/reference/kubectl/jsonpath/</a><br />
+<pre class="sh-code">
+$ kubectl get pods -o jsonpath --template={.items..status.podIP}</pre>
+<pre class="sh-code">
+10.1.0.152</pre>
+Another way to get details about an object is to use the "<b>kubectl describe</b>" command: <b>kubectl describe &lt;resource-name&gt; &lt;object-name&gt;</b><br />
+<pre class="sh-code">
+$ kubectl describe Pods dnsutils</pre>
+<pre class="sh-code">
+Name:         dnsutils
+Namespace:    default
+Priority:     0
+Node:         docker-desktop/192.168.65.4
+...</pre>
+You can get information about a specific Kubernetes resource: <b>kubectl explain &lt;resource-name&gt;</b><br />
+<pre class="sh-code">
+$ kubectl explain Pod</pre>
+<pre class="sh-code">
+KIND:       Pod
+VERSION:    v1
+...</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Uninstall kubectl</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Remove <b>kubectl</b>:<br />
+<pre class="sh-code">
+$ sudo rm -f /usr/local/bin/kubectl</pre>
+</li>
+<li>
+<b>[Optional]</b> Remove <b>kubectl</b> configuration folder:<br />
+<pre class="sh-code">
+$ rm -rf ~/.kube/</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

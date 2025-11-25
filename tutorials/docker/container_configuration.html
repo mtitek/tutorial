@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Container Configuration | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Container Configuration" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Container Configuration | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Container Configuration" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/container_configuration.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Container Configuration | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Container Configuration" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/container_configuration.html",
+        "description": "Tutorials: Docker - Container Configuration",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/container_configuration.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Container Configuration</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Set Environment Variables</a></li>
+<li><a href="#sec_id_2">Set Labels</a></li>
+<li><a href="#sec_id_3">Set the Container's Hostname</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Set Environment Variables</span>
+<div class="tutorialSectionTextDiv1">
+The "docker container run" command has two options that allow you to set environment variables for your containers:<br />
+<pre class="sh-code">
+-e, --env NAME=VALUE         Set environment variables
+    --env-file file          Read in a file of environment variables</pre>
+Let's try the option "<b>-e</b>" ("<b>--env</b>"):<br />
+<pre class="sh-code">
+$ docker container run --rm --env my_env_var_1="my env var 1 value" --env my_env_var_2="my env var 2 value" ubuntu:latest /bin/bash -c "env | grep my_env_var_"</pre>
+<pre class="sh-code">
+my_env_var_1=my env var 1 value
+my_env_var_2=my env var 2 value</pre>
+The two environment variables were set properly.
+The applications running inside the container can use them as they would in a regular deployment in a native host.<br />
+<br />
+In some cases, setting environment variables using the option "<b>--env</b>" can be cumbersome especially if we want to set many of them.
+Optionally, you can group all the environment variables in a property file and use the option "<b>--env-file</b>" to pass the file to "<b>docker container run</b>" command.<br />
+<br />
+Let's create a property file:<br />
+<pre class="sh-code">
+$ vi env-file-1</pre>
+<pre class="sh-code">
+my_env_var_1=my env var 1 value
+my_env_var_2=my env var 2 value
+my_env_var_3=my env var 3 value</pre>
+Let's use the option "<b>--env-file</b>":<br />
+<pre class="sh-code">
+$ docker container run --rm --env-file env-file-1 ubuntu:latest /bin/bash -c "env | grep my_env_var_"</pre>
+<pre class="sh-code">
+my_env_var_1=my env var 1 value
+my_env_var_2=my env var 2 value
+my_env_var_3=my env var 3 value</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Set Labels</span>
+<div class="tutorialSectionTextDiv1">
+The "docker container run" command has two options that allow you to set labels for your containers:<br />
+<pre class="sh-code">
+-l, --label list                       Set meta data on a container
+    --label-file list                  Read in a line delimited file of labels</pre>
+Let's try the option "<b>-l</b>" ("<b>--label</b>"):<br />
+<pre class="sh-code">
+$ docker container run --rm -d --label my_label_1="my label 1 value" --label my_label_2="my label 2 value" nginx:latest</pre>
+<pre class="sh-code">
+9da697d8336291e8afb968224ff9402bf2d1dfc904275c7c392e44d8c1155e6b</pre>
+Let's check the labels:<br />
+<pre class="sh-code">
+$ docker container inspect b0411f9636 --format '{{json .Config.Labels }}' | jq</pre>
+<pre class="sh-code">
+{
+  "my_label_1": "my label 1 value",
+  "my_label_2": "my label 2 value"
+}</pre>
+The two labels were set properly. We can use them to filter containers:<br />
+<pre class="sh-code">
+$ docker container ls -a --filter label="my_label_1=my label 1 value"</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+b0411f9636d8   nginx:latest   "/docker-entrypoint.…"   9 minutes ago   Up 9 minutes   80/tcp    modest_ishizaka</pre>
+In some cases, setting labels using the option "<b>--label</b>" can be cumbersome especially if we want to set many of them.
+Optionally, you can group all the labels in a property file and use the option "<b>--label-file</b>" to pass the file to "<b>docker container run</b>" command.<br />
+<br />
+Let's create a property file:<br />
+<pre class="sh-code">
+$ vi label-file-1</pre>
+<pre class="sh-code">
+my_label_1=my label 1 value
+my_label_2=my label 2 value
+my_label_3=my label 3 value</pre>
+Let's use the option "--env-file":<br />
+<pre class="sh-code">
+$ docker container run --rm -d --label-file label-file-1 nginx:latest</pre>
+<pre class="sh-code">
+cc5164ddc8993f3d383e00345195dc495d72479271752bf812f11024208cc109</pre>
+Let's check the labels:<br />
+<pre class="sh-code">
+$ docker container inspect cc5164ddc --format '{{json .Config.Labels }}' | jq</pre>
+<pre class="sh-code">
+{
+  "my_label_1": "my label 1 value",
+  "my_label_2": "my label 2 value",
+  "my_label_3": "my label 3 value"
+}</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Set the Container's Hostname</span>
+<div class="tutorialSectionTextDiv1">
+When you run a container, it gets automatically the /etc/hostname file initialized with its ID:<br />
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest /bin/bash -c "cat /etc/hostname"</pre>
+<pre class="sh-code">
+20f335d7ac41</pre>
+To assign a specific host name to the container, we can use the option <b>-h</b> (<b>--hostname</b>) with the command <b>docker container run</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm --hostname ubuntu-latest ubuntu:latest /bin/bash -c "cat /etc/hostname"</pre>
+<pre class="sh-code">
+ubuntu-latest</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

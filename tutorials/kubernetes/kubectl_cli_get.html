@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - kubectl CLI - kubectl get | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - kubectl CLI - kubectl get" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - kubectl CLI - kubectl get | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - kubectl CLI - kubectl get" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/kubectl_cli_get.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - kubectl CLI - kubectl get | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - kubectl CLI - kubectl get" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/kubectl_cli_get.html",
+        "description": "Tutorials: Kubernetes - kubectl CLI - kubectl get",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/kubectl_cli_get.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">kubectl get</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">kubectl get</a></li>
+<li><a href="#sec_id_2">Usage</a></li>
+<li><a href="#sec_id_3">Options</a></li>
+<li><a href="#sec_id_4">Examples</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">kubectl get</span>
+<div class="tutorialSectionTextDiv1">
+Prints a table of the most important information about the specified resources.
+You can filter the list using a label selector and the <b>--selector</b> flag.
+If the desired resource type is namespaced you will only see results in your current namespace unless you pass <b>--all-namespaces</b>.<br />
+<br />
+Uninitialized objects are not shown unless <b>--include-uninitialized</b> is passed.<br />
+<br />
+By specifying the output as 'template' and providing a Go template as the value of the <b>--template</b> flag,
+you can filter the attributes of the fetched resources.<br />
+<br />
+To list <b>kubectl get</b> supported resources, type: <b>kubectl api-resources</b><br />
+<br />
+To list <b>kubectl get</b> options, type: <b>kubectl get --help</b><br />
+<br />
+To print the list of <b>kubectl</b> global command-line options (applies to all commands), type: <b>kubectl options</b><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Usage</span>
+<div class="tutorialSectionTextDiv1">
+Usage: <b>kubectl get [(-o|--output=) format] (TYPE[.VERSION][.GROUP] [NAME | -l label] | TYPE[.VERSION][.GROUP]/NAME ...) [flags] [options]</b><br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Options</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+-A, --all-namespaces=false
+    If present, list the requested object(s) across all namespaces.
+    Namespace in current context is ignored even if specified with --namespace.
+
+-o, --output=''
+    Output format.
+    One of:
+    json
+    yaml
+    wide
+    name
+    custom-columns=...
+    custom-columns-file=...
+    go-template=...
+    go-template-file=...
+    jsonpath=...
+    jsonpath-file=...
+    See custom columns [http://kubernetes.io/docs/user-guide/kubectl-overview/#custom-columns],
+    golang template [http://golang.org/pkg/text/template/#pkg-overview]
+    and jsonpath template [http://kubernetes.io/docs/user-guide/jsonpath].
+
+    --no-headers=false
+    When using the default or custom-column output format, don't print headers (default print headers).
+
+    --allow-missing-template-keys=true
+    If true, ignore any errors in templates when a field or map key is missing in the template.
+    Only applies to golang and jsonpath output formats.
+
+    --chunk-size=500
+    Return large lists in chunks rather than all at once.
+    Pass 0 to disable.
+    This flag is beta and may change in the future.
+
+    --field-selector=''
+    Selector (field query) to filter on, supports '=', '==', and '!='.
+    (e.g. --field-selector key1=value1,key2=value2).
+    The server only supports a limited number of field queries per type.
+
+-f, --filename=[]
+    Filename, directory, or URL to files identifying the resource to get from a server.
+
+    --ignore-not-found=false
+    If the requested object does not exist the command will return exit code 0.
+
+-k, --kustomize=''
+    Process the kustomization directory.
+    This flag can't be used together with -f or -R.
+
+-L, --label-columns=[]
+    Accepts a comma separated list of labels that are going to be presented as columns.
+    Names are case-sensitive.
+    You can also use multiple flag options like -L label1 -L label2...
+
+    --output-watch-events=false
+    Output watch event objects when --watch or --watch-only is used.
+    Existing objects are output as initial ADDED events.
+
+    --raw=''
+    Raw URI to request from the server.
+    Uses the transport specified by the kubeconfig file.
+
+-R, --recursive=false
+    Process the directory used in -f, --filename recursively.
+    Useful when you want to manage related manifests organized within the same directory.
+
+-l, --selector=''
+    Selector (label query) to filter on, supports '=', '==', and '!='.
+    (e.g. -l key1=value1,key2=value2)
+
+    --server-print=true
+    If true, have the server return the appropriate table output.
+    Supports extension APIs and CRDs.
+
+    --show-kind=false
+    If present, list the resource type for the requested object(s).
+
+    --show-labels=false
+    When printing, show all labels as the last column (default hide labels column)
+
+    --sort-by=''
+    If non-empty, sort list types using this field specification.
+    The field specification is expressed as a JSONPath expression (e.g. '{.metadata.name}').
+    The field in the API resource specified by this JSONPath expression must be an integer or a string.
+
+    --template=''
+    Template string or path to template file to use when -o=go-template, -o=go-template-file.
+    The template format is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+
+-w, --watch=false
+    After listing/getting the requested object, watch for changes.
+    Uninitialized objects are excluded if no object name is provided.
+
+    --watch-only=false
+    Watch for changes to the requested object(s), without listing/getting first.</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Examples</span>
+<div class="tutorialSectionTextDiv1">
+List all pods:<br />
+<pre class="sh-code">
+kubectl get pods</pre>
+List all pods with more information (such as ip address, node name, ...):<br />
+<pre class="sh-code">
+kubectl get pods -o wide</pre>
+List a single pod in JSON output format:<br />
+<pre class="sh-code">
+kubectl get -o json pod web-pod-13je7</pre>
+List a pod identified by type and name specified in "pod.yaml" in JSON output format:<br />
+<pre class="sh-code">
+kubectl get -f pod.yaml -o json</pre>
+List deployments in JSON output format, in the "v1" version of the "apps" API group:<br />
+<pre class="sh-code">
+kubectl get deployments.v1.apps -o json</pre>
+Return only the phase value of the specified pod:<br />
+<pre class="sh-code">
+kubectl get -o template pod/web-pod-13je7 --template={{.status.phase}}</pre>
+List resource information in custom columns:<br />
+<pre class="sh-code">
+kubectl get pod test-pod -o custom-columns=CONTAINER:.spec.containers[0].name,IMAGE:.spec.containers[0].image</pre>
+List all pods and services together:<br />
+<pre class="sh-code">
+kubectl get pods,services</pre>
+List one or more resources by their types and names:<br />
+<pre class="sh-code">
+kubectl get pods/web-pod-13je7 service/frontend</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

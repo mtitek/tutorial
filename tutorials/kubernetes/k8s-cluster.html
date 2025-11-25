@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Kubernetes Cluster | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Kubernetes Cluster" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Kubernetes Cluster | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Kubernetes Cluster" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-cluster.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Kubernetes Cluster | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Kubernetes Cluster" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-cluster.html",
+        "description": "Tutorials: Kubernetes - Kubernetes Cluster",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-cluster.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Kubernetes Cluster</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_3">Kubernetes Nodes</a></li>
+<li><a href="#sec_id_4">Kubernetes DNS Service</a></li>
+<li><a href="#sec_id_5">Kubernetes Proxy: kube proxy</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Kubernetes:<br />
+<a href="https://kubernetes.io/docs/concepts/overview/components/">https://kubernetes.io/docs/concepts/overview/components/</a><br />
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/">https://kubernetes.io/docs/concepts/cluster-administration/</a><br />
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/proxies/">https://kubernetes.io/docs/concepts/cluster-administration/proxies/</a><br />
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</a><br />
+<a href="https://kubernetes.io/docs/tasks/debug/debug-cluster/">https://kubernetes.io/docs/tasks/debug/debug-cluster/</a><br />
+<br />
+To install Kubernetes using Docker Desktop (Windows - WSL 2):
+<a href="install-docker-desktop-wsl2.html">Install Docker Desktop (WSL 2) and Enable Kubernetes</a><br />
+<br />
+Amazon Elastic Kubernetes Service (EKS):
+<a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html</a><br />
+<br />
+Microsoft Azure Kubernetes Service (AKS):
+<a href="https://learn.microsoft.com/en-us/azure/aks/">https://learn.microsoft.com/en-us/azure/aks/</a><br />
+<br />
+Google Kubernetes Engine (GKE):
+<a href="https://cloud.google.com/kubernetes-engine/docs">https://cloud.google.com/kubernetes-engine/docs</a><br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Kubernetes Nodes</span>
+<div class="tutorialSectionTextDiv1">
+To List the nodes of the cluster:<br />
+<pre class="sh-code">
+$ kubectl get nodes -o wide</pre>
+<pre class="yaml-code">
+NAME             STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE         KERNEL-VERSION                       CONTAINER-RUNTIME
+docker-desktop   Ready    control-plane   9h    v1.32.2   192.168.65.3   &lt;none&gt;        Docker Desktop   5.15.167.4-microsoft-standard-WSL2   docker://28.0.4</pre>
+Depending on your installation you might see at least one node with the role "master" (the control plane: kube-apiserver, etcd)
+and eventually a list of worker nodes (where the containers are scheduled).<br />
+<br />
+To get information about a node:<br />
+<pre class="sh-code">
+$ kubectl get nodes docker-desktop -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Node
+metadata:
+  annotations:
+    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/cri-dockerd.sock
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: docker-desktop
+    kubernetes.io/os: linux
+  name: docker-desktop
+spec: {}
+...</pre>
+To describe a node:<br />
+<pre class="sh-code">
+$ kubectl describe nodes docker-desktop</pre>
+<pre class="sh-code">
+Name:               docker-desktop
+Roles:              control-plane
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=docker-desktop
+                    kubernetes.io/os=linux
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/cri-dockerd.sock
+...</pre>
+The commands above show information about the node (hostname, processor, OS, ...), its capacity (CPU, memory, ...),
+the Pods running on it (their names, CPU/Memory requests and limits), the total allocated resources (CPU/Memory requests and limits),
+the conditions of the pressure on the disk and the memory,
+and the version of some system components is also printed (Linux Kernel, Container Runtime, Kubelet, ...).<br />
+<br />
+To show the resources usage in the cluster:<br />
+<pre class="sh-code">
+$ kubectl top nodes</pre>
+<pre class="sh-code">
+NAME             CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)
+docker-desktop   188m         0%       3880Mi          12%</pre>
+If the metric server is not installed, you will get this error: "error: Metrics API not available".<br />
+For more details see: <a href="install-kubernetes-metrics-server.html">Kubernetes Metrics Server</a><br />
+<br />
+To show the resources usage by the pods:<br />
+<pre class="sh-code">
+$ kubectl top pods</pre>
+<pre class="sh-code">
+NAME          CPU(cores)   MEMORY(bytes)
+hello-nginx   0m           21Mi</pre>
+To print the events in the cluster:<br />
+<pre class="sh-code">
+$ kubectl get events</pre>
+<pre class="sh-code">
+LAST SEEN   TYPE      REASON      OBJECT              MESSAGE
+1m          Normal    Pulling     pod/hello-busybox   Pulling image "busybox:latest"
+...</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Kubernetes DNS Service</span>
+<div class="tutorialSectionTextDiv1">
+If you have installed Docker Desktop, you will see that Kubernetes is using CoreDNS DNS server.<br />
+<br />
+The DNS server is used as the internal Kubernetes DNS service (cluster DNS) that provides naming and discovery for all Kubernetes Services that are created in the cluster.<br />
+<br />
+The CoreDNS is running as a Kubernetes Deployment (replicas of Pods) and has a Service (acts as a load balancer for the DNS server).<br />
+<br />
+The CoreDNS server components run in the "kube-system" namespace (can be filtered with the label "k8s-app=kube-dns").<br />
+<br />
+To see the CoreDNS Deployment:<br />
+<pre class="sh-code">
+$ kubectl get deployments -n kube-system -l k8s-app=kube-dns -o wide</pre>
+<pre class="sh-code">
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                    SELECTOR
+coredns   2/2     2            2           9h    coredns      registry.k8s.io/coredns/coredns:v1.11.3   k8s-app=kube-dns</pre>
+To see the CoreDNS Pods:<br />
+<pre class="sh-code">
+$ kubectl get pods -n kube-system -l k8s-app=kube-dns -o wide</pre>
+<pre class="sh-code">
+NAME                       READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
+coredns-668d6bf9bc-mjgnv   1/1     Running   0          9h    10.1.0.26   docker-desktop   &lt;none&gt;           &lt;none&gt;
+coredns-668d6bf9bc-mrs79   1/1     Running   0          9h    10.1.0.27   docker-desktop   &lt;none&gt;           &lt;none&gt;</pre>
+To see the CoreDNS Service (kube-dns):<br />
+<pre class="sh-code">
+$ kubectl get services -n kube-system -l k8s-app=kube-dns -o wide</pre>
+<pre class="sh-code">
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE   SELECTOR
+kube-dns   ClusterIP   10.96.0.10   &lt;none&gt;        53/UDP,53/TCP,9153/TCP   9h    k8s-app=kube-dns</pre>
+Let's install dnsutils utility to help debuging the DNS name resolution for services:<br />
+<pre class="sh-code">
+$ kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml</pre>
+<pre class="sh-code">
+pod/dnsutils created</pre>
+Check that Pod was created properly:<br />
+<pre class="sh-code">
+$ kubectl get pod dnsutils</pre>
+<pre class="sh-code">
+NAME       READY   STATUS    RESTARTS   AGE
+dnsutils   1/1     Running   0          56s</pre>
+First let's validate that the DNS resolution is working correctly.<br />
+The nslookup command can be used to resolve the "kubernetes" Service of the API Server (you should get something like the following):<br />
+<pre class="sh-code">
+$ kubectl exec -i -t dnsutils -- nslookup kubernetes</pre>
+<pre class="sh-code">
+Server:  10.96.0.10 &lt;- The IP address of the Kubernetes DNS
+Address: 10.96.0.10#53
+
+Name:    kubernetes.default.svc.cluster.local &lt;- The FQDN of the "kubernetes" Service
+Address: 10.96.0.1 &lt;- The clusterIP of the "kubernetes" Service</pre>
+Let's check the "/etc/resolv.conf" file (the search path and name server should look like the following):<br />
+<pre class="sh-code">
+$ kubectl exec dnsutils -- cat /etc/resolv.conf</pre>
+<pre class="sh-code">
+nameserver 10.96.0.10 &lt;- Kubernetes DNS IP address (kube-dns Service ClusterIP)
+search default.svc.cluster.local svc.cluster.local cluster.local &lt;- Kubernetes DNS search domains
+options ndots:5</pre>
+The "nameserver" (DNS IP address) and "search" (DNS search domains) are saved in the "/etc/resolv.conf" file of all containers.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Kubernetes Proxy: kube proxy</span>
+<div class="tutorialSectionTextDiv1">
+kube-proxy is a network proxy that runs on each node in the Kubernetes cluster.
+It routes network traffic (from inside or outside of the Kubernetes cluster) to Pods of load-balanced services.<br />
+<br />
+The CoreDNS is running as a Kubernetes DaemonSet in the "kube-system" namespace (can be filtered with the label "k8s-app=kube-proxy").<br />
+<br />
+To see the "kube proxy" DaemonSet and its Pod:<br />
+<pre class="sh-code">
+$ kubectl get all -n kube-system -l k8s-app=kube-proxy -o wide</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE   IP             NODE             NOMINATED NODE   READINESS GATES
+pod/kube-proxy-4xt54   1/1     Running   0          10h   192.168.65.3   docker-desktop   &lt;none&gt;           &lt;none&gt;
+
+NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE   CONTAINERS   IMAGES                               SELECTOR
+daemonset.apps/kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   10h   kube-proxy   registry.k8s.io/kube-proxy:v1.32.2   k8s-app=kube-proxy</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+<!--
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Kubernetes Web UI (Dashboard)</span>
+<div class="tutorialSectionTextDiv1">
+See more details about Kubernetes Web UI (Dashboard) in these pages:<br />
+<a href="install-kubernetes-dashboard.html">Docker Desktop: Kubernetes Web UI (Dashboard)</a><br />
+<a href="minikube_dashboard.html">MiniKube: Kubernetes Web UI (Dashboard)</a><br />
+<br />
+Kubernetes Web UI (Dashboard) components run in the "kubernetes-dashboard" namespace (can be filtered with the label "k8s-app=kubernetes-dashboard").<br />
+<br />
+To see the Kubernetes Web UI (Dashboard) components:<br />
+<pre class="sh-code">
+$ kubectl get all -n kubernetes-dashboard -l k8s-app=kubernetes-dashboard -o wide</pre>
+<pre class="sh-code">
+NAME                           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+service/kubernetes-dashboard   ClusterIP   10.101.99.76   &lt;none&gt;        443/TCP   7d9h   k8s-app=kubernetes-dashboard
+
+NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS             IMAGES                          SELECTOR
+deployment.apps/kubernetes-dashboard   1/1     1            1           7d9h   kubernetes-dashboard   kubernetesui/dashboard:v2.2.0   k8s-app=kubernetes-dashboard
+
+NAME                                        READY   STATUS    RESTARTS   AGE    IP           NODE             NOMINATED NODE   READINESS GATES
+pod/kubernetes-dashboard-76577bd7bb-22mzj   1/1     Running   0          7d9h   10.1.0.145   docker-desktop   &lt;none&gt;           &lt;none&gt;
+
+NAME                                              DESIRED   CURRENT   READY   AGE    CONTAINERS             IMAGES                          SELECTOR
+replicaset.apps/kubernetes-dashboard-76577bd7bb   1         1         1       7d9h   kubernetes-dashboard   kubernetesui/dashboard:v2.2.0   k8s-app=kubernetes-dashboard,pod-template-hash=76577bd7bb</pre>
+To access the Web UI (Dashboard), open your favorite browser and copy paste the URL:<br />
+<a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>:<br />
+<br />
+The Dashboard page should look similar to the following:<br />
+<img alt="Kubernetes Dashboard" src="img/k8s-dashboard-home-page.png" width="600" />
+</div>
+</li>
+-->

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/install-kubernetes-dashboard.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/install-kubernetes-dashboard.html",
+        "description": "Tutorials: Kubernetes - Docker Desktop: Kubernetes Web UI (Dashboard)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/install-kubernetes-dashboard.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Docker Desktop: Kubernetes Web UI (Dashboard)</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+See this page for more details about Kubernetes Web UI (Dashboard):<br />
+<a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</a><br />
+<br />
+<ul class="ul_square_1">
+<li>
+Deploying the Dashboard UI:<br />
+<br />
+See this page for details Helm installation:
+<a href="/tutorials/helm/install.html">Install Helm</a><br />
+<br />
+Add kubernetes-dashboard repository:
+<pre class="sh-code">
+$ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/</pre>
+<pre class="sh-code">
+"kubernetes-dashboard" has been added to your repositories</pre>
+Deploy a Helm Release named "kubernetes-dashboard" using the kubernetes-dashboard chart:
+<pre class="sh-code">
+$ helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard</pre>
+<pre class="sh-code">
+Release "kubernetes-dashboard" does not exist. Installing it now.
+NAME: kubernetes-dashboard
+NAMESPACE: kubernetes-dashboard
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+*************************************************************************************************
+*** PLEASE BE PATIENT: Kubernetes Dashboard may need a few minutes to get up and become ready ***
+*************************************************************************************************
+
+Congratulations! You have just installed Kubernetes Dashboard in your cluster.
+
+To access Dashboard run:
+  kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+NOTE: In case port-forward command does not work, make sure that kong service name is correct.
+      Check the services in Kubernetes Dashboard namespace using:
+        kubectl -n kubernetes-dashboard get svc
+
+Dashboard will be available at:
+  https://localhost:8443</pre></li>
+<li>
+Check the Dashboard Service:<br />
+<pre class="sh-code">
+$ kubectl get services -n kubernetes-dashboard -o wide</pre>
+<pre class="sh-code">
+NAME                        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE    SELECTOR
+kubernetes-dashboard        ClusterIP   10.101.99.76   &lt;none&gt;        443/TCP    7d9h   k8s-app=kubernetes-dashboard
+...</pre></li>
+<li>
+Check the Dashboard Deployment:<br />
+<pre class="sh-code">
+$ kubectl get deployments -n kubernetes-dashboard -o wide</pre>
+<pre class="sh-code">
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS                  IMAGES                                SELECTOR
+kubernetes-dashboard        1/1     1            1           7d9h   kubernetes-dashboard        kubernetesui/dashboard:v2.2.0         k8s-app=kubernetes-dashboard
+...</pre></li>
+<li>
+Check the Dashboard Pods:<br />
+<pre class="sh-code">
+$ kubectl get pods -n kubernetes-dashboard -o wide</pre>
+<pre class="sh-code">
+NAME                                         READY   STATUS    RESTARTS   AGE    IP           NODE             NOMINATED NODE   READINESS GATES
+kubernetes-dashboard-76577bd7bb-22mzj        1/1     Running   0          7d9h   10.1.0.145   docker-desktop   &lt;none&gt;           &lt;none&gt;
+...</pre></li>
+<li>
+Accessing the Dashboard UI:<br />
+<pre class="sh-code">
+$ kubectl port-forward svc/kubernetes-dashboard-kong-proxy 8443:443 -n kubernetes-dashboard</pre>
+<pre class="sh-code">
+Forwarding from 127.0.0.1:8443 -> 8443
+Forwarding from [::1]:8443 -> 8443
+Handling connection for 8443</pre>
+To access the Web UI (Dashboard), open your favorite browser and copy paste the URL:
+<a href="https://localhost:8443">https://localhost:8443</a><br />
+<img alt="Kubernetes Dashboard - Authentication Screen" src="img/k8s-dashboard-auth-screen.png" width="600" /><br />
+<br /></li>
+<li>
+Generate a Bearer Token for a Service Account:<br />
+<br />
+Create a service account:
+<pre class="sh-code">
+$ kubectl create serviceaccount kubernetes-dashboard-admin -n kubernetes-dashboard</pre>
+<pre class="sh-code">
+serviceaccount/kubernetes-dashboard-admin created</pre>
+Create a service account using the yaml file:
+<pre class="yaml-code">
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubernetes-dashboard-admin
+  namespace: kubernetes-dashboard</pre>
+<pre class="sh-code">
+$ kubectl apply -f kubernetes-dashboard-service-account.yaml -n kubernetes-dashboard</pre>
+Create a cluster role binding:
+<pre class="sh-code">
+$ kubectl create clusterrolebinding kubernetes-dashboard-admin --clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:kubernetes-dashboard-admin</pre>
+<pre class="sh-code">
+lusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-admin created</pre>
+Create a cluster role binding using the yaml file:
+<pre class="yaml-code">
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard-admin
+  namespace: kubernetes-dashboard</pre>
+<pre class="sh-code">
+$ kubectl apply -f kubernetes-dashboard-cluster-role-binding.yaml -n kubernetes-dashboard</pre>
+Generate a Bearer Token:
+<pre class="sh-code">
+$ kubectl create token kubernetes-dashboard-admin -n kubernetes-dashboard</pre>
+<pre class="sh-code">
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImNRSWpaaWtzSGprazQ...</pre>
+<img alt="Kubernetes Dashboard" src="img/k8s-dashboard-home-page.png" width="600" /><br />
+<br /></li>
+<li>
+Accessing the Dashboard UI remotely:<br />
+<br />
+Forward the port 8443 from Windows into your Linux WSL distro.<br />
+<br />
+The portproxy server listens for messages sent to a specific port and IPv4 address and maps a port and IPv4 address to send the messages received after establishing a separate TCP connection.<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+listenaddress: Specifies the IPv4 address for which to listen ("0.0.0.0" any IPv4 address).<br />
+</li>
+<li>
+listenport: Specifies the IPv4 port on which to listen ("8443").<br />
+</li>
+<li>
+connectaddress: Specifies the IPv4 address to which to connect ("172.26.110.211", this should be the address of your Linux WSL distro).<br />
+</li>
+<li>
+connectport: Specifies the IPv4 port to which to connect ("8443").<br />
+</li>
+</ul>
+<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=8443 connectaddress=172.26.110.211 connectport=8443</pre>
+To check the Port:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy show v4tov4
+Listen on ipv4:               Connect to ipv4:
+Address Port                  Address        Port
+------- ----                  -------        ----
+0.0.0.0 8443                  172.26.110.211 8443</pre>
+Add a new firewall rule to enable the port.<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall add rule name="Open Port 8443 - WSL 2" dir=in action=allow protocol=TCP localport=8443</pre>
+To check the rule:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall show rule status=enabled dir=in name=all | select-string -pattern "(LocalPort.*8443)" -context 9,4
+Rule Name:           Open Port 8443 - WSL 2
+-------------------------------------------
+Enabled:             Yes
+LocalPort:           8443
+...</pre>
+Start kubectl proxy command:<br />
+<pre class="sh-code">
+$ kubectl port-forward svc/kubernetes-dashboard-kong-proxy 8443:443 --address='0.0.0.0' -n kubernetes-dashboard</pre>
+<pre class="sh-code">
+Forwarding from 0.0.0.0:8443 -> 8443
+Handling connection for 8443</pre>
+</li>
+</ul>
+To delete the firewall rule:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall delete rule name="Open Port 8443 - WSL 2"</pre>
+To delete the IPv4 port and address from the list of IPv4 ports and addresses for which the server listens:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy delete v4tov4 listenaddress=0.0.0.0 listenport=8443</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+<!--<a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>-->
+<!--
+<li>
+Skip the login page of the Kubernetes dashboard:<br />
+<br />
+You need to edit the kubernetes-dashboard deployment and add the --enable-skip-login to the container argument:<br />
+<pre class="sh-code">
+$ kubectl edit deployment kubernetes-dashboard -n kubernetes-dashboard</pre>
+<pre class="yaml-code">
+containers:
+- args:
+  - --auto-generate-certificates
+  - --namespace=kubernetes-dashboard
+  - --enable-skip-login</pre>
+Note:<br />
+You can also use the "kubectl patch" command to add the --enable-skip-login to the container argument:<br />
+<pre class="sh-code">
+$ kubectl patch deployment kubernetes-dashboard -n kubernetes-dashboard --type 'json' -p '[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-skip-login"}]'
+deployment.apps/kubernetes-dashboard patched</pre>
+Restart the proxy and you should see a Skip button when you access the Kubernetes Dashboard:<br />
+<img alt="Kubernetes Dashboard - Skip Authentication" src="img/k8s-dashboard-skip-login.png" width="600" /><br />
+<br />
+Click on the Skip button and you should be redirected to the Kubernetes Dashboard:<br />
+<img alt="Kubernetes Dashboard" src="img/k8s-dashboard-home-page.png" width="600" /><br />
+<br /></li>
+-->

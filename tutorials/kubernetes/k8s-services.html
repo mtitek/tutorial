@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Services (services|svc) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Services (services|svc)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Services (services|svc) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Services (services|svc)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-services.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Services (services|svc) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Services (services|svc)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-services.html",
+        "description": "Tutorials: Kubernetes - Services (services|svc)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-services.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Services (services|svc)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Services (services|svc)</a></li>
+<li><a href="#sec_id_3">ClusterIP</a></li>
+<li><a href="#sec_id_4">NodePort</a></li>
+<li><a href="#sec_id_5">Expose a Service using the "kubectl expose" command</a></li>
+<li><a href="#sec_id_6">Delete Services</a></li>
+<li><a href="#sec_id_7">Kubernetes Service Discovery</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Services:<br />
+<a href="https://kubernetes.io/docs/concepts/services-networking/service/">https://kubernetes.io/docs/concepts/services-networking/service/</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/</a><br />
+<a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/</a><br />
+<a href="https://kubernetes.io/docs/concepts/security/controlling-access/">https://kubernetes.io/docs/concepts/security/controlling-access/</a><br />
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Services (services|svc)</span>
+<div class="tutorialSectionTextDiv1">
+Pods have their own unique IP addresses but these IP addresses are not reliable (if a Pod get rescheduled it might get a new IP address).
+For a large deployment, it will be hard to maintain and keep updated a list of all these IP addresses,.<br />
+<br />
+Kubernetes provides a solution that makes accessing the Pods easier and reliable.
+The Kubernetes Service is a special object that regroup a set of related Pods.
+A Kubernetes Service has a unique IP address (ClusterIP), DNS name, and Port that last for the life of the service.
+The Kubernetes Service load balance requests across its associated Pods.<br />
+<br />
+Kubernetes Service uses the Kubernetes Endpoints object  (<b>endpoints</b>|<b>ep</b>) to manage Pods.
+For each service, an associated EndPoints object will be created.
+This object will keep updating the list of all the Pods that their labels match the Service's selector.
+Pods (coming from new deployment, scaling up an existing deployment) that their labels match the Service's label selector, will dynamically be added to the Endpoints object.
+If a Pod get updated (labels), become unhealthy (failure), or terminated (an existing deployment get deleted or rolled back), it will be removed from the Endpoints object.
+The EndPoints object will have the name of the Service.<br />
+<br />
+Linking Pods to a Service using labels and label selectors allow Pods to be loosely coupled with the Service.
+To be selected, a pod must define all the labels defined in the Service's label selector.
+A Pod can define more labels than the one defined in the Service's selector.<br />
+<br />
+The Service object allow you to specify the type (spec.<b>type</b>) of the Service you want.
+The possible values are:<br />
+<ul class="ul_square_1">
+<li>
+ClusterIP (default):<br />
+The Service (unique IP address, DNS name, and Port) will be, by default, only available within the cluster.<br />
+<br /></li>
+<li>
+NodePort:<br />
+Superset of ClusterIP.
+It also exposes a node port (TCP/UDP) that allow the Service to be available from outside the cluster.<br />
+<br /></li>
+<li>
+LoadBalancer:<br />
+Superset of NodePort.
+If supported, It creates an external load balancer in the cloud provider and assigns an external IP address to the Service.<br />
+<br /></li>
+<li>
+ExternalName:<br />
+Can be used when there's need to direct requests to applications running outside the Kubernetes cluster.<br />
+<br /></li>
+</ul>
+"Headless" Service (spec.<b>clusterIP</b> set to <b>none</b>) is a special case of the ClusterIP Service.
+A query to the Service will return the Pods' IP addresses (no load balancing).
+Statefulset is a known use case where "Headless" Services are used.<br />
+<br />
+To create/deploy a Service, you need first to create a manifest YAML file.
+The manifest file describe the Service and its components (name, type, Ports, Selector, ...).
+You can use "<b>kubectl</b>" (or any rest client tool) to post the manifest file to the API server
+If applicable, the API server verifies that the request is authenticated, validates it's authorized, and runs the admission controllers on it.
+The API server verifies the manifest file and, if no issues, it writes a record for that manifest in the cluster store (etcd).
+The scheduler will then read the record and deploy the Pod of the Service to a healthy worker node with enough available resources.<br />
+<br />
+The same behaviour, described above, applies if you use the imperative command ("kubectl create") to create the Service.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">ClusterIP</span>
+<div class="tutorialSectionTextDiv1">
+Let's define a simple Service:<br />
+<pre class="sh-code">
+$ vi hello-nginx-service.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-nginx
+spec:
+  type: ClusterIP # this's default if the field type is skipped
+  ports:
+  - port: 80
+    targetPort: 80 # this defaults to the Port's value if the field targetPort is skipped
+    protocol: TCP # this's the default if the field protocol is skipped
+  selector:  # the Service's selector verifies Pods that define all its labels
+    app: hello-nginx</pre>
+The Service defines a Selector (spec.<b>selector</b>): "app=hello-nginx"<br />
+Pods that have all the labels defined in the Service's Selector will be selected.<br />
+<br />
+Let's apply now the Service:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-service.yaml</pre>
+<pre class="sh-code">
+service/hello-nginx created</pre>
+Check the Service:<br />
+<pre class="sh-code">
+$ kubectl get service hello-nginx -o wide</pre>
+<pre class="sh-code">
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+hello-nginx   ClusterIP   10.109.87.124   &lt;none&gt;        80/TCP    11m   app=hello-nginx</pre>
+In the bellow Deployment example, the Pods will be selected because they define (spec.template.metadata.<b>labels</b>) the label "app=hello-nginx".
+The other labels of the Pods ("product=mtitek", "stage=dev") are not considered.<br />
+<br />
+Let's define a simple deployment:<br />
+<pre class="sh-code">
+$ vi hello-nginx-deployment.yaml</pre>
+<pre class="yaml-code">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-nginx
+  template:
+    metadata:
+      labels: # a subset of the Pod's labels must match the Service's selector
+        app: hello-nginx
+        product: mtitek
+        stage: dev
+    spec:
+      containers:
+      - name: hello-nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80</pre>
+Let's apply the Deployment:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx created</pre>
+Verify that Pods are running and ready (note the IP addresses of each Pod):<br />
+<pre class="sh-code">
+$ kubectl get pods -o wide</pre>
+<pre class="sh-code">
+NAME                           READY   STATUS    RESTARTS   AGE   IP           NODE             NOMINATED NODE   READINESS GATES
+hello-nginx-5d77cc88f4-gj6k2   1/1     Running   0          13m   10.1.0.157   docker-desktop   &lt;none&gt;           &lt;none&gt;
+hello-nginx-5d77cc88f4-pz9dj   1/1     Running   0          13m   10.1.0.156   docker-desktop   &lt;none&gt;           &lt;none&gt;</pre>
+Let's validate the Service (note that the Endpoints field contains the Pods' IP addresses):<br />
+<pre class="sh-code">
+$ kubectl describe service hello-nginx</pre>
+<pre class="sh-code">
+Name:              hello-nginx
+Namespace:         default
+Labels:            &lt;none&gt;
+Annotations:       &lt;none&gt;
+Selector:          app=hello-nginx # list of labels that Pods must define so they can bed added to the Service's Endpoints
+Type:              ClusterIP
+IP:                10.109.87.124 # clusterIP address (internal) of the Service
+Port:              &lt;unset&gt;  80/TCP # the port that the Service listens on inside the cluster
+TargetPort:        80/TCP # the port that the Pods are listening on
+Endpoints:         10.1.0.156:80,10.1.0.157:80 # list of Pods (IP addresses) that are healthy and their labels match the service's label selector
+Session Affinity:  None
+Events:            &lt;none&gt;</pre>
+Check the Endpoints object of the Service (note the ENDPOINTS column):<br />
+<pre class="sh-code">
+$ kubectl get endpoints hello-nginx</pre>
+<pre class="sh-code">
+NAME          ENDPOINTS                     AGE
+hello-nginx   10.1.0.156:80,10.1.0.157:80   23m</pre>
+Describe the Endpoints object of the Service (note the Addresses field):<br />
+<pre class="sh-code">
+$ kubectl describe endpoints hello-nginx
+Name:         hello-nginx
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  endpoints.kubernetes.io/last-change-trigger-time: 2021-06-06T10:31:11Z
+Subsets:
+  Addresses:          10.1.0.156,10.1.0.157
+  NotReadyAddresses:  &lt;none&gt;
+  Ports:
+    Name     Port  Protocol
+    ----     ----  --------
+    &lt;unset&gt;  80    TCP
+
+Events:  &lt;none&gt;</pre>
+To access the service from inside the cluster:<br />
+<pre class="sh-code">
+$ kubectl exec -ti hello-nginx-5d77cc88f4-gj6k2 -- bash</pre>
+<pre class="sh-code">
+root@hello-nginx-5d77cc88f4-gj6k2:/# curl -I -X GET 10.109.87.124:80
+HTTP/1.1 200 OK
+Server: nginx/1.21.0
+Date: Wed, 06 Jun 2021 02:52:40 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Tue, 25 May 2021 12:28:56 GMT
+Connection: keep-alive
+ETag: "60aced88-264"
+Accept-Ranges: bytes
+
+root@hello-nginx-5d77cc88f4-gj6k2:/#</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">NodePort</span>
+<div class="tutorialSectionTextDiv1">
+The NodePort Service defines a node port on every node in the cluster.
+Requests from outside the cluster can target the node port of any cluster node to reach the Service.
+The NodePort Service will load balance requests to the Pods that are associated to it.<br />
+<br />
+Requests -&gt; Cluster Node (NodePort) -&gt; Service -&gt; Pods<br />
+<br />
+Let's use the Deployment created previously (hello-nginx-deployment.yaml).<br />
+<br />
+Let's define a simple NodePort Service:<br />
+<pre class="sh-code">
+$ vi hello-nginx-service-node-port.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-nginx-node-port
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80 # this defaults to the Port's value if the field targetPort is skipped
+    protocol: TCP # this's the default if the field protocol is skipped
+    nodePort: 30080 # if not defined, Kubernetes will assign a port from a range (default: 30000-32767)
+  selector:  # the Service's selector verifies Pods that define all its labels
+    app: hello-nginx</pre>
+Let's apply the Service:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-service-node-port.yaml</pre>
+<pre class="sh-code">
+service/hello-nginx-node-port created</pre>
+Check the Service:<br />
+<pre class="sh-code">
+$ kubectl get service hello-nginx-node-port -o wide</pre>
+<pre class="sh-code">
+NAME                    TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+hello-nginx-node-port   NodePort   10.106.138.253   &lt;none&gt;        80:30080/TCP   24s   app=hello-nginx</pre>
+Let's validate that Service (note that the Endpoints field contains the Pods' IP addresses):<br />
+<pre class="sh-code">
+$ kubectl describe service hello-nginx-node-port</pre>
+<pre class="sh-code">
+Name:                     hello-nginx-node-port
+Namespace:                default
+Labels:                   &lt;none&gt;
+Annotations:              &lt;none&gt;
+Selector:                 app=hello-nginx
+Type:                     NodePort
+IP:                       10.106.138.253
+LoadBalancer Ingress:     localhost
+Port:                     &lt;unset&gt;  80/TCP
+TargetPort:               80/TCP
+NodePort:                 &lt;unset&gt;  30080/TCP # the port to access the Service from outside the cluster
+Endpoints:                10.1.0.156:80,10.1.0.157:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   &lt;none&gt;</pre>
+Check the Endpoints object of the Service (note the ENDPOINTS column):<br />
+<pre class="sh-code">
+$ kubectl get endpoints hello-nginx-node-port</pre>
+<pre class="sh-code">
+NAME                    ENDPOINTS                     AGE
+hello-nginx-node-port   10.1.0.156:80,10.1.0.157:80   83s</pre>
+Describe the Endpoints object of the Service (note the Addresses field):<br />
+<pre class="sh-code">
+$ kubectl describe endpoints hello-nginx-node-port</pre>
+<pre class="sh-code">
+Name:         hello-nginx-node-port
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  endpoints.kubernetes.io/last-change-trigger-time: 2021-06-09T02:36:41Z
+Subsets:
+  Addresses:          10.1.0.156,10.1.0.157
+  NotReadyAddresses:  &lt;none&gt;
+  Ports:
+    Name     Port  Protocol
+    ----     ----  --------
+    &lt;unset&gt;  80    TCP
+
+Events:  &lt;none&gt;</pre>
+To access the service from inside the cluster, execute the same command we did above for the ClusterIP service (on port 80).<br />
+<br />
+To access the service from outside the cluster (note the node port 30080 and the IP address of the docker desktop VM):<br />
+<pre class="sh-code">
+$ curl -I -X GET 192.168.2.10:30080</pre>
+<pre class="sh-code">
+HTTP/1.1 200 OK
+Server: nginx/1.21.0
+Date: Wed, 06 Jun 2021 02:58:03 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Tue, 25 May 2021 12:28:56 GMT
+Connection: keep-alive
+ETag: "60aced88-264"
+Accept-Ranges: bytes</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Expose a Service using the "kubectl expose" command</span>
+<div class="tutorialSectionTextDiv1">
+You can use the "kubectl expose" command to create a Service object that exposes a Deployment.<br />
+<br />
+Let's use the Deployment created previously (hello-nginx-deployment.yaml).<br />
+<br />
+To expose the "hello-nginx"" Deployment:<br />
+<pre class="sh-code">
+$ kubectl expose deployment hello-nginx \
+  --name=hello-nginx \
+  --port=80 \
+  --target-port=80 \
+  --type=ClusterIP</pre>
+<pre class="sh-code">
+service/hello-nginx exposed</pre>
+<ul class="ul_square_1">
+<li>
+The <b>--name</b> flag defines the name of the service.<br />
+<br /></li>
+<li>
+The <b>--port</b> flag defines the port that the Service listens on inside the cluster.<br />
+<br /></li>
+<li>
+The <b>--target-port</b> flag defines the port that the Pods are listening on.<br />
+<br /></li>
+<li>
+The <b>--type</b> flag defines the service type.<br />
+<br /></li>
+</ul>
+To get details about the Service, you can use the same commands explained above (kubectl get services, kubectl describe services).<br />
+<pre class="sh-code">
+$ kubectl get services hello-nginx -o wide</pre>
+<pre class="sh-code">
+NAME          TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+hello-nginx   ClusterIP   10.97.96.83   &lt;none&gt;        80/TCP    76s   app=hello-nginx</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Delete Services</span>
+<div class="tutorialSectionTextDiv1">
+To delete a Service: using manifest file (<b>kubectl delete</b>):<br />
+<pre class="sh-code">
+$ kubectl delete -f hello-nginx-service.yaml</pre>
+<pre class="sh-code">
+service "hello-nginx" deleted</pre>
+To delete a Service using its name:<br />
+<pre class="sh-code">
+$ kubectl delete services hello-nginx</pre>
+<pre class="sh-code">
+service "hello-nginx" deleted</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Kubernetes Service Discovery</span>
+<div class="tutorialSectionTextDiv1">
+See more details about Kubernetes DNS Service (and dnsutils utility) in this page:
+<a href="k8s-cluster.html">Kubernetes Cluster</a><br />
+<br />
+The Kubernetes DNS (controller) watches the API Server for new Services.
+When a new Service is created (get assigned a virtual IP address: ClusterIP),
+the Kubernetes DNS will automatically create the DNS records for the Service
+(the Service's name and IP address get registered with the cluster DNS).<br />
+<br />
+The fully qualified domain name (FQDN) of a Service will be created by combing the following data:<br />
+<ul class="ul_square_1">
+<li>
+The Service name (metadata.<b>name</b>).<br />
+This's also called the short name or the unqualified name of the Service (i.e. hello-nginx).<br />
+<br /></li>
+<li>
+The namespace where the service is created.<br />
+<br /></li>
+<li>
+The service type name (<b>svc</b>).<br />
+<br /></li>
+<li>
+The cluster domain address (cluster.<b>local</b>).<br />
+<br /></li>
+</ul>
+This can be represented as following: &lt;SERVICE-NAME&gt;.&lt;NAMESPACE&gt;.svc.cluster.local<br />
+Example (Service: hello-nginx): hello-nginx.default.svc.cluster.local<br />
+<br />
+<ul class="ul_square_1">
+<li>
+A request to a Service from outside its namespace needs to use the Service's FQDN: hello-nginx.default.svc.cluster.local.<br />
+<br /></li>
+<li>
+A request to a Service from inside its namespace can use the Service's name (short name or unqualified name): hello-nginx.<br />
+<br /></li>
+</ul>
+It's also possible to use the Service's name concatenated with the namespace: hello-nginx.default.<br />
+<br />
+The nslookup command can be used to resolve the "hello-nginx" Service (you should get something like the following):<br />
+<pre class="sh-code">
+$ kubectl exec -i -t dnsutils -- nslookup hello-nginx</pre>
+<pre class="sh-code">
+Server:  10.96.0.10 &lt;- The IP address of the Kubernetes DNS (kube-dns Service ClusterIP)
+Address: 10.96.0.10#53
+
+Name:    hello-nginx.default.svc.cluster.local &lt;- The FQDN of the hello-nginx Service
+Address: 10.109.87.124 &lt;- The clusterIP of the hello-nginx Service</pre>
+When Pods are created, they are configured to know about the Kubernetes DNS (ClusterIP, search domains).
+This will allow Pods to query the Kubernetes DNS to resolve a service's name to its IP address.<br />
+<br />
+Kubernetes will configure each Pod's "/etc/resolv.conf" file with
+the IP address (nameserver) of the Kubernetes DNS Service
+and the search domains (search) that can be appended to the Services' unqualified names.<br />
+<pre class="sh-code">
+$ kubectl exec hello-nginx-5d77cc88f4-gj6k2 -- cat /etc/resolv.conf</pre>
+<pre class="sh-code">
+nameserver 10.96.0.10 &lt;- Kubernetes DNS IP address (kube-dns Service ClusterIP) to which request will be senn
+search default.svc.cluster.local svc.cluster.local cluster.local #&lt;- search domains to be appended to unqualified names
+options ndots:5</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

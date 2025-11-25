@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Set up a private Docker registry (Ubuntu) | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Set up a private Docker registry (Ubuntu)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Set up a private Docker registry (Ubuntu) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Set up a private Docker registry (Ubuntu)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/set_up_a_private_docker_registry.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Set up a private Docker registry (Ubuntu) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Set up a private Docker registry (Ubuntu)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/set_up_a_private_docker_registry.html",
+        "description": "Tutorials: Docker - Set up a private Docker registry (Ubuntu)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/set_up_a_private_docker_registry.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Set up a private Docker registry (Ubuntu)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Configure /etc/ssl/openssl.cnf</a></li>
+<li><a href="#sec_id_3">Generate a self-signed certificate</a></li>
+<li><a href="#sec_id_4">Create htpasswd</a></li>
+<li><a href="#sec_id_5">Configure config.yml</a></li>
+<li><a href="#sec_id_6">Create the registry Dockerfile</a></li>
+<li><a href="#sec_id_7">Build the registry Docker image</a></li>
+<li><a href="#sec_id_8">Run the registry</a></li>
+<li><a href="#sec_id_9">Test the registry</a></li>
+<li><a href="#sec_id_10">Push an image into the registry</a></li>
+<li><a href="#sec_id_11">Pull an image from the registry</a></li>
+<li><a href="#sec_id_12">Verify the created repositories inside the Registry's container</a></li>
+<li><a href="#sec_id_13">Verify the created repositories using the Registry API</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more information:<br />
+<a href="https://docs.docker.com/registry/">https://docs.docker.com/registry/</a><br />
+<a href="https://docs.docker.com/registry/spec/api/">https://docs.docker.com/registry/spec/api/</a><br />
+<a href="https://docs.docker.com/registry/configuration/">https://docs.docker.com/registry/configuration/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Configure /etc/ssl/openssl.cnf</span>
+<div class="tutorialSectionTextDiv1">
+First you need to configure <b>openssl.cnf</b> to avoid getting this error when you try to log into the registry using the ip address:<br />
+<pre class="sh-code">
+Error response from daemon: Get https://192.168.2.22:5000/v2/: x509: cannot validate certificate for 192.168.2.22 because it doesn't contain any IP SANs
+http: TLS handshake error from 192.168.2.22:38696: remote error: tls: bad certificate</pre>
+To fix this error: add your IP address under the section <b>v3_ca</b><br />
+<pre class="sh-code">
+$ sudo vi /etc/ssl/openssl.cnf</pre>
+<pre class="sh-code">
+[ v3_ca ]
+subjectAltName = IP:192.168.2.22</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Generate a self-signed certificate</span>
+<div class="tutorialSectionTextDiv1">
+Create a working directory:<br />
+<pre class="sh-code">
+$ mkdir ~/registry
+$ cd ~/registry/</pre>
+Generate certificate:<br />
+<pre class="sh-code">
+$ openssl req -x509 -nodes -sha256 -newkey rsa:4096 \
+   -keyout registry.key -out registry.crt \
+   -days 14 -subj '/CN=192.168.2.22'</pre>
+<pre class="sh-code">
+$ ls -1 ~/registry</pre>
+<pre class="sh-code">
+registry.crt
+registry.key</pre>
+Copy certificate into <b>/etc/docker/certs.d/</b> directory:<br />
+<pre class="sh-code">
+$ sudo mkdir -p "/etc/docker/certs.d/192.168.2.22:5000"
+$ sudo cp ~/registry/registry.crt "/etc/docker/certs.d/192.168.2.22:5000"</pre>
+Restart Docker:<br />
+<pre class="sh-code">
+$ sudo systemctl restart docker</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Create htpasswd</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ cd ~/registry/</pre>
+Create <b>htpasswd</b> with <b>username/password</b>: <b>admin/admin</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm --entrypoint htpasswd registry:2.7.0 -Bbn admin admin > htpasswd</pre>
+<pre class="sh-code">
+$ cat ~/registry/htpasswd</pre>
+<pre class="sh-code">
+admin:$2y$05$ICkq3vbj0hkj3sqV/R.dkOrnvLHyR/JDmD7fhNCBP3WHpZTWqRed6</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Configure config.yml</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more information: <a href="https://docs.docker.com/registry/configuration/">https://docs.docker.com/registry/configuration/</a><br />
+<br />
+Create config.yml file (make sure to adjust the http host with your IP address):<br />
+<pre class="sh-code">
+$ vi ~/registry/config.yml</pre>
+<pre class="sh-code">
+version: 0.1
+log:
+  accesslog:
+    disabled: false
+  level: info
+  fields:
+    service: registry
+    environment: development
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+  cache:
+    blobdescriptor: inmemory
+auth:
+  htpasswd:
+    realm: class-realm
+    path: /etc/docker/registry/htpasswd
+http:
+  addr: 0.0.0.0:5000
+  host: https://192.168.2.22:5000
+  secret: asecretforlocaldevelopment
+  tls:
+    certificate: /etc/docker/registry/certs/registry.crt
+    key: /etc/docker/registry/certs/registry.key
+  debug:
+    addr: 0.0.0.0:5001</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Create the registry Dockerfile</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ vi ~/registry/Dockerfile</pre>
+<pre class="sh-code">
+FROM registry:2.7.1
+
+ADD config.yml /etc/docker/registry/config.yml
+ADD registry.crt /etc/docker/registry/certs/registry.crt
+ADD registry.key /etc/docker/registry/certs/registry.key
+ADD htpasswd /etc/docker/registry/htpasswd</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Build the registry Docker image</span>
+<div class="tutorialSectionTextDiv1">
+First let's check that you have all the required files:<br />
+<pre class="sh-code">
+$ ls -1 ~/registry</pre>
+<pre class="sh-code">
+config.yml
+Dockerfile
+htpasswd
+registry.crt
+registry.key</pre>
+Build registry:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t local-registry .</pre>
+<pre class="sh-code">
+Sending build context to Docker daemon  11.26kB
+
+Step 1/5 : FROM registry:2.7.1
+2.7.1: Pulling from library/registry
+...
+Digest: sha256:8be26f81ffea54106bae012c6f349df70f4d5e7e2ec01b143c46e2c03b9e551d
+Status: Downloaded newer image for registry:2.7.1
+ ---> 2d4f4b5309b1
+
+Step 2/5 : ADD config.yml /etc/docker/registry/config.yml
+ ---> 845a8d18a3b5
+
+Step 3/5 : ADD registry.crt /etc/docker/registry/certs/registry.crt
+ ---> 87b386161c5b
+
+Step 4/5 : ADD registry.key /etc/docker/registry/certs/registry.key
+ ---> 545e56e52c62
+
+Step 5/5 : ADD htpasswd /etc/docker/registry/htpasswd
+ ---> 682f3dd78080
+
+Successfully built 682f3dd78080
+Successfully tagged local-registry:latest</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Run the registry</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ docker container run -d -p 5000:5000 --name registry local-registry</pre>
+<pre class="sh-code">
+4619b37683cd272f2daf43b47877bfe03d01c216db5436d21fcaa5c4526a9634</pre>
+<pre class="sh-code">
+$ docker container ls --no-trunc</pre>
+<pre class="sh-code">
+CONTAINER ID                                                       IMAGE            COMMAND                                            CREATED          STATUS          PORTS                    NAMES
+a948cd767c54312925313fb4fa120af5e7d5097bc5ca8bcf3646f7d5a22c61eb   local-registry   "/entrypoint.sh /etc/docker/registry/config.yml"   43 seconds ago   Up 42 seconds   0.0.0.0:5000->5000/tcp   registry</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Test the registry</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Login to registry:<br />
+<pre class="sh-code">
+$ docker login 192.168.2.22:5000</pre>
+<pre class="sh-code">
+Username: admin
+Password: admin
+WARNING! Your password will be stored unencrypted in $HOME/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded</pre>
+Verify <b>~/.docker/config.json</b>:<br />
+<pre class="sh-code">
+$ cat ~/.docker/config.json</pre>
+<pre class="sh-code">
+{
+  "auths": {
+    "192.168.2.22:5000": {
+      "auth": "YWRtaW46YWRtaW4="
+    }
+  },
+  "HttpHeaders": {
+    "User-Agent": "Docker-Client/19.03.12 (linux)"
+  }
+}</pre>
+The aude value is base64 encoded. To decode it:<br />
+<pre class="sh-code">
+$ echo "YWRtaW46YWRtaW4=" | base64 --decode</pre>
+<pre class="sh-code">
+admin:admin</pre>
+</li>
+<li>
+Logout from registry:<br />
+<pre class="sh-code">
+$ docker logout 192.168.2.22:5000</pre>
+<pre class="sh-code">
+Removing login credentials for 192.168.2.22:5000</pre>
+Verify that credentials were removed from <b>~/.docker/config.json</b>:<br />
+<pre class="sh-code">
+$ cat ~/.docker/config.json</pre>
+<pre class="sh-code">
+{
+  "auths": {},
+  "HttpHeaders": {
+    "User-Agent": "Docker-Client/19.03.12 (linux)"
+  }
+}</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Push an image into the registry</span>
+<div class="tutorialSectionTextDiv1">
+Let's first tag an existing image:<br />
+<pre class="sh-code">
+$ docker image tag alpine:latest 192.168.2.22:5000/alpine:latest</pre>
+List images:<br />
+<pre class="sh-code">
+$ docker image ls</pre>
+<pre class="sh-code">
+REPOSITORY                                                                           TAG                 IMAGE ID            CREATED             SIZE
+192.168.2.22:5000/alpine                                                             latest              a24bb4013296        8 weeks ago         5.57MB
+alpine                                                                               latest              a24bb4013296        8 weeks ago         5.57MB</pre>
+Push the image to registry:<br />
+<pre class="sh-code">
+$ docker image push 192.168.2.22:5000/alpine:latest</pre>
+<pre class="sh-code">
+The push refers to repository [192.168.2.22:5000/alpine]
+50644c29ef5a: Pushed
+latest: digest: sha256:a15790640a6690aa1730c38cf0a440e2aa44aaca9b0e8931a9f2b0d7cc90fd65 size: 528</pre>
+If you get the following error, then you are probably not logged in to the registry (see above):<br />
+<pre class="sh-code">
+The push refers to repository [192.168.2.22:5000/alpine]
+50644c29ef5a: Preparing
+no basic auth credentials</pre>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">Pull an image from the registry</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ docker image pull 192.168.2.22:5000/alpine:latest</pre>
+<pre class="sh-code">
+latest: Pulling from alpine
+Digest: sha256:a15790640a6690aa1730c38cf0a440e2aa44aaca9b0e8931a9f2b0d7cc90fd65
+Status: Downloaded newer image for 192.168.2.22:5000/alpine:latest
+192.168.2.22:5000/alpine:latest</pre>
+If you get the following error, then you are probably not logged in to the registry (see above):<br />
+<pre class="sh-code">
+Error response from daemon: Get https://192.168.2.22:5000/v2/alpine/manifests/latest: no basic auth credentials</pre>
+Notes:<br />
+The tag <b>latest</b> is a special static build number.
+The referenced image might be different every time you pull it.
+If you request a new pull, Docker will download only the layers that were updated since the latest pull.
+It's recommended to use an incremental build number to distinguish between different builds of an Image.
+This can help for debugging issues with an image and eventually been able to revert back to an old working tag if needed.
+We can also pull an image using its full SHA-256 hash ID <code class="code1">docker image pull alpine@sha256:abcxz</code>.<br />
+</div>
+</li>
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">Verify the created repositories inside the Registry's container</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE            COMMAND                                            CREATED          STATUS          PORTS                    NAMES
+a948cd767c54   local-registry   "/entrypoint.sh /etc/docker/registry/config.yml"   43 seconds ago   Up 42 seconds   0.0.0.0:5000->5000/tcp   registry</pre>
+List repositories:<br />
+<pre class="sh-code">
+$ docker container exec -it a948cd767c54 /bin/sh</pre>
+<pre class="sh-code">
+/ # ls -1 /var/lib/registry/docker/registry/v2/repositories/
+alpine</pre>
+Verify the registry configuration:<br />
+<pre class="sh-code">
+$ docker container exec -it a948cd767c54 /bin/sh</pre>
+<pre class="sh-code">
+/ # ls -1R /etc/docker/registry/
+/etc/docker/registry/:
+certs
+config.yml
+htpasswd
+
+/etc/docker/registry/certs:
+registry.crt
+registry.key</pre>
+</div>
+</li>
+<li id="sec_id_13">
+<span class="tutorialSubSectionTitleSpan1">Verify the created repositories using the Registry API</span>
+<div class="tutorialSectionTextDiv1">
+Check API Version:<br />
+<pre class="sh-code">
+$ curl -u admin:admin -i -k https://192.168.2.22:5000/v2/</pre>
+<pre class="sh-code">
+HTTP/2 200
+content-type: application/json; charset=utf-8
+docker-distribution-api-version: registry/2.0
+
+{}</pre>
+List repositories:<br />
+<pre class="sh-code">
+$ curl -u admin:admin -i -k https://192.168.2.22:5000/v2/_catalog</pre>
+<pre class="sh-code">
+HTTP/2 200
+content-type: application/json; charset=utf-8
+docker-distribution-api-version: registry/2.0
+
+{"repositories":["alpine"]}</pre>
+Note the option <b>-k</b> with the <b>curl</b> command. It's used to suppress this certificate error:<br />
+<pre class="sh-code">
+curl: (60) SSL certificate problem: self signed certificate</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

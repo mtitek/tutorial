@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Inspect &amp; Interact with Containers | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Inspect &amp; Interact with Containers" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Inspect &amp; Interact with Containers | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Inspect &amp; Interact with Containers" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/inspect_containers.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Inspect &amp; Interact with Containers | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Inspect &amp; Interact with Containers" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/inspect_containers.html",
+        "description": "Tutorials: Docker - Inspect &amp; Interact with Containers",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/inspect_containers.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Inspect &amp; Interact with Containers</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Viewing Detailed Container Information with docker inspect</a></li>
+<li><a href="#sec_id_2">Running Commands Inside a Running Container with docker exec</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Viewing Detailed Container Information with docker inspect</span>
+<div class="tutorialSectionTextDiv1">
+The <b>docker container inspect</b> command allows you to get detailed information about a container and its state:<br />
+<pre class="sh-code">
+$ docker container inspect --help</pre>
+<pre class="sh-code">
+Usage:  docker container inspect [OPTIONS] CONTAINER [CONTAINER...]
+
+Display detailed information on one or more containers
+
+Options:
+  -f, --format string   Format output using a custom template:
+                        'json':             Print in JSON format
+                        'TEMPLATE':         Print output using the given Go template.
+                        Refer to https://docs.docker.com/go/formatting/ for more information about formatting output with templates
+  -s, --size            Display total file sizes</pre>
+The command provides information about
+the container identifier,
+the image information,
+the running status and exit code,
+the port mappings and bindings,
+the volumes and bind mount details,
+the network configuration,
+the environment variables,
+the metadata key-value pairs,
+the entry point and arguments,
+the CPU/memory limits and usage,
+the log driver configuration,
+the restart policy,
+the OS information,
+etc.<br />
+<br />
+Let's run a container:<br />
+<pre class="sh-code">
+$ docker container run --rm -d --name "ubuntu-latest" ubuntu:latest sleep infinity</pre>
+Let's inspect the container:<br />
+<pre class="sh-code">
+$ docker container inspect ubuntu-latest | jq</pre>
+<pre class="sh-code">
+[
+  {
+    "Id": "8799a7ae86f491e2a1c8ec90ce0813322be327399cb59ecec3856b9de97570cb",
+    "State": {
+      "Status": "running"
+    },
+    "Image": "sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233",
+ ...
+  }
+]</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Running Commands Inside a Running Container with docker exec</span>
+<div class="tutorialSectionTextDiv1">
+The <b>docker container exec</b> command allow you to execute a command in a running container:<br />
+<pre class="sh-code">
+$ docker container exec --help</pre>
+<pre class="sh-code">
+Usage:  docker container exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Execute a command in a running container
+
+Aliases:
+  docker container exec, docker exec
+
+Options:
+  -d, --detach               Detached mode: run command in the background
+      --detach-keys string   Override the key sequence for detaching a container
+  -e, --env list             Set environment variables
+      --env-file list        Read in a file of environment variables
+  -i, --interactive          Keep STDIN open even if not attached
+      --privileged           Give extended privileges to the command
+  -t, --tty                  Allocate a pseudo-TTY
+  -u, --user string          Username or UID (format: "&lt;name|uid&gt;[:&lt;group|gid&gt;]")
+  -w, --workdir string       Working directory inside the container</pre>
+Let's check the running container:<br />
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE           COMMAND            CREATED       STATUS       PORTS     NAMES
+8799a7ae86f4   ubuntu:latest   "sleep infinity"   4 hours ago   Up 4 hours             ubuntu-latest</pre>
+We can execute a specific commands (foreground) in the container:<br />
+<pre class="sh-code">
+$ docker container exec 8799a7ae86f4 id</pre>
+<pre class="sh-code">
+uid=0(root) gid=0(root) groups=0(root)
+$</pre>
+<pre class="sh-code">
+$ docker container exec 8799a7ae86f4 cat /etc/hosts</pre>
+<pre class="sh-code">
+127.0.0.1     localhost
+172.17.0.2    ffd0458ac5e8
+$</pre>
+Using the pipe character (<b>|</b>) outside of the docker exec command causes the piping to occur on the host, not within the container.
+
+
+We can use the pipe character (<b>|</b>) to connect the output of one command to another,
+but be aware that the piping will occur on the host, not within the container.
+To perform piped operations within the container, wrap the full command in quotes and use <b>/bin/bash -c</b>:<br />
+<pre class="sh-code">
+$ docker container exec 8799a7ae86f4 /bin/bash -c "cat /etc/hosts | grep 127.0.0.1"</pre>
+<pre class="sh-code">
+127.0.0.1    localhost
+$</pre>
+The same, if we want to run multiple commands inside the container:<br />
+<pre class="sh-code">
+$ docker container exec 8799a7ae86f4 /bin/bash -c "id; cat /etc/hosts | grep 127.0.0.1"</pre>
+<pre class="sh-code">
+uid=0(root) gid=0(root) groups=0(root)
+127.0.0.1    localhost
+$</pre>
+We can also exec in the container in an interactive mode by using the options <b>-i</b> (interactive session) and <b>-t</b> (pseudo-TTY):<br />
+<pre class="sh-code">
+$ docker container exec -it 8799a7ae86f4 /bin/bash</pre>
+<pre class="sh-code">
+root@8799a7ae86f4:/# exit
+exit
+$</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

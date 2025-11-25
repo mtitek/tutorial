@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Image Filesystem | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Image Filesystem" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Image Filesystem | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Image Filesystem" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/image_filesystem.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Image Filesystem | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Image Filesystem" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/image_filesystem.html",
+        "description": "Tutorials: Docker - Image Filesystem",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/image_filesystem.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Image Filesystem</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Inspect Image Filesystem</a></li>
+<li><a href="#sec_id_2">Show the history of an image</a></li>
+<li><a href="#sec_id_3">Export the files of an image</a></li>
+<li><a href="#sec_id_4">Using dive tool to explore images</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Inspect Image Filesystem</span>
+<div class="tutorialSectionTextDiv1">
+To inspect an image, use the command "<b>image inspect</b>":<br />
+<pre class="sh-code">
+$ docker image inspect hello-world:latest | jq '.'</pre>
+<pre class="sh-code">
+[
+  {
+    "Id": "sha256:bf756fb1ae65adf866bd8c456593cd24beb6a0a061dedf42b26a993176745f6b",
+    "RepoTags": [
+      "hello-world:latest"
+    ],
+    "RepoDigests": [
+      "hello-world@sha256:49a1c8800c94df04e9658809b006fd8a686cab8028d33cfba2cc049724254202"
+    ],
+    "Parent": "",
+    "Comment": "",
+    "Created": "2020-01-03T01:21:37.263809283Z",
+    "Container": "71237a2659e6419aee44fc0b51ffbd12859d1a50ba202e02c2586ed999def583",
+    "ContainerConfig": {
+      "Hostname": "71237a2659e6",
+      "Domainname": "",
+      "User": "",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      ],
+      "Cmd": [
+        "/bin/sh",
+        "-c",
+        "#(nop) ",
+        "CMD [\"/hello\"]"
+      ],
+      "ArgsEscaped": true,
+      "Image": "sha256:eb850c6a1aedb3d5c62c3a484ff01b6b4aade130b950e3bf3e9c016f17f70c34",
+      "Volumes": null,
+      "WorkingDir": "",
+      "Entrypoint": null,
+      "OnBuild": null,
+      "Labels": {}
+    },
+    "DockerVersion": "18.06.1-ce",
+    "Author": "",
+    "Config": {
+      "Hostname": "",
+      "Domainname": "",
+      "User": "",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      ],
+      "Cmd": [
+        "/hello"
+      ],
+      "ArgsEscaped": true,
+      "Image": "sha256:eb850c6a1aedb3d5c62c3a484ff01b6b4aade130b950e3bf3e9c016f17f70c34",
+      "Volumes": null,
+      "WorkingDir": "",
+      "Entrypoint": null,
+      "OnBuild": null,
+      "Labels": null
+    },
+    "Architecture": "amd64",
+    "Os": "linux",
+    "Size": 13336,
+    "VirtualSize": 13336,
+    "GraphDriver": {
+      "Data": {
+        "MergedDir": "/var/lib/docker/overlay2/0217d9fbfbd6fa9211ce017c01fa45e1c4acba6ed88be794089457f0f2679eb6/merged",
+        "UpperDir": "/var/lib/docker/overlay2/0217d9fbfbd6fa9211ce017c01fa45e1c4acba6ed88be794089457f0f2679eb6/diff",
+        "WorkDir": "/var/lib/docker/overlay2/0217d9fbfbd6fa9211ce017c01fa45e1c4acba6ed88be794089457f0f2679eb6/work"
+      },
+      "Name": "overlay2"
+    },
+    "RootFS": {
+      "Type": "layers",
+      "Layers": [
+        "sha256:9c27e219663c25e0f28493790cc0b88bc973ba3b1686355f221c38a36978ac63"
+      ]
+    },
+    "Metadata": {
+      "LastTagTime": "0001-01-01T00:00:00Z"
+    }
+  }
+]</pre>
+You can look at the "<b>GraphDriver.Data</b>" element in the json output and use the data directories to list the contents of the image:<br />
+<pre class="sh-code">
+$ sudo ls -al /var/lib/docker/overlay2/0217d9fbfbd6fa9211ce017c01fa45e1c4acba6ed88be794089457f0f2679eb6/diff</pre>
+<pre class="sh-code">
+-rwxrwxr-x 1 root root 13336 Jan  2  2020 hello</pre>
+The "RootFS.Layers" element list the image layers:<br />
+<pre class="sh-code">
+$ docker image inspect hello-world:latest --format '{{json .RootFS.Layers }}'</pre>
+<pre class="sh-code">
+["sha256:9c27e219663c25e0f28493790cc0b88bc973ba3b1686355f221c38a36978ac63"]</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Show the history of an image</span>
+<div class="tutorialSectionTextDiv1">
+Let's have a look at the image history:<br />
+<pre class="sh-code">
+$ docker image history hello-world:latest --no-trunc</pre>
+<pre class="sh-code">
+IMAGE                                                                     CREATED        CREATED BY                SIZE      COMMENT
+sha256:0b6a027b5cf322f09f6706c754e086a232ec1ddba835c8a15c6cb74ef0d43c29   4 months ago   CMD ["/hello"]            0B        buildkit.dockerfile.v0
+&lt;missing&gt;                                                                 4 months ago   COPY hello / # buildkit   16.4kB    buildkit.dockerfile.v0</pre>
+The hello-world docker image contains only the layers of the base image (hello-world).<br />
+You can see the layers created by the <b>COPY</b> and <b>CMD</b> instructions.<br />
+<br />
+If you look at the Dockerfile of the "hello-world" image,
+you will notice that it only copy the "hello" file:<br />
+<pre class="dockerfile-code">
+FROM scratch
+COPY hello /
+CMD ["/hello"]</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Export the files of an image</span>
+<div class="tutorialSectionTextDiv1">
+To export the files of an image, use the command "docker container export" on a running container.<br />
+<br />
+Let's create a container and export its contents:<br />
+<pre class="sh-code">
+$ docker container export $(docker container create hello-world) | tar -tv</pre>
+<pre class="sh-code">
+-rwxr-xr-x 0/0       0 .dockerenv
+drwxr-xr-x 0/0       0 dev/
+-rwxr-xr-x 0/0       0 dev/console
+drwxr-xr-x 0/0       0 dev/pts/
+drwxr-xr-x 0/0       0 dev/shm/
+drwxr-xr-x 0/0       0 etc/
+-rwxr-xr-x 0/0       0 etc/hostname
+-rwxr-xr-x 0/0       0 etc/hosts
+lrwxrwxrwx 0/0       0 etc/mtab -> /proc/mounts
+-rwxr-xr-x 0/0       0 etc/resolv.conf
+-rwxrwxr-x 0/0   13336 hello
+drwxr-xr-x 0/0       0 proc/
+drwxr-xr-x 0/0       0 sys/</pre>
+The "hello" file is the only non-empty file in the container.<br />
+<br />
+The other files and directories in the container are mandatory (required by the kernel).
+They all show zero bytes in length and Docker will automatically bind-mount them from the Docker host into the container when it's created.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Using dive tool to explore images</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more details about <b>dive</b> tool:
+<a href="https://github.com/wagoodman/dive">https://github.com/wagoodman/dive</a><br />
+<br />
+Installing dive on Ubuntu:<br />
+<pre class="sh-code">
+$ DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+$ curl -fOL "https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.deb"
+$ sudo apt install ./dive_${DIVE_VERSION}_linux_amd64.deb</pre>
+Using dive:<br />
+<pre class="sh-code">
+$ dive hello-world:latest</pre>
+<img alt="dive screenshot - ubuntu image latest" src="img/dive-tool-hello-world-image.png" width="600" />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

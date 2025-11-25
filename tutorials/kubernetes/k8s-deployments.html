@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Deployments (deployments|deploy) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Deployments (deployments|deploy)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Deployments (deployments|deploy) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Deployments (deployments|deploy)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-deployments.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Deployments (deployments|deploy) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Deployments (deployments|deploy)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-deployments.html",
+        "description": "Tutorials: Kubernetes - Deployments (deployments|deploy)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-deployments.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Deployments (deployments|deploy)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Deployments (deployments|deploy)</a></li>
+<li><a href="#sec_id_4">Manage Deployments</a></li>
+<li><a href="#sec_id_6">Performing Rolling Updates</a></li>
+<li><a href="#sec_id_7">Record the command that used to perform the update (<b>--record</b>)</a></li>
+<li><a href="#sec_id_8">Performing Rollbacks</a></li>
+<li><a href="#sec_id_9">Performing Rollbacks ("<b>--to-revision</b>")</a></li>
+<li><a href="#sec_id_10">Delete Deployments</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Deployments:<br />
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a><br />
+<a href="https://kubernetes.io/docs/concepts/security/controlling-access/">https://kubernetes.io/docs/concepts/security/controlling-access/</a><br />
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Deployments (deployments|deploy)</span>
+<div class="tutorialSectionTextDiv1">
+A Deployment provides declarative updates for Pods and ReplicaSets.<br />
+<br />
+Deployments add additional capabilities to Pods: rolling updates, rollbacks, ...<br />
+<br />
+Deployments leverage the ReplicaSet objects. They are automatically created when Deployments are created.<br />
+<br />
+ReplicaSet objects provide additional features to Deployments: self-healing and scaling capabilities.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Rolling updates (zero-downtime):<br />
+When you update Deployment and you post the changes to the API server, Kubernetes creates a new ReplicSet for the Pods (with all the new changes).<br />
+<br />
+While the Deployment is applied, you will notice that two ReplicSets exist for the Deployment:
+One with the original changes and a second that reflect the new changes.<br />
+<br />
+For each Pod that is successfully created for the new ReplicaSet, a corresponding one from the old ReplicaSet will be terminated.
+If the update is successful, the old ReplicaSet will have no Pod.
+The old ReplicaSet itself won't be deleted.<br />
+<br />
+Deployments provides settings to control the sequence of time by which Pods will be created.
+A wait time can be added between Pods creation/termincation.<br />
+<br /></li>
+<li>
+Rollbacks:<br />
+If after you update a Deployment, you decide to rollback the changes of the new Deployment,
+the old ReplicaSet will be there and you can perform "easily" the rollback.<br />
+<br /></li>
+<li>
+Self healing:<br />
+Self healing is the ability to re-create a Pod if it fails.<br />
+<br /></li>
+<li>
+Scaling:<br />
+Scaling is the ability to add new Pods or delete existing Pods.
+Scaling is used to adjust the number of the Pods when the load on the system increases or decreases.<br />
+<br /></li>
+</ul>
+To create/deploy a Deployment, you need to create a manifest YAML file.
+The manifest file describe the Deployment and its components (name, Pods, ...).<br />
+<br />
+Here's a sample file ("hello-nginx-deployment.yaml") that provides a declarative configuration of a Deployment:<br />
+<pre class="sh-code">
+$ vi hello-nginx-deployment.yaml</pre>
+<pre class="yaml-code">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-nginx
+  labels: # define labels for the Deployment (can be used to delete the Deployment: kubectl delete deployment -l "app=hello-nginx")
+    app: hello-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define labels that Pods should define in order to apply for the Deployment
+      app: hello-nginx
+  minReadySeconds: 3
+  template:
+    metadata:
+      labels:
+        app: hello-nginx
+    spec:
+      containers:
+      - name: hello-nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80</pre>
+You can use "<b>kubectl</b>" (or any rest client tool) to post the manifest file to the API server
+If applicable, the API server verifies that the request is authenticated, validates it's authorized, and runs the admission controllers on it.
+The API server verifies the manifest file and, if no issues, it writes a record for that manifest in the cluster store (etcd).
+The scheduler will then read the record and deploy the Pod of the Deployment to a healthy worker node with enough available resources.<br />
+<br />
+The same behaviour, described above, applies if you use the imperative command ("kubectl create") to create the Deployment.<br />
+<br />
+To apply the deployment:
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx created</pre>
+The "hello-nginx-deployment.yaml" file defines the following fields:<br />
+<ul class="ul_square_1">
+<li>
+The <b>apiVersion</b> field defines the Kubernetes API group and the Kubernetes API version.<br />
+Its value is written as following: &lt;api-group&gt;/&lt;api-version&gt;<br />
+For Deployments: apps/v1<br />
+<br /></li>
+<li>
+The <b>kind</b> field defines the type of the Kubernetes object to be created (<b>Deployment</b>).<br />
+<br /></li>
+<li>
+The <b>metadata</b> field defines the Deployment metadata (name, labels, namespace, ...).<br />
+<br /></li>
+<li>
+The <b>spec</b> field defines the Pod information.<br />
+<ul class="ul_circle_1">
+<li>
+The <b>spec.replicas</b> field defines the number of instances to be created for the Pod.<br />
+<br /></li>
+<li>
+The <b>spec.selector</b> field defines a list of labels that Pods must have in order for the Deployment to manage them.<br />
+<br /></li>
+<li>
+The <b>spec.minReadySeconds</b> field defines the minimum number of seconds for which a newly created Pod should be ready
+without any of its containers crashing, for it to be considered available.
+This defaults to 0 (the Pod will be considered available as soon as it is ready).<br />
+<br /></li>
+<li>
+The <b>spec.template</b> field defines the Pod information (metadata, containers, ...).<br />
+<br /></li>
+</ul>
+</li>
+</ul>
+The <b>spec.strategy</b> field can be used to define how to perform updates to the Pods managed by the Deployment.<br />
+<pre class="yaml-code">
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 2
+    maxSurge: 2</pre>
+<ul class="ul_square_1">
+<li>
+The <b>spec.strategy.type</b> field defines the rolling update strategy:<br />
+RollingUpdate: gradually terminating old Pods as soon as the new ones are created.<br />
+Recreate: terminating old Pods first, then create the new ones.<br />
+Custom: allows you to customize the deployment behavior.<br />
+<br /></li>
+<li>
+The <b>spec.strategy.rollingUpdate.maxUnavailable</b> field defines the number of Pods that can be unavailable during the update, without impacting the desired state (desired number of Pods: replicas).<br />
+<br /></li>
+<li>
+The <b>spec.strategy.rollingUpdate.maxSurge</b> field defines the number of new Pods that can be created during the update, where the total number of Pods is above desired state (desired number of Pods: replicas).<br />
+<br /></li>
+</ul>
+For example, if the desired state of the Pod is 10 instances (<b>replicas: 10</b>), then:<br />
+<ul class="ul_square_1">
+<li>
+Setting <b>maxUnavailable</b> to 2, means, minimum 8 Pods must be available during the update..<br />
+<br /></li>
+<li>
+Setting <b>maxSurge</b> to 2, means, maximum 12 Pods can be available during the update.<br />
+<br /></li>
+</ul>
+It means, for this case, the rolling update strategy can manage maximum four (the sum of maxUnavailable and maxSurge) Pods at a time
+(the update will be creating 0-2 Pods or/and terminating 0-2 Pods).<br />
+<br />
+Note: Managing Deployments using the Manifest Yam file (declarative) is the recommended way,
+but in some cases you might want to use the imperative command "kubectl create" to create a Deployment.<br />
+<pre class="sh-code">
+$ kubectl create deployment hello-nginx --image=nginx:latest</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx created</pre>
+You can use the "--dry-run" flag to print the YAML file:<br />
+<pre class="sh-code">
+$ kubectl create deployment hello-nginx --image=nginx:latest --dry-run=client -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hello-nginx
+  name: hello-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hello-nginx
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        resources: {}
+status: {}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Manage Deployments</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+To deploy the hello-nginx-deployment.yaml file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx created</pre></li>
+<li>
+To monitor/list all Deployments (<b>kubectl get deployments</b>):<br />
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   0/1     1            0           2s</pre>
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   1/1     1            0           7s</pre>
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   1/1     1            1           33s</pre>
+Notice the value of the <b>READY</b> column is transiting from 0 to 1: that indicate when the Pod is ready.<br />
+<br />
+Notice also the value of the <b>AVAILABLE</b> column is transiting from 0 to 1:
+that indicate when the Pod is available (see <b>spec.minReadySeconds</b> field).<br />
+<br />
+If we set the Deployment replicas to 10 (<b>replicas: 1</b>),
+we should see that the values of the <b>READY</b> and <b>AVAILABLE</b> columns are transiting from 0 to 10.<br />
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   0/10    10           0           2s</pre>
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   2/10    10           0           19s</pre>
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   10/10   10           4           23s</pre>
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   10/10   10           10          33s</pre></li>
+<li>
+To list all ReplicaSet (<b>kubectl get replicasets</b>):<br />
+<pre class="sh-code">
+$ kubectl get replicasets</pre>
+<pre class="sh-code">
+NAME                    DESIRED   CURRENT   READY   AGE
+hello-nginx-f6878fc9b   1         1         1       11m</pre></li>
+<li>
+To see the info of a specific ReplicaSet (<b>kubectl get replicaset &lt;REPLICASET-NAME&gt;</b>):<br />
+<pre class="sh-code">
+$ kubectl get replicaset hello-nginx-f6878fc9b</pre>
+<pre class="sh-code">
+NAME                    DESIRED   CURRENT   READY   AGE
+hello-nginx-f6878fc9b   1         1         1       12m</pre></li>
+<li>
+To print the manifest file of a specific Deployment as stored in the cluster store (etcd):<br />
+<pre class="sh-code">
+$ kubectl get deployment hello-nginx -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"hello-nginx","namespace":"default"},"spec":{"minReadySeconds":3,"replicas":1,"selector":{"matchLabels":{"app":"hello-nginx"}},"template":{"metadata":{"labels":{"app":"hello-nginx"}},"spec":{"containers":[{"image":"nginx:latest","name":"hello-nginx","ports":[{"containerPort":80}]}]}}}}
+  name: hello-nginx
+spec:
+  minReadySeconds: 3
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: hello-nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hello-nginx
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: hello-nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - message: ReplicaSet "hello-nginx-f6878fc9b" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1</pre>
+The printed yaml object contains more settings than what it was defined in the original manifest file.<br />
+Some of the settings are the default values that Kubernets gives to the missing field in the manifest file.<br />
+Some of the settings are runtime information set by Kubernets (node IP address, Pod IP address, container info, status, ...).<br />
+<br />
+The status field provides detailed information about the different transitional states of the Deployment.<br />
+<br /></li>
+<li>
+To describe a Deployment (<b>kubectl describe deployment</b>).<br />
+<br />
+The command provides information about the Deployment (Replicas, Pods, ...) and its current state.<br />
+It also provide the list of the events occurred while applying the Deployment.<br />
+<pre class="sh-code">
+$ kubectl describe deployment hello-nginx</pre>
+<pre class="sh-code">
+Name:                   hello-nginx
+Namespace:              default
+Labels:                 &lt;none&gt;
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=hello-nginx
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        3
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=hello-nginx
+  Containers:
+   hello-nginx:
+    Image:        nginx:latest
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   hello-nginx-f6878fc9b (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  3m36s  deployment-controller  Scaled up replica set hello-nginx-f6878fc9b to 1</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Performing Rolling Updates</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Let's update the hello-nginx-deployment.yaml file and set the container port to 8080.<br />
+Apply the changes:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx configured</pre></li>
+<li>
+Monitor the changes:<br />
+<pre class="sh-code">
+$ kubectl get pods --watch</pre>
+<pre class="sh-code">
+NAME                          READY   STATUS              RESTARTS   AGE
+hello-nginx-f6878fc9b-k8vbt   1/1     Running             0          3m43s
+hello-nginx-5c799dfb8-drwh2   0/1     ContainerCreating   0          3s
+hello-nginx-5c799dfb8-drwh2   1/1     Running             0          17s
+hello-nginx-f6878fc9b-k8vbt   1/1     Terminating         0          4m
+hello-nginx-f6878fc9b-k8vbt   0/1     Completed           0          4m7s</pre></li>
+<li>
+To monitor the rolling update progress:<br />
+<pre class="sh-code">
+$ kubectl rollout status deployment hello-nginx</pre>
+<pre class="sh-code">
+aiting for deployment "hello-nginx" rollout to finish: 3 out of 5 new replicas have been updated...
+Waiting for deployment "hello-nginx" rollout to finish: 1 old replicas are pending termination...
+deployment "hello-nginx" successfully rolled out</pre></li>
+<li>
+To check the rollout history.<br />
+<pre class="sh-code">
+$ kubectl rollout history deployment hello-nginx</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx
+REVISION CHANGE-CAUSE
+1        &lt;none&gt;
+2        &lt;none&gt;</pre>
+Revision 1 is referring to the initial deployment and the revision 2 is the current rolling update.<br />
+<br /></li>
+<li>
+List Deployments:<br />
+<pre class="sh-code">
+$ kubectl get deployments</pre>
+<pre class="sh-code">
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+hello-nginx   1/1     1            1           5m</pre>
+As mentioned before, if we set replicas to 10, we should see that the value of the <b>READY</b> column is transiting between 8/10 to 12/10,
+and the value of the AVAILABLE column is transiting between 8 to 10 (see the fields <b>spec.strategy.rollingUpdate.maxUnavailable</b> and <b>spec.strategy.rollingUpdate.maxSurge</b>).<br />
+<br /></li>
+<li>
+List Pods:<br />
+<pre class="sh-code">
+$ kubectl get pods</pre>
+<pre class="sh-code">
+NAME                          READY   STATUS    RESTARTS   AGE
+hello-nginx-5c799dfb8-drwh2   1/1     Running   0          71s</pre></li>
+<li>
+List ReplicaSets:<br />
+<pre class="sh-code">
+$ kubectl get replicasets</pre>
+<pre class="sh-code">
+NAME                    DESIRED   CURRENT   READY   AGE
+hello-nginx-5c799dfb8   1         1         1       88s
+hello-nginx-f6878fc9b   0         0         0       5m8s</pre>
+After applying the changes, there are now two ReplicaSets.<br />
+<br />
+As mentioned, when performing a rolling update, a new ReplicaSet is created and the old one is kept (but all its Pods are terminated).<br />
+<br />
+Note that the name of the ReplicaSet is composed of the deployment name plus a hash
+calculated from the <b>spec.template</b> field in the manifest YAML file.<br />
+<br /></li>
+<li>
+Validate that the container port was changed (should be 8080):<br />
+<pre class="sh-code">
+$ kubectl get pods -o jsonpath="{.items[*].spec.containers[*].ports[*].containerPort}"</pre>
+<pre class="sh-code">
+8080</pre>
+Note: to get the correct json path you can print the pod information in json format <b>kubectl get pods -o json</b>.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Record the command that used to perform the update (<b>--record</b>)</span>
+<div class="tutorialSectionTextDiv1">
+Previously when checked the rollout history, the <b>CHANGE-CAUSE</b> was showing <b>&lt;none&gt;</b>.<br />
+<br />
+You can use the <b>--record</b> flag to save the current kubectl command in the resource annotation.
+This can be useful to keep track of the commands that triggered to changes.<br >
+<br >
+Let's repeat the initial deployment and to apply the changes using the <b>--record</b> flag.<br />
+<br />
+First, let's delete the Deployment:<br />
+<pre class="sh-code">
+$ kubectl delete -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps "hello-nginx" deleted</pre>
+Apply the hello-nginx-deployment.yaml file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml --record=true</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx created</pre>
+Change the container port to 8080 and apply the hello-nginx-deployment.yaml file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-nginx-deployment.yaml --record=true</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx configured</pre>
+If we check the rollout history, we should see now the command that was used to apply the Deployment:<br >
+<pre class="sh-code">
+$ kubectl rollout history deployment hello-nginx</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx
+REVISION  CHANGE-CAUSE
+1         kubectl apply --filename=hello-nginx-deployment.yaml --record=true
+2         kubectl apply --filename=hello-nginx-deployment.yaml --record=true</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Performing Rollbacks</span>
+<div class="tutorialSectionTextDiv1">
+Note that the rollback follow the same rolling update strategy behavior defined in the manifest YAML file
+see (<b>spec.strategy.rollingUpdate.maxUnavailable</b> <b>spec.strategy.rollingUpdate.maxSurge</b>).<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Let's rollback the latest changes:<br />
+<pre class="sh-code">
+$ kubectl rollout undo deployment hello-nginx</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx rolled back</pre></li>
+<li>
+Validate that the container port was changed (should be 8080):<br />
+<pre class="sh-code">
+$ kubectl get pods -o jsonpath="{.items[*].spec.containers[*].ports[*].containerPort}"</pre>
+<pre class="sh-code">
+80</pre></li>
+<li>
+List ReplicaSets:<br />
+<pre class="sh-code">
+$ kubectl get replicasets</pre>
+<pre class="sh-code">
+NAME                    DESIRED   CURRENT   READY   AGE
+hello-nginx-5c799dfb8   0         0         0       21m
+hello-nginx-f6878fc9b   1         1         1       25m</pre>
+Notice that the "old" ReplicaSet was not deleted. Which mean that you can do another rollback to get the container port set again to 8080!<br />
+<br />
+As mentioned before, if we set the replicas to 10, then when we run the command <b>kubectl get deployment hello-nginx</b>
+we should see that the value of the <b>READY</b> column is transiting between 8/10 to 12/10,
+and the value of the <b>AVAILABLE</b> column is transiting between 8 to 10 (see the fields <b>spec.strategy.rollingUpdate.maxUnavailable</b> and <b>spec.strategy.rollingUpdate.maxSurge</b>).<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Performing Rollbacks ("<b>--to-revision</b>")</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+To rollback to a specific revision your can use the <b>--to-revision</b> flag:<br />
+<pre class="sh-code">
+$ kubectl rollout undo deployment hello-nginx --to-revision=1</pre>
+<pre class="sh-code">
+deployment.apps "hello-nginx" rolled back</pre></li>
+<li>
+Check the rolling update history:<br />
+<pre class="sh-code">
+$ kubectl rollout history deployment hello-nginx</pre>
+<pre class="sh-code">
+deployment.apps/hello-nginx
+REVISION  CHANGE-CAUSE
+2         kubectl apply --filename=hello-nginx-deployment.yaml --record=true
+3         kubectl apply --filename=hello-nginx-deployment.yaml --record=true</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Delete Deployments</span>
+<div class="tutorialSectionTextDiv1">
+To delete a Deployment using its manifest file:<br />
+<pre class="sh-code">
+$ kubectl delete -f hello-nginx-deployment.yaml</pre>
+<pre class="sh-code">
+deployment.apps "hello-nginx" deleted</pre>
+To delete a Deployment using its name:<br />
+<pre class="sh-code">
+$ kubectl delete deployment hello-nginx</pre>
+<pre class="sh-code">
+deployment.apps "hello-nginx" deleted</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

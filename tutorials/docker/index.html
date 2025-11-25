@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Complete Docker Tutorial: Install, Manage, Build &amp; Run Containers | MTI TEK</title>
+<meta name="description" content="Learn Docker step-by-step: install Docker Engine on Ubuntu, Docker Desktop on Windows, manage images, containers, and optimize builds with best practices." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Complete Docker Tutorial: Install, Manage, Build &amp; Run Containers | MTI TEK" />
+<meta property="og:description" content="Learn Docker step-by-step: install Docker Engine on Ubuntu, Docker Desktop on Windows, manage images, containers, and optimize builds with best practices." />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Complete Docker Tutorial: Install, Manage, Build &amp; Run Containers | MTI TEK" />
+<meta name="twitter:description" content="Learn Docker step-by-step: install Docker Engine on Ubuntu, Docker Desktop on Windows, manage images, containers, and optimize builds with best practices." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/",
+        "description": "Learn Docker step-by-step: install Docker Engine on Ubuntu, Docker Desktop on Windows, manage images, containers, and optimize builds with best practices.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialContentsDiv1">
+<span class="tutorialContentsSpan1">Docker</span>
+<hr class="tutorialContentsHr1" />
+<img alt="containerd.io - Architecture" src="/tutorials/docker/img/containerd.io-architecture-ecosystem.png" width="600" /><br />
+[source: <a href="https://containerd.io">https://containerd.io</a>]<br />
+<br />
+<img alt="Docker Architecture" src="img/docker-architecture.png" width="600" /><br />
+<ol class="ol_decimal_1">
+<li>Install Docker Engine (Ubuntu)
+<ol class="ol_upper_roman_1">
+<li><a href="install.html">Install Docker Engine</a></li>
+<li><a href="manage_docker_as_a_non-root_user.html">Manage Docker as a Non-root User</a></li>
+<li><a href="change_the_default_location_where_docker_store_volumes.html">Change Docker Data Directory</a></li>
+</ol>
+</li>
+<li>Install Docker Desktop (Windows)
+<ol class="ol_upper_roman_1">
+<li><a href="/tutorials/kubernetes/install-wsl2.html">Install Windows Subsystem for Linux (WSL 2)</a></li>
+<li><a href="/tutorials/kubernetes/install-docker-desktop-wsl2.html">Install & Use Docker Desktop with WSL 2</a></li>
+<li><a href="/tutorials/kubernetes/ssh-wsl2-remote-machine.html">SSH into WSL 2 from a Remote Machine</a></li>
+</ol>
+</li>
+<li>Working with Docker Images
+<ol class="ol_upper_roman_1">
+<li><a href="dockerfile.html">Dockerfile</a></li>
+<li><a href="build_images.html">Build Images</a></li>
+<li><a href="build_cache.html">Build cache &amp; Dockerfile Best Practices</a></li>
+<li><a href="multi_stage_builds.html">Multi-Stage Builds</a></li>
+<li><a href="debug_failing_builds.html">Debug Failing Builds</a></li>
+<li><a href="build_options.html">Build Options</a></li>
+<li><a href="image_filesystem.html">Image Filesystem</a></li>
+</ol>
+</li>
+<li>Working with Containers
+<ol class="ol_upper_roman_1">
+<li><a href="run_containers.html">Run, Stop, and Remove Containers</a></li>
+<li><a href="inspect_containers.html">Inspect &amp; Interact with Containers</a></li>
+<li><a href="container_configuration.html">Container Configuration</a></li>
+<li><a href="mount_volumes.html">Mount Local Volumes</a></li>
+<li><a href="container_resources.html">Container Resources</a></li>
+<li><a href="list_containers.html">List Containers</a></li>
+</ol>
+</li>
+<li><a href="clear_docker_unused_objects.html">Clear Docker Unused Objects</a></li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Appendix</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li><a href="generalTerms.html">Glossary</a></li>
+<li>Monitoring &amp; Performance
+<ol class="ol_upper_roman_1">
+<li><a href="cadvisor.html">cAdvisor (Container Advisor)</a></li>
+<li><a href="prometheus.html">Prometheus</a></li>
+</ol>
+</li>
+<li>Docker Command-Line Interface (CLI)
+<ol class="ol_upper_roman_1">
+<li><a href="docker_cli.html">Using the docker CLI</a></li>
+<li><a href="docker_cli_build.html">Docker Build Command</a></li>
+<li><a href="docker_cli_run.html">Docker Run Command</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Old</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li>Registries
+<ol class="ol_upper_roman_1">
+<li><a href="set_up_a_private_docker_registry.html">Set up a Private Docker Registry (Ubuntu)</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="Docker: Up &amp; Running"
+     src="/images/books/docker-up-and-running.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Docker: Up &amp; Running</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Karl Matthias, Sean P. Kane
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> O'Reilly Media; 3 edition (April 2023)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1098131821
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="references-category">
+<h3 class="references-category-title">Documentation & Resources</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Docker: Reference documentation</h4>
+<a href="https://docs.docker.com/reference/" class="reference-link">https://docs.docker.com/reference/</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Docker: Product manuals</h4>
+<a href="https://docs.docker.com/engine/" class="reference-link">https://docs.docker.com/engine/</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

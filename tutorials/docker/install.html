@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Install Docker Engine (Ubuntu) | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Install Docker Engine (Ubuntu)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Install Docker Engine (Ubuntu) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Install Docker Engine (Ubuntu)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/install.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Install Docker Engine (Ubuntu) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Install Docker Engine (Ubuntu)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/install.html",
+        "description": "Tutorials: Docker - Install Docker Engine (Ubuntu)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/install.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Install Docker Engine (Ubuntu)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Uninstall existing installation</a></li>
+<li><a href="#sec_id_3">Install Docker Engine</a></li>
+<li><a href="#sec_id_4">Check installed packages</a></li>
+<li><a href="#sec_id_5">Check Docker Version</a></li>
+<li><a href="#sec_id_6">Print Docker Information</a></li>
+<li><a href="#sec_id_7">Verify that Docker Engine is installed correctly</a></li>
+<li><a href="#sec_id_8">Manage Docker service</a></li>
+<li><a href="#sec_id_9">Important Docker files/folders</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more details on how to install Docker Engine for Ubuntu:
+<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">https://docs.docker.com/install/linux/docker-ce/ubuntu/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Uninstall existing installation</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Check if Docker was already installed:<br />
+<pre class="sh-code">
+$ dpkg -l | grep docker</pre>
+<pre class="sh-code">
+docker-ce/bionic,now 5:19.03.12~3-0~ubuntu-bionic amd64 [installed]
+docker-ce-cli/bionic,now 5:19.03.12~3-0~ubuntu-bionic amd64 [installed]</pre>
+<pre class="sh-code">
+$ dpkg -l | grep containerd</pre>
+<pre class="sh-code">
+containerd.io/bionic,now 1.2.13-2 amd64 [installed]</pre>
+You might have Docker installed with different package names: <b>docker</b>, <b>docker.io</b> , or <b>docker-engine</b><br />
+<br />
+</li>
+<li>
+To uninstall an existing installation of Docker:<br />
+<pre class="sh-code">
+$ for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done</pre>
+[Optional] Delete Docker data folder:<br />
+<pre class="sh-code">
+$ sudo rm -rf /var/lib/docker</pre>
+[Optional] Delete Docker custom configuration folder:<br />
+<pre class="sh-code">
+$ sudo rm -rf /etc/docker/</pre>
+[Optional] Delete docker command configuration folder:<br />
+<pre class="sh-code">
+$ rm -rf ~/.docker/</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Install Docker Engine</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Update the apt package index:<br />
+<pre class="sh-code">
+$ sudo apt-get update</pre>
+</li>
+<li>
+[Optional] Install packages to allow apt to use a repository over HTTPS:<br />
+<pre class="sh-code">
+$ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common</pre>
+</li>
+<li>
+Add Docker’s official GPG key:<br />
+<pre class="sh-code">
+$ sudo apt-get install ca-certificates curl
+$ sudo install -m 0755 -d /etc/apt/keyrings
+$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+$ sudo chmod a+r /etc/apt/keyrings/docker.asc</pre>
+</li>
+<li>
+Set up the repository:<br />
+<pre class="sh-code">
+$ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release &amp;&amp; echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</pre>
+</li>
+<li>
+Update the apt package index:<br />
+<pre class="sh-code">
+$ sudo apt-get update</pre>
+</li>
+<li>
+Install the latest version of Docker Engine and containerd:<br />
+<pre class="sh-code">
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Check installed packages</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Check Docker daemon (dockerd server):<br />
+<pre class="sh-code">
+$ ps -ef | grep docker</pre>
+<pre class="sh-code">
+root    12269    /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock</pre>
+</li>
+<li>
+Check Docker service:<br />
+<pre class="sh-code">
+$ sudo systemctl status docker</pre>
+<pre class="sh-code">
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2024-04-29 06:59:47 EDT; 19min ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 9987 (dockerd)
+      Tasks: 13
+     Memory: 21.9M
+        CPU: 418ms
+     CGroup: /system.slice/docker.service
+             └─9987 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock</pre>
+</li>
+<li>
+Check containerd Service:<br />
+<pre class="sh-code">
+$ sudo systemctl status containerd</pre>
+<pre class="sh-code">
+● containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2024-04-29 06:59:46 EDT; 19min ago
+       Docs: https://containerd.io
+   Main PID: 9834 (containerd)
+      Tasks: 12
+     Memory: 13.7M
+        CPU: 886ms
+     CGroup: /system.slice/containerd.service
+             └─9834 /usr/bin/containerd</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Check Docker Version</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ sudo docker version</pre>
+<pre class="sh-code">
+Client: Docker Engine - Community
+ Version:           28.1.1
+ API version:       1.49
+ Go version:        go1.23.8
+ Git commit:        4eba377
+ Built:             Fri Apr 18 09:52:10 2025
+ OS/Arch:           linux/amd64
+ Context:           default</pre>
+<pre class="sh-code">
+Server: Docker Engine - Community
+ Engine:
+  Version:          28.1.1
+  API version:      1.49 (minimum version 1.24)
+  Go version:       go1.23.8
+  Git commit:       01f442b
+  Built:            Fri Apr 18 09:52:10 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.27
+  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+ runc:
+  Version:          1.2.5
+  GitCommit:        v1.2.5-0-g59923ef
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0</pre>
+Note the versions of the client and the server.<br />
+Also note the version of the API version supported by the server (and the minimum compatible version).<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Print Docker Information</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ sudo docker system info</pre>
+<pre class="sh-code">
+Client: Docker Engine - Community
+ Version:    28.1.1
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.23.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.35.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose</pre>
+<pre class="sh-code">
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 28.1.1
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 05044ec0a9a75232cad458027ca83437aae3f4da
+ runc version: v1.2.5-0-g59923ef
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: builtin
+  cgroupns
+ ID: 6bf6b3bf-947e-4048-889a-8391e7164a8e
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false</pre>
+The command might show warnings with your Docker installation if any.<br />
+<br />
+The command <b>docker system</b> provides more options:<br />
+<pre class="sh-code">
+$ docker system --help</pre>
+<pre class="sh-code">
+Usage:  docker system COMMAND
+
+Manage Docker
+
+Commands:
+  df          Show docker disk usage
+  events      Get real time events from the server
+  info        Display system-wide information
+  prune       Remove unused dat</pre>
+You can print the Docker disk usage:<br />
+<pre class="sh-code">
+$ docker system df</pre>
+<pre class="sh-code">
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          24        9         2.534GB   1.681GB (66%)
+Containers      35        18        831.5kB   413.7kB (49%)
+Local Volumes   0         0         0B        0B
+Build Cache     10        0         12.29kB   12.29kB</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Verify that Docker Engine is installed correctly</span>
+<div class="tutorialSectionTextDiv1">
+The command "<b>docker container run hello-world</b>" downloads the hello-world image and runs it in a container.<br />
+When the container runs, it prints a "Hello from Docker!" message and exits.<br />
+<pre class="sh-code">
+$ sudo docker container run hello-world</pre>
+<pre class="sh-code">
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+e6590344b1a5: Pull complete
+Digest: sha256:c41088499908a59aae84b0a49c70e86f4731e588a737f1637e73c8c09d995654
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker container run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Manage Docker service</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+To Enable/Disable Docker service (start on boot):<br />
+<pre class="sh-code">
+$ sudo systemctl enable docker
+$ sudo systemctl disable docker</pre>
+</li>
+<li>
+To Start/Stop Docker service:<br />
+<pre class="sh-code">
+$ sudo systemctl start docker
+$ sudo systemctl stop docker</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Important Docker files/folders</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+Important folders/files:<br />
+<b>/var/lib/docker/</b><br />
+<b>/etc/docker/key.json</b><br />
+<b>/etc/docker/daemon.json</b><br />
+<b>/lib/systemd/system/docker.service</b><br />
+<b>/lib/systemd/system/docker.socket</b><br />
+<b>/lib/systemd/system/containerd.service</b><br />
+<br />
+<b>/etc/docker/daemon.json</b>: might not be created by default when you install Docker.
+For Docker Desktop, you need to use the its UI to modify this file.
+It can hold configurations related to the <b>dockerd</b> server,
+including the arguments we use when we start Docker (e.g., "<b>experimental</b>", "<b>metrics-addr</b>")
+
+<pre class="sh-code">
+$ sudo ls -1 /var/lib/docker/</pre>
+<pre class="sh-code">
+buildkit
+containers
+engine-id
+image
+network
+overlay2
+plugins
+runtimes
+swarm
+tmp
+volumes</pre>
+<pre class="sh-code">
+$ cat /lib/systemd/system/docker.service</pre>
+<pre class="sh-code">
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network-online.target nss-lookup.target docker.socket firewalld.service containerd.service time-set.target
+Wants=network-online.target containerd.service
+Requires=docker.socket
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ExecReload=/bin/kill -s HUP $MAINPID
+TimeoutStartSec=0
+RestartSec=2
+Restart=always</pre>
+<pre class="sh-code">
+$ cat /lib/systemd/system/docker.socket</pre>
+<pre class="sh-code">
+[Unit]
+Description=Docker Socket for the API
+
+[Socket]
+ListenStream=/run/docker.sock
+SocketMode=0660
+SocketUser=root
+SocketGroup=docker</pre>
+<pre class="sh-code">
+$ cat /lib/systemd/system/containerd.service</pre>
+<pre class="sh-code">
+[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target local-fs.target dbus.service
+
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/bin/containerd</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

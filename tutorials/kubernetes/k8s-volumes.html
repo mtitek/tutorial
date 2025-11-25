@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-volumes.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-volumes.html",
+        "description": "Tutorials: Kubernetes - Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-volumes.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Volumes: Persistent Volumes, Persistent Volumes Claims, Storage Classes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Volumes</a></li>
+<li><a href="#sec_id_3">Persistent Volumes (persistentvolumes|pv)</a></li>
+<li><a href="#sec_id_4">Persistent Volumes Claims (persistentvolumeclaims|pvc)</a></li>
+<li><a href="#sec_id_5">Configure a Pod to use a Persistent Volume Claim</a></li>
+<li><a href="#sec_id_6">Storage Classes (storageclasses|sc)</a></li>
+<li><a href="#sec_id_7">Mount ConfigMaps as volumes</a></li>
+<li><a href="#sec_id_8">Volumes of type emptyDir</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Volumes:<br />
+<a href="https://kubernetes.io/docs/concepts/storage/volumes/">https://kubernetes.io/docs/concepts/storage/volumes/</a><br />
+<!--<a href="https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/">https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/</a><br />-->
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Volumes</span>
+<div class="tutorialSectionTextDiv1">
+Volumes allow applications to store and use data from external storage systems.<br />
+<br />
+The data is managed by there systems: storage providers, storage plugins, Kubernetes.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Storage providers manage the backend system that allow reading/writing data.<br />
+Cloud providers: Amazon EBS, Azure File/Disk, GCE<br />
+On-premises providers: NFS.<br />
+<br /></li>
+<li>
+Storage plugins allow kubernetes to integrate with the storage systems.<br />
+<br />
+CSI (Container Storage Interface) provides an open interface that allow storage providers to implement plugins that seamlessly integrate with kubernetes.<br />
+<br />
+You define the storage plugin by specifying the provisioner in the storage class or the Persistent Volume (i.e. <b>provisioner: kubernetes.io/aws-ebs</b>).<br />
+<br /></li>
+<li>
+Kubernetes allows creating the objects (Persistent Volume, Persistent Volume Claim, Storage Class) that will let applications to read/write data stored in the backend system.<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+The Storage Class (SC) allows defining the class of storage to dynamically provision Persistent Volumes.<br />
+</li>
+<li>
+The Persistent Volume (PV) allows accessing the external data of the external storage system.<br />
+</li>
+<li>
+The Persistent Volum Claim (PVC) allows linking Pods to the Persistent Volumes (the Persistent Volumes will be mounted as volumes in the Pods).<br />
+</li>
+<li>
+The Persistent Volumes and Persistent Volume Claims must be created and bound before they can be used by a Pod.<br />
+</li>
+</ul>
+<br /></li>
+</ul>
+A Pod will interact with the data stored in the backend system through the storage plugin defined in the Persistent Volume:<br />
+Pod &lt;-&gt; Persistent Volume Claim &lt;-&gt; Persistent Volume &lt;-&gt; Storage Plugin (i.e Amazon EBS plugin) &lt;-&gt; Storage System (i.e Amazon EBS)<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Persistent Volumes (persistentvolumes|pv)</span>
+<div class="tutorialSectionTextDiv1">
+In the following example, we will use Docker Desktop Kubernetes cluster, and we will create a hostPath Persistent Volume.
+A hostPath Persistent Volume allows mounting files and directories on the Kubernetes Node.
+This is helpful for development and testing on a single-node cluster.<br />
+<br />
+Defines the Persistent Volume:<br />
+<pre class="sh-code">
+$ vi persistentVolume1.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv1
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /run/desktop/mnt/host/c/dev/dockerdesktop/k8s/storage/pv1/</pre>
+On Docker Desktop the path should be: <b>/run/desktop/mnt/host/c/</b>CUSTOME_STORAGE_PATH<br />
+<br />
+Persistent Volumes are defined in the core API group, so the <b>apiVersion</b> field can skip the api group.<br />
+<br />
+A Persistent Volume can be created in one access mode (you cannot combine RWO and RWM).
+The Persistent Volume Claim will mount/bind the Persistent Volume with the same access mode.<br />
+<br />
+The "<b>spec.accessModes</b>" field defines the access mode to the Persistent Volume (how it will be mounted):
+<b>ReadWriteOnce</b> (RWO), <b>ReadWriteMany</b> (RWM), <b>ReadOnlyMany</b> (ROM).<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>ReadWriteOnce</b> (RWO):<br />
+Defines a Persistent Volume with the read/write access mode and can be mounted/bound by one single Persistent Volume Claim.
+If multiple Persistent Volume Claims tries to use the Persistent Volume, then only one will be bound and the remaining PVCs will be in status pending.<br />
+<br /></li>
+<li>
+<b>ReadWriteMany</b> (RWM):<br />
+Defines a Persistent Volume with the read/write access mode and can be mounted/bound by multiple Persistent Volume Claims (NFS storage).<br />
+<br /></li>
+<li>
+<b>ReadOnlyMany</b> (ROM):<br />
+Defines a Persistent Volume with the read only access mode and can be mounted/bound by multiple Persistent Volume Claims.<br />
+</li>
+</ul>
+<br />
+The "<b>spec.storageClassName</b>" field defines the name of the storage class.<br />
+<br />
+The "<b>spec.capacity.storage</b>" field defines size of the volume (must not be larger than the size of the backend storage).<br />
+<br />
+The "<b>spec.persistentVolumeReclaimPolicy</b>" field defines how the data will managed when the Persistent Volume Claim is deleted: Retain, Delete.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>Retain</b>:<br />
+Deleting the Persistent Volume Claims won't delete the associated data stored in the external storage system.<br />
+<br /></li>
+<li>
+<b>Delete</b>:<br />
+Deleting the Persistent Volume Claims will also delete the associated data stored in the external storage system.<br />
+<br /></li>
+</ul>
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f persistentVolume1.yaml</pre>
+<pre class="sh-code">
+persistentvolume/pv1 created</pre>
+View the Persistent Volume:<br />
+<pre class="sh-code">
+$ kubectl get pv</pre>
+<pre class="sh-code">
+NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+pv1    1Gi        RWO            Retain           Available           hostpath                4s</pre>
+The "STATUS" of the Persistent Volume is "Available",
+which means it has not yet been bound to a Persistent Volume Claim.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Persistent Volumes Claims (persistentvolumeclaims|pvc)</span>
+<div class="tutorialSectionTextDiv1">
+Defines the Persistent Volume Claim:<br />
+<pre class="sh-code">
+$ vi persistentVolumeClaim1.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc1
+spec:
+  storageClassName: hostpath
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi</pre>
+Kubernetes will try to match the Persistent Volume Claim to an existing Persistent Volume that satisfies the claim's requirements of the PVC.<br />
+<br />
+The spec field of the Persistent Volume Claim must match the .spec field of the Persistent Volume.<br />
+<br />
+If k8s finds a match, it binds the Persistent Volume Claim to the Persistent Volume.
+If there's no match, then if your cluster is configured to provision dynamically a Persistent Volume,
+Kubernetes will create a Persistent Volume and bind it to the Persistent Volume Claim.<br />
+<br />
+Note that the storage size of the Persistent Volume Claim can be set to a lower size than the one set for the Persistent Volume.<br />
+<br />
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f persistentVolumeClaim1.yaml</pre>
+<pre class="sh-code">
+persistentvolumeclaim/pvc1 created</pre>
+View the Persistent Volume Claim (STATUS should show Bound):<br />
+<pre class="sh-code">
+$ kubectl get pvc</pre>
+<pre class="sh-code">
+NAME   STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+pvc1   Bound    pv1      1Gi        RWO            hostpath       11s</pre>
+View the Persistent Volume (STATUS should show Bound):<br />
+<pre class="sh-code">
+$ kubectl get pv</pre>
+<pre class="sh-code">
+NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM          STORAGECLASS   REASON   AGE
+pv1    1Gi        RWO            Retain           Bound    default/pvc1   hostpath                74s</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Configure a Pod to use a Persistent Volume Claim</span>
+<div class="tutorialSectionTextDiv1">
+To use a volume, the Pod needs to define two fields: <b>volumes</b>, <b>volumeMounts</b><br />
+The <b>volumes</b> field defines the volumes that can be used by the containers in the Pod (including the init-containers).<br />
+The <b>volumeMounts</b> field allow the container to mount a specific volume in a specific path in that container.<br />
+The container is not required to mount any volume defined by the <b>volumes</b> field.<br />
+<br />
+Defines the Pod:<br />
+<pre class="sh-code">
+$ vi hello-busybox-pvc-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-pvc
+spec:
+  containers:
+    - name: hello-busybox-pvc
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      volumeMounts:
+        - name: pvc1
+          mountPath: /tmp/pvc1
+  volumes:
+    - name: pvc1
+      persistentVolumeClaim:
+        claimName: pvc1</pre>
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-pvc-pod.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-pvc created</pre>
+To use the volume:<br />
+<pre class="sh-code">
+$ kubectl exec -ti hello-busybox-pvc -- sh</pre>
+<pre class="sh-code">
+/ # echo "hello pvc!" > /tmp/pvc1/file1.txt
+/ # cat /tmp/pvc1/file1.txt
+hello pvc!</pre>
+You can validate the file directly in the Kubernetes node:<br />
+<pre class="sh-code">
+$ docker run -it --rm --privileged --pid=host alpine nsenter -t 1 -m -u -n -i sh</pre>
+<pre class="sh-code">
+/ # ls -1 /containers/services/docker/rootfs/mnt/mydata/pv1/
+file1.txt</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Storage Classes (storageclasses|sc)</span>
+<div class="tutorialSectionTextDiv1">
+Storage classes allow providing custom settings to provision volumes dynamically.<br />
+<br />
+The settings of the storage classes include defining the type of the provisioner (the storage plugin) and providing specific configuration of the plugin (parameters).<br />
+<br />
+Once a storage class is defined and created (assuming that both the storage system and its plugin are configured properly),
+the Persistent Volume Claim can reference the storage class (by its name).
+The volume will be provisioned dynamically once the Persistent Volume Claim is created.<br />
+<br />
+To provision dynamically volumes, the storage class loop will watch the API server, and once a Persistent Volume Claim is created and referencing its name,
+it will create the corresponding Persistent Volume in Kubernetes and instruct the backend system to provision the volume.<br />
+<br />
+Storage classes are immutable, and once deployed they won't allow any changes.<br />
+<br />
+Storage classes are defined as resources in the "storage.k8s.io" API group.<br />
+<br />
+If you have installed Kubernetes on Docker Desktop, you will find a default storage class already created (hostpath):<br />
+<pre class="sh-code">
+$ kubectl get sc</pre>
+<pre class="sh-code">
+NAME                 PROVISIONER          RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+hostpath (default)   docker.io/hostpath   Delete          Immediate           false                  22h</pre>
+<pre class="sh-code">
+$ kubectl get sc hostpath -o yaml</pre>
+<pre class="sh-code">
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"},"name":"hostpath"},"provisioner":"docker.io/hostpath","reclaimPolicy":"Delete","volumeBindingMode":"Immediate"}
+    storageclass.kubernetes.io/is-default-class: "true"
+  name: hostpath
+provisioner: docker.io/hostpath
+reclaimPolicy: Delete
+volumeBindingMode: Immediate</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Mount ConfigMaps as volumes</span>
+<div class="tutorialSectionTextDiv1">
+See details in <a href="k8s-configmaps.html">Kubernetes ConfigMaps (configmaps|cm)</a><br />
+<br />
+Here's an example how to mount a ConfigMap as a volume:<br />
+<br />
+Create the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmapkeyvalue --from-literal="key1=value1" --from-literal="key2=value2"</pre>
+<pre class="sh-code">
+configmap/configmapkeyvalue created</pre>
+Defines the Pod:<br />
+<pre class="sh-code">
+$ vi hello-busybox-cm.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-cm
+spec:
+  containers:
+    - name: hello-busybox-cm
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      volumeMounts:
+        - name: configmapkeyvalue
+          mountPath: /tmp/configmapkeyvalue
+  volumes:
+    - name: configmapkeyvalue
+      configMap:
+        name: configmapkeyvalue</pre>
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-cm.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-cm. created</pre>
+Check the mounted ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl exec -ti hello-busybox-cm -- sh -c 'ls -1 /tmp/configmapkeyvalue'</pre>
+<pre class="sh-code">
+key1
+key2</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Volumes of type emptyDir</span>
+<div class="tutorialSectionTextDiv1">
+You can define a special volume of type emptyDir.<br />
+The content of the volume will last for the life of the Pod (including when the Pod get restarted).<br />
+The volume can be shared by all the containers of the Pod.<br />
+<br />
+Here's an example that uses an emptyDir volumes:<br />
+<pre class="sh-code">
+$ vi hello-busybox-empty-dir-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-empty-dir
+spec:
+  containers:
+    - name: hello-busybox-empty-dir
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      volumeMounts:
+        - name: empty-dir-volume
+          mountPath: /tmp/emptyDirVolume
+  volumes:
+    - name: empty-dir-volume
+      emptyDir: {}</pre>
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-empty-dir-pod.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-empty-dir created</pre>
+To use the volume:<br />
+<pre class="sh-code">
+$ kubectl exec -ti hello-busybox-empty-dir -- sh</pre>
+<pre class="sh-code">
+/ # echo "hello empty dir volume!" > /tmp/emptyDirVolume/file1.txt
+/ # ls -1 /tmp/emptyDirVolume/
+file1.txt</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+<!--
+Here's a sample template of a Storage class:<br />
+<pre class="yaml-code">
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: scaws1
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4</pre>
+Here's a sample template of a Persistent Volume Claim:<br />
+<pre class="yaml-code">
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc2
+spec:
+  storageClassName: scaws1 # reference the name of the storage class
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi</pre>
+-->

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Glossary | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Glossary" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Glossary | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Glossary" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/generalTerms.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Glossary | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Glossary" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/generalTerms.html",
+        "description": "Tutorials: Docker - Glossary",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/generalTerms.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Glossary</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+- <b>Docker host</b>: The host where docker is running.<br />
+- <b>Image</b>: A package with all the dependencies and information needed to create a container.<br />
+- <b>Container</b>: An instance of a Docker image.<br />
+<hr />
+<ul class="ul_square_1">
+<li>
+<b>Dockerfile</b>:<br />
+<p>A Dockerfile is a text document that contains all the commands you would normally execute manually in order to build a Docker image.<br />
+Docker can build images automatically by reading the instructions from a Dockerfile.<br /></p>
+</li>
+<li>
+<b>Image</b>:<br />
+<p>Docker images are the basis of containers.<br />
+An Image is an ordered collection of root filesystem changes and the corresponding execution parameters for use within a container runtime.<br />
+An image typically contains a union of layered filesystems stacked on top of each other.<br />
+An image does not have state and it never changes.<br /></p>
+</li>
+<li>
+<b>Base image</b>:<br />
+<p>A base image has no parent image specified in its Dockerfile.<br />
+It is created using a Dockerfile with the FROM scratch directive.<br /></p>
+</li>
+<li>
+<b>Parent image</b>:<br />
+<p>An image’s parent image is the image designated in the FROM directive in the image’s Dockerfile.<br />
+All subsequent commands are based on this parent image.<br /></p>
+</li>
+<li>
+<b>Layer</b>:<br />
+<p>In an image, a layer is a modification to the image, represented by an instruction in the Dockerfile.<br />
+Layers are applied in sequence to the base image to create the final image.<br />
+When an image is updated or rebuilt, only layers that change need to be updated, and unchanged layers are cached locally.<br />
+This is part of why Docker images are so fast and lightweight.<br />
+The size of the final image is equal to the sum of the sizes of each layer.<br /></p>
+</li>
+<li>
+<b>Tag</b>:<br />
+<p>A tag is a label applied to a Docker image in a repository.<br />
+Tags are how various images in a repository are distinguished from each other.<br />
+Note: This label is not related to the key=value labels set for docker daemon.<br /></p>
+</li>
+<li>
+<b>Container</b>:<br />
+<p>A container is a runtime instance of a docker image.<br />
+A Docker container consists of:<br />
+- A Docker image.<br />
+- An execution environment.<br />
+- A standard set of instructions.<br />
+The concept is borrowed from Shipping Containers, which define a standard to ship goods globally.<br />
+Docker defines a standard to ship software.<br /></p>
+</li>
+<li>
+<b>Build</b>:<br />
+<p>Build is the process of building Docker images using a Dockerfile.<br />
+The build uses a Dockerfile and a “context”.<br />
+The context is the set of files in the directory in which the image is built.<br /></p>
+</li>
+<li>
+<b>cgroups (control groups)</b>:<br />
+<p>cgroups is a Linux kernel feature that limits and isolates the resource usage (CPU, memory, disk I/O, network, etc.) of a collection of processes.<br />
+Docker relies on cgroups to control and isolate resource limits.<br /></p>
+</li>
+<li>
+<b>copy-on-write</b>:<br />
+<p>Docker uses a copy-on-write technique and a union file system for both images and containers to optimize resources and speed performance.<br />
+Multiple copies of an entity share the same instance and each one makes only specific changes to its unique layer.<br />
+Multiple containers can share access to the same image, and make container-specific changes on a writable layer which is deleted when the container is removed.<br />
+This speeds up container start times and performance.<br />
+Images are essentially layers of filesystems typically predicated on a base image under a writable layer, and built up with layers of differences from the base image.<br />
+This minimizes the footprint of the image and enables shared development.<br /></p>
+</li>
+<li>
+<b>Union file system</b>:<br />
+<p>Union file systems implement a union mount and operate by creating layers.<br />
+Docker uses union file systems in conjunction with copy-on-write techniques to provide the building blocks for containers, making them very lightweight and fast.<br />
+Example implementations of union file systems are UnionFS, AUFS, and Btrfs.<br /></p>
+</li>
+<li>
+<b>Volume (data volume)</b>:<br />
+<p>A volume is a specially-designated directory within one or more containers that bypasses the Union File System.<br />
+Volumes are designed to persist data, independent of the container’s life cycle.<br />
+Docker therefore never automatically deletes volumes when you remove a container, nor will it “garbage collect” volumes that are no longer referenced by a container.<br />
+<br />
+There are three types of volumes:<br />
+<ul class="ul_circle_1">
+<li>
+<b>host</b>:<br />
+A host volume lives on the Docker host’s filesystem and can be accessed from within the container.<br />
+<br />
+</li>
+<li>
+<b>named</b>:<br />
+A named volume is a volume, with a specific name, that Docker manages where on disk it will be created.<br />
+<br />
+</li>
+<li>
+<b>anonymous</b>:<br />
+An anonymous volume is similar to a named volume, however, it can be difficult, to refer to the same volume over time when it is an anonymous volumes.<br />
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

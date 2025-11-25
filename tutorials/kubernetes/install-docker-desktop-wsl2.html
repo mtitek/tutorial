@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Install &amp; Use Docker Desktop with WSL 2 | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Install &amp; Use Docker Desktop with WSL 2" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Install &amp; Use Docker Desktop with WSL 2 | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Install &amp; Use Docker Desktop with WSL 2" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/install-docker-desktop-wsl2.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Install &amp; Use Docker Desktop with WSL 2 | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Install &amp; Use Docker Desktop with WSL 2" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/install-docker-desktop-wsl2.html",
+        "description": "Tutorials: Kubernetes - Install &amp; Use Docker Desktop with WSL 2",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/install-docker-desktop-wsl2.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Install &amp; Use Docker Desktop with WSL 2</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+See these pages for more details on how to install Docker Desktop (WSL 2):<br />
+<a href="https://docs.docker.com/desktop/features/wsl/">https://docs.docker.com/desktop/features/wsl/</a><br />
+<a href="https://learn.microsoft.com/en-us/windows/wsl/install">https://learn.microsoft.com/en-us/windows/wsl/install</a><br />
+<br />
+Make sure that you have installed Windows Subsystem for Linux (WSL 2):
+<a href="install-wsl2.html">Install Windows Subsystem for Linux (WSL 2)</a><br />
+<br />
+<ul class="ul_square_1">
+<li>
+Install Docker Desktop on Windows:<br />
+<a href="https://docs.docker.com/desktop/setup/install/windows-install/">https://docs.docker.com/desktop/setup/install/windows-install/</a><br />
+<br />
+</li>
+<li>
+Follow the installation instructions to install Docker Desktop.<br />
+Once installed, Start Docker Desktop from the Windows Start menu.<br />
+<br />
+</li>
+<li>
+Verify that the "Use WSL 2 based engine" is checked.<br />
+In the Docker menu, select Settings, then select General.<br />
+If not already checked, check the "Use the WSL 2 based engine" check box and click "Apply &amp; Restart".<br />
+<br />
+</li>
+<li>
+Check Docker-WSL integration.<br />
+In the Docker menu, select Settings, then select Resources, then select "WSL INTEGRATION".<br />
+Verify that the "Enable integration with my default WSL distro" is checked. If not already checked, check it.<br />
+<br />
+In the section "Enable integration with additional distro", select a distro of your choice.<br />
+Click "Apply &amp; Restart".<br />
+<br />
+</li>
+<li>
+Enable Kubernetes.<br />
+In the Docker menu, select Settings, then select Kubernetes.<br />
+Check "Enable Kubernetes" check box.<br />
+Check "Show system containers (advanced)" check box.<br />
+Click "Apply &amp; Restart".<br />
+<br />
+</li>
+<li>
+Check Docker installation.<br />
+<br />
+docker version:<br />
+<pre class="sh-code">
+$ docker version</pre>
+<pre class="text-code">
+Client:
+ Version:           28.0.4
+ API version:       1.48
+ ...
+
+Server: Docker Desktop 4.0.0 ()
+ Engine:
+  Version:          28.0.4
+  API version:      1.48 (minimum version 1.24)
+  ...
+ containerd:
+  Version:          1.7.26
+  ...
+ runc:
+  Version:          1.2.5
+  ...
+ docker-init:
+  Version:          0.19.0
+  ...</pre>
+Let's run the <b>nsenter</b> command inside the <b>debian</b> container.
+We will get access to the Docker Desktop VM:<br />
+<pre class="sh-code">
+$ docker container run --rm -ti --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh</pre>
+<pre class="sh-code">
+sh-5.2# cat '/etc/os-release'
+PRETTY_NAME="Docker Desktop"</pre>
+<pre class="sh-code">
+sh-5.2# ps -ef | grep dockerd
+root       143    82  8 18:00 pts/0    00:06:51 /usr/local/bin/dockerd --config-file /run/config/docker/daemon.json --containerd /run/containerd/containerd.sock --pidfile /run/desktop/docker.pid --swarm-default-advertise-addr=192.168.65.3 --host-gateway-ip 192.168.65.254
+root       407    82  0 18:00 pts/0    00:00:40 /usr/bin/cri-dockerd --docker-endpoint unix:///run/guest-services/cri-dockerd-proxy.sock --pod-infra-container-image registry.k8s.io/pause:3.10 --network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/var/lib/cni-plugins/bin
+root       506    82  3 18:00 pts/0    00:03:01 kubelet --kubeconfig=/etc/kubernetes/kubelet.conf --config /etc/kubeadm/kubelet.yaml --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --hostname-override=docker-desktop --container-runtime-endpoint unix:///var/run/cri-dockerd.sock</pre>
+<pre class="sh-code">
+sh-5.2# ls -1 /var/lib/docker/
+buildkit
+containers
+engine-id
+jfs
+network
+plugins
+rootfs
+runtimes
+stats
+swarm
+tmp
+volumes</pre>
+</li>
+<li>
+Check Kubernetes installation.<br />
+<br />
+kubectl version:<br />
+<pre class="sh-code">
+$ kubectl version</pre>
+<pre class="text-code">
+Client Version: v1.32.3
+Kustomize Version: v5.5.0
+Server Version: v1.32.2</pre>
+docker images:<br />
+<pre class="sh-code">
+$ docker images</pre>
+<pre class="text-code">
+REPOSITORY                           TAG                                                     IMAGE ID       CREATED         SIZE
+docker/desktop-kubernetes            kubernetes-v1.19.7-cni-v0.8.5-critools-v1.17.0-debian   93b3398dbfde   3 months ago    285MB
+docker/desktop-storage-provisioner   v1.1                                                    e704287ce753   14 months ago   41.8MB
+docker/desktop-vpnkit-controller     v1.0                                                    79da37e5a3aa   15 months ago   36.6MB
+k8s.gcr.io/coredns                   1.7.0                                                   bfe3a36ebd25   11 months ago   45.2MB
+k8s.gcr.io/etcd                      3.4.13-0                                                0369cf4303ff   9 months ago    253MB
+k8s.gcr.io/kube-apiserver            v1.19.7                                                 c15e4f843f01   4 months ago    119MB
+k8s.gcr.io/kube-controller-manager   v1.19.7                                                 67b3bca112d1   4 months ago    111MB
+k8s.gcr.io/kube-proxy                v1.19.7                                                 9d368f4517bb   4 months ago    118MB
+k8s.gcr.io/kube-scheduler            v1.19.7                                                 4fa642720eea   4 months ago    45.6MB
+k8s.gcr.io/pause                     3.2                                                     80d28bedfe5d   15 months ago   683kB</pre>
+kubectl get all --all-namespaces:<br />
+<pre class="sh-code">
+$ kubectl get all --all-namespaces</pre>
+<pre class="text-code">
+NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE
+kube-system   pod/coredns-f9fd979d6-47lqp                  1/1     Running   0          26h
+kube-system   pod/coredns-f9fd979d6-lk72n                  1/1     Running   0          26h
+kube-system   pod/etcd-docker-desktop                      1/1     Running   0          26h
+kube-system   pod/kube-apiserver-docker-desktop            1/1     Running   0          26h
+kube-system   pod/kube-controller-manager-docker-desktop   1/1     Running   0          26h
+kube-system   pod/kube-proxy-kmnmm                         1/1     Running   0          26h
+kube-system   pod/kube-scheduler-docker-desktop            1/1     Running   0          26h
+kube-system   pod/storage-provisioner                      1/1     Running   0          26h
+kube-system   pod/vpnkit-controller                        1/1     Running   0          26h
+
+NAMESPACE     NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+default       service/kubernetes   ClusterIP   10.96.0.1    &lt;none&gt;        443/TCP                  26h
+kube-system   service/kube-dns     ClusterIP   10.96.0.10   &lt;none&gt;        53/UDP,53/TCP,9153/TCP   26h
+
+NAMESPACE     NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   26h
+
+NAMESPACE     NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/coredns   2/2     2            2           26h
+
+NAMESPACE     NAME                                DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/coredns-f9fd979d6   2         2         2       26h</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

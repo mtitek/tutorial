@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Complete Kubernetes Tutorial: Setup, Components &amp; Key Concepts | MTI TEK</title>
+<meta name="description" content="Learn Kubernetes step-by-step: install kubectl, Docker Desktop with WSL2, explore Kubernetes components, clusters, workloads, services, and Helm charts." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Complete Kubernetes Tutorial: Setup, Components &amp; Key Concepts | MTI TEK" />
+<meta property="og:description" content="Learn Kubernetes step-by-step: install kubectl, Docker Desktop with WSL2, explore Kubernetes components, clusters, workloads, services, and Helm charts." />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Complete Kubernetes Tutorial: Setup, Components &amp; Key Concepts | MTI TEK" />
+<meta name="twitter:description" content="Learn Kubernetes step-by-step: install kubectl, Docker Desktop with WSL2, explore Kubernetes components, clusters, workloads, services, and Helm charts." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/",
+        "description": "Learn Kubernetes step-by-step: install kubectl, Docker Desktop with WSL2, explore Kubernetes components, clusters, workloads, services, and Helm charts.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialContentsDiv1">
+<span class="tutorialContentsSpan1">Kubernetes</span>
+<hr class="tutorialContentsHr1" />
+<img alt="Components of Kubernetes" src="img/components-of-kubernetes.png" width="600" /><br />
+[source: <a href="https://kubernetes.io/docs/concepts/overview/components/">https://kubernetes.io/docs/concepts/overview/components/</a>]<br />
+<ol class="ol_decimal_1">
+<li><a href="install_kubectl.html">kubectl</a></li>
+<li>Install Docker Desktop (Windows)
+<ol class="ol_upper_roman_1">
+<li><a href="install-wsl2.html">Install Windows Subsystem for Linux (WSL 2)</a></li>
+<li><a href="install-docker-desktop-wsl2.html">Install &amp; Use Docker Desktop with WSL 2</a></li>
+<li><a href="ssh-wsl2-remote-machine.html">SSH into WSL 2 from a Remote Machine</a></li>
+<li><a href="install-kubernetes-dashboard.html">Docker Desktop: Kubernetes Web UI (Dashboard)</a></li>
+<li><a href="install-kubernetes-metrics-server.html">Kubernetes Metrics Server</a></li>
+</ol>
+</li>
+<li><a href="k8s-cluster.html">Kubernetes Cluster</a></li>
+<li>Kubernetes Objects
+<ol class="ol_lower_latin_1">
+<li><span class="tutorialSectionTitleSpan1">Cluster</span>
+<ol class="ol_upper_roman_1">
+<!--<li>Namespaces (namespaces|ns)</li>-->
+<li><a href="k8s-volumes.html">Volumes<br />
+                            Persistent Volumes (persistentvolumes|pv)<br />
+                            Persistent Volumes Claims (persistentvolumeclaims|pvc)<br />
+                            Storage Classes (storageclasses|sc)</a><br />
+</li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Config and Storage</span>
+<ol class="ol_upper_roman_1">
+<li><a href="k8s-configmaps.html">ConfigMaps (configmaps|cm)</a></li>
+<li><a href="k8s-secrets.html">Secrets (secrets)</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Workloads</span>
+<ol class="ol_upper_roman_1">
+<li><a href="k8s-pods.html">Pods (pods|po)</a></li>
+<!--<li>ReplicaSets (replicasets|rs)</li>-->
+<li><a href="k8s-deployments.html">Deployments (deployments|deploy)</a></li>
+<li><a href="k8s-statefulsets.html">StatefulSets (statefulsets|sts)</a></li>
+<!--<li>DaemonSets (daemonsets|ds)</li>-->
+<!--<li>Jobs (jobs|batch)</li>-->
+<!--<li>CronJobs (cronjobs|cj)</li>-->
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Service</span>
+<ol class="ol_upper_roman_1">
+<li><a href="k8s-services.html">Services (services|svc)</a></li>
+<!--<li>Ingresses (ingresses|ing)</li>-->
+</ol>
+</li>
+</ol>
+</li>
+<li>Helm
+<ol class="ol_lower_latin_1">
+<li><a href="/tutorials/helm/install.html">Install Helm</a></li>
+<li><a href="/tutorials/helm/helm-chart.html">Helm Chart</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Appendix</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li><a href="generalTerms.html">Glossary</a></li>
+<li><a href="kubectl_cli.html">kubectl CLI (Command-Line Interface)</a></li>
+<li><a href="kubectl_cli_get.html">kubectl CLI: kubectl get</a></li>
+<li><a href="kubectl_cli_api_resources.html">kubectl CLI: API Resources</a></li>
+</ol>
+</div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-visual">
+<img
+                    alt="Kubernetes: Up &amp; Running: Dive into the Future of Infrastructure"
+                    src="/images/books/kubernetes-up-and-running-dive-into-the-future-of-infrastructure.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">Kubernetes: Up &amp; Running: Dive into
+                    the Future of Infrastructure</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Brendan Burns,
+                        Joe Beda, Kelsey Hightower
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> O'Reilly
+                        Media; 3rd edition (August 2022)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1491935675
+</div>
+</div>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-visual">
+<img alt="The Kubernetes Book"
+                    src="/images/books/the-kubernetes-book.jpg" />
+</div>
+<div class="reference-content">
+<h4 class="reference-title">The Kubernetes Book</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Nigel Poulton
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Independently
+                        published (March 2025)
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="references-category">
+<h3 class="references-category-title">Documentation & Resources</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Kubernetes Documentation</h4>
+<a href="https://kubernetes.io/docs/home/" class="reference-link">https://kubernetes.io/docs/home/</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Minikube Documentation</h4>
+<a href="https://minikube.sigs.k8s.io/docs/" class="reference-link">https://minikube.sigs.k8s.io/docs/</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Kubernetes API Reference (v1.32)</h4>
+<a
+                    href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/"
+                    class="reference-link">https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.32/</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">kubectl Quick Reference</h4>
+<a
+                    href="https://kubernetes.io/docs/reference/kubectl/quick-reference/"
+                    class="reference-link">https://kubernetes.io/docs/reference/kubectl/quick-reference/</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

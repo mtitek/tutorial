@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Clear Docker Unused Objects | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Clear Docker Unused Objects" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Clear Docker Unused Objects | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Clear Docker Unused Objects" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/clear_docker_unused_objects.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Clear Docker Unused Objects | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Clear Docker Unused Objects" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/clear_docker_unused_objects.html",
+        "description": "Tutorials: Docker - Clear Docker Unused Objects",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/clear_docker_unused_objects.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Clear Docker Unused Objects</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Clear Unused Images</a></li>
+<li><a href="#sec_id_2">Clear Build Cache</a></li>
+<li><a href="#sec_id_3">Clear Stopped Containers</a></li>
+<li><a href="#sec_id_4">Clear Unused Networks</a></li>
+<li><a href="#sec_id_5">Clear Unused Local Volumes</a></li>
+<li><a href="#sec_id_6">Clear all Docker Unused Objects (Images, Build Cache, Containers, Networks, Local Volumes)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Clear Unused Images</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command <code class="code1">docker image prune</code> to remove unused images:<br />
+<pre class="sh-code">
+$ docker image prune --help</pre>
+<pre class="sh-code">
+Usage: docker image prune [OPTIONS]
+
+Remove unused images
+
+Options:
+  -a, --all             Remove all unused images, not just dangling ones
+      --filter filter   Provide filter values (e.g. 'until=&lt;timestamp&gt;')
+  -f, --force           Do not prompt for confirmation</pre>
+First, let's list existing images:<br />
+<pre class="sh-code">
+$ docker image ls</pre>
+<pre class="sh-code">
+REPOSITORY                    TAG             IMAGE ID            CREATED             SIZE
+zookeeper-multi-stage         3.6.1           673b3d044115        9 minutes ago       40.8MB
+&lt;none&gt;                        &lt;none&gt;          95c0f0969c15        9 minutes ago       55.1MB
+alpine                        latest          a24bb4013296        2 months ago        5.57MB</pre>
+By default, only regular and dangling images are shown.<br />
+A dangling image is one that is not tagged and is not referenced by any container.<br />
+<br />
+Use the option <b>-a</b> (<b>--all</b>) to list all images:<br />
+<pre class="sh-code">
+$ docker image ls -a</pre>
+<pre class="sh-code">
+REPOSITORY                    TAG             IMAGE ID            CREATED             SIZE
+zookeeper-multi-stage         3.6.1           673b3d044115        12 minutes ago      40.8MB
+&lt;none&gt;                        &lt;none&gt;          95c0f0969c15        12 minutes ago      55.1MB
+&lt;none&gt;                        &lt;none&gt;          95e1e698e91f        12 minutes ago      19.8MB
+&lt;none&gt;                        &lt;none&gt;          54616be057e7        12 minutes ago      7.4MB
+alpine                        latest          a24bb4013296        2 months ago        5.57MB</pre>
+Remove dangling images:<br />
+<pre class="sh-code">
+$ docker image prune</pre>
+<pre class="sh-code">
+WARNING! This will remove all dangling images.
+
+Are you sure you want to continue? [y/N] y
+Deleted Images:
+deleted: sha256:95c0f0969c156a7bba1c94636a04e903ff01bba68b2b6938d69e9dbd3e0df71e
+deleted: sha256:2ffccaa21550779cbd06bb923d287fcb9956944d9580553d7b0351f2449f62d1
+deleted: sha256:95e1e698e91fc643b11bd4f1b725966348e7125aaac4e6fc2a00dd615b2f23e3
+deleted: sha256:c6d4e880f3e27836c4b13e4125933938d185eebad9580a0bf5e0dc368cf225f0
+deleted: sha256:54616be057e7549cd225a67e06b515eeafbe85d6e9b69541cf60b43d61c1ddd1
+deleted: sha256:8caf8b6e850679bfe3d3d4c1369d399e0a17c8c085f312eabf1454d9107a111a
+
+Total reclaimed space: 49.51M</pre>
+Check that dangling images were deleted:<br />
+<pre class="sh-code">
+$ docker image ls -a</pre>
+<pre class="sh-code">
+REPOSITORY                    TAG             IMAGE ID            CREATED             SIZE
+zookeeper-multi-stage         3.6.1           673b3d044115        12 minutes ago      40.8MB
+alpine                        latest          a24bb4013296        2 months ago        5.57MB</pre>
+It's also possible to use this command to remove dangling images:<br />
+<pre class="sh-code">
+$ docker image rm $(docker image ls -q -f "dangling=true")</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Clear Build Cache</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command <code class="code1">docker buildx prune</code> to remove build cache:<br />
+<pre class="sh-code">
+$ docker buildx prune --help</pre>
+<pre class="sh-code">
+Remove build cache
+
+Usage:  docker buildx prune
+
+Remove build cache
+
+Options:
+  -a, --all                    Include internal/frontend images
+      --builder string         Override the configured builder instance
+  -D, --debug                  Enable debug logging
+      --filter filter          Provide filter values (e.g., "until=24h")
+  -f, --force                  Do not prompt for confirmation
+      --max-used-space bytes   Maximum amount of disk space allowed to keep for cache
+      --min-free-space bytes   Target amount of free disk space after pruning
+      --reserved-space bytes   Amount of disk space always allowed to keep for cache
+      --verbose                Provide a more verbose output
+
+Experimental commands and flags are hidden. Set BUILDX_EXPERIMENTAL=1 to show them.</pre>
+Let's create a simple Dockerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-test:latest .</pre>
+Clear build cache:<br />
+<pre class="sh-code">
+$ docker buildx prune --all --verbose</pre>
+<pre class="sh-code">
+WARNING! This will remove all build cache. Are you sure you want to continue? [y/N] y
+ID: 52cwy2cp9vd6od07xk2ux0xgk
+Created at: 2024-06-15 15:14:54.395180592 +0000 UTC
+Mutable: false
+Reclaimable: true
+Shared: false
+Size: 29.72MB
+Usage count: 1
+Last used: 2 minutes ago
+
+Total: 29.72MB</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Clear Stopped Containers</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command <code class="code1">docker container prune</code> to remove all stopped containers:<br />
+<pre class="sh-code">
+$ docker container prune --help</pre>
+<pre class="sh-code">
+Usage: docker container prune [OPTIONS]
+
+Remove all stopped containers
+
+Options:
+      --filter filter   Provide filter values (e.g. 'until=&lt;timestamp&gt;')
+  -f, --force           Do not prompt for confirmation</pre>
+Let's start a container:<br />
+<pre class="sh-code">
+$ docker container run ubuntu:latest</pre>
+<pre class="sh-code">
+5447b485b834c8125a4b6fceb0aaf1be1f39fa36b8247320246ba9b792e52f39</pre>
+Check the container:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID    IMAGE           COMMAND         CREATED          STATUS                     NAMES
+5447b485b834    ubuntu:latest   "/bin/bash"     6 seconds ago    Exited (0) 5 seconds ago   distracted_hoover</pre>
+Note that the container was started and executed the command <b>/bin/bash</b>,
+but then exited because no process was running in the foreground or background.<br />
+<br />
+Remove stopped containers:<br />
+<pre class="sh-code">
+$ docker container prune</pre>
+<pre class="sh-code">
+WARNING! This will remove all stopped containers.
+
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+5447b485b834c8125a4b6fceb0aaf1be1f39fa36b8247320246ba9b792e52f39
+
+Total reclaimed space: 0B</pre>
+It's also possible to use this command to remove all containers with the status exited:<br />
+<pre class="sh-code">
+$ docker container rm $(docker container ls -a -q --filter "status=exited")</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Clear Unused Networks</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command <code class="code1">docker network prune</code> to remove all unused networks (not attached to a running container):<br />
+<pre class="sh-code">
+$ docker network prune --help</pre>
+<pre class="sh-code">
+Usage: docker network prune [OPTIONS]
+
+Remove all unused networks
+
+Options:
+      --filter filter   Provide filter values (e.g. 'until=&lt;timestamp&gt;')
+  -f, --force           Do not prompt for confirmation</pre>
+Create a test network:<br />
+<pre class="sh-code">
+$ docker network create network1</pre>
+<pre class="sh-code">
+1f1873ef27f8a4bedceef2dd3f9e687216d2f648b544ced4610bfcd55fb507ba</pre>
+Remove unused networks:<br />
+<pre class="sh-code">
+$ docker network prune</pre>
+<pre class="sh-code">
+WARNING! This will remove all custom networks not used by at least one container.
+
+Are you sure you want to continue? [y/N] y
+Deleted Networks:
+network1</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Clear Unused Local Volumes</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command <code class="code1">docker volume prune</code> to remove all unused local volumes (not attached to a running container):<br />
+<pre class="sh-code">
+$ docker volume prune --help</pre>
+<pre class="sh-code">
+Usage:  docker volume prune [OPTIONS]
+
+Remove unused local volumes
+
+Options:
+  -a, --all             Remove all unused volumes, not just anonymous ones
+      --filter filter   Provide filter values (e.g. "label=&lt;label&gt;")
+  -f, --force           Do not prompt for confirmation</pre>
+Create a test volume:<br />
+<pre class="sh-code">
+$ docker volume create volume1</pre>
+<pre class="sh-code">
+volume1</pre>
+Let's use the created volume:<br />
+<pre class="sh-code">
+$ docker container run --rm --volume volume1:/cvdata ubuntu:latest /bin/bash -c "echo 'hello docker volumes' > /cvdata/file1.txt"</pre>
+<pre class="sh-code">
+d58173f7f8c81b429d0a0e015f864a4797c9ffb7f1c22bec2e3a1e0932f776dc</pre>
+Let's check the data in the volume:<br />
+<pre class="sh-code">
+$ docker container run --rm --volume volume1:/cvdata ubuntu:latest /bin/bash -c "cat /cvdata/file1.txt"</pre>
+<pre class="sh-code">
+hello docker volumes</pre>
+Let's remove the unused volumes:<br />
+<pre class="sh-code">
+$ docker volume prune --all</pre>
+<pre class="sh-code">
+WARNING! This will remove all local volumes not used by at least one container.
+Are you sure you want to continue? [y/N] y
+Deleted Volumes:
+volume1
+
+Total reclaimed space: 21B</pre>
+You could also remove specific volumes using the command <code class="code1">docker volume rm</code>:<br />
+<pre class="sh-code">
+$ docker volume rm --help</pre>
+<pre class="sh-code">
+Usage:  docker volume rm [OPTIONS] VOLUME [VOLUME...]
+
+Remove one or more volumes. You cannot remove a volume that is in use by a container.
+
+Aliases:
+  docker volume rm, docker volume remove
+
+Options:
+  -f, --force   Force the removal of one or more volumes</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Clear all Docker Unused Objects (Images, Build Cache, Containers, Networks, Local Volumes)</span>
+<div class="tutorialSectionTextDiv1">
+You can also use the command <code class="code1">docker system prune</code> to remove all unused objects.
+This will remove unused images, build cahce, stopped containers, and unused networks: <br />
+<pre class="sh-code">
+$ docker system prune --help</pre>
+<pre class="sh-code">
+Usage:  docker system prune [OPTIONS]
+
+Remove unused data
+
+Options:
+  -a, --all             Remove all unused images not just dangling ones
+      --filter filter   Provide filter values (e.g. "label=&lt;key&gt;=&lt;value&gt;")
+  -f, --force           Do not prompt for confirmation
+      --volumes         Prune anonymous volumes</pre>
+Remove unused objects (note the option <b>--volumes</b> to also remove unused local volumes):<br />
+<pre class="sh-code">
+$ docker system prune --volumes</pre>
+<pre class="sh-code">
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all volumes not used by at least one container
+  - all dangling images
+  - all dangling build cache
+
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+437d593134a15ce50fd9427713cdeabfa40eb94bf2577684a2317bf213afb35c
+
+Deleted Networks:
+network1
+
+Deleted Volumes:
+volume1
+
+Deleted Images:
+deleted: sha256:95c0f0969c156a7bba1c94636a04e903ff01bba68b2b6938d69e9dbd3e0df71e
+deleted: sha256:2ffccaa21550779cbd06bb923d287fcb9956944d9580553d7b0351f2449f62d1
+deleted: sha256:95e1e698e91fc643b11bd4f1b725966348e7125aaac4e6fc2a00dd615b2f23e3
+deleted: sha256:c6d4e880f3e27836c4b13e4125933938d185eebad9580a0bf5e0dc368cf225f0
+deleted: sha256:54616be057e7549cd225a67e06b515eeafbe85d6e9b69541cf60b43d61c1ddd1
+deleted: sha256:8caf8b6e850679bfe3d3d4c1369d399e0a17c8c085f312eabf1454d9107a111a
+
+Total reclaimed space: 49.51M</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

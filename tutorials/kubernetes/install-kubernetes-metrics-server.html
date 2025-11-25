@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Kubernetes Metrics Server | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Kubernetes Metrics Server" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Kubernetes Metrics Server | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Kubernetes Metrics Server" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/install-kubernetes-metrics-server.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Kubernetes Metrics Server | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Kubernetes Metrics Server" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/install-kubernetes-metrics-server.html",
+        "description": "Tutorials: Kubernetes - Kubernetes Metrics Server",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/install-kubernetes-metrics-server.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Kubernetes Metrics Server</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Kubernetes Metrics Server:<br />
+<!--<a href="kubernetes_metrics.html">Collect Kubernetes metrics (Minikube's addon: 'metrics-server')</a><br />-->
+<a href="https://github.com/kubernetes-sigs/metrics-server">https://github.com/kubernetes-sigs/metrics-server</a><br />
+<br />
+<ul class="ul_square_1">
+<li>
+Deploying the Kubernetes Metrics Server:<br />
+<pre class="sh-code">
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</pre>
+<pre class="sh-code">
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created</pre></li>
+<li>
+Check the Metrics Server Pod:<br />
+<pre class="sh-code">
+$ kubectl get pods -n kube-system | grep metrics-server</pre>
+<pre class="sh-code">
+metrics-server-6f7dd4c4c4-5fv57   0/1     Running   0          68s</pre>
+You might notice that the Pod is not starting because of the following error:
+<pre class="sh-code">
+$ kubectl logs -f  metrics-server-6f7dd4c4c4-5fv57 -n kube-system</pre>
+<pre class="sh-code">
+"Failed to scrape node" err="Get \"https://192.168.65.4:10250/stats/summary?only_cpu_and_memory=true\": x509: cannot validate certificate for 192.168.65.4 because it doesn't contain any IP SANs" node="docker-desktop"</pre>
+To fix that error, run the following command:<br />
+<pre class="sh-code">
+$ kubectl patch deployment metrics-server -n kube-system --type 'json' -p '[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'</pre>
+<pre class="sh-code">
+deployment.apps/metrics-server patched</pre></li>
+<li>
+Use Kubernetes Dashboard to visualize metrics:<br />
+<img alt="Kubernetes Metrics Server" src="img/kubernetes-metrics-server.png" width="600" />
+<br /></li>
+</ul>
+To delete Kubernetes Metrics Server:<br />
+<pre class="sh-code">
+$ kubectl delete -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</pre>
+<pre class="sh-code">
+serviceaccount "metrics-server" deleted
+clusterrole.rbac.authorization.k8s.io "system:aggregated-metrics-reader" deleted
+clusterrole.rbac.authorization.k8s.io "system:metrics-server" deleted
+rolebinding.rbac.authorization.k8s.io "metrics-server-auth-reader" deleted
+clusterrolebinding.rbac.authorization.k8s.io "metrics-server:system:auth-delegator" deleted
+clusterrolebinding.rbac.authorization.k8s.io "system:metrics-server" deleted
+service "metrics-server" deleted
+deployment.apps "metrics-server" deleted
+apiservice.apiregistration.k8s.io "v1beta1.metrics.k8s.io" deleted</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

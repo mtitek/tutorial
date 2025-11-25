@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Container Resources | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Container Resources" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Container Resources | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Container Resources" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/container_resources.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Container Resources | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Container Resources" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/container_resources.html",
+        "description": "Tutorials: Docker - Container Resources",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/container_resources.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Container Resources</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">CPU Resources</a></li>
+<li><a href="#sec_id_2">Memory Resources</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">CPU Resources</span>
+<div class="tutorialSectionTextDiv1">
+The "docker container run" command has few options that allow you to determine the CPU resources that you want that Docker allocate to a container:<br />
+<pre class="sh-code">
+-c, --cpu-shares int                   CPU shares (relative weight)
+    --cpus decimal                     Number of CPUs
+    --cpuset-cpus string               CPUs in which to allow execution (0-3, 0,1)</pre>
+To check the CPUs available in your machine, you can run the <b>lscpu</b> command or view the content of the file <b>/proc/cpuinfo</b>.<br />
+<br />
+We will use the stress command which is a good tool to generate CPU stress on the system.<br />
+<br />
+Let's first try to use a container without any limit on CPU resources:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --cpu 4 --timeout 15"</pre>
+You can use the <b>htop</b> command to check the resources usage:<br />
+<img alt="CPU usage - no limit" src="img/htop-container-stress-cpu-no-limit.png" width="600" /><br />
+<br />
+As requested, 4 CPUs are used at their full capacity.<br />
+<br />
+To restrict the CPUs usage for a container,
+we can use the option <b>--cpus</b> which takes a value between 0.01 and the number of CPUs available on the Docker host.
+For example, to restrict the container to 1.00 CPU usage we can do the following:<br />
+<pre class="sh-code">
+$ docker container run --rm -it --cpus 1.00 ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --cpu 4 --timeout 15"</pre>
+The load might still be split on the available CPUs but Docker will ensure it won't go beyond the number defined by the option <b>--cpus</b>:<br />
+<img alt="CPU usage - limit 1.00" src="img/htop-container-stress-cpu-limit-1.png" width="600" /><br />
+<br />
+It's possible to decide in which CPUs to allow the container execution by using the option <b>--cpuset-cpus</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm -it --cpus 1.00 --cpuset-cpus 0,7 ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --cpu 4 --timeout 15"</pre>
+This should limit the container to execute on CPU 0 and 7 only:<br />
+<img alt="CPU usage - limit 1.00 - only CPU 0 and 7" src="img/htop-container-stress-cpu-limit-1-restricted.png" width="600" /><br />
+<br />
+Another way, less recommended, to limit the CPU usage by a container is to use option <b>--cpu-shares</b>.
+The number given represents the CPU shares (relative weight) of CPU time the container receives.
+The logical maximum value that can be given is 1024 (default), which represents the full share of CPUs
+(values above 1024 won't provide additional benefit in most scenarios).
+Docker will allocate CPU time proportionally based on the ratio of the CPU shares between running containers.
+If one container has 1024 CPU shares and another container has 512,
+they both get executed the same number of times
+but the first container will receive twice CPU time as the second container when both are competing for CPU.
+Note, if only one container is running and has only 1 share, it will still use all CPU time, if no other process is using CPU.<br />
+<br />
+To restrict the CPU shares for a container to 128 (1/8th of 1024):<br />
+<pre class="sh-code">
+$ docker container run --rm -it --cpu-shares 128 ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --cpu 4 --timeout 15"</pre>
+Even though we instructed Docker to allocate 128 CPU shares, the container was actually using 100% of 4 CPUs (from 8 CPU available on the Docker host).
+Docker won't prevent a container from using CPU resources (CPU time) unless there are other processes that are also requesting CPU resources.<br />
+<br />
+<img alt="CPU usage - limit CPU shares 128" src="img/htop-container-stress-cpu-shares-128.png" width="600" /><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Memory Resources</span>
+<div class="tutorialSectionTextDiv1">
+The "docker container run" command has few options that allow you to determine the CPU resources that you want that Docker allocate to a container:<br />
+<pre class="sh-code">
+-m, --memory bytes                     Memory limit
+    --memory-swap bytes                Swap limit equal to memory plus swap: '-1' to enable unlimited swap</pre>
+The memory can be set in bytes (<b>b</b>), kilobytes (<b>k</b>), megabytes (<b>m</b>), or gigabytes (<b>g</b>).<br />
+<br />
+We will use the stress command which is a good tool to generate memory stress on the system.<br />
+<br />
+Let's use the option <b>-m</b> (<b>--memory</b>):<br />
+<pre class="sh-code">
+$ docker container run --rm -it --memory 1024m ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --vm 1 --vm-bytes 256M --timeout 15"</pre>
+Note that running the <b>free -m</b> command inside a container returns the host's memory, not the container's memory limit.
+Same if you look inside the <b>/proc/meminfo</b> file.
+If you want to check the memory limit defined in Docker, you can use the <b>docker container stats</b> command.<br />
+<br />
+Open a new terminal window and run the <b>docker container stats</b> command (make sure the container is still running):<br />
+<pre class="sh-code">
+$ docker container stats</pre>
+<pre class="sh-code">
+CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O   PIDS
+65d6d760949a   jolly_hodgkin   101.25%   247.8MiB / 1GiB     24.20%    31.8MB / 521kB   0B / 0B     2</pre>
+Let's now use the option <b>--memory-swap</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm -it --memory 896m --memory-swap 1024m ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --vm 1 --vm-bytes 256M --timeout 15"</pre>
+Let's check the memory usage<br />
+<pre class="sh-code">
+$ docker container stats</pre>
+<pre class="sh-code">
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O   PIDS
+8cfb41ecb285   jolly_blackwell   100.31%   272.1MiB / 896MiB   30.37%    31.8MB / 536kB   0B / 0B     2</pre>
+You will get an error if the value of the <b>--memory</b> is large than <b>--memory-swap</b>.
+The <b>--memory-swap</b> value represents the total memory limit (RAM + swap).<br />
+<pre class="sh-code">
+docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage</pre>
+To prevent the container from using swap space, set <b>--memory-swap</b> equal to <b>--memory</b>.
+This limits total memory (RAM + swap) to the memory limit alone.<br />
+<br />
+To enable the container to use the full swap memory available in the docker host set <b>--memory-swap</b> to <b>-1</b>.<br />
+<br />
+If you don't set <b>--memory-swap</b>, Docker sets it by default to twice the <b>--memory</b> value.
+Which means the swap space available will be equal to the memory limit.
+The container's memory limit will be equal to the sum of the memory limit and the memory limit of swap space.<br />
+<br />
+Note that the memory limit is hard limit, meaning that the container will be killed (Out of Memory (OOM) Killer) if it tries to use more memory than what it was allocated.
+Let's use the <b>stress</b> to use more memory than the limit allocated to the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it --memory 256m ubuntu:latest \
+/bin/bash -c "apt-get update -y &amp;&amp; apt-get install stress -y &amp;&amp; stress --vm 1 --vm-bytes 1024M --timeout 15"</pre>
+<pre class="sh-code">
+stress: FAIL: [1] (425) &lt;-- worker 158 got signal 9
+stress: WARN: [1] (427) now reaping child worker processes
+stress: FAIL: [1] (431) kill error: No such process
+stress: FAIL: [1] (461) failed run completed in 0s</pre>
+To check the out of memory, you can open a new terminal window and run the <b>docker system events</b> command
+(should be ran before starting the container):<br />
+<pre class="sh-code">
+$ docker system events</pre>
+<pre class="sh-code">
+container create d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)
+container attach d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)
+network connect 2c8... (container=d29..., name=bridge, type=bridge, ...)
+container start d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)
+container resize d29... (height=45, image=ubuntu:latest, name=beautiful_lehmann, width=181, ...)
+container oom d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)
+container oom d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)
+network disconnect 2c8... (container=d29..., name=bridge, type=bridge, ...)
+container die d29... (execDuration=4, exitCode=1, image=ubuntu:latest, name=beautiful_lehmann, ...)
+container destroy d29... (image=ubuntu:latest, name=beautiful_lehmann, ...)</pre>
+You can also use the <b>dmesg</b> command to check the out of memory:<br />
+<pre class="sh-code">
+$ dmesg</pre>
+<pre class="sh-code">
+[310591.464046] oom-kill:constraint=CONSTRAINT_MEMCG,...,task=stress,pid=18997,uid=0
+[310591.464148] Memory cgroup out of memory: Killed process 18997 (stress) total-vm:1052200kB, ...</pre>
+You can allocate more memory to the container than is physically available on the host if swap is available.
+In such cases, when the container requires more memory than what is currently available in RAM,
+the operating system will use swap space on the hard drive as temporary storage.
+This may lead to performance degradation or container termination if memory is exhausted.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Change Docker Data Directory | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Change Docker Data Directory" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Change Docker Data Directory | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Change Docker Data Directory" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/change_the_default_location_where_docker_store_volumes.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Change Docker Data Directory | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Change Docker Data Directory" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/change_the_default_location_where_docker_store_volumes.html",
+        "description": "Tutorials: Docker - Change Docker Data Directory",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/change_the_default_location_where_docker_store_volumes.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Change Docker Data Directory</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+By default, Docker store its persisted data
+(local volumes, containers, filesystem data for images, configuration for resources, swarm cluster state)
+in <b>/var/lib/docker</b> directory.<br />
+<br />
+To change this location to a new one, edit the file <b>/lib/systemd/system/docker.service</b> and adjust the entry <b>ExecStart</b>.<br />
+<br />
+First, stop Docker service:<br />
+<pre class="sh-code">
+$ sudo systemctl stop docker</pre>
+Adjust <b>/lib/systemd/system/docker.service</b>:<br />
+<pre class="sh-code">
+#Before (default location: /var/lib/docker):
+#ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+#After (new location: /opt/docker)
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --data-root /opt/docker</pre>
+<b>[Optional]</b> You can copy all your existing Docker data (default location: <b>/var/lib/docker</b>) to the new location (<b>/opt/docker</b>):<br />
+<pre class="sh-code">
+$ sudo mv /var/lib/docker /opt/</pre>
+Reload systemd manager configuration:<br />
+<pre class="sh-code">
+$ sudo systemctl daemon-reload</pre>
+Start Docker service:<br />
+<pre class="sh-code">
+$ sudo systemctl start docker</pre>
+Check the new location:<br />
+<pre class="sh-code">
+$ sudo ls -al /opt/docker/</pre>
+<pre class="sh-code">
+drwx------  2 root   root   4096 builder
+drwx--x--x  4 root   root   4096 buildkit
+drwx------  2 root   root   4096 containers
+drwx------  3 root   root   4096 image
+drwxr-x---  3 root   root   4096 network
+drwx------  3 root   root   4096 overlay2
+drwx------  4 root   root   4096 plugins
+drwx------  2 root   root   4096 runtimes
+drwx------  2 root   root   4096 swarm
+drwx------  2 root   root   4096 tmp
+drwx------  2 root   root   4096 trust
+drwx------  2 root   root   4096 volumes</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

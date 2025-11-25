@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Run, Stop, and Remove Containers | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Run, Stop, and Remove Containers" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Run, Stop, and Remove Containers | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Run, Stop, and Remove Containers" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/run_containers.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Run, Stop, and Remove Containers | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Run, Stop, and Remove Containers" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/run_containers.html",
+        "description": "Tutorials: Docker - Run, Stop, and Remove Containers",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/run_containers.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Run, Stop, and Remove Containers</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Run Containers</a></li>
+<li><a href="#sec_id_3">Stop Containers</a></li>
+<li><a href="#sec_id_4">Remove Containers</a></li>
+<li><a href="#sec_id_5">Pause Containers</a></li>
+<li><a href="#sec_id_6">Force Terminating Containers</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more information:<br />
+<a href="https://docs.docker.com/engine/containers/run/">https://docs.docker.com/engine/containers/run/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Run Containers</span>
+<div class="tutorialSectionTextDiv1">
+The '<b>docker container run</b>' command has the following syntax:<br />
+<pre class="sh-code">
+$ docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]</pre>
+The command '<b>docker container run</b>' is a convenient method that executes two commands:
+first it creates the container (<b>docker container create</b>) and then it starts it (<b>docker container start</b>) .<br />
+<br />
+You can choose to run a container in the foreground (default) or background (option: <b>-d</b>).
+When running in the foreground, you can instruct Docker
+to start an interactive session and allocate a pseudo terminal (TTY) to interact with the container (option: <b>-it</b>).<br />
+<br />
+There are three main scenarios:<br />
+<ul class="ul_square_1">
+<li>
+Run a container in the foreground using <b>docker container run</b> without any flags.
+In this mode, only the container's <b>stdout</b> and <b>stderr</b> are redirected to the local terminal.
+The terminal's <b>stdin</b> is not connected to the container.<br />
+<br /></li>
+<li>
+Run a container in foreground by using <b>docker container run -it</b>.
+In this case, Docker redirects the local terminal <b>stdin</b> to the container.
+The container's <b>stdout</b> and <b>stderr</b> is still redirected to the local terminal.
+In fact, only the <b>-i</b> (interactive) flag is required to keep <b>stdin</b> open and redirect it to the container.
+The <b>-t</b> (tty) flag allocates a pseudo-terminal, which enables full terminal capabilities such as colored output and cursor control.
+Without the pseudo-TTY, we get plain text I/O.<br />
+<br /></li>
+<li>
+The <b>-d</b> (detached) flag runs the container in the background (<b>docker container run -d</b>) and immediately returns the container ID.<br />
+</li>
+</ul>
+<br />
+You can use the three flags <b>-d</b>, <b>-i</b>, and <b>-t</b> to run a container in detached mode while keeping it interactive.
+This allows you to reattach to the container later using the <b>docker attach</b> command.
+To detach from the container you will need to use <b>Ctrl+P</b> followed by <b>Ctrl+Q</b>, otherwise <b>Ctrl+C</b> may terminate it.<br />
+<br />
+Instead of using the <b>-dit</b> combination,
+it's preferable to start the container in the background with just the <b>-d</b> flag,
+and later use <b>docker exec -it</b> to start an interactive session.
+This allows multiple concurrent interactive sessions and avoids the limitations of docker attach.<br />
+<br />
+Here's a summary when to use each option:<br />
+<pre class="text-code">
+|---------------------------|-------------------------------------------------------------------|
+| docker run                | foreground, no stdin (non-interactive containers)                 |
+|---------------------------|-------------------------------------------------------------------|
+| docker run -i             | foreground with terminal interaction (plain text I/O)             |
+|---------------------------|-------------------------------------------------------------------|
+| docker run -it            | foreground with terminal interaction (interactive shell sessions) |
+|---------------------------|-------------------------------------------------------------------|
+| docker run -d             | detached background container but interactive via exec            |
+|---------------------------|-------------------------------------------------------------------|
+| docker run -dit           | detached background container but interactive via attach          |
+|---------------------------|-------------------------------------------------------------------|</pre>
+Let's run the nginx image:<br />
+<pre class="sh-code">
+$ docker container run --rm -d nginx:latest</pre>
+<pre class="sh-code">
+c8a35eab0aabf68335f88268c3ed0dd6cb77a30503db4e9ba5cdd8ca0cf8c1ab</pre>
+The option '<b>-d</b>' (<b>--detach</b>) run the container in background and print its ID.<br />
+<br />
+The option '<b>--rm</b>' instructs Docker to automatically remove the container when it exits.<br />
+<br />
+Let's verify that nginx is up and running:<br />
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS     NAMES
+c8a35eab0aab   nginx:latest   "/docker-entrypoint.…"   25 seconds ago   Up 25 seconds   80/tcp    blissful_kar</pre>
+You can notice that the name of the container "vibrant_mose" which is a random name generated by Docker.<br />
+To give a custom name to the container, you can use the option '<b>--name</b>'.<br />
+<br />
+Note that the container's port (80) is not published to the Docker's host.<br />
+To publish an exposed container's port and map it to a host's port, you can use the option '<b>-p HOST_PORT:CONTAINER_PORT</b>'.<br />
+You can also use the option '<b>-P</b>' to publish all exposed ports to random ports in the Docker's host.<br />
+<br />
+Let's use the two options ('<b>-p</b>', '<b>--name</b>') and run again the nginx image:<br />
+<pre class="sh-code">
+$ docker container run -d -p 8080:80 --name "nginx-latest" nginx:latest</pre>
+<pre class="sh-code">
+e6c31a81c909695475a97a0cb851cea2befa2fbfe1340d8e760c50f06dd2fb5c</pre>
+Let's verify that both the specified port (the container port 80 is mapped to the Docker host port 8080) and the name were used:<br />
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                  NAMES
+e6c31a81c909   nginx:latest   "/docker-entrypoint.…"   30 seconds ago       Up 29 seconds       0.0.0.0:8080->80/tcp   nginx-latest
+c8a35eab0aab   nginx:latest   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                 blissful_kar</pre>
+You can use the option '<b>--no-trunc</b>' of the '<b>ps</b>' command to print the full container ID and the command used to start the nginx process.<br />
+<pre class="sh-code">
+$ docker container ls --no-trunc</pre>
+<pre class="sh-code">
+CONTAINER ID                                                       IMAGE          COMMAND                                          CREATED              STATUS              PORTS                  NAMES
+e6c31a81c909695475a97a0cb851cea2befa2fbfe1340d8e760c50f06dd2fb5c   nginx:latest   "/docker-entrypoint.sh nginx -g 'daemon off;'"   56 seconds ago       Up 55 seconds       0.0.0.0:8080->80/tcp   nginx-latest
+c8a35eab0aabf68335f88268c3ed0dd6cb77a30503db4e9ba5cdd8ca0cf8c1ab   nginx:latest   "/docker-entrypoint.sh nginx -g 'daemon off;'"   About a minute ago   Up About a minute   80/tcp                 blissful_kare</pre>
+We can also run a container in an interactive mode by using the options <b>-i</b> and <b>-t</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm -i -t ubuntu:latest /bin/bash</pre>
+<pre class="sh-code">
+root@651d1a7e5cd7:/# exit
+exit
+$</pre>
+The flag <b>-i</b> instructs docker to start an interactive session and connect the user's terminal with the container's <b>stdin</b>/<b>stdout</b> stream.
+It allows the user to send command to the container.<br />
+<br />
+The flag <b>-t</b> instructs docker to allocate a pseudo terminal (TTY).
+It provides the user a terminal interface to execute commands interactively.<br />
+<br />
+Notes:<br />
+<ul class="ul_square_1">
+<li>
+In the example above, the terminal prompt is different when we are running commands inside the container (<b>root@651d1a7e5cd7:/#</b>)
+from the prompt when we are running commands inside the Docker host (<b>$</b>).<br />
+<br /></li>
+<li>
+The prompt <b>$</b> indicates that the containers execution completed and we returned to the host's terminal.<br />
+<br /></li>
+<li>
+The host and container prompts might look different for you depending on your configuration.<br />
+<br /></li>
+<li>
+Usually the container prompt inside the container takes this format <b>CONTAINER_USER@CONTAINER_ID:/#</b> or <b>CONTAINER_USER@CONTAINER_HOST_NAME:/#</b>.<br />
+<br /></li>
+<li>
+The <b>/#</b> at the end indicates you're in the root directory of the container
+(might look different for you, depending on the <b>WORKDIR</b> setting or where you navigate).<br />
+<br /></li>
+<li>
+If you're not the root user in the container, you might see <b>$</b> instead of <b>#</b>.<br />
+<br /></li>
+<li>
+Some containers might have custom PS1 configurations that change this default format.<br />
+<br /></li>
+<li>
+The host prompt could be <b>$</b> or a custom prompt depending on your shell configuration and user privileges.<br />
+</li>
+</ul>
+<br />
+We can also run a specific commands (foreground) in the container:<br />
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest id</pre>
+<pre class="sh-code">
+uid=0(root) gid=0(root) groups=0(root)
+$</pre>
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest cat /etc/hosts</pre>
+<pre class="sh-code">
+127.0.0.1     localhost
+172.17.0.2    ffd0458ac5e8
+$</pre>
+We can use the pipe character (<b>|</b>) to connect the output of one command to another,
+but be aware that the piping will occur on the host, not within the container.
+To perform piped operations within the container, wrap the full command in quotes and use <b>/bin/bash -c</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest /bin/bash -c "cat /etc/hosts | grep 127.0.0.1"</pre>
+<pre class="sh-code">
+127.0.0.1    localhost
+$</pre>
+The same, if we want to run multiple commands inside the container:<br />
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest /bin/bash -c "id; cat /etc/hosts | grep 127.0.0.1"</pre>
+<pre class="sh-code">
+uid=0(root) gid=0(root) groups=0(root)
+127.0.0.1    localhost
+$</pre>
+Because we have used the flag <b>--rm</b>, the Ubuntu containers we created above will be automatically removed (deleted) by Docker
+when we explicitly exit/stop the container or the command/process running in the container completes or terminates.<br />
+<br />
+By default, a container is not restarted when it exits.
+We can adjust this behavior, by using the option '<b>--restart</b>'.
+It accepts four values: <b>no</b> (default), <b>always</b>, <b>unless-stopped</b>, and <b>on-failure</b>:<br />
+<ul class="ul_square_1">
+<li>The first value (<b>no</b>) instructs Docker to not restart the container if it exits.<br /></li>
+<li>The second value (<b>always</b>) instructs Docker to always restart the container whenever it exits.<br /></li>
+<li>The third value (<b>unless-stopped</b>) instructs Docker to always restart the container whenever it exits, unless it's stopped.<br /></li>
+<li>The last value (<b>on-failure</b>) instructs Docker to always restart the container whenever it exits with a nonzero exit code.<br /></li>
+</ul>
+<br />
+It's possible to use <b>on-failure</b> with a number to instruct Docker to restart the container the number of times specified
+(e.g., on-failure:2 instructs Docker to restart the container 2 times after which the container won't be restarted again).<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Stop Containers</span>
+<div class="tutorialSectionTextDiv1">
+To stop a container we can use the command '<b>docker container stop</b>'.<br />
+The command can accept either the container name, short ID or full ID.<br />
+It's also possible to use few characters of the container ID as long as it's unique.<br />
+<br />
+Any of the following should work:<br />
+<pre class="sh-code">
+$ docker container stop nginx-latest</pre>
+<pre class="sh-code">
+$ docker container stop e6</pre>
+<pre class="sh-code">
+$ docker container stop e6c31a81c909</pre>
+<pre class="sh-code">
+$ docker container stop e6c31a81c909695475a97a0cb851cea2befa2fbfe1340d8e760c50f06dd2fb5c</pre>
+Let's verify that the container was stopped:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS                     PORTS     NAMES
+e6c31a81c909   nginx:latest   "/docker-entrypoint.…"   About a minute ago   Exited (0) 7 seconds ago             nginx-latest
+c8a35eab0aab   nginx:latest   "/docker-entrypoint.…"   2 minutes ago        Up 2 minutes               80/tcp    blissful_kare</pre>
+Notes:<br />
+<ul class="ul_square_1">
+<li>The status of the stopped container is showing 'Exited (0) 7 seconds ago'.<br /></li>
+<li>We used the option <b>-a</b> to list all the containers. Without this option the docker command <b>docker container ls</b> list running containers only.<br /></li>
+<li>When you stop a container, all its temporary data is lost (memory, tmpfs).<br /></li>
+</ul>
+<br />
+If we want to start the container again we can use the start command (no need to create the container).<br />
+<pre class="sh-code">
+$ docker container start nginx-latest</pre>
+Let's verify that the container was started:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS          PORTS                  NAMES
+e6c31a81c909   nginx:latest   "/docker-entrypoint.…"   4 minutes ago   Up 25 seconds   0.0.0.0:8080->80/tcp   nginx-latest
+c8a35eab0aab   nginx:latest   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes    80/tcp                 blissful_kare</pre>
+The stop command sends a Unix signal <b>SIGTERM</b> to the the main process running in the container so it can terminate gracefully.<br />
+After waiting 10 seconds, Docker will send the Unix signal <b>SIGKILL</b> to force terminating the container.<br />
+It's possible to override this behavior by using the options
+<b>--signal</b> (specify the Unix signal to send to the container)
+and <b>--timeout</b> (specify the number of seconds to wait before Docker can kill the container).<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Remove Containers</span>
+<div class="tutorialSectionTextDiv1">
+If we need to remove the container completely, we need to stop it first then remove it using the '<b>docker container rm</b>' command:<br />
+<pre class="sh-code">
+$ docker container stop nginx-latest
+$ docker container rm nginx-latest</pre>
+Let's verify that the container was removed:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+c8a35eab0aab   nginx:latest   "/docker-entrypoint.…"   8 minutes ago   Up 8 minutes   80/tcp    blissful_kare</pre>
+When the container is removed, all its data is lost (port bindings, environment variables, labels, ...).<br />
+<br />
+It's possible to use the option <b>--force</b> with the command <b>docker container rm</b>
+to force the removal of the container (Docker will send the Unix signal <b>SIGKILL</b> to the container).<br />
+<br />
+The remaining container was started using the option '<b>--rm</b>', meaning if we stop it, Docker will remove it automatically:<br />
+<pre class="sh-code">
+$ docker container stop blissful_kare</pre>
+Let's verify that the container was removed:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES</pre>
+Instead of using the run command we can also use the create and start command to start a container.<br />
+<br />
+Let's first create the container:
+<pre class="sh-code">
+$ docker container create -p 8080:80 --name "nginx-latest" nginx:latest</pre>
+<pre class="sh-code">
+6add1be3be97b2bf946416820d9434104a097a89edfa4b78b65399b15a0581b4</pre>
+Let's verify that the container was created:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS    PORTS     NAMES
+6add1be3be97   nginx:latest   "/docker-entrypoint.…"   58 seconds ago   Created             nginx-lates</pre>
+Note that the status of the container is showing 'Created'.<br />
+<br />
+To start the container:<br />
+<pre class="sh-code">
+$ docker container start nginx-latest</pre>
+Let's verify that the container was started:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS        PORTS                  NAMES
+6add1be3be97   nginx:latest   "/docker-entrypoint.…"   2 minutes ago   Up 1 second   0.0.0.0:8080->80/tcp   nginx-latest</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Pause Containers</span>
+<div class="tutorialSectionTextDiv1">
+It's possible to pause a container (all its activity will be stopped) by using the command '<b>docker container pause</b>':<br />
+<pre class="sh-code">
+$ docker container pause nginx-latest</pre>
+Let's verify that the container was paused:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED       STATUS                PORTS                  NAMES
+6add1be3be97   nginx:latest   "/docker-entrypoint.…"   2 hours ago   Up 2 hours (Paused)   0.0.0.0:8080->80/tcp   nginx-latest</pre>
+Note that the status of the container is showing 'Paused'.<br />
+<br />
+To resume the container we can use the command '<b>docker container unpause</b>':<br />:<br />
+<pre class="sh-code">
+$ docker container unpause nginx-latest</pre>
+Let's verify that the container is running:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED       STATUS       PORTS                  NAMES
+6add1be3be97   nginx:latest   "/docker-entrypoint.…"   2 hours ago   Up 2 hours   0.0.0.0:8080->80/tcp   nginx-latest</pre>
+Note that the created and status columns are still showing the same information
+because the container state didn't change while it was paused.
+Actually if we have waited longer time before resuming the container,
+that time would have been reflected in the created and status columns.<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Force Terminating Containers</span>
+<div class="tutorialSectionTextDiv1">
+We can use the command <b>docker container kill</b> to force terminating container:<br />
+<pre class="sh-code">
+$ docker container kill nginx-latest</pre>
+Let's verify that the container was killed:<br />
+<pre class="sh-code">
+$ docker container ls -a</pre>
+<pre class="sh-code">
+CONTAINER ID   IMAGE          COMMAND                  CREATED        STATUS                        PORTS     NAMES
+6add1be3be97   nginx:latest   "/docker-entrypoint.…"   11 hours ago   Exited (137) 54 seconds ago             nginx-latest</pre>
+It's possible to use the option <b>--signal</b> with the command <b>docker container kill</b> to specify the Unix signal to send to the container.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

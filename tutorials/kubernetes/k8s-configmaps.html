@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - ConfigMaps (configmaps|cm) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - ConfigMaps (configmaps|cm)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - ConfigMaps (configmaps|cm) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - ConfigMaps (configmaps|cm)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-configmaps.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - ConfigMaps (configmaps|cm) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - ConfigMaps (configmaps|cm)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-configmaps.html",
+        "description": "Tutorials: Kubernetes - ConfigMaps (configmaps|cm)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-configmaps.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">ConfigMaps (configmaps|cm)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">ConfigMaps (configmaps|cm)</a></li>
+<li><a href="#sec_id_3">Creating ConfigMaps using the kubectl create command</a><br >
+    --from-literal<br >
+    --from-file: from file without a key, from file with a key, from a directory<br >
+    --from-env-file</li>
+<li><a href="#sec_id_4">Creating ConfigMaps using manifest YAML file</a></li>
+<li><a href="#sec_id_5">Edit ConfigMaps</a></li>
+<li><a href="#sec_id_6">Using ConfigMaps: Environment variables</a><br />
+    env/valueFrom/configMapKeyRef<br />
+    envFrom/configMapRef</li>
+<li><a href="#sec_id_7">Using ConfigMaps: Files in Volumes</a></li>
+<li><a href="#sec_id_8">Referencing ConfigMaps' environment variables in the container's command and arguments</a></li>
+<li><a href="#sec_id_9">Delete ConfigMaps</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about ConfigMaps:<br />
+<a href="https://kubernetes.io/docs/concepts/configuration/configmap/">https://kubernetes.io/docs/concepts/configuration/configmap/</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names">https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">ConfigMaps (configmaps|cm)</span>
+<div class="tutorialSectionTextDiv1">
+ConfigMaps allows creating data objects that can be consumed by Pods at runtime.<br />
+<br />
+Here's an example of a ConfigMap (YAML):
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  key1: value1
+  key2: value2
+kind: ConfigMap
+metadata:
+  name: configmapexample</pre>
+The manifest file of the ConfigMap is pretty simple.
+It contains the fields <b>apiVersion</b>, <b>kind</b>, and <b>metadata</b>.
+It also contain the <b>data</b> field that contains the keys-values of the ConfigMap.<br />
+<br />
+The data in ConfigMaps is stored as key-value entries:<br />
+<ul class="ul_square_1">
+<li>
+Key: is a string value formed by alphanumeric, dot (.), dash (-), and underscore (_) characters.<br />
+<br /></li>
+<li>
+Value: is a string value that can contain any character, including carriage returns. For multiple lines, the data must be indented properly.<br />
+<br /></li>
+</ul>
+The key and the value, in the ConfigMap, are separated with a colon (<b>key:value</b>).<br />
+<br />
+The name of the ConfigMap must be a valid DNS subdomain name.<br />
+<br />
+Examples of values that can be saved in ConfigMaps include:<br />
+<ul class="ul_square_1">
+<li>
+Application settings.<br />
+<br /></li>
+<li>
+Configuration files (json/xml/properties files, shell scripts, ...).<br />
+<br /></li>
+<li>
+Base64 encoded data.<br />
+<br /></li>
+</ul>
+ConfigMaps are not meant to store sensitive data (credentials, certificates, ...).
+Kubernetes Secrets should be used instead.<br />
+<br />
+The data stored in a ConfigMap can be consumed in a container in one the following ways:<br />
+<ul class="ul_square_1">
+<li>
+Environment variables.<br />
+<br /></li>
+<li>
+Command-line arguments of the container command.<br />
+<br /></li>
+<li>
+Files in volumes.<br />
+<br /></li>
+<li>
+Custom code (read the ConfigMap directly from the Kubernetes API).<br />
+<br /></li>
+</ul>
+Note:
+If you update a ConfigMap that was already posted to the Kubernetes API server,
+then Pods that were already created will be able to leverage the new data only if it was injected as files in a volume.
+ConfigMaps data injected as environment variables won't be updated in a running Pod unless you recreate it.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Creating ConfigMaps using the kubectl create command</span>
+<div class="tutorialSectionTextDiv1">
+The data of the ConfigMaps can be specified using one of the following methods:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>--from-literal</b>:<br />
+This command allows you to specify a key and literal value to insert in the ConfigMap.<br />
+<br />
+Create the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmapfromliteral --from-literal="key1=value1" --from-literal="key2=value2"</pre>
+<pre class="sh-code">
+configmap/configmapfromliteral created</pre>
+Check the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl get configmap configmapfromliteral</pre>
+<pre class="sh-code">
+NAME                   DATA   AGE
+configmapfromliteral   2      2m10s</pre>
+Describe the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl describe configmap configmapfromliteral</pre>
+<pre class="sh-code">
+Name:         configmapfromliteral
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+====
+key1:
+----
+value1
+
+key2:
+----
+value2
+Events:  &lt;none&gt;</pre>
+View the YAML file of the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl get configmap configmapfromliteral -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  key1: value1
+  key2: value2
+kind: ConfigMap
+metadata:
+  name: configmapfromliteral</pre></li>
+<li>
+<b>--from-file</b>:<br />
+This command allows you to specify a file path (<b>--from-file="./configmaps/file1.txt"</b>), in which case the file base name (file1.txt) will be used as the ConfigMap key.<br />
+<br />
+Optionally you can use a key with the file path (<b>--from-file="mykey1=./configmaps/file1.txt"</b>),
+in which case the given key (mykey1) will be used as the ConfigMap key.<br />
+<br />
+If you specify a directory (<b>--from-file="./configmaps/"</b>)
+then kubectl will iterate each file in the directory and create a new entry for each file whose base name is a valid ConfigMap key.<br />
+<br />
+The path to the file (or directory) can be an absolute path or relative to the location from where the "kubectl create configmap" is executed.<br />
+<br />
+The content of the file can be anything.<br />
+<br />
+Let's crate a directory to hold the ConfigMaps data (this can be any location you want):<br />
+<pre class="sh-code">
+$ mkdir ./configmaps/</pre>
+Create a sample file "file1.txt" (single line text):<br />
+<pre class="sh-code">
+$ echo -n 'value1' > "./configmaps/file1.txt"</pre>
+Create a sample file "file2.txt" (multiple lines text):<br />
+<pre class="sh-code">
+$ echo 'value2-1' > "./configmaps/file2.txt"
+$ echo 'value2-2' >> "./configmaps/file2.txt"</pre>
+<ul class="ul_circle_1">
+<li>
+Create the ConfigMap from a file without a key:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmap1fromfile --from-file="./configmaps/file1.txt" --from-file="./configmaps/file2.txt"</pre>
+<pre class="sh-code">
+configmap/configmap1fromfile created</pre>
+View the ConfigMap (notice that the content of the file is indented properly):<br />
+<pre class="sh-code">
+$ kubectl get configmap configmap1fromfile -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  file1.txt: value1 # note that the name of the key is file1.txt and the value is single line
+  file2.txt: | # note that the name of the key is file2.txt and the value is multiple lines
+    value2-1
+    value2-2
+kind: ConfigMap
+metadata:
+  name: configmap1fromfile</pre>
+</li>
+<li>
+Create the ConfigMap from a file with a key:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmap2fromfile --from-file="mykey1=./configmaps/file1.txt" --from-file="mykey2=./configmaps/file2.txt"</pre>
+<pre class="sh-code">
+configmap/configmap2fromfile created</pre>
+View the ConfigMap (notice that the content of the file is indented properly):<br />
+<pre class="sh-code">
+$ kubectl get configmap configmap2fromfile -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  mykey1: value1 # note that the name of the key is mykey1 and the value is single line
+  mykey2: | # note that the name of the key is mykey2 and the value is multiple lines
+    value2-1
+    value2-2
+kind: ConfigMap
+metadata:
+  name: configmap2fromfile</pre>
+</li>
+<li>
+Create the ConfigMap from a directory:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmapfromdirectory --from-file="./configmaps/"</pre>
+<pre class="sh-code">
+configmap/configmapfromdirectory created</pre>
+View the ConfigMap (notice that the content of the file is indented properly):<br />
+<pre class="sh-code">
+$ kubectl get configmap configmapfromdirectory -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  file1.txt: value1 # note that the name of the key is file1.txt and the value is single line
+  file2.txt: | # note that the name of the key is file2.txt and the value is multiple lines
+    value2-1
+    value2-2
+kind: ConfigMap
+metadata:
+  name: configmapfromdirectory</pre>
+</li>
+</ul>
+<br /></li>
+<li>
+<b>--from-env-file</b>:<br />
+This command allows you to specify the path to an environement (properties) file (<b>--from-file="./configmaps/file1.properties"</b>)
+to read lines of <b>key=value</b> pairs to insert in the ConfigMap.<br />
+<br />
+Create a sample property file:<br />
+<pre class="sh-code">
+$ vi "./configmaps/file1.properties"</pre>
+<pre class="sh-code">
+key1=value1
+key2=value2</pre>
+Create the ConfigMap:<br />
+<pre class="sh-code">
+$ kubectl create configmap configmapfromenvfile --from-env-file="./configmaps/file1.properties"</pre>
+<pre class="sh-code">
+configmap/configmapfromenvfile created</pre>
+View the ConfigMap (notice that each entry in the property file is represented by a <b>key:value</b> pairs in the ConfigMap):<br />
+<pre class="sh-code">
+$ kubectl get configmap configmapfromenvfile -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+data:
+  key1: value1
+  key2: value2
+kind: ConfigMap
+metadata:
+  name: configmapfromenvfile</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Creating ConfigMaps using manifest YAML file</span>
+<div class="tutorialSectionTextDiv1">
+The manifest YAML file defines ConfigMags with <b>key:value</b> entries.<br />
+<br />
+You can define ConfigMags with keys and multi-line values entries.
+The key should be followed by the pipe character (|) and the value can span multiple lines.
+Note though that all the lines should be indented properly.<br />
+<br />
+Here's a sample YAML with simple values entries:<br />
+<pre class="sh-code">
+$ vi configmapkeyvalue.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmapkeyvalue
+data:
+  key1: value1
+  key2: value2</pre>
+To apply the file:<br />
+<pre class="sh-code">
+$ kubectl apply -f configmapkeyvalue.yaml</pre>
+<pre class="sh-code">
+configmap/configmapkeyvalue created</pre>
+Here's a sample YAML with multi-line values entries:<br />
+<pre class="sh-code">
+$ vi configmapmultilinevalue.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmapmultilinevalue
+data:
+  key3: |
+    first line
+    second line
+    third line</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Edit ConfigMaps</span>
+<div class="tutorialSectionTextDiv1">
+If you have created a ConfigMap using the manifest YAML file,
+then to change that ConfigMap you can adjust the YAML file and run the command <b>kubectl apply -f CONFIGMAP-YAML-FILE-PATH</b><br />
+<br />
+You can also use the command <b>kubectl edit configmap CONFIGMAP-NAME</b> to edit a ConfigMap.
+The command will open the ConfigMap in your default text editor.
+Make your changes then save and exit the editor.
+Your changes will be submitted to API Server.<br />
+<br />
+For example to view and edit the ConfigMap "configmapkeyvalue":<br />
+<pre class="sh-code">
+$ kubectl edit configmap configmapkeyvalue</pre>
+<pre class="yaml-code">
+# Please edit the object below.
+# Lines beginning with a '#' will be ignored, and an empty file will abort the edit.
+# If an error occurs while saving this file will be reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  key1: value1
+  key2: value2
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"key1":"value1","key2":"value2"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"configmapkeyvalue"}}
+  name: configmapkeyvalue</pre>
+<pre class="sh-code">
+configmap/configmapkeyvalue edited</pre>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Using ConfigMaps: Environment variables</span>
+<div class="tutorialSectionTextDiv1">
+In a Pod YAML file, you can reference the entries of the ConfigMap directly in the "spec.containers.<b>env</b>" field.
+The environment variables will be set like any other standard Linux environment variables.
+You can check them using the env command directly from inside the container.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+env/valueFrom/configMapKeyRef<br />
+<br />
+Let's use the ConfiMap "configmapkeyvalue" (see above) with the Pod "hello-busybox-configmap-keyref":<br />
+<pre class="sh-code">
+$ vi hello-busybox-configmap-keyref.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-configmap-keyref
+spec:
+  containers:
+    - name: hello-busybox-configmap-keyref
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      env:
+        - name: mykey1
+          valueFrom:
+            configMapKeyRef:
+              name: configmapkeyvalue
+              key: key1
+        - name: mykey2
+          valueFrom:
+            configMapKeyRef:
+              name: configmapkeyvalue
+              key: key2</pre>
+Note:
+You can give the environment variable a different name than the ConfigMap key name (i.e. name: mykey1).<br />
+<br />
+Apply the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-configmap-keyref.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-configmap-keyref created</pre>
+Check the environment variables:<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-keyref -- env | grep key</pre>
+<pre class="sh-code">
+mykey1=value1
+mykey2=value2</pre>
+</li>
+<li>
+envFrom/configMapRef<br />
+<br />
+Instead of referencing individual entries of the ConfiMap,
+you can use the "spec.containers.<b>envFrom</b>" field to reference all entries of the ConfiMap:<br />
+<pre class="sh-code">
+$ vi hello-busybox-configmap-ref.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-configmap-ref
+spec:
+  containers:
+    - name: hello-busybox-configmap-ref
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      envFrom:
+        - configMapRef:
+            name: configmapkeyvalue</pre>
+Apply the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-configmap-ref.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-configmap-ref created</pre>
+Check the environment variables:<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-ref -- env | grep key</pre>
+<pre class="sh-code">
+key1=value1
+key2=value2</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Using ConfigMaps: Files in Volumes</span>
+<div class="tutorialSectionTextDiv1">
+ConfigMaps can also be referenced using volumes.
+Usually this is helpful when the ConfigMap contains configuration data (logging, ...).<br />
+<br />
+Each entry of the ConfigMap will be referenced as a separate file in the volume.<br />
+<br />
+The changes to the ConfigMap will be reflected directly in the volumes.<br />
+<br />
+The ConfigMap is defined as a volume (spec.<b>volumes</b>) and mounted to the container (spec.containers.<b>volumeMounts</b>).<br />
+<br />
+<ul class="ul_square_1">
+<li>
+In the following example, the spec.<b>volumes</b> field creates a volume (named configmapkeyvalue) from the ConfigMap "configmapkeyvalue".<br />
+<br />
+The spec.containers.<b>volumeMounts</b> field mounts the volume (configmapkeyvalue) into the container (under /tmp/configmapkeyvalue).<br />
+<br />
+The volume will be populated with the files inside the mounted directory.
+The files names are the keys of the ConfigMap (key1, key2).
+The content of the files are the values of the keys (value1, value2).<br />
+<pre class="sh-code">
+$ vi hello-busybox-configmap-volume.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-configmap-volume
+spec:
+  containers:
+    - name: hello-busybox-configmap-volume
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      volumeMounts:
+        - name: configmapkeyvalue
+          mountPath: /tmp/configmapkeyvalue
+  volumes:
+    - name: configmapkeyvalue
+      configMap:
+        name: configmapkeyvalue</pre>
+Apply the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-configmap-volume.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-configmap-volume created</pre>
+Check the files in the volume (notice two files are created: key1, key2):<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-volume -- ls -l /tmp/configmapkeyvalue</pre>
+<pre class="sh-code">
+lrwxrwxrwx    1    root    root    key1 -> ..data/key1
+lrwxrwxrwx    1    root    root    key2 -> ..data/key2</pre>
+Check the content of the files:<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-volume -- cat /tmp/configmapkeyvalue/key1</pre>
+<pre class="sh-code">
+value1</pre>
+</li>
+<li>
+You can also decide what entries of the ConfigMag can be mounted.<br />
+<br />
+You can also decide the names of the files in the volume "<b>path</b>".<br />
+<pre class="sh-code">
+$ vi hello-busybox-configmap-volume-item.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-configmap-volume-item
+spec:
+  containers:
+    - name: hello-busybox-configmap-volume-item
+      image: busybox:latest
+      command: ['sh', '-c', 'sleep 300;']
+      volumeMounts:
+        - name: configmapkeyvalue
+          mountPath: /tmp/configmapkeyvalue
+  volumes:
+    - name: configmapkeyvalue
+      configMap:
+        name: configmapkeyvalue
+        items:
+          - key: key1
+            path: key1path</pre>
+Apply the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-configmap-volume-item.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-configmap-volume-item created</pre>
+Check the files in the volume (notice the "key1path" file was created):<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-volume-item -- ls /tmp/configmapkeyvalue</pre>
+<pre class="sh-code">
+key1path</pre>
+Check the content of the files:<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox-configmap-volume-item -- cat /tmp/configmapkeyvalue/key1path</pre>
+<pre class="sh-code">
+value1</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Referencing ConfigMaps' environment variables in the container's command</span>
+<div class="tutorialSectionTextDiv1">
+You can use the data of the ConfigMap to set the arguments of the container command.<br />
+<br />
+You need to use the following syntax to reference the environment variable: <b>$(ENV_VAR_NAME)</b>.<br />
+<br />
+As previously mentioned, changes to the ConfigMap won't be reflected on the environment variables already set.<br />
+<pre class="sh-code">
+$ vi hello-busybox-configmap-keyref-arg.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-configmap-keyref-arg
+spec:
+  containers:
+    - name: hello-busybox-configmap-keyref-arg
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "mykey1:$(mykey1) | mykey2:$(mykey2)"; sleep 300;']
+      env:
+        - name: mykey1
+          valueFrom:
+            configMapKeyRef:
+              name: configmapkeyvalue
+              key: key1
+        - name: mykey2
+          valueFrom:
+            configMapKeyRef:
+              name: configmapkeyvalue
+              key: key2</pre>
+Apply the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-configmap-keyref-arg.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox-configmap-keyref-arg created</pre>
+Check the logs of the Pod:<br />
+<pre class="sh-code">
+$ kubectl logs hello-busybox-configmap-keyref-arg</pre>
+<pre class="sh-code">
+mykey1:value1 | mykey2:value2</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Delete ConfigMaps</span>
+<div class="tutorialSectionTextDiv1">
+To delete a ConfigMap using the manifest file:<br />
+<pre class="sh-code">
+$ kubectl delete -f configmapkeyvalue.yaml</pre>
+<pre class="sh-code">
+configmap "configmapkeyvalue" deleted</pre>
+To delete a ConfigMap using its name:<br />
+<pre class="sh-code">
+$ kubectl delete configmap configmapkeyvalue</pre>
+<pre class="sh-code">
+configmap "configmapkeyvalue" deleted</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

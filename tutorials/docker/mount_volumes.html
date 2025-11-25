@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Mount Local Volumes | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Mount Local Volumes" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Mount Local Volumes | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Mount Local Volumes" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/mount_volumes.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Mount Local Volumes | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Mount Local Volumes" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/mount_volumes.html",
+        "description": "Tutorials: Docker - Mount Local Volumes",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/mount_volumes.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Mount Local Volumes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Docker volumes</a></li>
+<li><a href="#sec_id_3">Bind Mount Directories and Files using '--volume' option</a></li>
+<li><a href="#sec_id_4">Mount Directories and Files using '--mount' option</a></li>
+<li><a href="#sec_id_5">Mount a Temporary Filesystem Using '--tmpfs' option</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+The "docker container run" command has two options that allow you to mount local files and directories into your containers:<br />
+<pre class="sh-code">
+-v, --volume list                      Bind mount a volume
+    --mount mount                      Attach a filesystem mount to the container</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Docker volumes</span>
+<div class="tutorialSectionTextDiv1">
+The first option is to use Docker volumes,
+a special type of data storage managed by Docker that allows us to manage the files and directories used by containers<br />
+<br />
+Create a test volume:<br />
+<pre class="sh-code">
+$ docker volume create volume1</pre>
+<pre class="sh-code">
+volume1</pre>
+Let's check the created volume:<br />
+<pre class="sh-code">
+$ docker volume ls --format json | jq</pre>
+<pre class="sh-code">
+{
+  "Availability": "N/A",
+  "Driver": "local",
+  "Group": "N/A",
+  "Labels": "",
+  "Links": "N/A",
+  "Mountpoint": "/var/lib/docker/volumes/volume1/_data",
+  "Name": "volume1",
+  "Scope": "local",
+  "Size": "N/A",
+  "Status": "N/A"
+}</pre>
+<pre class="sh-code">
+$ docker volume inspect volume1 --format json | jq</pre>
+<pre class="sh-code">
+[
+  {
+    "CreatedAt": "2024-06-18T23:55:27Z",
+    "Driver": "local",
+    "Labels": null,
+    "Mountpoint": "/var/lib/docker/volumes/volume1/_data",
+    "Name": "volume1",
+    "Options": null,
+    "Scope": "local"
+  }
+]</pre>
+Let's use the created volume:<br />
+<pre class="sh-code">
+$ docker container run --rm --volume volume1:/cvdata ubuntu:latest \
+/bin/bash -c "echo 'hello docker volumes' > /cvdata/file1.txt; cat /cvdata/file1.txt"</pre>
+<pre class="sh-code">
+hello docker volumes</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Bind Mount Directories and Files using '--volume' option</span>
+<div class="tutorialSectionTextDiv1">
+The second option is to bind mount a directory and a file from the Docker host.<br />
+<br />
+Let's bind mount a directory and a file using the <b>-v</b> (<b>--volume</b>) option:<br />
+<pre class="sh-code">
+$ touch ./dockerhostfile.txt
+$ sudo chown root:root ./dockerhostfile.txt</pre>
+<pre class="sh-code">
+$ docker container run --rm \
+--volume /usr/local/bin:/tmp/ulb:ro \
+--volume ./dockerhostfile.txt:/tmp/containerfile.txt \
+ubuntu:latest \
+/bin/bash -c "ls -1 /tmp/ulb | wc -l; echo 'test' &gt; /tmp/containerfile.txt"</pre>
+Notes:<br />
+<ul class="ul_circle_1">
+<li>We are mounting a directory (/usr/local/bin) and a file (./dockerhostfile.txt) from the Docker host into the container.<br /></li>
+<li>The files/directories from the source (docker host) and the target (container) are separated by the colon character (<b>:</b>).<br /></li>
+<li>The <b>ro</b> flag indicates that the source directory is mounted using the read-only mode (otherwise mounted read-write by default: <b>rw</b>).<br /></li>
+<li>The source file (docker host) needs to be created in advance (otherwise it will be mounted as a directory).<br /></li>
+<li>The user that run the container (in this example <b>root</b>) should have write access if needed.<br /></li>
+<li>If the directories don't exist, they will be automatically created if no permission issues.<br /></li>
+<li>The created directories will be owned by the user that run the container.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Mount Directories and Files using '--mount' option</span>
+<div class="tutorialSectionTextDiv1">
+The third option is to use the <b>--mount</b> option to mount a directory and a file from the Docker host.<br />
+<br />
+Let's do the same with the <b>--mount</b> option:<br />
+<pre class="sh-code">
+$ docker container run --rm \
+--mount type=bind,source=/usr/local/bin,target=/tmp/ulb,readonly \
+--mount type=bind,source=./dockerhostfile.txt,target=/tmp/containerfile.txt \
+ubuntu:latest \
+/bin/bash -c "ls -1 /tmp/ulb | wc -l; echo 'test' &gt; /tmp/containerfile.txt"</pre>
+The same notes discussed above apply to the <b>--mount</b> option, with the following exceptions:<br />
+<ul class="ul_circle_1">
+<li>The files/directories from the source (docker host) and the target (container) are separated by the comma character (<b>,</b>).<br /></li>
+<li>To indicate a read only mount, we need to use the flag <b>readonly</b> (otherwise mounted read-write by default).<br /></li>
+<li>The flag <b>source</b> is used for the source file/directory in the Docker host.<br /></li>
+<li>The flag <b>target</b> is used for the target file/directory in the container.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Mount a Temporary Filesystem Using '--tmpfs' option</span>
+<div class="tutorialSectionTextDiv1">
+The command "<b>docker container run</b>" provides the option <b>--tmpfs</b> to mount a temporary filesystem.<br />
+The data of a tmpfs filesystem is stored in RAM and lost when the container is stopped.<br />
+<br />
+Let's check the default "/tmp" folder:<br />
+<pre class="sh-code">
+$ docker container run --rm ubuntu:latest /bin/bash -c "df -h /tmp"</pre>
+<pre class="sh-code">
+Filesystem      Size  Used Avail Use% Mounted on
+overlay         507G  5.3G 451G   1% /</pre>
+By default the /tmp folder is mounted as the root filesystem.
+This can be an issue if the container's root filesystem is mounted read only (option <b>--read-only</b>).<br />
+<br />
+Let's use the the option <b>--tmpfs</b>:<br />
+<pre class="sh-code">
+$ docker container run --rm --tmpfs /tmp ubuntu:latest /bin/bash -c "df -h /tmp"</pre>
+<pre class="sh-code">
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           7.8G     0  7.8G   0% /tmp</pre>
+We can use the <b>--mount</b> option to mount a tmpfs filesystem and set it size:<br />
+<pre class="sh-code">
+$ docker container run --rm --mount type=tmpfs,destination=/tmp,tmpfs-size=1G ubuntu:latest /bin/bash -c "df -h /tmp"</pre>
+<pre class="sh-code">
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           1.0G     0  1.0G   0% /tmp</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

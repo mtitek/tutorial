@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - Pods (pods|po) | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - Pods (pods|po)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - Pods (pods|po) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - Pods (pods|po)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/k8s-pods.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - Pods (pods|po) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - Pods (pods|po)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/k8s-pods.html",
+        "description": "Tutorials: Kubernetes - Pods (pods|po)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/k8s-pods.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Pods (pods|po)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Pods (pods|po)</a></li>
+<li><a href="#sec_id_3">Manifest YAML file</a></li>
+<li><a href="#sec_id_4">Manage Pods</a></li>
+<li><a href="#sec_id_5">List detailled inforation about a Pod</a></li>
+<li><a href="#sec_id_6">Define Pods resources (CPU, RAM)</a></li>
+<li><a href="#sec_id_7">Define Init Containers</a></li>
+<li><a href="#sec_id_8">Define Sidecar Containers</a></li>
+<li><a href="#sec_id_9">Health Checks</a></li>
+<li><a href="#sec_id_10">Labels</a></li>
+<!--<li><a href="#sec_id_11">Annotations</a></li>-->
+<li><a href="#sec_id_12">Delete Pods</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Pods:<br />
+<a href="https://kubernetes.io/docs/concepts/workloads/pods/">https://kubernetes.io/docs/concepts/workloads/pods/</a><br />
+<a href="https://kubernetes.io/docs/tasks/manage-kubernetes-objects/imperative-command/">https://kubernetes.io/docs/tasks/manage-kubernetes-objects/imperative-command/</a><br />
+<a href="https://kubernetes.io/docs/concepts/security/controlling-access/">https://kubernetes.io/docs/concepts/security/controlling-access/</a><br />
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names">https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names</a><br />
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Pods (pods|po)</span>
+<div class="tutorialSectionTextDiv1">
+Pods are the atomic units of deployment in Kubernetes.<br />
+A Pod is a special container that defines one or more containers that can run inside of it.<br />
+Containers, running inside a Pod, share the Pod's resources: IP address, ports, hostname, volumes, ...<br />
+They can communicate with each other using localhost interface.<br />
+<br />
+To share resources, containers leverage Linux features: Control groups (cgroups) and kernel namespaces.<br />
+Control groups (cgroups) allow containers to use only their assigned resources: cpu, ram, and iops.<br />
+Kernel namespaces (Network, UTS, IPC, ...) allow containers to have their own unique and limited view of the system resources (filesystem, network interfaces, disk, ...):<br />
+<br />
+It's recommended to have only one container inside a Pod.<br />
+But there might be use cases where it will be acceptable to have more than one container running inside a Pod.
+For example, it's possible to co-locate multiple containers that provide services that are tightly coupled
+and/or they need to share the Pod's resources.<br />
+It's also possible to have one main container inside the Pod
+and add one or more sidcar containers that provide additional features to the main container (for example: logging, monitoring, ...).<br />
+<br />
+To create/deploy a Pod, you need first to create a manifest file (YAML).
+The manifest file describe the Pod and its components (name, image, port, ...).
+You can use "<b>kubectl</b>" (or any rest client tool) to post the manifest file to the API server
+If applicable, the API server verifies that the request is authenticated, validates it's authorized, and runs the admission controllers on it.
+The API server verifies the manifest file and, if no issues, it writes a record for that manifest in the cluster store (etcd).
+The scheduler will then read the record and deploy it to a healthy worker node with enough available resources.<br />
+<br />
+The same behaviour, described above, applies if you use the imperative command ("kubectl create") to create the Pod.<br />
+<br />
+You can also use imperative commands (kubectl command-line tool) to create and manage Pods.<br />
+<br />
+Here's the list of events that leads to the creation of a Pod:<br />
+<ul class="ul_square_1">
+<li>
+You define a Pod in a manifest file (YAML)<br />
+<br /></li>
+<li>
+You post the manifest file to the API server.<br />
+<br /></li>
+<li>
+The API server validates the manifest and persist it in the cluster store (etcd) as record of intent (desired state)<br />
+<br /></li>
+<li>
+The scheduler reads the record, converts it into a PodSpec, and schedules the PodSpec to a healthy worker node with enough available resources.<br />
+<br /></li>
+<li>
+The kubelet (a Kubernetes agent) accepts the PodSpec and start the creation of the Pod.<br />
+<br /></li>
+<li>
+The Pod enters the Pending state while the container runtime, on the worker node, downloads the images and starts the containers.<br />
+<br /></li>
+<li>
+The Pod remains in the Pending state until all of its containers are created.<br />
+<br /></li>
+<li>
+The Pod enters the running state, if its containers are created successfully.<br />
+<br /></li>
+<li>
+The Pod enters the succeeded state, if it successfully finishes its tasks.<br />
+<br /></li>
+<li>
+The Pod enters the failed state, if one or more container failed.<br />
+<br /></li>
+<li>
+The Pod won't be rescheduled if it fails to start.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Manifest YAML file</span>
+<div class="tutorialSectionTextDiv1">
+The hello-busybox-pod.yaml file provides a declarative configuration of a Pod:
+
+<pre class="sh-code">
+$ vi hello-busybox-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox # will be used as the hostname of the conatiners
+spec:
+  containers:
+    - name: hello-busybox
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "hello, busybox!"; sleep 300;']</pre>
+The Pod's name must be a valid DNS subdomain name:
+<ul class="ul_circle_1">
+<li>
+Maximum 253 characters.<br />
+</li>
+<li>
+The name must contain only lowercase alphanumeric characters ([a-z0-9]), minus character ('-') and period character ('.').<br />
+</li>
+<li>
+The name must start and end with an alphanumeric character.<br />
+</li>
+</ul>
+<br />
+To deploy the hello-busybox-pod.yaml file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-pod.yaml</pre>
+<pre class="sh-code">
+pod/hello-busybox created</pre>
+The "hello-busybox-pod.yaml" file defines the following fields:<br />
+<ul class="ul_square_1">
+<li>
+The <b>apiVersion</b> field defines the Kubernetes API group and the Kubernetes API version.<br />
+Its value is written as following: &lt;api-group&gt;/&lt;api-version&gt;<br />
+Example: storage.k8s.io/v1<br />
+The Pods are defined in the core API group, which is the default if the api-group is not set.<br />
+So in the case of Pods, only the api version needs to be provided.<br />
+<br /></li>
+<li>
+The <b>kind</b> field defines the type of the Kubernetes object to be created (<b>Pod</b>).<br />
+<br /></li>
+<li>
+The <b>metadata</b> field defines the Pod metadata (name, labels, namespace, ...).<br />
+<br /></li>
+<li>
+The <b>spec</b> field defines the containers information (name, image, command, ports, ...).<br />
+</li>
+</ul>
+<br />
+Note: The command field can also be written as following:<br />
+<pre class="yaml-code">
+command: ['sh']
+args: ['-c', 'echo "hello, busybox!"; sleep 300;']</pre>
+<pre class="yaml-code">
+command:
+- sh
+- -c
+- echo "hello, busybox!"; sleep 300;</pre>
+<pre class="yaml-code">
+command:
+- sh
+- -c
+- |
+  echo "hello, busybox!";
+  sleep 300;</pre>
+Note:
+Managing Pods using the Manifest Yam file (declarative) is the recommended way,
+but in some cases you might want to use the imperative command "kubectl create" to create a Pod.<br />
+<br />
+The following command creates and run a Pod using the busybox image and opens an interactive shell:<br />
+<pre class="sh-code">
+$ kubectl run -i -t hello-busybox --image=busybox:latest -- sh</pre>
+-i, --stdin: Keep stdin open on the container(s) in the pod, even if nothing is attached.<br />
+-t, --tty: Allocated a TTY for each container in the pod.<br />
+<br />
+You can use the "--dry-run" flag to print the YAML file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-pod.yaml --dry-run=client -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{},"name":"hello-busybox"},"spec":{"containers":[{"command":["sh","-c","echo \"hello, busybox!\"; sleep 300;"],"image":"busybox:latest","name":"hello-busybox"}]}}
+  name: hello-busybox
+  namespace: test
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - echo "hello, busybox!"; sleep 300;
+    image: busybox:latest
+    name: hello-busybox</pre>
+You can use the "view-last-applied" flag to print the YAML file as it was applied the last time:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-busybox-pod.yaml view-last-applied</pre>
+You can edit and update the definition of a kubernetes object:<br />
+<pre class="sh-code">
+$ kubectl edit pod hello-busybox</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Manage Pods</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+To list all Pods (<b>kubectl get pods</b>):<br />
+<pre class="sh-code">
+$ kubectl get pods</pre>
+<pre class="sh-code">
+NAME            READY   STATUS    RESTARTS   AGE
+hello-busybox   1/1     Running   0          18s</pre></li>
+<li>
+To list detailed information about all Pods (<b>-o wide</b>):<br />
+<pre class="sh-code">
+$ kubectl get pods -o wide</pre>
+<pre class="sh-code">
+NAME            READY   STATUS    RESTARTS   AGE   IP         NODE             NOMINATED NODE   READINESS GATES
+hello-busybox   1/1     Running   0          80s   10.1.0.9   docker-desktop   &lt;none&gt;           &lt;none&gt;</pre></li>
+<li>
+To see the info of a specific Pod (<b>kubectl get pod &lt;POD-NAME&gt;</b>):<br />
+<pre class="sh-code">
+$ kubectl get pod hello-busybox</pre>
+<pre class="sh-code">
+NAME            READY   STATUS    RESTARTS   AGE
+hello-busybox   1/1     Running   0          18s</pre></li>
+<li>
+To see detailed information about a specific Pod (<b>-o wide</b>):<br />
+<pre class="sh-code">
+$ kubectl get pods hello-busybox -o wide</pre>
+<pre class="sh-code">
+NAME            READY   STATUS    RESTARTS   AGE   IP         NODE             NOMINATED NODE   READINESS GATES
+hello-busybox   1/1     Running   0          80s   10.1.0.9   docker-desktop   &lt;none&gt;           &lt;none&gt;</pre></li>
+<li>
+To monitor the status of the Pods (<b>--watch</b>):<br />
+<pre class="sh-code">
+$ kubectl get pods --watch</pre>
+<pre class="sh-code">
+NAME            READY   STATUS              RESTARTS   AGE
+hello-busybox   0/1     ContainerCreating   0          2s
+hello-busybox   1/1     Running             0          17s</pre>
+A Pod is available when the field <b>STATUS</b> shows <b>Running</b>
+and the field <b>READY</b> shows the conainers ready (<b>1/1</b>).
+If a Pod has many containers, then the <b>READY</b> field should show the number of all its containers<br />
+<br /></li>
+<li>
+To run a commands in a Pod (<b>kubectl exec</b>):<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox -- env</pre>
+<pre class="sh-code">
+HOSTNAME=hello-busybox
+...</pre>
+<b>--</b> (double dash) separate the kubectl arguments from the command (and its arguments) you want to run in the Pod.<br />
+<br />
+If more than one container are running in the Pod, then the command will be executed against the first container in the Pod.
+To execute the command against a specific container, you need to use the <b>--container</b> (<b>-c</b>) flag and give it the name of the container:<br />
+<pre class="sh-code">
+$ kubectl exec hello-busybox -c hello-busybox -- env</pre>
+The <b>--container</b> (<b>-c</b>) flag applies also to init containers.<br />
+<br /></li>
+<li>
+To login into a Pod:<br />
+<pre class="sh-code">
+$ kubectl exec -it hello-busybox -- sh</pre>
+<pre class="sh-code">
+/ # ps
+PID   USER     TIME  COMMAND
+    1 root      0:00 sleep 300
+    7 root      0:00 sh
+   13 root      0:00 ps
+/ #</pre>
+<b>--</b> (double dash) separate the kubectl arguments from the command (and its arguments) you want to run in the Pod.<br />
+<br />
+The options <b>-it</b> opens an interactive session with the Pod's remote shell
+by connecting the local shell's data streams to the Pod's data streams (stdin (standard input), stdout (standard out), and stderr (standard error)).<br />
+<b>-i</b>, <b>--stdin</b>: Keep stdin open on the container(s) in the pod, even if nothing is attached.<br />
+<b>-t</b>, <b>--tty</b>: Allocated a TTY for each container in the pod.<br />
+<br />
+If more than one container are running in the Pod, then the command will be executed against the first container in the Pod.
+To login to a specific container, you need to use the <b>--container</b> (<b>-c</b>) flag and give it the name of the container:<br />
+<pre class="sh-code">
+$ kubectl exec -it hello-busybox -c hello-busybox -- sh</pre>
+The <b>--container</b> (<b>-c</b>) flag applies also to init containers.<br />
+<br /></li>
+<li>
+To print the logs of a Pod (<b>kubectl logs</b>):<br />
+<pre class="sh-code">
+$ kubectl logs hello-busybox</pre>
+<pre class="sh-code">
+hello, busybox!</pre>
+If more than one container are running in the Pod, then the command will be executed against the first container in the Pod
+(see the command: kubectl describe pod hello-busybox).
+To print the logs of a specific container, you need to use the <b>--container</b> (<b>-c</b>) flag and give it the name of the container:<br />
+<pre class="sh-code">
+$ kubectl logs hello-busybox -c hello-busybox</pre>
+The <b>--container</b> (<b>-c</b>) flag applies also to init containers.<br />
+<br />
+You can use the <b>--follow</b> (<b>-f</b>) flag to continusly stream the logs in your terminal.<br />
+<br />
+You can use the <b>--previous</b> (<b>-p</b>) flag to show the logs of a previous instance of the Pod.<br />
+<br /></li>
+<li>
+To copy files from the local VM to a Pod (<b>kubectl cp</b>):<br />
+<pre class="sh-code">
+$ kubectl cp ./file1.txt hello-busybox:/tmp/file1.txt</pre>
+To copy files from the Pod to the local VM:<br />
+<pre class="sh-code">
+$ kubectl cp hello-busybox:tmp/file1.txt ./file1-from-busybox-tar.txt</pre>
+Note that the path to the file in the Pod doesn't have the leading character '/'.
+This was needed to avoid this warning "tar: removing leading '/' from member names".<br />
+<br /></li>
+<li>
+To forward a port from the local VM to a Pod (<b>kubectl port-forward</b>):<br />
+<pre class="sh-code">
+kubectl apply -f - &lt;&lt;EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-nginx
+spec:
+  containers:
+    - name: hello-nginx
+      image: nginx:latest
+      ports:
+      - containerPort: 80
+EOF</pre>
+<pre class="sh-code">
+$ kubectl port-forward hello-nginx 8080:80</pre>
+<pre class="sh-code">
+Forwarding from 127.0.0.1:8080 -> 80
+Forwarding from [::1]:8080 -> 80</pre>
+<pre class="sh-code">
+$ curl http://localhost:8080</pre>
+<pre class="text-code">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+...</pre>
+You can also use a Service to forward a port, but note that it will be bound to only one Pod of the Service:<br />
+<pre class="sh-code">
+$ kubectl port-forward svc/kubernetes-dashboard-kong-proxy 8443:443 -n kubernetes-dashboard</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">List detailed information about a Pod</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+To print the manifest file of a specific Pod as stored in the cluster store (etcd):<br />
+<pre class="sh-code">
+$ kubectl get pod hello-busybox -o yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{},"name":"hello-busybox","namespace":"default"},"spec":{"containers":[{"args":["-c","echo \"hello, busybox!\"; sleep 300;"],"command":["sh"],"image":"busybox:latest","name":"hello-busybox"}]}}
+  managedFields:
+  - apiVersion: v1
+...
+    manager: kubelet
+    operation: Update
+  name: hello-busybox
+  namespace: default
+spec:
+  containers:
+  - args:
+    - -c
+    - echo "hello, busybox!"; sleep 300;
+    command:
+    - sh
+    image: busybox:latest
+    imagePullPolicy: Always
+    name: hello-busybox
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-qvt58
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: docker-desktop
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+...
+  volumes:
+  - name: default-token-qvt58
+    secret:
+      defaultMode: 420
+      secretName: default-token-qvt58
+status:
+  hostIP: 192.168.65.4
+  phase: Running
+  podIP: 10.1.0.15
+  podIPs:
+  - ip: 10.1.0.15
+  qosClass: BestEffort</pre>
+Note:
+The printed yaml object contains more settings than what it was defined in the original manifest file.<br />
+Some of the settings are the default values that Kubernets gives to the missing field in the manifest file.<br />
+Some of the settings are runtime information set by Kubernets (node IP address, Pod IP address, container info, status, ...).<br />
+<br />
+The status field provides detailed information about the different transitional states of the Pod.<br />
+<br /></li>
+<li>
+To describe a Pod (<b>kubectl describe pod</b>):<br />
+<br />
+The command provides detailed information about the Pod (node IP address, Pod IP address, container info, ...) and its current state.<br />
+It also provide the list of the events (Scheduled, Pulled, Created, Started, ...) occurred while creating and running the Pod.<br />
+<pre class="sh-code">
+$ kubectl describe pod hello-busybox</pre>
+<pre class="sh-code">
+Name:         hello-busybox
+Namespace:    default
+Priority:     0
+Node:         docker-desktop/192.168.65.4
+Labels:       product=mtitek
+              stage=dev
+Annotations:  &lt;none&gt;
+Status:       Running
+IP:           10.1.0.15
+IPs:
+  IP:  10.1.0.15
+Containers:
+  hello-busybox:
+    Container ID:  docker://dacd7d6f411764b02b26884ef48c5ceec1d60faace4a8fbbc670638e2a6cb806
+    Image:         busybox:latest
+    Image ID:      docker-pullable://busybox@sha256:b5fc1d7b2e4ea86a06b0cf88de915a2c43a99a00b6b3c0af731e5f4c07ae8eff
+    Port:          &lt;none&gt;
+    Host Port:     &lt;none&gt;
+    Command:
+      sh
+    Args:
+      -c
+      echo "hello, busybox!"; sleep 300;
+    State:          Running
+    Ready:          True
+    Restart Count:  0
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-qvt58 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-qvt58:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-qvt58
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &lt;none&gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  3m13s  default-scheduler  Successfully assigned default/hello-busybox to docker-desktop
+  Normal  Pulling    3m12s  kubelet            Pulling image "busybox:latest"
+  Normal  Pulled     3m12s  kubelet            Successfully pulled image "busybox:latest" in 448.2757ms
+  Normal  Created    3m12s  kubelet            Created container hello-busybox
+  Normal  Started    3m12s  kubelet            Started container hello-busybox</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Define Pods resources (CPU, RAM)</span>
+<div class="tutorialSectionTextDiv1">
+You can define the resources ("<b>memory</b>", "<b>cpu</b>") required for the containers running inside the Pod.<br />
+You can use the field "<b>requests</b>" to define the minimum resources required for a container.<br />
+You can use the field "<b>limits</b>" to define the maximum resources to be allocated to a container.<br />
+<br />
+The resources required by a Pod is the sum of the resources requested by all the containers of that Pod.<br />
+Kubernetes will check if a node has available resources required by the Pod before deploying it in that node.<br />
+<br />
+The field "<b>memory</b>" allows you to define the memory that you would like to be allocated to the container.<br />
+You can provide a value for the memory on kilobyte (k), Megabyte (M), Gigabyte (G).<br />
+You can also provide a value for the memory on kibibyte (ki), Mebibytes (Mi), Gibibyte (Gi).<br />
+Note that kilobyte is a multiplier of 1000 bytes while kibibyte is 2 to the power of 10 bytes (1024 bytes).<br />
+Note that Megabyte is represented by the uppercase character "M".<br />
+The lowercase character "m" represents the Milli unit (1000m = 1M).<br />
+The OOM killer will be triggered if the application tries to allocate more than the limit defined for the container (Exit Code 137).<br />
+<br />
+The field "<b>cpu</b>" allows you to define the CPU core that you would like to be allocated to the container.<br />
+You can provide a value for the the CPU cores on millicores (m).<br />
+You can also provide a numerical value for the the CPU cores (0.5 for half a core (1024/2 = 512m), 2 for two cores (1024*2 = 2048m)).<br />
+If the CPU usage exceeds the limits, then the processes inside the container will be throttled (slowed).<br />
+<br />
+If a Pod doesn't define a limit for the memory then in theory it can use more memory if available in the node
+but in such case Kubernetes won't be able to claim back the extra memory used by the Pod to give it to the new Pods.
+If no memory left on the node, then Kubernetes will check all the Pods that are using more memory than what they requested and terminate them.
+Any restarted Pod will need to be scheduled on a node that has the requested memory.<br />
+<br />
+If a Pod doesn't define a limit for the CPU cores then in theory it can use more cores if available in the node
+but if new Pods need to be installed on that node then Kubernetes will claim back the cpu used by the Pod
+and tries to divide the cores on all the pods with respect to the value of the "<b>requests</b>" field of each Pod.<br />
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-busybox-resources
+spec:
+  containers:
+    - name: hello-busybox-resources
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "hello, busybox!"; sleep 300;']
+      resources:
+        requests:
+          memory: 100Mi
+          cpu: 100m
+        limits:
+          memory: 200Mi
+          cpu: 200m</pre>
+You can define a "<b>ResourceQuota</b>" to set the maximum resources (<b>requests</b> and <b>limits</b>)
+for all the objects to be created within a namespace.<br />
+<pre class="sh-code">
+$ vi namespace-resource-quota.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: namespace-resource-quota
+spec:
+  hard:
+    requests.memory: 1Gi
+    requests.cpu: 1
+    limits.memory: 2Gi
+    limits.cpu: 2</pre>
+If you try to create an object that doesn't define a <b>requests</b> or <b>limits</b>, you will get an error:<br />
+<pre class="sh-code">
+Error from server (Forbidden): error when creating "hello-busybox-pod.yaml": pods "hello-busybox" is forbidden:
+failed quota: namespace-resource-quota: must specify
+limits.cpu for: hello-busybox;
+limits.memory for: hello-busybox;
+requests.cpu for: hello-busybox;
+requests.memory for: hello-busybox</pre>
+To check the resources usage:<br />
+<pre class="sh-code">
+$ kubectl get resourcequota/namespace-resource-quota</pre>
+<pre class="sh-code">
+NAME                       AGE   REQUEST                                            LIMIT
+namespace-resource-quota   13m   requests.cpu: 100m/1, requests.memory: 100Mi/1Gi   limits.cpu: 200m/2, limits.memory: 200Mi/2Gi</pre>
+You can also define a "<b>LimitRange</b>" to set the maximum resources (<b>requests</b> and <b>limits</b>)
+for all the objects of a specific type.<br />
+<pre class="sh-code">
+$ vi resources-limit-range.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resources-limit-range
+spec:
+  limits:
+  - default: # default value for containers that doesn't specifyc a request or limits
+      cpu: 1024m
+    defaultRequest:
+      cpu: 512m
+    min: # minimum value for request and limits
+      cpu: 512m
+    max: # maximum value for request and limits
+      cpu: "2"
+    type: Container</pre>
+You will get an error, if you try to create an object
+that define values for <b>requests</b> or <b>limits</b>
+that exceeds the values in the <b>ResourceQuota</b> or <b>LimitRange</b>.<br />
+<pre class="sh-code">
+Error from server (Forbidden): error when creating "hello-busybox-resources-pod.yaml": pods "hello-busybox-resources" is forbidden:
+minimum cpu usage per Container is 512m, but request is 100m</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Define Init Containers</span>
+<div class="tutorialSectionTextDiv1">
+You can define init containers to perform special tasks before the main container get created.<br />
+All init containers need to execute and complete succefully before the main container get created.<br />
+<pre class="sh-code">
+$ vi hello-init-container-busybox-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-init-container-busybox
+spec:
+  initContainers:
+  - name: init-container-show-hello
+    image: busybox:latest
+    command: ['sh', '-c', 'echo "hello, init container!"; sleep 5;']
+  containers:
+    - name: hello-init-container-busybox
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "hello, busybox!"; sleep 300;']</pre>
+<pre class="sh-code">
+$ kubectl get pods hello-init-container-busybox</pre>
+<pre class="yaml-code">
+NAME                           READY   STATUS    RESTARTS        AGE
+hello-init-container-busybox   1/1     Running   3 (2m48s ago)   18m</pre>
+Note that the column <b>READY</b> is showing "1/1" which means that the Pod has only 1 container and it's running.<br />
+<pre class="sh-code">
+$ kubectl logs hello-init-container-busybox -c init-container-show-hello</pre>
+<pre class="yaml-code">
+hello, init container!</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Define Sidecar Containers</span>
+<div class="tutorialSectionTextDiv1">
+You can define sidcar containers to run before the main container get created.<br />
+All sidcar containers need to run succefully before the main container get created.<br />
+<pre class="sh-code">
+$ vi hello-sidcar-container-busybox-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-sidcar-container-busybox
+spec:
+  initContainers:
+  - name: sidcar-container-show-hello
+    image: busybox:latest
+    command: ['sh', '-c', 'echo "hello, sidcar container!"; sleep infinity;']
+    restartPolicy: Always
+  containers:
+    - name: hello-sidcar-container-busybox
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "hello, busybox!"; sleep 300;']</pre>
+<pre class="sh-code">
+$ kubectl get pods hello-sidcar-container-busybox</pre>
+<pre class="yaml-code">
+NAME                             READY   STATUS    RESTARTS   AGE
+hello-sidcar-container-busybox   2/2     Running   0          75s</pre>
+Note that the column <b>READY</b> is showing "2/2" which means that two containers are running.<br />
+<pre class="sh-code">
+$ kubectl logs hello-sidcar-container-busybox -c sidcar-container-show-hello</pre>
+<pre class="yaml-code">
+hello, sidcar container!</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Health Checks</span>
+<div class="tutorialSectionTextDiv1">
+Kubernetes allow you to define probes to check the health of the Pod.<br />
+You can define the liveness, readiness, and the startup probes.<br />
+<br />
+The startup probes ensure that the Pod complete all its tasks before Kubernetes starts monitoring its liveness and readiness.<br />
+The liveness probes ensure that the Pod was started properly.<br />
+The readiness probes ensure that the Pod is ready to process requests.<br />
+<br />
+If the startup probes fail then the Pod is restarted.<br />
+The same for the liveness probes, if they fail then the Pod is restarted.<br />
+If the readiness probes fail then the Pod is flagged as not willing to serve requests but it won't be restarted.<br />
+<br />
+Note that by default, the Pods are configured to always restart after a termination.<br />
+This behaviour is managed by the <b>restartPolicy</b> field which support three settings:
+<b>Always</b> (default), <b>OnFailure</b> (non-zero exit status), <b>Never</b>.<br />
+<br />
+The probes have there settings:<br />
+<ul class="ul_square_1">
+<li>
+<b>initialDelaySeconds</b> (default: 0):
+tells Kubernetes to wait the configured number of seconds before executing the first probe.<br />
+<br /></li>
+<li>
+<b>timeoutSeconds</b> (default: 1):
+tells Kubernetes to timeout the probe if its execution last more than the configured number of seconds.<br />
+<br /></li>
+<li>
+<b>periodSeconds</b> (default: 10):
+tells Kubernetes to execute the probe every x seconds.<br />
+<br /></li>
+<li>
+<b>failureThreshold</b> (default: 3):
+tells Kubernetes to fail the probes check after x consecutive failures.<br />
+<br /></li>
+<li>
+<b>successThreshold</b> (default: 1):
+tells Kubernetes to succeed the probes check after x consecutive successes (must be 1 for liveness and startup probes).<br />
+<br /></li>
+<li>
+<b>terminationGracePeriodSeconds</b> (default: 30):
+tells Kubernetes to wait the defined number of seconds to let the Pod to terminate gracefully before forcing its termination
+(cannot be defined for the readiness probes).<br />
+</li>
+</ul>
+<br />
+There are four means to check the health of the Pod using a probe:<br />
+<ul class="ul_square_1">
+<li>
+<b>exec</b>:
+Execute a command inside the Pod.
+The probe is considered successful if the command exit with a status code of zero.<br />
+<pre class="yaml-code">
+exec:
+  command: ['sh', '-c', 'test -f /tmp/file1;']</pre></li>
+<li>
+<b>tcpSocket</b>:
+Execute a tcp check against the Pod using the provided IP address and port.
+The probe is considered successful if the connection succeeds (port open).<br />
+<pre class="yaml-code">
+tcpSocket:
+  port: 5432</pre></li>
+<li>
+<b>httpGet</b>:
+Execute an HTTP GET request against the Pod using the provided IP address, port, and path.
+The probe is considered successful if the response has a satus code &gt;=200 and &lt;400.<br />
+<pre class="yaml-code">
+httpGet:
+  path: /healthz
+  port: 80</pre></li>
+<li>
+<b>grpc</b>:
+Execute an RPC (remote procedure call) against the Pod.
+The probe is considered successful if the response is SERVING.<br />
+<pre class="yaml-code">
+grpc:
+  port: 1024</pre>
+</li>
+</ul>
+<br />
+Let's define a Pod that declares the the liveness, readiness, and the startup probes:<br />
+<pre class="sh-code">
+$ vi hello-probes-busybox-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-probes-busybox
+spec:
+  restartPolicy: Always
+  containers:
+    - name: hello-probes-busybox
+      image: busybox:latest
+      command: ['sh', '-c', 'touch /tmp/liveness-probe; touch /tmp/readiness-probe; touch /tmp/startup-probe; sleep infinity;']
+      startupProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/liveness-probe
+        initialDelaySeconds: 5
+        timeoutSeconds: 5
+        periodSeconds: 10
+        failureThreshold: 5
+        successThreshold: 1
+        terminationGracePeriodSeconds: 5
+      livenessProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/readiness-probe
+        initialDelaySeconds: 5
+        timeoutSeconds: 5
+        periodSeconds: 10
+        failureThreshold: 5
+        successThreshold: 1
+        terminationGracePeriodSeconds: 5
+      readinessProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/startup-probe
+        initialDelaySeconds: 5
+        timeoutSeconds: 5
+        periodSeconds: 10
+        failureThreshold: 5
+        successThreshold: 5</pre>
+Let's create the Pod:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-probes-busybox-pod.yaml</pre>
+<pre class="sh-code">
+pod/hello-probes-busybox created</pre>
+Let's check the Pod:<br />
+<pre class="sh-code">
+$ kubectl get pods -w</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE
+hello-probes-busybox   0/1     Running   0          3s
+hello-probes-busybox   0/1     Running   0          10s
+hello-probes-busybox   1/1     Running   0          41s</pre>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Labels</span>
+<div class="tutorialSectionTextDiv1">
+Labels are key/value pairs (strings) that can be added to Kubernetes objects to group them so it can be easy to query and identify them (i.e. selector query).<br />
+<br />
+Labels can be written using the following format: <b>key-prefix/key-name: value</b><br />
+<br />
+The <b>key-prefix</b> is optional and must be a valid DNS subdomain name.<br />
+<br />
+The <b>key-name</b> is mandatory and must respect the following constraints:<br />
+<ul class="ul_circle_1">
+<li>
+Maximum 63 characters.<br />
+</li>
+<li>
+The name can contain alphanumeric characters ([a-zA-Z0-9]), minus character ('-'), underscore character ('_'), and period character ('.').<br />
+</li>
+<li>
+The name must start and end with an alphanumeric character.<br />
+</li>
+</ul>
+<br/>
+The label value is any string that respect the same constraints as the <b>key-name</b>.<br />
+<br />
+Let's define a simple Pod with a Label:<br />
+<pre class="sh-code">
+$ vi hello-labels-busybox-pod.yaml</pre>
+<pre class="yaml-code">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-labels-busybox # will be used as the hostname of the conatiners
+  labels:
+    label1-key/label1-name: label1-value
+spec:
+  containers:
+    - name: hello-labels-busybox
+      image: busybox:latest
+      command: ['sh', '-c', 'echo "hello, busybox!"; sleep infinity;']</pre>
+Let's deploy the hello-labels-busybox-pod.yaml file:<br />
+<pre class="sh-code">
+$ kubectl apply -f hello-labels-busybox-pod.yaml</pre>
+<pre class="sh-code">
+pod/hello-labels-busybox created</pre>
+To add, update, or delete a label, you can update and apply the manifest file of the Pod.
+You can also use the imperative command <b>kubectl label</b> to add, update, or delete labels.<br />
+<br />
+To add a new label to the pod:<br />
+<pre class="sh-code">
+$ kubectl label pods hello-labels-busybox "label2-key/label2-name=label2-value"</pre>
+<pre class="sh-code">
+pod/hello-labels-busybox labeled</pre>
+To show the labels attached to the Pod:<br />
+<pre class="sh-code">
+$ kubectl get pods hello-labels-busybox --show-labels</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE    LABELS
+hello-labels-busybox   1/1     Running   0          109s   label1-key/label1-name=label1-value,label2-key/label2-name=label2-value</pre>
+You can use the option "<b>--label-columns</b>" ("<b>-L</b>") to present the label names as columns in the output of the command.<br />
+The option accepts a comma separated list of labels names. You can also specify the options multiple times (<b>-L label1 -L label2</b>).<br />
+Note that the labels names are case-sensitive.<br />
+<pre class="sh-code">
+$ kubectl get pods hello-labels-busybox -L label1-key/label1-name -L LABEL-UNKNOWN</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE   LABEL1-NAME    LABEL-UNKNOWN
+hello-labels-busybox   1/1     Running   0          2m    label1-value</pre>
+To update a label of a pod:<br />
+<pre class="sh-code">
+$ kubectl label pods hello-labels-busybox "label1-key/label1-name=label1-value-new" --overwrite</pre>
+<pre class="sh-code">
+pod/hello-labels-busybox labeled</pre>
+You need to use the option "<b>--overwrite</b>", otherwise you will get an error:<br >
+error: 'label1-key/label1-name' already has a value (label1-value), and --overwrite is false<br />
+<br />
+To delete a label of a pod:<br />
+<pre class="sh-code">
+$ kubectl label pods hello-labels-busybox "label2-key/label2-name-"</pre>
+<pre class="sh-code">
+pod/hello-labels-busybox labeled</pre>
+To show the labels changes:<br />
+<pre class="sh-code">
+$ kubectl get pods hello-labels-busybox --show-labels</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE    LABELS
+hello-labels-busybox   1/1     Running   0          3m     label1-key/label1-name=label1-value-new</pre>
+You can use the option "<b>--selector</b>" ("<b>-l</b>") to filter Pods based on their label names.<br />
+Note that the labels names/values are case-sensitive.<br />
+The option supports the following operators:<br />
+<ul class="ul_circle_1">
+<li>
+<b>key1=value1</b>: Select all objects that have a label key "<b>key1</b>" and its value is equal to "<b>value1</b>".<br />
+</li>
+<li>
+<b>key1!=value1</b>: Select all objects that doesn't have a label key "<b>key1</b>" that its value is equal to "<b>value1</b>".<br />
+</li>
+<li>
+<b>key1 in (value1, value2)</b>: Select all objects that have a label key "<b>key1</b>" and its value is equal to "<b>value1</b>" or "<b>value2</b>".<br />
+</li>
+<li>
+<b>key1 notin (value1, value2)</b>: Select all objects that doesn't have a label key "<b>key1</b>" that its value is equal to "<b>value1</b>" or "<b>value2</b>".<br />
+</li>
+<li>
+<b>key1</b>: Select all objects that have a label key "<b>key1</b>".<br />
+</li>
+<li>
+<b>!key1</b>: Select all objects that doesn't have a label key "<b>key1</b>".<br />
+</li>
+</ul>
+<br />
+Example using the "<b>=</b>" operator:<br />
+<pre class="sh-code">
+$ kubectl get pods -l "label1-key/label1-name=label1-value-new" --show-labels</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE    LABELS
+hello-labels-busybox   1/1     Running   0          3m     label1-key/label1-name=label1-value-new</pre>
+Example using the "<b>!</b>" operator.<br />
+Make sure to wrap the selector within single notes otherwise you will get an error (-bash: !label2: event not found).<br />
+<pre class="sh-code">
+$ kubectl get pods -l '!label2-key/label2-name' --show-labels</pre>
+<pre class="sh-code">
+NAME                   READY   STATUS    RESTARTS   AGE    LABELS
+hello-labels-busybox   1/1     Running   0          3m     label1-key/label1-name=label1-value-new</pre>
+</div>
+</li>
+<!--
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">Annotations</span>
+<div class="tutorialSectionTextDiv1">
+</div>
+</li>
+-->
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">Delete Pods</span>
+<div class="tutorialSectionTextDiv1">
+To delete a Pod: using manifest file (<b>kubectl delete</b>):<br />
+<pre class="sh-code">
+$ kubectl delete -f hello-busybox-pod.yaml</pre>
+<pre class="sh-code">
+pod "hello-busybox" deleted</pre>
+To delete a Pod using its name:<br />
+<pre class="sh-code">
+$ kubectl delete pod hello-busybox</pre>
+<pre class="sh-code">
+pod "hello-busybox" deleted</pre>
+By default, the Pod takes 30 seconds to gracefully shut down before it get completely terminated.
+Meanwhile the pod will show the state "Terminating".<br />
+To delete a Pod immediately:<br />
+<pre class="sh-code">
+$ kubectl delete pod hello-busybox --grace-period=0</pre>
+<pre class="sh-code">
+pod "hello-busybox" deleted</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

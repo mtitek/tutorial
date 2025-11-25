@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Build cache &amp; Dockerfile Best Practices | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Build cache &amp; Dockerfile Best Practices" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Build cache &amp; Dockerfile Best Practices | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Build cache &amp; Dockerfile Best Practices" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/build_cache.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Build cache &amp; Dockerfile Best Practices | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Build cache &amp; Dockerfile Best Practices" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/build_cache.html",
+        "description": "Tutorials: Docker - Build cache &amp; Dockerfile Best Practices",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/build_cache.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Build cache &amp; Dockerfile Best Practices</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Build cache</a></li>
+<li><a href="#sec_id_2">Example of an unoptimized Dockerfile</a></li>
+<li><a href="#sec_id_3">Example of an optimized Dockerfile</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Build cache</span>
+<div class="tutorialSectionTextDiv1">
+For each build command in the Dockerfile, Docker will generate a new filesystem layer.
+An image is a combination of all filesystem layers created by the build commands of the Dockerfile.
+Each layer is mapped to a specific build command in the Dockerfile.<br />
+<br />
+The size of each filesystem layer depends on the command executed (e.g., adding files, installing libraries, etc.).
+The final image size is the sum of the sizes of all its filesystem layers (including the deleted layers).
+Adding commands to delete files created in previous layers does not reduce the final image size,
+because each layer is immutable and retained in the image history.<br />
+<br />
+For a new created image, Docker will execute all the build commands in the Dockerfile.<br />
+<br />
+When building an already created image (assuming the cache was not cleared),
+Docker uses, for each instruction in the Dockerfile, the corresponding filesystem layer from its cache, except if:<br />
+<ul class="ul_square_1">
+<li>The instruction itself changes.<br /><br /></li>
+<li>Any file content that affects the build context changes.<br /><br /></li>
+<li>A parent layer was rebuilt (cache invalidation cascades down).<br /><br /></li>
+</ul>
+If any of the above conditions are met,
+Docker will invalidate the cache and re-run the instruction and all the instructions in the Dockerfile that are below it.<br />
+<br />
+Allowing Docker to use cached layers when rebuilding images can significantly reduce build time.<br />
+<br />
+<b>Best practices</b>:
+To minimize invalidating the cache, a build command that might create a new filesystem layer every time it's executed (e.g., update OS, library)
+should be placed, when possible, at the bottom of the Dockerfile.
+Another option is to place that command in a parent Dockerfile and use the generated image as a parent image for the descendant Dockerfiles.
+In such case case, the parent image can be re-built only when needed.<br />
+<br />
+<b>Best practices</b>: When possible, multiple build commands should be combined in one single build command (using &amp;&amp; operator).<br />
+<br />
+Following best practices when designing Dockerfiles helps:<br />
+<ul class="ul_square_1">
+<li>
+speed up the creation of Docker images by leveraging the cache.<br />
+<br /></li>
+<li>
+reduce the size of Docker images.<br />
+<br /></li>
+<li>
+speed up copying/downloading Docker images by skipping layers that have already been copied/downloaded.<br />
+<br /></li>
+</ul>
+Let's execute again the build command. The output should be similar to the following:<br />
+<pre class="sh-code">
+Sending build context to Docker daemon  10.75kB
+Step 1/6 : FROM ubuntu:latest
+ ---> 6015f66923d7
+Step 2/6 : RUN apt-get -y update
+ ---> Using cache
+ ---> b34542b1b9fb
+Step 3/6 : RUN apt-get -y install curl
+ ---> Using cache
+ ---> 9e0f805a3972
+Step 4/6 : RUN apt-get -y install nginx
+ ---> Using cache
+ ---> 01756a2038d9
+Step 5/6 : RUN groupadd -r mtitek --gid=1001
+ ---> Using cache
+ ---> 41ca8f17b674
+Step 6/6 : RUN useradd -r -g mtitek --uid=1001 mtitek
+ ---> Using cache
+ ---> 7b666fb64cbe
+Successfully built 7b666fb64cbe
+Successfully tagged ubuntu-nginx:latest</pre>
+As you can see, Docker verify for each build step if there is a cached layer, and if it does exists, it will use it (see <b>---> Using cache</b>).<br />
+<br />
+Let's change the Dockerfile a bit (I will change the order of the instructions):<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN groupadd -r mtitek --gid=1001
+RUN useradd -r -g mtitek --uid=1001 mtitek
+
+RUN apt-get -y update
+
+RUN apt-get -y install curl
+RUN apt-get -y install nginx</pre>
+Let's execute the build command. The output should be similar to the following:<br />
+<pre class="sh-code">
+Sending build context to Docker daemon  10.75kB
+Step 1/6 : FROM ubuntu:latest
+ ---> 6015f66923d7
+Step 2/6 : RUN groupadd -r mtitek --gid=1001
+ ---> Running in f7b327d63845
+ ---> Removed intermediate container f7b327d63845
+ ---> 4629c2db165c
+Step 3/6 : RUN useradd -r -g mtitek --uid=1001 mtitek
+ ---> Running in 01c98ebe495c
+useradd warning: mtitek's uid 1001 is greater than SYS_UID_MAX 999
+ ---> Removed intermediate container 01c98ebe495c
+ ---> 2edc548cef67
+Step 4/6 : RUN apt-get -y update
+ ---> Running in 33ee26d60ba9
+...
+ ---> Removed intermediate container 33ee26d60ba9
+ ---> 2ec87303ed4c
+Step 5/6 : RUN apt-get -y install curl
+ ---> Running in 99ff38439160
+...
+ ---> Removed intermediate container 99ff38439160
+ ---> fc77c62a95d1
+Step 6/6 : RUN apt-get -y install nginx
+ ---> Running in fa1e572b2c54
+...
+ ---> Removed intermediate container fa1e572b2c54
+ ---> fd3be710b6e8
+Successfully built fd3be710b6e8
+Successfully tagged ubuntu-nginx:latest</pre>
+As you can notice, the instruction of the step 2 was changed (because of reordering) and hence Docker is building a new image layer.
+Docker will then execute the subsequent steps and won't use the local cache even if the instructions themselves didn't change.<br />
+<br />
+Note: You can use the <b>--no-cache</b> option to instruct Docker not to use the cache from previous builds.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Example of an unoptimized Dockerfile</span>
+<div class="tutorialSectionTextDiv1">
+The example of the Dockerfile we used above is unoptimized:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN apt-get -y update
+
+RUN apt-get -y install curl
+RUN apt-get -y install nginx
+
+RUN groupadd -r mtitek --gid=1001
+RUN useradd -r -g mtitek --uid=1001 mtitek</pre>
+Let's inspect the layers of the ubuntu image (<b>ubuntu:latest</b>):<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu:latest --format '{{json .RootFS.Layers}}' | jq</pre>
+<pre class="sh-code">
+[
+  "sha256:8901a649dd5a9284fa6206a08f3ba3b5a12fddbfd2f82c880e68cdb699d98bfb"
+]</pre>
+Let's inspect the layers of the new image (<b>ubuntu-nginx:latest</b>):<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu-nginx:latest --format '{{json .RootFS.Layers}}' | jq</pre>
+<pre class="sh-code">
+[
+  "sha256:8901a649dd5a9284fa6206a08f3ba3b5a12fddbfd2f82c880e68cdb699d98bfb",
+  "sha256:3f8c7084c7bbc943bd6afed212591874b303398bc7e0ea95c43e4033c9fd2d3a",
+  "sha256:7bf6682df91a9076c66f394cac225db5b878b96de5041c494adc8e4acd5c0f16",
+  "sha256:798623fc5905c87438699e37cc35fec5bff9bc5bb20d2d8e9752b47cad36ce8d",
+  "sha256:f48e14b4afc200c8022b3e36d9f29924afaae221aeb1a1e9eb3d996a8587213c",
+  "sha256:6468f3e1a65da2cab178429ce66b9c057e2a9ec3faeeeb1f199b772beb3321b5"
+]</pre>
+Note that the image '<b>ubuntu-nginx:latest</b>' inherit all the layers of the parent image '<b>ubuntu:latest</b>'.<br />
+<br />
+The five new layers are the ones created by executing the build steps in the Dockerfile.<br />
+<br />
+Let's check the size of the layers of the new image (<b>ubuntu-nginx:latest</b>):<br />
+<pre class="sh-code">
+$ docker image history ubuntu-nginx:latest</pre>
+<pre class="sh-code">
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+aa946f62cb3c   21 minutes ago   /bin/sh -c useradd -r -g mtitek --uid=1001 m…   24.6kB
+4aebef1f834f   21 minutes ago   /bin/sh -c groupadd -r mtitek --gid=1001        24.6kB
+6b9093ec8233   21 minutes ago   /bin/sh -c apt-get -y install nginx             7.82MB
+157c3399ec8a   21 minutes ago   /bin/sh -c apt-get -y install curl              10.9MB
+6751ea0c7fc3   21 minutes ago   /bin/sh -c apt-get -y update                    48.9MB
+6015f66923d7   5 weeks ago      /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop) ADD file:ad85a9d7b0a74c214…   87.6MB
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH     0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  ARG RELEASE                  0B</pre>
+Check the image size:<br />
+<pre class="sh-code">
+$ docker image ls ubuntu-nginx:latest</pre>
+<pre class="sh-code">
+REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+ubuntu-nginx   latest    aa946f62cb3c   3 minutes ago   226MB</pre>
+Note that deleting temporary files in later layers won't reduce the image size. Let's demonstrate this by updating the Dockerfile above:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN apt-get -y update
+
+RUN apt-get -y install curl
+RUN apt-get -y install nginx
+
+RUN groupadd -r mtitek --gid=1001
+RUN useradd -r -g mtitek --uid=1001 mtitek
+
+RUN rm -rf /var/lib/apt/lists/*</pre>
+Let's build the new Dockerfile:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t ubuntu-nginx:latest .</pre>
+<pre class="sh-code">
+Sending build context to Docker daemon  10.75kB
+Step 1/7 : FROM ubuntu:latest
+ ---> 6015f66923d7
+Step 2/7 : RUN apt-get -y update
+ ---> Using cache
+ ---> 6751ea0c7fc3
+Step 3/7 : RUN apt-get -y install curl
+ ---> Using cache
+ ---> 157c3399ec8a
+Step 4/7 : RUN apt-get -y install nginx
+ ---> Using cache
+ ---> 6b9093ec8233
+Step 5/7 : RUN groupadd -r mtitek --gid=1001
+ ---> Using cache
+ ---> 4aebef1f834f
+Step 6/7 : RUN useradd -r -g mtitek --uid=1001 mtitek
+ ---> Using cache
+ ---> aa946f62cb3c
+Step 7/7 : RUN rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 93bccff9a921
+Successfully built 93bccff9a921
+Successfully tagged ubuntu-nginx:latest</pre>
+Let's inspect the layers of the new image (<b>ubuntu-nginx:latest</b>):<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu-nginx:latest --format '{{json .RootFS.Layers}}' | jq</pre>
+<pre class="sh-code">
+[
+  "sha256:8901a649dd5a9284fa6206a08f3ba3b5a12fddbfd2f82c880e68cdb699d98bfb",
+  "sha256:3f8c7084c7bbc943bd6afed212591874b303398bc7e0ea95c43e4033c9fd2d3a",
+  "sha256:7bf6682df91a9076c66f394cac225db5b878b96de5041c494adc8e4acd5c0f16",
+  "sha256:798623fc5905c87438699e37cc35fec5bff9bc5bb20d2d8e9752b47cad36ce8d",
+  "sha256:f48e14b4afc200c8022b3e36d9f29924afaae221aeb1a1e9eb3d996a8587213c",
+  "sha256:6468f3e1a65da2cab178429ce66b9c057e2a9ec3faeeeb1f199b772beb3321b5",
+  "sha256:deef6270e5c6912ae672d7f30d4e90c5160efcfa0ef43423474535e3bef125a9"
+]</pre>
+You can notice that a new layer (<b>deef6270e...</b>) was added for the command <code class="code1">rm -rf /var/lib/apt/lists/*</code><br />
+<br />
+Let's check the size of the layers of the new image (<b>ubuntu-nginx:latest</b>):<br />
+<pre class="sh-code">
+$ docker image history ubuntu-nginx:latest</pre>
+<pre class="sh-code">
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+93bccff9a921   16 minutes ago   /bin/sh -c rm -rf /var/lib/apt/lists/*          20.5kB
+aa946f62cb3c   24 minutes ago   /bin/sh -c useradd -r -g mtitek --uid=1001 m…   24.6kB
+4aebef1f834f   24 minutes ago   /bin/sh -c groupadd -r mtitek --gid=1001        24.6kB
+6b9093ec8233   24 minutes ago   /bin/sh -c apt-get -y install nginx             7.82MB
+157c3399ec8a   24 minutes ago   /bin/sh -c apt-get -y install curl              10.9MB
+6751ea0c7fc3   24 minutes ago   /bin/sh -c apt-get -y update                    48.9MB
+6015f66923d7   5 weeks ago      /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop) ADD file:ad85a9d7b0a74c214…   87.6MB
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH     0B
+&lt;missing&gt;      5 weeks ago      /bin/sh -c #(nop)  ARG RELEASE                  0B</pre>
+Let's check the size of the new image:<br />
+<pre class="sh-code">
+$ docker image ls ubuntu-nginx:latest</pre>
+<pre class="sh-code">
+REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+ubuntu-nginx   latest    93bccff9a921   2 minutes ago   226MB</pre>
+The image size remains the same because the sizes of the filesystem layers are additive.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example of an optimized Dockerfile</span>
+<div class="tutorialSectionTextDiv1">
+Let's optimize a bit the Dockerfile we used above:<br />
+<pre class="sh-code">
+$ vi Dockerfile-optimized</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek
+
+RUN apt-get -y update &amp;&amp; apt-get -y install curl &amp;&amp; apt-get -y install nginx &amp;&amp; rm -rf /var/lib/apt/lists/*</pre>
+Note that I have organized the commands and chained some together using the &amp;&amp; operator.<br />
+All chained commands will be executed, and they all need to succeed (exit with a return code of 0).<br />
+The &amp;&amp; operator instructs Docker to execute the subsequent command in the chain only if the preceding command is successful.<br />
+<br />
+Build the Dockerfile:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build -t ubuntu-nginx-optimized:latest -f Dockerfile-optimized .</pre>
+<pre class="sh-code">
+Sending build context to Docker daemon  10.75kB
+Step 1/3 : FROM ubuntu:latest
+ ---> 6015f66923d7
+Step 2/3 : RUN groupadd -r mtitek --gid=1001 &amp;&amp; useradd -r -g mtitek --uid=1001 mtitek
+ ---> Running in 3cb6ef9fb342
+useradd warning: mtitek's uid 1001 is greater than SYS_UID_MAX 999
+ ---> Removed intermediate container 3cb6ef9fb342
+ ---> c6a8431a0584
+Step 3/3 : RUN apt-get -y update &amp;&amp; apt-get -y install curl &amp;&amp; apt-get -y install nginx &amp;&amp; rm -rf /var/lib/apt/lists/*
+ ---> Running in 309918e8ba28
+...
+ ---> Removed intermediate container 309918e8ba28
+ ---> 98fb588c7970
+Successfully built 98fb588c7970
+Successfully tagged ubuntu-nginx-optimized:latest</pre>
+Let's inspect the layers of the new image:<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu-nginx-optimized:latest --format '{{json .RootFS.Layers}}' | jq</pre>
+<pre class="sh-code">
+[
+  "sha256:8901a649dd5a9284fa6206a08f3ba3b5a12fddbfd2f82c880e68cdb699d98bfb",
+  "sha256:75b8e003ac9658ae32fa701a2021cd0ae73bf82eaf82e6667d694e958c2ed837",
+  "sha256:257b99b3df8dcd52ca57748d038ec4f53914352ce846fa5b49c5760d2b94b2b3"
+]</pre>
+First note that the build steps were reduced to only three steps.
+This result to only two new layers created for the new image instead of five with the non-optimized Dockerfile.<br />
+<br />
+Note that the steps, in the Dockerfile, to create the <b>mtitek</b> group and user are placed before the installation instructions of <b>curl</b> and <b>nginx</b>.
+This is to show that the instructions that are more likely to generate the same exact result, no matter how many time they are executed,
+should be placed at the top of the Dockerfile.
+This will save time when building the image frequently.<br />
+<br />
+Note also the instruction <b>rm -rf /var/lib/apt/lists/*</b>, which is useful to save disk space on the final image.
+The size of the image is now <b>141MB</b> instead of <b>226MB</b>.<br />
+<pre class="sh-code">
+$ docker image ls ubuntu-nginx-optimized:latest</pre>
+<pre class="sh-code">
+REPOSITORY               TAG       IMAGE ID       CREATED         SIZE
+ubuntu-nginx-optimized   latest    98fb588c7970   3 minutes ago   141MB</pre>
+Let's check the size of the layers of the new image (<b>ubuntu-nginx-optimized:latest</b>):<br />
+<pre class="sh-code">
+$ docker image history ubuntu-nginx-optimized:latest</pre>
+<pre class="sh-code">
+IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT
+98fb588c7970   6 minutes ago   /bin/sh -c apt-get -y update &amp;&amp; apt-get -y i…   17.2MB
+c6a8431a0584   6 minutes ago   /bin/sh -c groupadd -r mtitek --gid=1001 &amp;&amp; …   41kB
+6015f66923d7   5 weeks ago     /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+&lt;missing&gt;      5 weeks ago     /bin/sh -c #(nop) ADD file:ad85a9d7b0a74c214…   87.6MB
+&lt;missing&gt;      5 weeks ago     /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago     /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+&lt;missing&gt;      5 weeks ago     /bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH     0B
+&lt;missing&gt;      5 weeks ago     /bin/sh -c #(nop)  ARG RELEASE                  0B</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

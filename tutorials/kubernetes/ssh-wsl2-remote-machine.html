@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - SSH into WSL 2 from a Remote Machine | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - SSH into WSL 2 from a Remote Machine" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - SSH into WSL 2 from a Remote Machine | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - SSH into WSL 2 from a Remote Machine" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/ssh-wsl2-remote-machine.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - SSH into WSL 2 from a Remote Machine | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - SSH into WSL 2 from a Remote Machine" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/ssh-wsl2-remote-machine.html",
+        "description": "Tutorials: Kubernetes - SSH into WSL 2 from a Remote Machine",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/ssh-wsl2-remote-machine.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">SSH into WSL 2 from a Remote Machine</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+See these pages for more details about Network Shell (Netsh):<br />
+<a href="https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy">https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy</a><br />
+<a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior">https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior</a><br />
+<br />
+Make sure that you have installed Windows Subsystem for Linux (WSL 2):
+<a href="install-wsl2.html">Install Windows Subsystem for Linux (WSL 2)</a><br />
+<br />
+To SSH into your Linux distro (WSL 2) from a remote machine, follow these steps:<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Install OpenSSH Server in your Linux distro.<br />
+Connect to your Linux distro. Enter: <b>sudo apt install openssh-server</b><br />
+<br />
+It not already installed, it may be useful to install "net-tools" package: <b>sudo apt install net-tools</b><br />
+<pre class="sh-code">
+$ sudo apt update
+$ sudo apt install openssh-server
+$ sudo apt install net-tools</pre>
+</li>
+<li>
+Configure <b>/etc/ssh/sshd_config</b> file.<br />
+Connect to your Linux distro. Enter: <b>sudo vi /etc/ssh/sshd_config</b><br />
+<br />
+You can set the local addresses that sshd should listen: "0.0.0.0".<br />
+Optionally, you can set the SSH port to another value (make sure that the port is not already used): "2222".<br />
+<pre class="sh-code">
+Port 2222
+ListenAddress 0.0.0.0</pre>
+<pre class="sh-code">
+# reload systemd
+$ sudo systemctl daemon-reload
+# restart OpenSSH Server
+$ sudo service ssh restart
+# test SSH connection
+$ sudo systemctl status ssh</pre>
+</li>
+<li>
+Forward port from Windows into your Linux WSL distro.<br />
+The portproxy server listens for messages sent to a specific port and IPv4 address and maps a port and IPv4 address to send the messages received after establishing a separate TCP connection.<br />
+<br />
+<ul class="ul_circle_1">
+<li>
+listenaddress: Specifies the IPv4 address for which to listen ("0.0.0.0" any IPv4 address).<br />
+</li>
+<li>
+listenport: Specifies the IPv4 port on which to listen ("2222", you can choose any port you want).<br />
+</li>
+<li>
+connectaddress: Specifies the IPv4 address to which to connect ("172.26.110.211", this should be the address of your Linux WSL distro).<br />
+</li>
+<li>
+connectport: Specifies the IPv4 port to which to connect ("2222", must match the port your set for your sshd on your Linux WSL distro).<br />
+</li>
+</ul>
+<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=2222 connectaddress=172.26.110.211 connectport=2222</pre>
+To check the Port:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy show v4tov4</pre>
+<pre class="sh-code">
+Listen on ipv4:               Connect to ipv4:
+Address Port                  Address        Port
+------- ----                  -------        ----
+0.0.0.0 2222                  172.26.110.211 2222</pre>
+</li>
+<li>
+Add a new firewall rule to enable the port.<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall add rule name="Open Port 2222 - WSL 2" dir=in action=allow protocol=TCP localport=2222</pre>
+To check the rule:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall show rule status=enabled dir=in name=all | select-string -pattern "(LocalPort.*2222)" -context 9,4</pre>
+<pre class="sh-code">
+Rule Name:           Open Port 2222 - WSL 2
+-------------------------------------------
+Enabled:             Yes
+LocalPort:           2222
+...</pre>
+</li>
+<li>
+To test your configuration, open a terminal in a remote machine.
+Enter: <b>ssh mtitek@192.168.2.15 -p 2222</b><br />
+Replace <b>mtitek</b> with the user you have ceated for your Linux distro.<br />
+Replace <b>192.168.2.15</b> with the IP address of your Windows machine (look for the IPv4 Address in the output of the ipconfig command).<br />
+</li>
+</ul>
+Notes:<br />
+To delete the firewall rule:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh advfirewall firewall delete rule name="Open Port 2222 - WSL 2"</pre>
+To delete the IPv4 port and address from the list of IPv4 ports and addresses for which the server listens:<br />
+<pre class="sh-code">
+C:\Users\mtitek>netsh interface portproxy delete v4tov4 listenaddress=0.0.0.0 listenport=2222</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

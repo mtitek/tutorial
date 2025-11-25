@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker CLI - docker | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker CLI - docker" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker CLI - docker | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker CLI - docker" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/docker_cli.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker CLI - docker | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker CLI - docker" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/docker_cli.html",
+        "description": "Tutorials: Docker CLI - docker",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/docker_cli.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Docker CLI - docker</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">docker</a></li>
+<li><a href="#sec_id_2">Usage</a></li>
+<li><a href="#sec_id_3">Options</a></li>
+<li><a href="#sec_id_4">Commands</a></li>
+<li><a href="#sec_id_5">Management Commands</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">docker</span>
+<div class="tutorialSectionTextDiv1">
+The Docker CLI (Command-Line Interface) includes all <b>docker</b> commands.<br />
+To list <b>docker</b> options and commands, type: <b>docker --help</b><br />
+To print information about a specific <b>docker</b> command, type: <b>docker COMMAND --help</b><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Usage</span>
+<div class="tutorialSectionTextDiv1">
+Usage: <b>docker [OPTIONS] COMMAND [ARG...]</b><br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Options</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+-v, --version            Print version information and quit
+
+-H, --host list          Daemon socket(s) to connect to
+
+-c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker context use")
+
+-D, --debug              Enable debug mode
+
+-l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+
+    --config string      Location of client config files (default "$HOME/.docker")
+
+    --tls                Use TLS; implied by --tlsverify
+    --tlscacert string   Trust certs signed only by this CA (default "$HOME/.docker/ca.pem")
+    --tlscert string     Path to TLS certificate file (default "$HOME/.docker/cert.pem")
+    --tlskey string      Path to TLS key file (default "$HOME/.docker/key.pem")
+    --tlsverify          Use TLS and verify the remote</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Commands</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+version     Show the Docker version information
+inspect     Return low-level information on Docker objects
+login       Log in to a Docker registry
+logout      Log out from a Docker registry
+search      Search the Docker Hub for images</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Management Commands</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+image       Manage images
+container   Manage containers
+volume      Manage volumes
+network     Manage networks</pre>
+<pre class="sh-code">
+buildx      Manage builds
+system      Manage Docker
+manifest    Manage Docker image manifests and manifest lists
+context     Manage contexts
+plugin      Manage plugins
+trust       Manage trust on Docker images
+ai*         Docker AI Agent - Ask Gordon
+cloud*      Docker Cloud
+compose*    Docker Compose
+debug*      Get a shell into any image or container
+desktop*    Docker Desktop commands
+dev*        Docker Dev Environments
+extension*  Manages Docker extensions
+init*       Creates Docker-related starter files for your project
+mcp*        Docker MCP Plugin
+model*      Docker Model Runner
+sbom*       View the packaged-based Software Bill Of Materials (SBOM) for an image
+scout*      Docker Scout</pre>
+<pre class="sh-code">
+swarm       Manage Swarm
+node        Manage Swarm nodes
+service     Manage services
+secret      Manage Docker secrets
+config      Manage Docker configs
+stack       Manage Docker stacks</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

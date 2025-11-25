@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Dockerfile | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Dockerfile" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Dockerfile | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Dockerfile" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/dockerfile.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Dockerfile | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Dockerfile" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/dockerfile.html",
+        "description": "Tutorials: Docker - Dockerfile",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/dockerfile.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Dockerfile</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Notes</a></li>
+<li><a href="#sec_id_1">FROM</a></li>
+<li><a href="#sec_id_2">ARG</a></li>
+<li><a href="#sec_id_3">LABEL</a></li>
+<li><a href="#sec_id_4">ENV</a></li>
+<li><a href="#sec_id_5">RUN</a></li>
+<li><a href="#sec_id_6">COPY</a></li>
+<li><a href="#sec_id_7">CMD</a></li>
+<li><a href="#sec_id_8">ENTRYPOINT</a></li>
+<li><a href="#sec_id_9">USER</a></li>
+<li><a href="#sec_id_10">VOLUME</a></li>
+<li><a href="#sec_id_11">WORKDIR</a></li>
+<li><a href="#sec_id_12">EXPOSE</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+Dockerfile contains builds commands that are needed to create a Docker image.<br />
+<br />
+The Dockerfile supports the following instructions:<br />
+<pre class="dockerfile-code">
+FROM        # create a new build stage from a base image.
+ARG         # use build-time variables.
+LABEL       # add metadata to an image.
+ENV         # set environment variables.
+RUN         # execute build commands.
+COPY        # copy files and directories.
+CMD         # specify default commands.
+ENTRYPOINT  # specify default executable.
+USER        # set user and group id.
+VOLUME      # create volume mounts.
+WORKDIR     # change working directory.
+EXPOSE      # describe which ports your application is listening on.
+ADD         # add local or remote files and directories.
+HEALTHCHECK # check a container's health on startup.
+MAINTAINER  # specify the author of an image.
+ONBUILD     # specify instructions for when the image is used in a build.
+SHELL       # set the default shell of an image.
+STOPSIGNAL  # specify the system call signal for exiting a container.</pre>
+See these pages for more information:<br />
+<a href="https://docs.docker.com/reference/dockerfile/">https://docs.docker.com/reference/dockerfile/</a><br />
+<a href="https://docs.docker.com/build/building/best-practices/">https://docs.docker.com/build/building/best-practices/</a><br />
+<br />
+Docker introduced a new backend for building images called Buildkit, which does not expose intermediate build steps in the same way as the legacy builder.
+To view intermediate build steps and containers using the legacy builder,
+set the environment variable <code class="code1">DOCKER_BUILDKIT=0</code> before using the <code class="code1">docker build</code> command:<br />
+<pre class="sh-code">
+$ DOCKER_BUILDKIT=0 docker build [OPTIONS] PATH | URL | -</pre>
+This disables Docker BuildKit, which is now the default builder and offers improved performance, output, and caching.
+It's recommended to enable BuildKit (<code class="code1">DOCKER_BUILDKIT=1</code>) or simply omit the variable.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">FROM</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+FROM [--platform=&lt;platform&gt;] &lt;image&gt; [AS &lt;name&gt;]
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&gt;]</pre>
+The <b>FROM</b> instruction creates a new build stage from a base image.<br />
+<pre class="dockerfile-code">
+FROM ubuntu:latest</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">ARG</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+ARG &lt;name&gt;[=&lt;default value&gt;] [&lt;name&gt;[=&lt;default value&gt;]...]</pre>
+The <b>ARG</b> instruction uses build-time variables (along with their default values).<br />
+<pre class="dockerfile-code">
+ARG image_version="latest"</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">LABEL</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+LABEL &lt;key&gt;=&lt;value&gt; [&lt;key&gt;=&lt;value&gt;...]</pre>
+The <b>LABEL</b> instruction adds metadata to an image.<br />
+<pre class="dockerfile-code">
+LABEL IMAGE_NAME="Ubuntu $image_version"</pre>
+Note that the label is using a variable name which, in this case, references the argument defined by the instruction ARG.<br />
+<br />
+Let's use a Dockerfile with the above instructions:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+ARG image_version="latest"
+
+LABEL IMAGE_NAME="Ubuntu $image_version"</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-base:latest --build-arg image_version="1.0" .</pre>
+You can inspect the created image to check the labels:<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu-base:latest --format '{{json .Config.Labels}}' | jq</pre>
+<pre class="yaml-code">
+{
+  "IMAGE_NAME": "Ubuntu 1.0"
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">ENV</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+ENV &lt;key&gt;=&lt;value&gt; [&lt;key&gt;=&lt;value&gt;...]</pre>
+The <b>ENV</b> instruction sets environment variables (also available as regular variables during build-time).<br />
+<pre class="dockerfile-code">
+ENV image_env="dev"</pre>
+Let's use a Dockerfile with the above instructions:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+ARG image_version="latest"
+
+ENV image_env="dev"
+
+LABEL IMAGE_NAME="Ubuntu $image_version $image_env"</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-base:latest .</pre>
+You can inspect the created image to check the labels.<br />
+Note that the environment variable was used to set the label.<br />
+Also note that this time the label used the default value of the argument because it was not set when the image was created.<br />
+<pre class="sh-code">
+$ docker image inspect ubuntu-base:latest --format '{{json .Config.Labels}}' | jq</pre>
+<pre class="yaml-code">
+{
+  "IMAGE_NAME": "Ubuntu latest dev"
+}</pre>
+Let's check the env variable within the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-base:latest /bin/bash -c 'env | grep image_env'</pre>
+<pre class="sh-code">
+image_env=dev</pre>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">RUN</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+# Shell form:
+RUN [OPTIONS] &lt;command&gt; ...
+# Exec form:
+RUN [OPTIONS] [ "&lt;command&gt;", ... ]</pre>
+The <b>RUN</b> instruction executes build commands.<br />
+<pre class="dockerfile-code">
+RUN apt-get -y update</pre>
+You should combine multiple build execution commands into a single instruction whenever possible.<br />
+<pre class="dockerfile-code">
+RUN apt-get -y install curl &amp;&amp; apt-get -y install nginx</pre>
+You should also avoid updating the operating system or upgrading libraries.
+If necessary, you should use a base image that you can build only when needed.
+The base image should also be used, where possible, to install third-party libraries.<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">COPY</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+COPY [OPTIONS] &lt;src&gt; ... &lt;dest&gt;
+COPY [OPTIONS] ["&lt;src&gt;", ... "&lt;dest&gt;"]</pre>
+The <b>COPY</b> instruction copies files and directories from the local filesystem into a Docker image.<br />
+<pre class="dockerfile-code">
+COPY ./file1 /tmp</pre>
+You can copy files or folders.<br />
+When copying a folder, only its content is copied.<br />
+<br />
+Let's create few local folders/files:<br />
+<pre class="sh-code">
+$ mkdir folder1
+$ mkdir folder1/folder2
+$ touch folder1/file1
+$ touch folder1/folder2/file2</pre>
+Let's use a Dockerfile to copy files/folders into the Docker image:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN mkdir /opt/foo
+RUN mkdir /opt/bar
+
+COPY ./folder1/file1 /opt/foo
+COPY ./folder1 /opt/bar</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-copy:latest .</pre>
+You can check the copied files/folders<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-copy:latest /bin/bash -c 'find /opt'</pre>
+<pre class="text-code">
+/opt
+/opt/bar
+/opt/bar/folder2
+/opt/bar/folder2/file2
+/opt/bar/file1
+/opt/foo
+/opt/foo/file1</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">CMD</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+# Exec form:
+CMD ["executable", "parameter1", "parameter2", ...]
+CMD ["parameter1", "parameter2", ...] # when used with ENTRYPOINT
+# Shell form:
+CMD command parameter1 parameter2</pre>
+The <b>CMD</b> instruction specifies default commands.<br />
+<br />
+Let's use a Dockerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+CMD ["bash", "-x"]</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-copy:latest .</pre>
+You can check the copied files/folders<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-cmd:latest</pre>
+<pre class="text-code">
++ '[' -z '\s-\v\$ ' ']'
++ shopt -s checkwinsize
+...
+root@fd2b5bd60f7f:/</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">ENTRYPOINT</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+# Exec form:
+ENTRYPOINT ["executable", "parameter1", "parameter2", ...]
+# Shell form:
+ENTRYPOINT command parameter1 parameter2</pre>
+The <b>ENTRYPOINT</b> instruction specifies default executable.<br />
+<br />
+Let's use a Dockerfile:<br />
+<pre class="sh-code">
+$ vi Dockerfile</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+ENTRYPOINT ["bash", "-c"]
+CMD ["top", "-o %CPU", "-H"]</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-entrypoint-cmd:latest .</pre>
+You can check the copied files/folders<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-entrypoint-cmd:latest</pre>
+<pre class="text-code">
+top - 09:52:48 up 20:39,  0 user,  load average: 0.60, 0.58, 0.54
+Tasks:   1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  2.3 us,  2.2 sy,  0.0 ni, 94.6 id,  0.3 wa,  0.0 hi,  0.6 si,  0.0 st
+MiB Mem :  15884.0 total,   9379.6 free,   2099.5 used,   4728.7 buff/cache
+MiB Swap:   4096.0 total,   4096.0 free,      0.0 used.  13784.5 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+    1 root      20   0    8856   5188   3060 R   0.0   0.0   0:00.01 top</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">USER</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+USER &lt;user&gt;[:&lt;group&gt;]
+USER &lt;UID&gt;[:&lt;GID&gt;]</pre>
+The <b>USER</b> instruction sets the user that will be used to run the processes inside the container.<br />
+<br />
+By default, if the USER instruction is not set, docker container run all processes as <b>root</b>.<br />
+Unless there is a real reason for this, you should avoid running containers using root or privileged users.<br />
+<br />
+Let's check the <b>mti</b> existing on the Docker host:<br />
+<pre class="sh-code">
+$ id mti</pre>
+<pre class="sh-code">
+uid=1002(mti) gid=1002(tek) groups=1002(tek)</pre>
+Let's first try a Dockerfile without the <b>USER</b> instruction:<br />
+<pre class="sh-code">
+$ vi Dockerfile-withoutuser</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-withoutuser:latest -f Dockerfile-withoutuser .</pre>
+Let's check the user within the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-withoutuser:latest /bin/bash -c 'id'</pre>
+<pre class="sh-code">
+uid=0(root) gid=0(root) groups=0(root)</pre>
+Let's try now a Dockerfile with the <b>USER</b> instruction:<br />
+<pre class="sh-code">
+$ vi Dockerfile-withuser</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+RUN groupadd -r tek --gid=1002 &amp;&amp; useradd -r -g tek --uid=1002 mti
+
+USER mti</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-withuser:latest -f Dockerfile-withuser .</pre>
+Let's check the user within the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-withuser:latest /bin/bash -c 'id'</pre>
+<pre class="sh-code">
+uid=1002(mti) gid=1002(tek) groups=1002(tek)</pre>
+Note that the Dockerfile create the group "tek" with the group id (gid) "1002".
+It also create the user "mti" with the user id (uid) "1002" and the group id (gid) "1002".
+The image that we create from this Dockerfile will run with the user "mti".<br />
+<br />
+Note that the group and user names are, more or less, just friendly names.
+The important part is the uid and gid.
+These two elements will map the container's user uid and group gid to the host's user uid and group gid.
+So, in the above example, the container will be running using the same uid and gid that match the ones of the Docker host.
+In the host I am using the uid 1002 and gid=1002 are mapped to the user and group "mtitek".
+This means that the container's user will get the same privileges that the user "mtitek" has.<br />
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">VOLUME</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+VOLUME ["/data"]</pre>
+The <b>VOLUME</b> instruction creates volume mounts.<br />
+<br />
+Let's create a Dockerfile that will use the <b>VOLUME</b> instruction to mount a local directory.
+I will adapt a bit the nginx Dockerfie to print the logs in a directory.<br />
+<br />
+Here's the Dockerfile (this is for demo purposes only):<br />
+<pre class="sh-code">
+$ vi Dockerfile-nginx-mounted-log-dir</pre>
+<pre class="dockerfile-code">
+FROM nginx:latest
+
+#removing the redirection to stdout/stderr to allow writing logs to directory
+RUN rm -f /var/log/nginx/access.log &amp;&amp; rm -f /var/log/nginx/error.log
+
+VOLUME /var/log/nginx</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t nginx-mounted-log-dir:latest -f Dockerfile-nginx-mounted-log-dir .</pre>
+Let's create a local directroy:<br />
+<pre class="sh-code">
+$ mkdir ./nginx-loc-dir</pre>
+Let's run the nginx image (the host's directory <b>./nginx-loc-dir</b> is mounted to the container's directory <b>/var/log/nginx</b>):<br />
+<pre class="sh-code">
+$ docker container run -d -P -v ./nginx-loc-dir:/var/log/nginx nginx-mounted-log-dir:latest</pre>
+<pre class="sh-code">
+0a6ea9efbc1f264287aa2b146d77423fd5d8e9070b7aebd0a4d36d148631c16c</pre>
+Check the nginx process:<br />
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID    IMAGE                          COMMAND                  CREATED         STATUS        PORTS                   NAMES
+8491a320ecd8    nginx-mounted-log-dir:latest   "/docker-entrypoint.…"   8 seconds ago   Up 6 seconds  0.0.0.0:32770->80/tcp   zen_shtern</pre>
+Let's access nginx at the published port 32770:<br />
+<pre class="sh-code">
+$ curl http://localhost:32770</pre>
+Check the nginx logs:<br />
+<pre class="sh-code">
+$ ls -al ./nginx-loc-dir/</pre>
+<pre class="sh-code">
+-rw-r--r-- 1 root   root     91 access.log
+-rw-r--r-- 1 root   root      0 error.log</pre>
+<pre class="sh-code">
+$ cat ./nginx-loc-dir/access.log</pre>
+<pre class="sh-code">
+172.17.0.1 - - [03/Aug/2020:03:22:16 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0" "-"</pre>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">WORKDIR</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+WORKDIR /path/to/workdir</pre>
+The <b>WORKDIR</b> instruction sets the working directory for the remaining build instructions.<br />
+This working directory will also be the default directory for all processes running inside the container.<br />
+<br />
+Let's try a Dockerfile with the <b>WORKDIR</b> instruction:<br />
+<pre class="sh-code">
+$ vi Dockerfile-withworkdir</pre>
+<pre class="dockerfile-code">
+FROM ubuntu:latest
+
+WORKDIR /tmp</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t ubuntu-withworkdir:latest -f Dockerfile-withworkdir .</pre>
+Let's check the working directory within the container:<br />
+<pre class="sh-code">
+$ docker container run --rm -it ubuntu-withworkdir:latest /bin/bash -c 'pwd'</pre>
+<pre class="sh-code">
+/tmp</pre>
+</div>
+</li>
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">EXPOSE</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="dockerfile-code">
+EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]</pre>
+The <b>EXPOSE</b> instruction informs Docker that the container should listen on the specified ports.
+You still need to manually publish the ports when running the container.
+Use the <b>-p</b> flag to publish and map ports.
+Use the <b>-P</b> flag to publish all exposed ports and map them to ephemeral higher-order host ports on the host.
+By default, ports listen on TCP but you can explicitly set UDP.<br />
+<br />
+Let's try a Dockerfile with the <b>EXPOSE</b> instruction:<br />
+<pre class="sh-code">
+$ vi Dockerfile-expose</pre>
+<pre class="dockerfile-code">
+FROM nginx:latest
+
+EXPOSE 80/tcp
+EXPOSE 80/udp</pre>
+Let's build the Dockerfile:<br />
+<pre class="sh-code">
+$ docker build -t nginx-expose:latest -f Dockerfile-expose .</pre>
+Let's check the exposed port:<br />
+<pre class="sh-code">
+$ docker container run -d -p 8080:80 nginx-expose:latest</pre>
+<pre class="sh-code">
+$ curl -s -o /dev/null -w "%{http_code}" http://localhost:8080</pre>
+<pre class="text-code">
+200</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

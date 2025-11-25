@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes - kubectl CLI - kubectl api-resources | MTI TEK</title>
+<meta name="description" content="Tutorials: Kubernetes - kubectl CLI - kubectl api-resources" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kubernetes - kubectl CLI - kubectl api-resources | MTI TEK" />
+<meta property="og:description" content="Tutorials: Kubernetes - kubectl CLI - kubectl api-resources" />
+<meta property="og:url" content="http://mtitek.com/tutorials/kubernetes/kubectl_cli_api_resources.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kubernetes - kubectl CLI - kubectl api-resources | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Kubernetes - kubectl CLI - kubectl api-resources" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/kubernetes/kubectl_cli_api_resources.html",
+        "description": "Tutorials: Kubernetes - kubectl CLI - kubectl api-resources",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/kubernetes/kubectl_cli_api_resources.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link active" href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">kubectl api-resources</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">kubectl api-resources</a></li>
+<li><a href="#sec_id_2">Usage</a></li>
+<li><a href="#sec_id_3">Options</a></li>
+<li><a href="#sec_id_4">Supported Resources</a></li>
+<li><a href="#sec_id_5">Examples</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">kubectl api-resources</span>
+<div class="tutorialSectionTextDiv1">
+Print the supported API resources.<br />
+<br />
+To list <b>kubectl api-resources</b> options, type: <b>kubectl api-resources --help</b><br />
+<br />
+To print the list of <b>kubectl</b> global command-line options (applies to all commands), type: <b>kubectl options</b><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Usage</span>
+<div class="tutorialSectionTextDiv1">
+Usage: <b>kubectl api-resources [flags] [options]</b><br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Options</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+-o, --output='': Output format. One of: wide|name.
+
+    --sort-by='': If non-empty, sort nodes list using specified field. The field can be either 'name' or 'kind'.
+
+    --namespaced=true: If false, non-namespaced resources will be returned, otherwise returning namespaced resources by default.
+
+    --api-group='': Limit to resources in the specified API group.
+
+    --no-headers=false: When using the default or custom-column output format, don't print headers (default print headers).
+
+    --cached=false: Use the cached list of resources if available.
+
+    --verbs=[]: Limit to resources that support the specified verbs.</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Supported Resources</span>
+<div class="tutorialSectionTextDiv1">
+List namespaced resources:<br />
+<pre class="sh-code">
+$ kubectl api-resources --namespaced=true</pre>
+<pre class="sh-code">
+NAME                        SHORTNAMES   APIVERSION                          NAMESPACED   KIND
+pods                        po           v1                                  true         Pod
+configmaps                  cm           v1                                  true         ConfigMap
+secrets                                  v1                                  true         Secret
+persistentvolumeclaims      pvc          v1                                  true         PersistentVolumeClaim
+deployments                 deploy       apps/v1                             true         Deployment
+replicasets                 rs           apps/v1                             true         ReplicaSet
+statefulsets                sts          apps/v1                             true         StatefulSet
+daemonsets                  ds           apps/v1                             true         DaemonSet
+jobs                                     batch/v1                            true         Job
+cronjobs                    cj           batch/v1                            true         CronJob
+services                    svc          v1                                  true         Service
+serviceaccounts             sa           v1                                  true         ServiceAccount
+ingresses                   ing          networking.k8s.io/v1                true         Ingress
+endpoints                   ep           v1                                  true         Endpoints
+events                      ev           v1                                  true         Event
+events                      ev           events.k8s.io/v1                    true         Event
+bindings                                 v1                                  true         Binding
+limitranges                 limits       v1                                  true         LimitRange
+podtemplates                             v1                                  true         PodTemplate
+replicationcontrollers      rc           v1                                  true         ReplicationController
+resourcequotas              quota        v1                                  true         ResourceQuota
+controllerrevisions                      apps/v1                             true         ControllerRevision
+localsubjectaccessreviews                authorization.k8s.io/v1             true         LocalSubjectAccessReview
+horizontalpodautoscalers    hpa          autoscaling/v2                      true         HorizontalPodAutoscaler
+ingressclassparameterses                 configuration.konghq.com/v1alpha1   true         IngressClassParameters
+kongconsumergroups          kcg          configuration.konghq.com/v1beta1    true         KongConsumerGroup
+kongconsumers               kc           configuration.konghq.com/v1         true         KongConsumer
+kongcustomentities          kce          configuration.konghq.com/v1alpha1   true         KongCustomEntity
+kongingresses               ki           configuration.konghq.com/v1         true         KongIngress
+kongplugins                 kp           configuration.konghq.com/v1         true         KongPlugin
+kongupstreampolicies        kup          configuration.konghq.com/v1beta1    true         KongUpstreamPolicy
+tcpingresses                             configuration.konghq.com/v1beta1    true         TCPIngress
+udpingresses                             configuration.konghq.com/v1beta1    true         UDPIngress
+leases                                   coordination.k8s.io/v1              true         Lease
+endpointslices                           discovery.k8s.io/v1                 true         EndpointSlice
+pods                                     metrics.k8s.io/v1beta1              true         PodMetrics
+networkpolicies             netpol       networking.k8s.io/v1                true         NetworkPolicy
+poddisruptionbudgets        pdb          policy/v1                           true         PodDisruptionBudget
+rolebindings                             rbac.authorization.k8s.io/v1        true         RoleBinding
+roles                                    rbac.authorization.k8s.io/v1        true         Role
+csistoragecapacities                     storage.k8s.io/v1                   true         CSIStorageCapacity</pre>
+List non-namespaced resources:<br />
+<pre class="sh-code">
+$ kubectl api-resources --namespaced=false</pre>
+<pre class="sh-code">
+NAME                                SHORTNAMES   APIVERSION                          NAMESPACED   KIND
+namespaces                          ns           v1                                  false        Namespace
+nodes                               no           v1                                  false        Node
+nodes                                            metrics.k8s.io/v1beta1              false        NodeMetrics
+persistentvolumes                   pv           v1                                  false        PersistentVolume
+storageclasses                      sc           storage.k8s.io/v1                   false        StorageClass
+componentstatuses                   cs           v1                                  false        ComponentStatus
+mutatingwebhookconfigurations                    admissionregistration.k8s.io/v1     false        MutatingWebhookConfiguration
+validatingadmissionpolicies                      admissionregistration.k8s.io/v1     false        ValidatingAdmissionPolicy
+validatingadmissionpolicybindings                admissionregistration.k8s.io/v1     false        ValidatingAdmissionPolicyBinding
+validatingwebhookconfigurations                  admissionregistration.k8s.io/v1     false        ValidatingWebhookConfiguration
+customresourcedefinitions           crd,crds     apiextensions.k8s.io/v1             false        CustomResourceDefinition
+apiservices                                      apiregistration.k8s.io/v1           false        APIService
+selfsubjectreviews                               authentication.k8s.io/v1            false        SelfSubjectReview
+tokenreviews                                     authentication.k8s.io/v1            false        TokenReview
+selfsubjectaccessreviews                         authorization.k8s.io/v1             false        SelfSubjectAccessReview
+selfsubjectrulesreviews                          authorization.k8s.io/v1             false        SelfSubjectRulesReview
+subjectaccessreviews                             authorization.k8s.io/v1             false        SubjectAccessReview
+certificatesigningrequests          csr          certificates.k8s.io/v1              false        CertificateSigningRequest
+kongclusterplugins                  kcp          configuration.konghq.com/v1         false        KongClusterPlugin
+konglicenses                        kl           configuration.konghq.com/v1alpha1   false        KongLicense
+kongvaults                          kv           configuration.konghq.com/v1alpha1   false        KongVault
+flowschemas                                      flowcontrol.apiserver.k8s.io/v1     false        FlowSchema
+prioritylevelconfigurations                      flowcontrol.apiserver.k8s.io/v1     false        PriorityLevelConfiguration
+ingressclasses                                   networking.k8s.io/v1                false        IngressClass
+runtimeclasses                                   node.k8s.io/v1                      false        RuntimeClass
+clusterrolebindings                              rbac.authorization.k8s.io/v1        false        ClusterRoleBinding
+clusterroles                                     rbac.authorization.k8s.io/v1        false        ClusterRole
+priorityclasses                     pc           scheduling.k8s.io/v1                false        PriorityClass
+csidrivers                                       storage.k8s.io/v1                   false        CSIDriver
+csinodes                                         storage.k8s.io/v1                   false        CSINode
+volumeattachments                                storage.k8s.io/v1                   false        VolumeAttachment</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

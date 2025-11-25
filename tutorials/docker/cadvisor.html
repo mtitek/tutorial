@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - cAdvisor (Container Advisor) | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - cAdvisor (Container Advisor)" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - cAdvisor (Container Advisor) | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - cAdvisor (Container Advisor)" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/cadvisor.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - cAdvisor (Container Advisor) | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - cAdvisor (Container Advisor)" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/cadvisor.html",
+        "description": "Tutorials: Docker - cAdvisor (Container Advisor)",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/cadvisor.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">cAdvisor (Container Advisor)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Notes</a></li>
+<li><a href="#sec_id_2">Start cAdvisor</a></li>
+<li><a href="#sec_id_3">Verify cAdvisor</a></li>
+<li><a href="#sec_id_4">Use cAdvisor</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Notes</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more information: <a href="https://github.com/google/cadvisor">https://github.com/google/cadvisor</a><br />
+<br />
+cAdvisor (Container Advisor) provides information about containers (resource usage and performance characteristics).<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Start cAdvisor</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sh-code">
+$ VERSION=v0.49.2</pre>
+<pre class="sh-code">
+$ sudo docker container run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  --privileged \
+  --device=/dev/kmsg \
+  gcr.io/cadvisor/cadvisor:$VERSION</pre>
+<pre class="sh-code">
+$ docker container ls</pre>
+<pre class="sh-code">
+CONTAINER ID        IMAGE                                      COMMAND                  CREATED             STATUS                    PORTS                    NAMES
+6d6660a89ea4        gcr.io/google-containers/cadvisor:latest   "/usr/bin/cadvisor -…"   47 seconds ago      Up 45 seconds (healthy)   0.0.0.0:8080->8080/tcp   cadvisor</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Verify cAdvisor</span>
+<div class="tutorialSectionTextDiv1">
+Get supported API versions:<br />
+<pre class="sh-code">
+$ curl http://localhost:8080/api/</pre>
+<pre class="sh-code">
+Supported API versions: v1.0,v1.1,v1.2,v1.3,v2.0,v2.1</pre>
+Get supported request types:<br />
+<pre class="sh-code">
+$ curl http://localhost:8080/api/v2.1</pre>
+<pre class="sh-code">
+Supported request types: "appmetrics,attributes,events,machine,machinestats,ps,spec,stats,storage,summary,version"</pre>
+Get "<b>summary</b>" endpoint info:<br />
+<pre class="sh-code">
+$ curl http://localhost:8080/api/v2.1/summary | jq '.'</pre>
+<pre class="sh-code">
+{
+  "/": {
+    "timestamp": "YYYY-MM-DDTHH:MM:SS.111Z",
+    "latest_usage": {
+      "cpu": 111,
+      "memory": 111
+    },
+    "minute_usage": {
+      "percent_complete": 111,
+      "cpu": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      },
+      "memory": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      }
+    },
+    "hour_usage": {
+      "percent_complete": 111,
+      "cpu": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      },
+      "memory": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      }
+    },
+    "day_usage": {
+      "percent_complete": 111,
+      "cpu": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      },
+      "memory": {
+        "present": true,
+        "mean": 111,
+        "max": 111,
+        "fifty": 111,
+        "ninety": 111,
+        "ninetyfive": 111
+      }
+    }
+  }
+}</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Use cAdvisor</span>
+<div class="tutorialSectionTextDiv1">
+Open a browser and navigate to: <a href="http://localhost:8080/">http://localhost:8080/</a><br />
+<img alt="cAdvisor - Home Page" src="img/cadvisor.png" width="600" /><br />
+<br />
+<img alt="cAdvisor - CPU" src="img/cadvisor-cpu.png" width="600" />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

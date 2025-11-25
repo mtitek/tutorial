@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker - Manage Docker as a Non-root User | MTI TEK</title>
+<meta name="description" content="Tutorials: Docker - Manage Docker as a Non-root User" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Docker - Manage Docker as a Non-root User | MTI TEK" />
+<meta property="og:description" content="Tutorials: Docker - Manage Docker as a Non-root User" />
+<meta property="og:url" content="http://mtitek.com/tutorials/docker/manage_docker_as_a_non-root_user.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Docker - Manage Docker as a Non-root User | MTI TEK" />
+<meta name="twitter:description" content="Tutorials: Docker - Manage Docker as a Non-root User" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/docker/manage_docker_as_a_non-root_user.html",
+        "description": "Tutorials: Docker - Manage Docker as a Non-root User",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/docker/manage_docker_as_a_non-root_user.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link active" href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/docker/">Docker</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Manage Docker as a Non-root User</span>
+<hr class="tutorialSectionHr1" />
+<div class="tutorialSectionTextDiv1">
+To run docker commands, you either need to be a root user or run the commands with <b>sudo</b>.<br />
+To run docker commands with a regular user, you need to add that user to the docker group.<br />
+The <b>docker</b> group manages access to the <b>dockerd</b> Unix socket.<br />
+<br />
+By default, the <b>docker</b> group is created.<br />
+<pre class="sh-code">
+$ grep docker /etc/group</pre>
+<pre class="sh-code">
+docker:x:999:</pre>
+<ul class="ul_square_1">
+<li>
+Add your user to the <b>docker</b> group:<br />
+<pre class="sh-code">
+$ sudo usermod -aG docker mtitek</pre>
+</li>
+<li>
+You need to log out and log in to your account to activate the changes to groups.<br />
+You can optionally use the command <b>newgrp</b> to activate the changes to groups during your login session:<br />
+<pre class="sh-code">
+$ newgrp docker</pre>
+</li>
+<li>
+You can now run docker commands without using sudo.<br />
+Verify that you can execute docker commands with your user:<br />
+<pre class="sh-code">
+$ docker container run hello-world</pre>
+<pre class="sh-code">
+Hello from Docker!
+This message shows that your installation appears to be working correctly.</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

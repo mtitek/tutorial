@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Helm Chart | MTI TEK</title>
+<meta name="description" content="Helm Chart" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Helm Chart | MTI TEK" />
+<meta property="og:description" content="Helm Chart" />
+<meta property="og:url" content="http://mtitek.com/tutorials/helm/helm-chart.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Helm Chart | MTI TEK" />
+<meta name="twitter:description" content="Helm Chart" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/helm/helm-chart.html",
+        "description": "Helm Chart",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/helm/helm-chart.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/kubernetes/">Kubernetes</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Helm Chart</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_2">Helm Chart</a></li>
+<li><a href="#sec_id_3">Customizing the helm chart</a></li>
+<li><a href="#sec_id_4">Upgrading a helm chart installation</a></li>
+<li><a href="#sec_id_5">Chart releases</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Helm Chart</span>
+<div class="tutorialSectionTextDiv1">
+Helm packages are named helm charts.
+A chart contains:
+<ul class="ul_square_1">
+<li>a "<b>Chart.yaml</b>" file.</li>
+<li>a "<b>templates</b>" directory (contains Kubernetes' manifests).</li>
+<li>an optional default configuration file "<b>values.yaml</b>".</li>
+</ul>
+<br />
+Installing a chart involves the following steps:<br />
+<ul class="ul_square_1">
+<li>Helm reads the chart.</li>
+<li>Helm replaces the custom values in their corresponding place holders in the chart templates.</li>
+<li>Helm sends the updated templates (manifests) to Kubernetes (which creates the requested resources).</li>
+</ul>
+<br />
+When you run the "<b>helm install</b>" command on a chart, you start a new installation of that chart (a first release is created).<br />
+When you run the "<b>helm uprade</b>" command on a chart, you start an upgrade of an existing installation of that chart (a new release is created).<br />
+A new release is also created when you rollback an installation.<br />
+<br />
+A helm chart has two versions:<br />
+<ul class="ul_square_1">
+<li>the chart version: the version of the chart.</li>
+<li>the app version: the version of the application packaged in the chart.</li>
+</ul>
+<br />
+The chart version and the app version are defined in the file "<b>Chart.yaml</b>":
+<pre class="text-code">
+apiVersion: v2
+name: test
+description: test chart
+version: 1.0.0
+appVersion: 1.0.0</pre>
+Helm uses the chart version to make versioning decisions.<br />
+Multiple charts with different versions may have the same app version.<br />
+<br />
+To install a chart you need to specify its path and a name of the installation.<br />
+The name of the installation identifies a specific instance of the chart and hence it must be unique within a Kubernetes' namespace.<br />
+Installing a chart using an existing installation's name, within the same namespace, will result with an error.<br />
+<br />
+To install a chart, use this command:
+<pre class="sh-code">
+$ helm install my-chart-install-name my-chart-package-location</pre>
+You can spefify a Kubernetes' namespace where the chart will be installed:<br />
+<pre class="sh-code">
+$ helm install --namespace my-namespace my-chart-install-name my-chart-package-location</pre>
+The output of running the helm install/upgrade commands is printed in the screen:<br />
+<pre class="text-code">
+NAME:
+LAST DEPLOYED:
+NAMESPACE:
+STATUS:
+REVISION:
+TEST SUITE:</pre>
+You can provide more information about the installation by adding a file with the name "<b>NOTES.txt</b>" under the "<b>templates</b>" folder of the helm chart:
+<a href="https://helm.sh/docs/chart_template_guide/notes_files/">https://helm.sh/docs/chart_template_guide/notes_files/</a><br />
+<br />
+You can also use the <b>helm get notes my-chart-install-name</b> command to print the output of the execution of these commands.<br />
+<br />
+You can list your charts installations using the "<b>helm list</b>" command:
+<pre class="sh-code">
+$ helm list</pre>
+This will list the installations in the current namespace along with some information for each installation
+(name, namespace, revision number, last update date, status, version of the chart, version of the app).<br />
+<br />
+To use another namespace, use the "<b>--namespace</b>" flag (or "<b>-n</b>"):
+<pre class="sh-code">
+$ helm list --namespace my-namespace</pre>
+To list all installations in all namespaces to which you have access, you can use the "<b>--all-namespaces</b>" flag:
+<pre class="sh-code">
+$ helm list --all-namespaces</pre>
+To uninstall a chart installation, you can use the "<b>helm uninstall</b>" command:
+<pre class="sh-code">
+$ helm uninstall my-chart-install-name</pre>
+You can use the "<b>--namespace</b>" flag to uninstall a chart in a specific namespace:
+<pre class="sh-code">
+$ helm uninstall my-chart-install-name --namespace my-namespace</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Customizing the helm chart</span>
+<div class="tutorialSectionTextDiv1">
+Helm allows you to customize the helm chart at install time by either using configuration files or command-line parameters.<br />
+By default Helm will use the "<b>values.yaml</b>" file, if it exists in the helm chart package.<br />
+You can put all your custom settings in the default "<b>values.yaml</b>" file which will be used automatically when you run the "<b>helm install</b>" command.<br />
+<br />
+You can also put your settings in a file with a different name or even put them in multiple files.<br />
+To reference these configuration files you need to use the "<b>--values</b>" flag:
+<pre class="sh-code">
+$ helm install my-chart-install-name my-chart-package-location --values values-location-1.yaml --values values-location-2.yaml</pre>
+Note that you need to repeat the "<b>--values</b>" flag for each configuration file.<br />
+Note also that Helm will always use the default "<b>values.yaml</b>" file if you have one (even if you don't explicitly list it with the "<b>--values</b>" flag).<br />
+The files configuration files specified by the "<b>--values</b>" will override any configuration in the default "<b>values.yaml</b>" file.<br />
+The configuration files will be executed in the order they appear in the command-line using the "<b>--values</b>" flags.<br />
+<br />
+You can also customize the helm chart by using the "<b>--set</b>" flag:
+<pre class="sh-code">
+$ helm install my-chart-install-name my-chart-package-location --set my-config-param=my-value</pre>
+As per the "<b>--values</b>" flag,
+the configuration specified by the "<b>--set</b>" flag will override any configuration you put in the configuration files you specified using the "<b>--values</b>" flag,
+which by themselves will override any configuration you put in the default "<b>values.yaml</b>" file.<br />
+<br />
+To override nested configuration, you need to concatenate the configuration name with its parents with a "<b>.</b>" (dot) character as a separator:<br />
+<pre class="yaml-code">
+foo:
+  bar:
+    parm1: "value1"</pre>
+<pre class="sh-code">
+$ helm install my-chart-install-name my-chart-package-location --set foo.bar.param1="another-value"</pre>
+Note that you might need to escape some characters in the value of the configuration you specify using the "<b>--set</b>" flag.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Upgrading a helm chart installation</span>
+<div class="tutorialSectionTextDiv1">
+You can use the command "<b>helm upgrade</b>" to upgrade an existing installation of a chart.<br />
+<br />
+When you run the upgrade command, Helm will:
+<ul class="ul_square_1">
+<li>read the chart.</li>
+<li>replace the custom values in their corresponding place holders in the chart templates.</li>
+<li>generate the Kubernetes' manifests.</li>
+<li>compare the manifests with the ones already installed.</li>
+<li>send only the manifests that changed to Kubernetes (which creates/re-creates the requested resources).</li>
+</ul>
+<br />
+If no changes are made to the chart then Helm will send nothing to Kubernetes.<br />
+<br />
+Kubernetes won't reload/update any resource if its configuration didn't change; the difference is calculated using the hash of the resource.<br />
+An updated external resource (i.e. ConfigMap) that's referenced by another resource (i.e. Pod) won't not make Kubernetes reload/update that resource (Pod).<br />
+To force the Pod to use the new ConfigMap, you need to restart manually the Pod or otherwise add to the Pod template the hash value of the ConfigMap.<br />
+<br />
+A manual restart can be done by few means: "<b>kubectl scale</b>" command, "<b>kubectl rollout</b>" command, ...<br />
+<br />
+When upgrading a chart, you should use the same configuration files used to install it; this include any parameter passed using the "<b>--set</b>" flag.
+Otherwise you might introduce new settings that will cause Helm to render new manifests that could be different from the ones already installed,
+and hence it will cause Kubernetes to update the existing resources.<br />
+<pre class="sh-code">
+$ helm install my-chart-install-name my-chart-package-location --values values-location-1.yaml --values values-location-2.yaml</pre>
+<pre class="sh-code">
+$ helm upgrade my-chart-install-name my-chart-package-location --values values-location-1.yaml --values values-location-2.yaml</pre>
+To let Helm use the latest values used to install a chart, you can use the "<b>--reuse-values</b>" flag.
+Helm will download the latest values stored in Kubernetes, and use them to perform the upgrade.
+You should not use neither "<b>--values</b>" nor "<b>--set</b>" when using the "<b>--reuse-values</b>" flag.<br />
+<pre class="sh-code">
+$ helm upgrade my-chart-install-name my-chart-package-location --reuse-values</pre>
+You can use the "<b>helm get</b>" command to see the latest values used to install/upgrade a helm chart:<br />
+<pre class="sh-code">
+helm get values my-chart-install-name</pre>
+Note the following:
+<ul class="ul_square_1">
+<li>Helm will only return the values that were supplied using "<b>--values</b>" or "<b>--set</b>" flags. Those values are called "<b>User supplied values</b>".<br /></li>
+<li>The values that are used implicitly from the "<b>values.yaml</b>" file, are called "<b>computed values</b>" and are not returned by the "<b>helm get</b>" command.</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Chart releases</span>
+<div class="tutorialSectionTextDiv1">
+Every time we perform an install/upgrade/rollback a chart, Helm creates a new Kubernetes' secret that contains the release information.
+The secretes are releases records that identify each revision of the chart installation (even a failed release get a new revision number).
+Each release record contain information and metatdata that can be used to monitor, re-create, uninstall, rollback an installation.
+<br />
+<pre class="sh-code">
+$ kubect get secret</pre>
+<pre class="sh-code">
+Name                                         TYPE
+sh.helm.release.v1.my-chart-install-name.v1  helm.sh/release.v1
+sh.helm.release.v1.my-chart-install-name.v2  helm.sh/release.v1</pre>
+Notes:
+<ul class="ul_square_1">
+<li>
+sh.helm.release.v1.my-chart-install-name.v<b>x</b>: identifies a specific record of the release of a chart installation.<br />
+</li>
+<li>
+The Helm secrets have a special type "<b>helm.sh/release.v1</b>".<br />
+</li>
+</ul>
+<br />
+Helm saves up to 10 releases of each installation.
+Once it exceeds 10 releases for an installation, Helm delete the oldest release record of that installation.<br />
+<br />
+If you uninstall a chart's installation, Helm will read the secret of the last release record of that installation.
+The secret provides Helm with the list of all objects that it needs to delete from Kubernetes.
+Note that Helm will also delete all the secrets of the releases of that installation.<br />
+<br />
+To keep the release secrets (in case you want to perform a rollback of the uninstallation), you can use the "<b>--keep-history</b>" flag.
+<pre class="sh-code">
+$ helm uninstall my-chart-install-name --keep-history</pre>
+To get information about a specific record you can use the "<b>kubectl get secret</b>" command:
+<pre class="sh-code">
+$ kubectl get secret sh.helm.release.v1.my-chart-install-name.v2 -o yaml</pre>
+This will print the data and the metatdata of the specified release record.<br />
+The metadata provides information about the installation: name, modification date, status, version (revision), ...<br />
+<br />
+The status of a release can be:
+<ul class="ul_square_1">
+<li>"<b>pending-install</b>": Helm creates a release record with that status, before it sends the manifests to Kubernetes, so it can use it to track the installation.<br /></li><br />
+<li>"<b>peding-upgrade</b>": same as "<b>pending-install</b>", but the new record is created for an upgrade.<br /></li><br />
+<li>"<b>peding-rollback</b>": same as "<b>pending-install</b>", but the new record is created for a rollback.<br /></li><br />
+<li>"<b>uninstalling</b>": before uinstalling an installation, its last record will be marked with the status uninstalling.<br /></li><br />
+<li>"<b>deployed</b>": indicates that the manifests were accepted by Kubernetes (install, upgrade, rollback).<br /></li><br />
+<li>"<b>failed</b>": indicates that the manifests were rejected by Kubernetes (install, upgrade, rollback).<br /></li><br />
+<li>"<b>superseded</b>": if an installation is upgraded, its previous release record will be marked with the status superseded.<br /></li><br />
+<li>"<b>uninstalled</b>": this apply only if the history of the installation is preserved. In such case the last release record will be marked with the status uninstalled.<br /></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
