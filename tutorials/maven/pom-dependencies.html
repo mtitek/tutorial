@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Understanding Maven Project Dependencies: Direct, Transitive &amp;amp; Conflict Resolution | MTI TEK</title>
+<meta name="description" content="Learn how Maven handles project dependencies, including repositories, direct and transitive dependencies, and how to resolve version conflicts effectively." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Understanding Maven Project Dependencies: Direct, Transitive &amp;amp; Conflict Resolution | MTI TEK" />
+<meta property="og:description" content="Learn how Maven handles project dependencies, including repositories, direct and transitive dependencies, and how to resolve version conflicts effectively." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/pom-dependencies.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Understanding Maven Project Dependencies: Direct, Transitive &amp;amp; Conflict Resolution | MTI TEK" />
+<meta name="twitter:description" content="Learn how Maven handles project dependencies, including repositories, direct and transitive dependencies, and how to resolve version conflicts effectively." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/pom-dependencies.html",
+        "description": "Learn how Maven handles project dependencies, including repositories, direct and transitive dependencies, and how to resolve version conflicts effectively.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/pom-dependencies.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Project Dependencies</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Repositories</a>
+<li><a href="#sec_id_2">Direct Dependencies</a>
+<li><a href="#sec_id_3">Transitive Dependencies</a>
+<li><a href="#sec_id_4">Resolve Transitive Dependencies Conflicts</a>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Repositories</span>
+<div class="tutorialSectionTextDiv1">
+All dependencies (artifacts and plugins) defined in the pom.xml file of the project
+are downloaded from remote repositories and saved in a local repository on disk.
+The remote repositories can be defined in the pom.xml file or in the settings.xml file.<br />
+<br />
+To add repositories in the settings.xml file, you can do the following:<br />
+<pre class="xml-code">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;settings&gt;
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;my_profile&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;name&gt;Maven Central Repository&lt;/name&gt;
+          &lt;url&gt;https://repo1.maven.org/maven2&lt;/url&gt;
+          &lt;layout&gt;default&lt;/layout&gt;
+          &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+          &lt;/snapshots&gt;
+          &lt;releases&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;/releases&gt;
+        &lt;/repository&gt;
+        &lt;repository&gt;
+          &lt;id&gt;internal&lt;/id&gt;
+          &lt;name&gt;Internal Company Repository&lt;/name&gt;
+          &lt;url&gt;https://internal.repository.mycompany.com/&lt;/url&gt;
+          &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;/snapshots&gt;
+          &lt;releases&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;/releases&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+
+      &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;name&gt;Maven Central Plugin Repository&lt;/name&gt;
+          &lt;url&gt;https://repo1.maven.org/maven2&lt;/url&gt;
+          &lt;layout&gt;default&lt;/layout&gt;
+          &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+          &lt;/snapshots&gt;
+          &lt;releases&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+          &lt;/releases&gt;
+        &lt;/pluginRepository&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;internal-plugins&lt;/id&gt;
+          &lt;name&gt;Internal Company Plugin Repository&lt;/name&gt;
+          &lt;url&gt;https://internal.repository.mycompany.com/&lt;/url&gt;
+          &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;/snapshots&gt;
+          &lt;releases&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;/releases&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;my_profile&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+&lt;/settings&gt;</pre>
+<b>Note:</b> The local repository is typically located at "<b>${user.home}/.m2/repository</b>" on Unix-like systems (Linux/macOS) and "<b>%USERPROFILE%\.m2\repository</b>" on Windows.<br />
+<br />
+In some cases, you might want to add manually an artifact to your local repository.
+To do so, you can use the command <b>mvn install:install-file</b>:<br />
+<pre class="sh-code">
+mvn install:install-file \
+  -DgroupId=mtitek.maven.samples \
+  -DartifactId=mtitek-maven-samples \
+  -Dversion=1.0.0-SNAPSHOT \
+  -Dpackaging=jar \
+  -DgeneratePom=true \
+  -Dfile=/opt/artifacts/mtitek-maven-samples.jar</pre>
+<b>Alternative:</b> You can also install from a local pom.xml file if available:<br />
+<pre class="sh-code-alt">
+mvn install:install-file \
+  -DpomFile=path/to/pom.xml \
+  -Dfile=/opt/artifacts/mtitek-maven-samples.jar</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Direct Dependencies</span>
+<div class="tutorialSectionTextDiv1">
+There are several important phases in the Maven default lifecycle that are relevant to dependency resolution:<br />
+<ul class="ul_square_1">
+<li>First, the compilation of the source code: this phase is referred to as "<b>compile</b>".<br /></li>
+<li>Second, the compilation of the test source code: this phase is referred to as "<b>test-compile</b>".<br /></li>
+<li>Third, the execution of tests: this phase is referred to as "<b>test</b>".<br /></li>
+<li>Fourth, the packaging of the project: this phase is referred to as "<b>package</b>".<br /></li>
+</ul>
+<br />
+Important notes about phase execution:<br />
+<ul class="ul_square_1">
+<li>When the command "<b>mvn compile</b>" is run, only the phases up to and including "<b>compile</b>" will be executed.<br /></li>
+<li>When the command "<b>mvn test-compile</b>" is run, the phases "<b>compile</b>" and "<b>test-compile</b>" will be executed.<br /></li>
+<li>When the command "<b>mvn test</b>" is run, the phases "<b>compile</b>", "<b>test-compile</b>", and "<b>test</b>" will be executed.<br /></li>
+<li>When the command "<b>mvn package</b>" is run, all phases up to and including "<b>package</b>" will be executed (including "<b>compile</b>", "<b>test-compile</b>", "<b>test</b>", and "<b>package</b>").<br /></li>
+</ul>
+<br />
+We will focus on these phases to explain how Maven resolves project dependencies.<br />
+See this introduction about Maven build phases:
+<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a><br />
+<br />
+So how does a project dependency affect the build of a project?<br />
+<br />
+When a dependency is added to the "<b>pom.xml</b>" file, its scope is specified.<br />
+Here's an example of a dependency (the project depends on "<b>junit</b>" to execute test code):<br />
+<pre class="xml-code">
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.12&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre>
+Before Maven starts building a project, Maven will try to resolve all project dependencies.<br />
+For each of the build phases, Maven will decide if a dependency is needed to successfully execute that phase.<br />
+The scope of each dependency determines when it is available and needed during the build lifecycle.<br />
+<br />
+Here are the main scopes of a dependency:<br />
+<br />
+<ul class="ul_square_1">
+<li><b>compile</b>:<br />
+This is the default scope if you don't specify a scope for the dependency in the pom.xml file.<br />
+Dependencies that have the scope "<b>compile</b>":<br />
+<ul class="ul_circle_1">
+<li>are available in all classpaths and are needed during compilation, testing, and runtime.<br /></li>
+<li>will be packaged with the artifact of the project (included in the final JAR/WAR).<br /></li>
+<li>are transitive (their dependencies are also included).<br /></li>
+</ul>
+<br />
+</li>
+<li><b>test</b>:<br />
+Dependencies that have the scope "<b>test</b>":<br />
+<ul class="ul_circle_1">
+<li>are only available during test compilation and execution phases.<br /></li>
+<li>will not be packaged with the artifact of the project.<br /></li>
+<li>are not transitive.<br /></li>
+</ul>
+<br />
+</li>
+<li><b>provided</b>:<br />
+Dependencies that have the scope "<b>provided</b>":<br />
+<ul class="ul_circle_1">
+<li>are available during compilation and testing but are expected to be provided by the runtime environment (e.g., servlet API provided by application server).<br /></li>
+<li>will not be packaged with the artifact of the project.<br /></li>
+<li>are not transitive.<br /></li>
+</ul>
+<br />
+</li>
+<li><b>runtime</b>:<br />
+Dependencies that have the scope "<b>runtime</b>":<br />
+<ul class="ul_circle_1">
+<li>are not needed for compilation but are required at runtime and during testing.<br /></li>
+<li>will be packaged with the artifact of the project.<br /></li>
+<li>are transitive.<br /></li>
+</ul>
+<br />
+</li>
+</ul>
+There are also the scopes "<b>system</b>" and "<b>import</b>".
+See this page for more details:
+<a href="https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope">https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope</a><br />
+<br />
+Maven provides options to skip compiling, building, and/or executing the test/source code:<br />
+<ul class="ul_square_1">
+<li>The parameter "<b>-Dmaven.test.skip=true</b>" will skip compiling, building, and executing the test code.<br /></li>
+<li>The parameter "<b>-DskipTests</b>" will compile and build the test code but will skip executing the test code.<br /></li>
+<li>
+The parameter "<b>-Dmaven.main.skip=true</b>" will skip compiling and packaging the main source code.
+Note that adding this parameter might cause test compilation to fail if the test code depends on the main source code.<br />
+</li>
+</ul>
+<br />
+Here's a table that summarizes the relationship between dependency scope and build phases.<br />
+Let's say a project "<b>A</b>" depends on project "<b>B</b>".<br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="160">
+Scope:<br />
+Direct Dependency<br />
+("<b>A</b>" ► "<b>B</b>")
+</th>
+<th class="cssth1" width="130">
+Available During Phases
+</th>
+<th class="cssth1">
+Comment
+</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+"<b>compile</b>"<br />
+"<b>test-compile</b>"<br />
+"<b>test</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+Available in all phases. If any of these phases needs to be executed for project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>B</b>" in the repository.
+The dependency will be included in the final packaged artifact.
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+test
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"<br />
+"<b>test</b>"
+</td>
+<td class="csstd1">
+If the phases "<b>test-compile</b>" or "<b>test</b>" have to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>B</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers the code of the project "<b>B</b>".
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+provided
+</td>
+<td class="csstd1">
+"<b>compile</b>"<br />
+"<b>test-compile</b>"<br />
+"<b>test</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>compile</b>", "<b>test-compile</b>", or "<b>test</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>B</b>" in the repository.
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+"<b>test</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>test</b>" or "<b>package</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>B</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers the code of the project "<b>B</b>".
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Transitive Dependencies</span>
+<div class="tutorialSectionTextDiv1">
+A transitive dependency defines the relationship between two projects that are not linked together by a direct dependency.<br />
+<br />
+For example, let's say project "<b>A</b>" has a direct dependency on project "<b>B</b>"
+and project "<b>B</b>" has a direct dependency on project "<b>C</b>".
+Assuming that project "<b>A</b>" has no direct dependency on project "<b>C</b>",
+then project "<b>A</b>" has a transitive dependency on project "<b>C</b>".<br />
+<br />
+In other words: if "<b>A</b>" depends on "<b>B</b>" ("<b>A</b>" ► "<b>B</b>") and "<b>B</b>" depends on "<b>C</b>" ("<b>B</b>" ► "<b>C</b>") then "<b>A</b>" depends on "<b>C</b>" ("<b>A</b>" ► "<b>C</b>").<br />
+<br />
+That said, we need to know when and how Maven resolves transitive dependencies.<br />
+The scope of the direct and transitive dependencies will let Maven decide if they are needed to successfully execute a specific phase.<br />
+<br />
+For the following, let's suppose that:<br />
+<ul class="ul_square_1">
+<li>project "<b>A</b>" depends on project "<b>B</b>" and project "<b>B</b>" depends on project "<b>C</b>".<br /></li>
+<li>project "<b>A</b>" has no direct dependency on project "<b>C</b>".<br /></li>
+<li>project "<b>A</b>" might have a transitive dependency on project "<b>C</b>".<br /></li>
+</ul>
+<br />
+First we need to define the scope of the direct dependency of project "<b>A</b>" on project "<b>B</b>".<br />
+And second we need to define the scope of the direct dependency of project "<b>B</b>" on project "<b>C</b>".<br />
+Then we can resolve the scope of the transitive dependency of project "<b>A</b>" on project "<b>C</b>".<br />
+<br />
+Once the scope of the transitive dependency is known,
+Maven will use the same rules to decide if the project referred by the transitive dependency is needed to successfully execute a build phase.<br />
+<br />
+The transitive dependency scope resolution follows these rules:<br />
+<br />
+<ul class="ul_square_1">
+<li><b>compile</b><br />
+If the scope of the direct dependency of "<b>B</b>" on "<b>C</b>" is "<b>compile</b>",
+then the scope of the transitive dependency of "<b>A</b>" on "<b>C</b>" is the same scope as the direct dependency of "<b>A</b>" on "<b>B</b>".<br />
+<br />
+Here's a table that summarizes the case when the scope of the direct dependency of "<b>B</b>" on "<b>C</b>" is "<b>compile</b>":<br />
+<br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="160">
+Scope:<br />
+Direct Dependency<br />
+("<b>B</b>" ► "<b>C</b>")
+</th>
+<th class="cssth1" width="160">
+Scope:<br />
+Direct Dependency<br />
+("<b>A</b>" ► "<b>B</b>")
+</th>
+<th class="cssth1" width="190">
+Scope:<br />
+Transitive Dependency<br />
+("<b>A</b>" ► "<b>C</b>")
+</th>
+<th class="cssth1" width="130">
+Available During Phases
+</th>
+<th class="cssth1">
+Comment
+</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+"<b>compile</b>"<br />
+"<b>test-compile</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>compile</b>", "<b>test-compile</b>", or "<b>package</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+test
+</td>
+<td class="csstd1">
+test
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"
+</td>
+<td class="csstd1">
+If the phase "<b>test-compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers to the code of the project "<b>C</b>".
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+provided
+</td>
+<td class="csstd1">
+provided
+</td>
+<td class="csstd1">
+"<b>compile</b>"<br />
+"<b>test-compile</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>compile</b>" or "<b>test-compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>test-compile</b>" or "<b>package</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers to the code of the project "<b>C</b>".
+</td>
+</tr>
+</table>
+<br />
+</li>
+<li><b>runtime</b><br />
+If the scope of the direct dependency of "<b>B</b>" on "<b>C</b>" is "<b>runtime</b>",
+then the scope of the transitive dependency of "<b>A</b>" on "<b>C</b>" follows these rules:
+<ul class="ul_circle_1">
+<li>If the direct dependency of "<b>A</b>" on "<b>B</b>" is "<b>compile</b>", then the transitive scope is "<b>runtime</b>".<br /></li>
+<li>If the direct dependency of "<b>A</b>" on "<b>B</b>" is "<b>test</b>", then the transitive scope is "<b>test</b>".<br /></li>
+<li>If the direct dependency of "<b>A</b>" on "<b>B</b>" is "<b>provided</b>", then the transitive scope is "<b>provided</b>".<br /></li>
+<li>If the direct dependency of "<b>A</b>" on "<b>B</b>" is "<b>runtime</b>", then the transitive scope is "<b>runtime</b>".<br /></li>
+</ul>
+<br />
+Here's a table that summarizes the case when the scope of the direct dependency of "<b>B</b>" on "<b>C</b>" is "<b>runtime</b>":<br />
+<br />
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="160">
+Scope:<br />
+Direct Dependency<br />
+("<b>B</b>" ► "<b>C</b>")
+</th>
+<th class="cssth1" width="160">
+Scope:<br />
+Direct Dependency<br />
+("<b>A</b>" ► "<b>B</b>")
+</th>
+<th class="cssth1" width="190">
+Scope:<br />
+Transitive Dependency<br />
+("<b>A</b>" ► "<b>C</b>")
+</th>
+<th class="cssth1" width="130">
+Available During Phases
+</th>
+<th class="cssth1">
+Comment
+</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+compile
+</td>
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>test-compile</b>" or "<b>package</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers to the code of the project "<b>C</b>".
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+test
+</td>
+<td class="csstd1">
+test
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"
+</td>
+<td class="csstd1">
+If the phase "<b>test-compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers to the code of the project "<b>C</b>".
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+provided
+</td>
+<td class="csstd1">
+provided
+</td>
+<td class="csstd1">
+"<b>compile</b>"<br />
+"<b>test-compile</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>compile</b>" or "<b>test-compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.
+</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+runtime
+</td>
+<td class="csstd1">
+"<b>test-compile</b>"<br />
+"<b>package</b>"
+</td>
+<td class="csstd1">
+If any of the phases "<b>test-compile</b>" or "<b>package</b>" has to be executed for the project "<b>A</b>",
+the build will fail if Maven cannot find the dependency "<b>C</b>" in the repository.<br />
+<br />
+Note that if the phase "<b>compile</b>" has to be executed for the project "<b>A</b>",
+the build will fail if the code (not test code) of the project "<b>A</b>" refers to the code of the project "<b>C</b>".
+</td>
+</tr>
+</table>
+<br />
+</li>
+</ul>
+Note that if the scope of the direct dependency of "<b>B</b>" on "<b>C</b>" is "<b>provided</b>" or "<b>test</b>",
+then "<b>C</b>" is not visible for "<b>A</b>".
+Maven will throw an error if the code (including test code) of "<b>A</b>" refers to the code of "<b>C</b>".<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Resolve Transitive Dependencies Conflicts</span>
+<div class="tutorialSectionTextDiv1">
+Transitive dependencies might bring different versions of the same artifacts.
+Maven needs to pick only one version of the artifacts for your project.
+The closest version (regardless if it's the newest or not) in the dependencies tree will be chosen.
+If there are multiple versions on the same level of tree, then Maven will choose the first one found.<br />
+<br />
+In many cases, the version chosen by Maven might not be the right one for your project.
+To address this issue, you need to add the artifact as a dependency to the pom.xml file of your project and specify the version you want to use.<br />
+<br />
+In some cases you might want to exclude a transitive dependency so it (and all its direct and transitive dependencies) won't be resolved by Maven:<br />
+<pre class="sh-code">
+&lt;dependency&gt;
+  &lt;groupId&gt;A&lt;/groupId&gt;
+  &lt;artifactId&gt;A&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;exclusions&gt;
+    &lt;exclusion&gt;
+      &lt;groupId&gt;B&lt;/groupId&gt;
+      &lt;artifactId&gt;B&lt;/artifactId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;</pre>
+You can use the Maven Dependency Plugin to print the dependency tree of your project:<br />
+<pre class="sh-code">
+$ mvn dependency:tree</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

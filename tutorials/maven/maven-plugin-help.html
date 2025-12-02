@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven Help Plugin Guide – Goals, Usage &amp; Troubleshooting | MTI TEK</title>
+<meta name="description" content="Learn how to use the Maven Help Plugin, including the help and describe goals." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven Help Plugin Guide – Goals, Usage &amp; Troubleshooting | MTI TEK" />
+<meta property="og:description" content="Learn how to use the Maven Help Plugin, including the help and describe goals." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-plugin-help.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven Help Plugin Guide – Goals, Usage &amp; Troubleshooting | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use the Maven Help Plugin, including the help and describe goals." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-plugin-help.html",
+        "description": "Learn how to use the Maven Help Plugin, including the help and describe goals.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-plugin-help.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven Help Plugin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Maven Help Plugin</a></li>
+<li><a href="#sec_id_2">The help goal</a></li>
+<li><a href="#sec_id_3">The describe goal</a></li>
+<li><a href="#sec_id_4">Troubleshooting</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Maven Help Plugin</span>
+<div class="tutorialSectionTextDiv1">
+The Maven Help Plugin provides goals aimed at helping developers make sense of the build environment.
+It includes the ability to view the effective POM and settings files
+after inheritance and active profiles have been applied,
+as well as describe particular plugin goals to provide usage information.<br />
+<br />
+<b>Plugin Coordinates</b>:<br />
+<ul class="ul_square_1">
+<li><b>Group Id</b>: org.apache.maven.plugins<br /></li>
+<li><b>Artifact Id</b>: maven-help-plugin<br /></li>
+<li><b>Version</b>: 3.5.1<br /></li>
+</ul>
+<br />
+<b>Plugin Prefix</b>: help<br />
+<br />
+The <b>help</b> plugin provides the following goals:
+
+<ul class="ul_square_1">
+<li>
+<b>help</b>:
+Displays help information about the maven-help-plugin itself.<br /><br />
+</li>
+<li>
+<b>describe</b>:
+Displays detailed information about Maven plugins and their goals (Mojos - Maven Plain Old Java Objects).<br /><br />
+</li>
+<li>
+<b>system</b>:
+Displays system properties and environment variables available to Maven.<br /><br />
+</li>
+<li>
+<b>effective-pom</b>:
+Displays the effective POM as XML after all inheritance and profile activation.<br /><br />
+</li>
+<li>
+<b>effective-settings</b>:
+Displays the calculated settings as XML for the current project context.<br /><br />
+</li>
+<li>
+<b>active-profiles</b>:
+Lists all profiles that are currently active for the build.<br /><br />
+</li>
+<li>
+<b>all-profiles</b>:
+Lists all available profiles in the current project hierarchy.<br /><br />
+</li>
+<li>
+<b>evaluate</b>:
+Evaluates Maven expressions interactively, useful for debugging property resolution.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The help goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>help</b> goal provides general information about the <b>help</b> plugin, including available goals and their parameters.<br />
+<br />
+Use the <b>detail</b> parameter to get detailed information about all goals and their configuration options:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn help:help
+
+# Display detailed information about all goals and parameters
+$ mvn help:help -Ddetail=true</pre>
+If you need to use the plugin's full coordinates instead of its prefix, you can do that as follows:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn org.apache.maven.plugins:maven-help-plugin:3.5.1:help
+
+# Display detailed information about all goals and parameters
+$ mvn org.apache.maven.plugins:maven-help-plugin:3.5.1:help -Ddetail=true</pre>
+You can also use the Maven <b>help</b> plugin to describe the <b>help</b> plugin:<br />
+<pre class="sh-code">
+# Basic plugin description using help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-help-plugin:3.5.1"
+
+# Detailed plugin description with all parameters
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-help-plugin:3.5.1" -Ddetail=true</pre>
+To get specific information about a goal, use the <b>goal</b> parameter:<br />
+<pre class="sh-code">
+# Help for the 'help' goal
+$ mvn org.apache.maven.plugins:maven-help-plugin:3.5.1:help -Dgoal=help -Ddetail=true
+
+# Help for the 'help' goal using the help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-help-plugin:3.5.1" -Dgoal=help -Ddetail=true</pre>
+<b>Note</b>: When using the plugin's help goal directly, you don't need to specify the version if the plugin is already configured in your POM or if you want to use the latest version.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">The describe goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>describe</b> goal provides detailed information about Maven plugins and their goals.
+This is one of the most useful goals for understanding any Maven plugin, including third-party plugins.<br />
+<br />
+<b>Required Parameters</b>: You must specify one of the following:<br />
+<ul class="ul_square_1">
+<li>A '<b>cmd</b>' parameter (for lifecycle phases or plugin:goal combinations)<br /></li>
+<li>A '<b>plugin</b>' parameter (using plugin prefix or coordinates)<br /></li>
+<li>Both '<b>groupId</b>' and '<b>artifactId</b>' parameters<br /></li>
+</ul>
+<br />
+<b>Getting Help About the describe Goal Itself</b>:<br />
+<pre class="sh-code">
+$ mvn help:describe -Dplugin=help -Dgoal=describe -Ddetail=true</pre>
+<pre class="sh-code">
+$ mvn help:help -Dgoal=describe -Ddetail=true</pre>
+<b>Usage Examples</b>:<br />
+<ul class="ul_square_1">
+<li>
+<b>Describe a Lifecycle Phase</b>:<br />
+<b>mvn help:describe -Dcmd=&lt;phase-name&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -Dcmd=install
+$ mvn help:describe -Dcmd=compile
+$ mvn help:describe -Dcmd=package</pre>
+</li>
+<li>
+<b>Describe a Plugin Goal</b>:<br />
+<b>mvn help:describe -Dcmd=&lt;plugin-prefix:goal-name&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -Dcmd="help:describe"
+$ mvn help:describe -Dcmd="compiler:compile"
+$ mvn help:describe -Dcmd="surefire:test"</pre>
+</li>
+<li>
+<b>Describe Plugin by Prefix</b>:<br />
+<b>mvn help:describe -Dplugin=&lt;plugin-prefix&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -Dplugin=help
+$ mvn help:describe -Dplugin=compiler
+$ mvn help:describe -Dplugin=surefire</pre>
+</li>
+<li>
+<b>Describe Plugin by Group:Artifact</b>:<br />
+<b>mvn help:describe -Dplugin=&lt;group-id:artifact-id&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-help-plugin"
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-compiler-plugin"</pre>
+</li>
+<li>
+<b>Describe Specific Plugin Version</b>:<br />
+<b>mvn help:describe -Dplugin=&lt;group-id:artifact-id:version&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-help-plugin:3.5.1"
+$ mvn help:describe -Dplugin="org.springframework.boot:spring-boot-maven-plugin:2.7.0"</pre>
+</li>
+<li>
+<b>Describe Using Separate Parameters</b>:<br />
+<b>mvn help:describe -DgroupId=&lt;group-id&gt; -DartifactId=&lt;artifact-id&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -DgroupId="org.apache.maven.plugins" -DartifactId="maven-help-plugin"</pre>
+</li>
+<li>
+<b>Describe with Version Parameter</b>:<br />
+<b>mvn help:describe -DgroupId=&lt;group-id&gt; -DartifactId=&lt;artifact-id&gt; -Dversion=&lt;version&gt;</b><br />
+<pre class="sh-code">
+$ mvn help:describe -DgroupId="org.apache.maven.plugins" -DartifactId="maven-help-plugin" -Dversion="3.5.1"</pre>
+</li>
+</ul>
+<b>Common Parameters</b>:<br />
+<ul class="ul_square_1">
+<li><b>-Ddetail=true</b>: Shows detailed parameter information for all goals, including default values and parameter types<br /></li>
+<li><b>-Dgoal=&lt;goal-name&gt;</b>: Focuses on a specific goal within the plugin<br /></li>
+<li><b>-Dfull=true</b>: Shows complete plugin information (deprecated, use -Ddetail=true)<br /></li>
+<li><b>-Dplugin=&lt;plugin-name&gt;</b>: Lists all available goals for a plugin<br /></li>
+<li><b>-Dcmd=&lt;phase-name&gt;</b>: Focuses on a specific lifecycle phase within the plugin<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Troubleshooting</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+<h6>Troubleshooting Build Issues</h6>
+The help plugin provides several goals useful for troubleshooting build problems:<br />
+<ul class="ul_circle_1">
+<li>Use <b>mvn help:effective-pom</b> to view the final POM after parent POM inheritance and profile activation. This shows the complete configuration Maven uses for the build<br /></li>
+<li>Use <b>mvn help:active-profiles</b> to verify which profiles are currently active. Profile activation can be affected by system properties, environment variables, or file presence<br /></li>
+<li>Use <b>mvn help:system</b> to check system properties and environment variables available to Maven during the build<br /></li>
+</ul>
+<br /></li>
+<li>
+<h6>Property Resolution and Evaluation</h6>
+The evaluate goal helps verify how Maven resolves property expressions.<br />
+It is useful for debugging property resolution issues, especially in projects with complex inheritance or profile-based property overrides.<br />
+<br />
+Evaluation Modes:<br />
+<ul class="ul_circle_1">
+<li>Interactive mode: Maven prompts for expressions like: <b>${project.groupId}</b><br /></li>
+<li>Non-interactive mode: <b>mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout</b><br /></li>
+</ul>
+<br />
+<pre class="sh-code">
+$ mvn help:evaluate
+[INFO] No artifact parameter specified, using 'mtitek.maven.samples:mtitek-maven-samples:jar:1.0.0-SNAPSHOT' as project.
+[INFO] Enter the Maven expression i.e. ${project.groupId} or 0 to exit?:
+</pre>
+<pre class="sh-code">
+$ mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout
+mtitek.maven.samples
+</pre>
+Option:<br />
+<ul class="ul_circle_1">
+<li><b>-q</b> (quiet): suppresses Maven's standard logging output, showing only the requested information.<br /></li>
+<li><b>-DforceStdout</b>: outputs only the evaluated expression value.<br /></li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

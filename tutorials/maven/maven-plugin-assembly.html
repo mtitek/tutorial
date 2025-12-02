@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven Assembly Plugin Guide | Create JARs with Dependencies | MTI TEK</title>
+<meta name="description" content="Learn how to use the Maven Assembly Plugin to package your Java project, including examples for assembly.xml and jar-with-dependencies." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven Assembly Plugin Guide | Create JARs with Dependencies | MTI TEK" />
+<meta property="og:description" content="Learn how to use the Maven Assembly Plugin to package your Java project, including examples for assembly.xml and jar-with-dependencies." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-plugin-assembly.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven Assembly Plugin Guide | Create JARs with Dependencies | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use the Maven Assembly Plugin to package your Java project, including examples for assembly.xml and jar-with-dependencies." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-plugin-assembly.html",
+        "description": "Learn how to use the Maven Assembly Plugin to package your Java project, including examples for assembly.xml and jar-with-dependencies.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-plugin-assembly.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven Assembly Plugin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Maven Assembly Plugin</a></li>
+<li><a href="#sec_id_2">The help goal</a></li>
+<li><a href="#sec_id_3">Example: Using assembly.xml</a></li>
+<li><a href="#sec_id_4">Example: Using jar-with-dependencies</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Maven Assembly Plugin</span>
+<div class="tutorialSectionTextDiv1">
+The Maven Assembly Plugin creates archives of your project's sources, classes, dependencies, and other resources from flexible assembly descriptors. It's commonly used to create distribution packages, fat JARs, or custom archive formats.<br />
+<br />
+<b>Plugin coordinates</b>:<br />
+<ul class="ul_square_1">
+<li><b>Group Id</b>: org.apache.maven.plugins<br /></li>
+<li><b>Artifact Id</b>: maven-assembly-plugin<br /></li>
+<li><b>Version</b>: 3.7.1<br /></li>
+</ul>
+<br />
+<b>Plugin Prefix</b>: assembly<br />
+<br />
+The <b>assembly</b> plugin has the following main goals:<br />
+<ul class="ul_square_1">
+<li>
+<b>help</b>:
+Displays help information on the maven-assembly-plugin. Use this goal to get detailed information about plugin parameters and their usage.<br />
+<br /></li>
+<li>
+<b>single</b>:
+Assembles an application bundle or distribution from an assembly descriptor. This is the primary goal used to create custom archives, such as zip or tar files, based on the assembly descriptor's instructions.<br />
+<br /></li>
+</ul>
+The plugin also provides predefined descriptors like <b>jar-with-dependencies</b>, <b>src</b>, <b>bin</b>, and <b>project</b> for common use cases.<br />
+<br />
+<b>Common Use Cases:</b><br />
+<ul class="ul_square_1">
+<li><b>Uber JAR</b>: Use <b>jar-with-dependencies</b> descriptor for executable JARs<br /></li>
+<li><b>Distribution Package</b>: Include binaries, documentation, and configuration files<br /></li>
+<li><b>Source Distribution</b>: Use <b>src</b> descriptor for source code packages<br /></li>
+<li><b>Docker Build Context</b>: Create custom archives for containerization<br /></li>
+</ul>
+<br />
+<b>Best Practices:</b><br />
+<ul class="ul_square_1">
+<li>Set <b>appendAssemblyId</b> to <b>false</b> for single assemblies.<br /></li>
+<li>Use Maven properties and filtering for dynamic content.<br /></li>
+<li>Consider using <b>useTransitiveFiltering</b> for dependency management.<br /></li>
+<li>Use proper file permissions (fileMode) for executable files.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The help goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>help</b> goal provides general information about the <b>assembly</b> plugin, including available goals and their parameters.<br />
+<br />
+Use the <b>detail</b> parameter to get detailed information about all goals and their configuration options:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn assembly:help
+
+# Display detailed information about all goals and parameters
+$ mvn assembly:help -Ddetail=true</pre>
+If you need to use the plugin's full coordinates instead of its prefix, you can do that as follows:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn org.apache.maven.plugins:maven-assembly-plugin:3.7.1:help
+
+# Display detailed information about all goals and parameters
+$ mvn org.apache.maven.plugins:maven-assembly-plugin:3.7.1:help -Ddetail=true</pre>
+You can also use the Maven <b>help</b> plugin to describe the <b>assembly</b> plugin:<br />
+<pre class="sh-code">
+# Basic plugin description using help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-assembly-plugin:3.7.1"
+
+# Detailed plugin description with all parameters
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-assembly-plugin:3.7.1" -Ddetail=true</pre>
+To get specific information about a goal, use the <b>goal</b> parameter:<br />
+<pre class="sh-code">
+# Help for the 'single' goal
+$ mvn org.apache.maven.plugins:maven-assembly-plugin:3.7.1:help -Dgoal=single -Ddetail=true
+
+# Help for the 'single' goal using the help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-assembly-plugin:3.7.1" -Dgoal=single -Ddetail=true</pre>
+<b>Note</b>: When using the plugin's help goal directly, you don't need to specify the version if the plugin is already configured in your POM or if you want to use the latest version.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Using assembly.xml</span>
+<div class="tutorialSectionTextDiv1">
+Configure your pom.xml file with the following plugin configuration:<br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.7.1&lt;/version&gt;
+
+    &lt;configuration&gt;
+        &lt;!-- Set to false to avoid appending assembly id to final name --&gt;
+        &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;
+
+        &lt;descriptors&gt;
+            &lt;descriptor&gt;src/main/assembly/assembly.xml&lt;/descriptor&gt;
+        &lt;/descriptors&gt;
+    &lt;/configuration&gt;
+
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;make-assembly&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;single&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+Create the directory structure and "<b>assembly.xml</b>" descriptor file:<br />
+<pre class="sh-code">
+$ mkdir -p src/main/assembly/
+$ vi src/main/assembly/assembly.xml</pre>
+Example assembly descriptor (src/main/assembly/assembly.xml):<br />
+<pre class="xml-code">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0
+                        http://maven.apache.org/xsd/assembly-2.2.0.xsd"&gt;
+
+    &lt;id&gt;dist&lt;/id&gt;
+    &lt;includeBaseDirectory&gt;false&lt;/includeBaseDirectory&gt;
+
+    &lt;formats&gt;
+        &lt;format&gt;zip&lt;/format&gt;
+        &lt;format&gt;tar.gz&lt;/format&gt;
+    &lt;/formats&gt;
+
+    &lt;!-- Include project resources --&gt;
+    &lt;fileSets&gt;
+        &lt;fileSet&gt;
+            &lt;directory&gt;src/main/resources&lt;/directory&gt;
+            &lt;outputDirectory&gt;resources&lt;/outputDirectory&gt;
+            &lt;filtered&gt;true&lt;/filtered&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*.properties&lt;/include&gt;
+                &lt;include&gt;**/*.xml&lt;/include&gt;
+                &lt;include&gt;**/*.txt&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/fileSet&gt;
+
+        &lt;!-- Include compiled classes --&gt;
+        &lt;fileSet&gt;
+            &lt;directory&gt;${project.build.outputDirectory}&lt;/directory&gt;
+            &lt;outputDirectory&gt;classes&lt;/outputDirectory&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*.class&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/fileSet&gt;
+
+        &lt;!-- Include project documentation --&gt;
+        &lt;fileSet&gt;
+            &lt;directory&gt;${project.basedir}&lt;/directory&gt;
+            &lt;outputDirectory&gt;&lt;/outputDirectory&gt;
+            &lt;includes&gt;
+                &lt;include&gt;README*&lt;/include&gt;
+                &lt;include&gt;LICENSE*&lt;/include&gt;
+                &lt;include&gt;NOTICE*&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/fileSet&gt;
+    &lt;/fileSets&gt;
+
+    &lt;!-- Include dependencies --&gt;
+    &lt;dependencySets&gt;
+        &lt;dependencySet&gt;
+            &lt;outputDirectory&gt;lib&lt;/outputDirectory&gt;
+            &lt;unpack&gt;false&lt;/unpack&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+
+            &lt;!-- Optional: Include specific dependencies --&gt;
+            &lt;includes&gt;
+                &lt;include&gt;*:*&lt;/include&gt;
+            &lt;/includes&gt;
+
+            &lt;!-- Optional: Exclude specific dependencies --&gt;
+            &lt;excludes&gt;
+                &lt;exclude&gt;*:*:*:test&lt;/exclude&gt;
+            &lt;/excludes&gt;
+
+            &lt;outputFileNameMapping&gt;${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}&lt;/outputFileNameMapping&gt;
+        &lt;/dependencySet&gt;
+    &lt;/dependencySets&gt;
+&lt;/assembly&gt;</pre>
+To execute the assembly:<br />
+<pre class="sh-code">
+$ mvn clean package
+$ mvn assembly:single</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Example: Using jar-with-dependencies</span>
+<div class="tutorialSectionTextDiv1">
+Use predefined descriptor: <b>jar-with-dependencies</b><br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.7.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;descriptorRefs&gt;
+            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+        &lt;/descriptorRefs&gt;
+        &lt;archive&gt;
+            &lt;manifest&gt;
+                &lt;mainClass&gt;com.example.Main&lt;/mainClass&gt;
+            &lt;/manifest&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;make-assembly&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;single&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

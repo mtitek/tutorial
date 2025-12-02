@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven Resources Plugin Guide | Copy and Filter Project Resources | MTI TEK</title>
+<meta name="description" content="Learn how to use the Maven Resources Plugin to copy, filter, and manage project resources effectively. Includes usage examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven Resources Plugin Guide | Copy and Filter Project Resources | MTI TEK" />
+<meta property="og:description" content="Learn how to use the Maven Resources Plugin to copy, filter, and manage project resources effectively. Includes usage examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-plugin-resources.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven Resources Plugin Guide | Copy and Filter Project Resources | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use the Maven Resources Plugin to copy, filter, and manage project resources effectively. Includes usage examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-plugin-resources.html",
+        "description": "Learn how to use the Maven Resources Plugin to copy, filter, and manage project resources effectively. Includes usage examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-plugin-resources.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven Javadoc Plugin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Maven Resources Plugin</a></li>
+<li><a href="#sec_id_2">The help goal</a></li>
+<li><a href="#sec_id_3">Example: Using resources plugin</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Maven Resources Plugin</span>
+<div class="tutorialSectionTextDiv1">
+The Maven Resources Plugin handles the copying of project resources to the output directory.<br />
+<br />
+There are two different kinds of resources: main resources and test resources.<br />
+<br />
+The difference is that the main resources are the resources associated with the main source code while the test resources are associated with the test source code.
+This allows the separation of resources for the main source code and its unit tests.<br />
+<br />
+<b>Plugin coordinates</b>:<br />
+<ul class="ul_square_1">
+<li><b>Group Id</b>: org.apache.maven.plugins<br /></li>
+<li><b>Artifact Id</b>: maven-resources-plugin<br /></li>
+<li><b>Version</b>: 3.3.1<br /></li>
+</ul>
+<br />
+<b>Plugin Prefix</b>: resources<br />
+<br />
+The <b>resources</b> plugin has the following goals:<br />
+<ul class="ul_square_1">
+<li>
+<b>help</b>:
+Displays help information on the maven-resources-plugin.<br />
+<br /></li>
+<li>
+<b>resources</b>:
+Copies resources for the main source code to the main output directory (src/main/resources/* → target/classes/).<br />
+This goal is bound to the <b>process-resources</b> phase by default.<br />
+It uses the <b>project.build.resources</b> element to specify the resources to copy.<br />
+<br /></li>
+<li>
+<b>testResources</b>:
+Copies resources for the test source code to the test output directory (src/test/resources/* → target/test-classes/).<br />
+This goal is bound to the <b>process-test-resources</b> phase by default.<br />
+It uses the <b>project.build.testResources</b> element to specify the resources to copy.<br />
+<br /></li>
+<li>
+<b>copy-resources</b>:
+Copies resources from a configured source directory to a specified output directory.<br />
+This goal is not bound to any lifecycle phase by default and must be explicitly configured.<br />
+<br /></li>
+</ul>
+Some configuration options:<br />
+<ul class="ul_square_1">
+<li><b>encoding</b>: Character encoding for reading and writing files (default: platform encoding).<br /></li>
+<li><b>filtering</b>: Enable Maven property and filter substitution in resources.<br /></li>
+<li><b>includeEmptyDirs</b>: Whether to include empty directories when copying.<br /></li>
+<li><b>overwrite</b>: Whether to overwrite read-only destination files.<br /></li>
+<li><b>escapeWindowsPaths</b>: Escape Windows paths in filtered resources.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The help goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>help</b> goal provides general information about the <b>resources</b> plugin, including available goals and their parameters.<br />
+<br />
+Use the <b>detail</b> parameter to get detailed information about all goals and their configuration options:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn resources:help
+
+# Display detailed information about all goals and parameters
+$ mvn resources:help -Ddetail=true</pre>
+If you need to use the plugin's full coordinates instead of its prefix, you can do that as follows:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn org.apache.maven.plugins:maven-resources-plugin:3.3.1:help
+
+# Display detailed information about all goals and parameters
+$ mvn org.apache.maven.plugins:maven-resources-plugin:3.3.1:help -Ddetail=true</pre>
+You can also use the Maven <b>help</b> plugin to describe the <b>resources</b> plugin:<br />
+<pre class="sh-code">
+# Basic plugin description using help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-resources-plugin:3.3.1"
+
+# Detailed plugin description with all parameters
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-resources-plugin:3.3.1" -Ddetail=true</pre>
+To get specific information about a goal, use the <b>goal</b> parameter:<br />
+<pre class="sh-code">
+# Help for the 'resources' goal
+$ mvn org.apache.maven.plugins:maven-resources-plugin:3.3.1:help -Dgoal=resources -Ddetail=true
+
+# Help for the 'resources' goal using the help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-resources-plugin:3.3.1" -Dgoal=resources -Ddetail=true</pre>
+<b>Note</b>: When using the plugin's help goal directly, you don't need to specify the version if the plugin is already configured in your POM or if you want to use the latest version.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Using resources plugin</span>
+<div class="tutorialSectionTextDiv1">
+Configure your pom.xml file with the following plugin configuration:<br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.3.1&lt;/version&gt;
+
+    &lt;configuration&gt;
+        &lt;!-- Set the character encoding for resources --&gt;
+        &lt;encoding&gt;UTF-8&lt;/encoding&gt;
+        &lt;!-- Include empty directories when copying resources --&gt;
+        &lt;includeEmptyDirs&gt;false&lt;/includeEmptyDirs&gt;
+    &lt;/configuration&gt;
+
+    &lt;executions&gt;
+        &lt;!-- Copy test resources: src/test/resources/* → target/test-classes/ --&gt;
+        &lt;execution&gt;
+            &lt;id&gt;default-testResources&lt;/id&gt;
+            &lt;phase&gt;process-test-resources&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;testResources&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+
+        &lt;!-- Copy main resources: src/main/resources/* → target/classes/ --&gt;
+        &lt;execution&gt;
+            &lt;id&gt;default-resources&lt;/id&gt;
+            &lt;phase&gt;process-resources&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;resources&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+
+        &lt;!-- Custom resource copying example --&gt;
+        &lt;execution&gt;
+            &lt;id&gt;copy-resources&lt;/id&gt;
+            &lt;phase&gt;prepare-package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;copy-resources&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;outputDirectory&gt;${project.build.directory}/bin-nix&lt;/outputDirectory&gt;
+                &lt;resources&gt;
+                    &lt;resource&gt;
+                        &lt;directory&gt;${project.build.directory}/bin&lt;/directory&gt;
+                        &lt;!-- Copy all files except Windows-specific ones --&gt;
+                        &lt;excludes&gt;
+                            &lt;exclude&gt;win/**&lt;/exclude&gt;
+                        &lt;/excludes&gt;
+                        &lt;!-- Enable resource filtering for variable substitution --&gt;
+                        &lt;filtering&gt;true&lt;/filtering&gt;
+                    &lt;/resource&gt;
+                &lt;/resources&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

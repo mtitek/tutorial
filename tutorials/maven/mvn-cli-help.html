@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven CLI Help Guide: mvn Command Options Explained | MTI TEK</title>
+<meta name="description" content="Comprehensive guide to Maven CLI. Learn mvn command options for builds, configuration, performance, security, and more." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven CLI Help Guide: mvn Command Options Explained | MTI TEK" />
+<meta property="og:description" content="Comprehensive guide to Maven CLI. Learn mvn command options for builds, configuration, performance, security, and more." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/mvn-cli-help.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven CLI Help Guide: mvn Command Options Explained | MTI TEK" />
+<meta name="twitter:description" content="Comprehensive guide to Maven CLI. Learn mvn command options for builds, configuration, performance, security, and more." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/mvn-cli-help.html",
+        "description": "Comprehensive guide to Maven CLI. Learn mvn command options for builds, configuration, performance, security, and more.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/mvn-cli-help.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven CLI Help</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Help</a></li>
+<li><a href="#sec_id_2">Basic Information Options</a></li>
+<li><a href="#sec_id_3">Security Options</a></li>
+<li><a href="#sec_id_4">Performance Options</a></li>
+<li><a href="#sec_id_5">Configuration File Options</a></li>
+<li><a href="#sec_id_6">Build Behavior Options</a></li>
+<li><a href="#sec_id_7">Project Selection Options</a></li>
+<li><a href="#sec_id_8">Error Handling and Build Control Options</a></li>
+<li><a href="#sec_id_9">Miscellaneous Options</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Help</span>
+<div class="tutorialSectionTextDiv1">
+To print the help of mvn CLI: <br />
+<pre class="sh-code">
+$ mvn -h</pre>
+Usage : <b>mvn [options] [&lt;goal(s)&gt;] [&lt;phase(s)&gt;]</b><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Basic Information Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-h,--help</td>
+<td class="csstd1">Display help information</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-v,--version</td>
+<td class="csstd1">Display version information</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-V,--show-version</td>
+<td class="csstd1">Display version information WITHOUT stopping build</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-X,--debug</td>
+<td class="csstd1">Produce execution debug output</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Security Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-emp,--encrypt-master-password &lt;arg&gt;</td>
+<td class="csstd1">Encrypt master security password</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-ep,--encrypt-password &lt;arg&gt;</td>
+<td class="csstd1">Encrypt server password</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Performance Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-T,--threads &lt;arg&gt;</td>
+<td class="csstd1">Thread count, for instance 2.0C where C is core multiplied</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Configuration File Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-f,--file &lt;arg&gt;</td>
+<td class="csstd1">Force the use of an alternate pom.xml file (or directory with pom.xml)</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-s,--settings &lt;arg&gt;</td>
+<td class="csstd1">Alternate path for the user settings file</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-gs,--global-settings &lt;arg&gt;</td>
+<td class="csstd1">Alternate path for the global settings file</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-gt,--global-toolchains &lt;arg&gt;</td>
+<td class="csstd1">Alternate path for the global toolchains file</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-t,--toolchains &lt;arg&gt;</td>
+<td class="csstd1">Alternate path for the user toolchains file</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-l,--log-file &lt;arg&gt;</td>
+<td class="csstd1">Log file where all build output will go (disables output color)</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Build Behavior Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-q,--quiet</td>
+<td class="csstd1">Quiet output - only show errors</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-o,--offline</td>
+<td class="csstd1">Work offline</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-B,--batch-mode</td>
+<td class="csstd1">Run in non-interactive (batch) mode (disables output color)</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-N,--non-recursive</td>
+<td class="csstd1">Do not recurse into sub-projects</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-nsu,--no-snapshot-updates</td>
+<td class="csstd1">Suppress SNAPSHOT updates</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-ntp,--no-transfer-progress</td>
+<td class="csstd1">Do not display transfer progress when downloading or uploading</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-U,--update-snapshots</td>
+<td class="csstd1">Forces a check for missing releases and updated snapshots on remote repositories</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Project Selection Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-pl,--projects &lt;arg&gt;</td>
+<td class="csstd1">Comma-delimited list of specified reactor projects to build instead of all projects. A project can be specified by [groupId]:artifactId or by its relative path</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-am,--also-make</td>
+<td class="csstd1">If project list is specified, also build projects required by the list</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-amd,--also-make-dependents</td>
+<td class="csstd1">If project list is specified, also build projects that depend on projects on the list</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-P,--activate-profiles &lt;arg&gt;</td>
+<td class="csstd1">Comma-delimited list of profiles to activate</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-rf,--resume-from &lt;arg&gt;</td>
+<td class="csstd1">Resume reactor from specified project</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Error Handling and Build Control Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-fae,--fail-at-end</td>
+<td class="csstd1">Only fail the build afterwards; allow all non-impacted builds to continue</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-ff,--fail-fast</td>
+<td class="csstd1">Stop at first failure in reactorized builds</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-fn,--fail-never</td>
+<td class="csstd1">NEVER fail the build, regardless of project result</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-C,--strict-checksums</td>
+<td class="csstd1">Fail the build if checksums don't match</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-c,--lax-checksums</td>
+<td class="csstd1">Warn if checksums don't match</td>
+</tr>
+</table>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Miscellaneous Options</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Option</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-b,--builder &lt;arg&gt;</td>
+<td class="csstd1">The id of the build strategy to use</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">--color &lt;arg&gt;</td>
+<td class="csstd1">Defines the color mode of the output. Supported are 'auto', 'always', 'never'.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-D,--define &lt;arg&gt;</td>
+<td class="csstd1">Define a system property</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1">-e,--errors</td>
+<td class="csstd1">Produce execution error messages</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create a Web Module (WAR File) Using Maven | MTI TEK</title>
+<meta name="description" content="Learn how to create a web module (WAR file) using Maven." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Create a Web Module (WAR File) Using Maven | MTI TEK" />
+<meta property="og:description" content="Learn how to create a web module (WAR file) using Maven." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/packaging-war.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Create a Web Module (WAR File) Using Maven | MTI TEK" />
+<meta name="twitter:description" content="Learn how to create a web module (WAR file) using Maven." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/packaging-war.html",
+        "description": "Learn how to create a web module (WAR file) using Maven.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/packaging-war.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Create a web module (WAR file)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Create a Maven Project</a></li>
+<li><a href="#sec_id_2">Update the pom.xml file</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Create a Maven Project</span>
+<div class="tutorialSectionTextDiv1">
+Create a new Maven web application project using the webapp archetype:<br />
+<pre class="sh-code">
+$ mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.maven.archetypes \
+  -DarchetypeArtifactId=maven-archetype-webapp \
+  -DarchetypeVersion=1.5 \
+  -DgroupId=mtitek.maven.war.samples \
+  -DartifactId=mtitek-maven-war-samples \
+  -Dversion=1.0.0-SNAPSHOT \
+  -DinteractiveMode=false</pre>
+The generated project structure will look like this:<br />
+<pre class="sh-code">
+$ find ./mtitek-maven-war-samples/ -type f
+./mtitek-maven-war-samples/pom.xml
+./mtitek-maven-war-samples/src/main/webapp/index.jsp
+./mtitek-maven-war-samples/src/main/webapp/WEB-INF/web.xml</pre>
+The archetype creates a minimal structure. Typically the project structure should look like:<br />
+<pre class="text-code">
+mtitek-maven-war-samples/
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── mtitek/maven/war/samples/
+│   │   │       └── servlet/
+│   │   │           └── HelloServlet.java
+│   │   ├── resources/
+│   │   │   ├── application.properties
+│   │   │   └── logback.xml
+│   │   └── webapp/
+│   │       ├── WEB-INF/
+│   │       │   └── web.xml
+│   │       ├── css/
+│   │       │   └── style.css
+│   │       ├── js/
+│   │       │   └── app.js
+│   │       └── index.jsp
+│   └── test/
+│       └── java/
+│           └── mtitek/maven/war/samples/
+│               └── servlet/
+│                   └── HelloServletTest.java
+└── target/
+    └── mtitek-maven-war-samples.war</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Update the pom.xml file</span>
+<div class="tutorialSectionTextDiv1">
+Once the project is generated, you should update the pom.xml file. Here's an example:<br />
+<pre class="xml-code">
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;mtitek.maven.war.samples&lt;/groupId&gt;
+    &lt;artifactId&gt;mtitek-maven-war-samples&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;name&gt;Maven WAR Sample Project&lt;/name&gt;
+    &lt;description&gt;Sample Maven web application demonstrating WAR packaging&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+
+        &lt;!-- Spring Boot property --&gt;
+        &lt;java.version&gt;23&lt;/java.version&gt;
+
+        &lt;!-- maven-compiler-plugin properties --&gt;
+        &lt;maven.compiler.source&gt;23&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;23&lt;/maven.compiler.target&gt;
+        &lt;maven.compiler.release&gt;23&lt;/maven.compiler.release&gt;
+
+        &lt;!-- Annotation-based configuration --&gt;
+        &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
+
+        &lt;!-- Plugin versions --&gt;
+        &lt;maven-compiler-plugin.version&gt;3.14.0&lt;/maven-compiler-plugin.version&gt;
+        &lt;maven-war-plugin.version&gt;3.4.0&lt;/maven-war-plugin.version&gt;
+        &lt;jetty-maven-plugin.version&gt;11.0.25&lt;/jetty-maven-plugin.version&gt;
+        &lt;jakarta.servlet-api.version&gt;6.1.0&lt;/jakarta.servlet-api.version&gt;
+        &lt;junit.version&gt;5.13.1&lt;/junit.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- APP JAR dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mtitek.maven.jar.samples&lt;/groupId&gt;
+            &lt;artifactId&gt;mtitek-maven-jar-samples&lt;/artifactId&gt;
+            &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+            &lt;type&gt;jar&lt;/type&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;${jakarta.servlet-api.version}&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Test dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
+            &lt;version&gt;${junit.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;!-- Removes version from WAR name --&gt;
+        &lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+
+        &lt;plugins&gt;
+            &lt;!-- Compiler Plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${maven-compiler-plugin.version}&lt;/version&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- WAR Plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${maven-war-plugin.version}&lt;/version&gt;
+
+                &lt;configuration&gt;
+                    &lt;!-- Example of files to include in the WAR --&gt;
+                    &lt;packagingIncludes&gt;
+                        **/*.htm,
+                        **/*.html,
+                        **/*.css,
+                        **/*.js,
+                        **/*.jsp,
+                        **/*.xml,
+                        WEB-INF/lib/mtitek-*.jar
+                    &lt;/packagingIncludes&gt;
+
+                    &lt;archive&gt;
+                        &lt;manifest&gt;
+                            &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+                            &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+                            &lt;addDefaultSpecificationEntries&gt;true&lt;/addDefaultSpecificationEntries&gt;
+                        &lt;/manifest&gt;
+
+                        &lt;manifestEntries&gt;
+                            &lt;Implementation-Build&gt;${project.version}&lt;/Implementation-Build&gt;
+                            &lt;Built-By&gt;${user.name}&lt;/Built-By&gt;
+                            &lt;Build-Time&gt;${maven.build.timestamp}&lt;/Build-Time&gt;
+                        &lt;/manifestEntries&gt;
+                    &lt;/archive&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- Jetty Plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
+                &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${jetty-maven-plugin.version}&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;httpConnector&gt;
+                        &lt;port&gt;8080&lt;/port&gt;
+                    &lt;/httpConnector&gt;
+                    &lt;stopKey&gt;STOP&lt;/stopKey&gt;
+                    &lt;stopPort&gt;9999&lt;/stopPort&gt;
+                    &lt;webApp&gt;
+                        &lt;contextPath&gt;/&lt;/contextPath&gt;
+                    &lt;/webApp&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+<b>Build the project:</b><br />
+<pre class="sh-code">
+$ mvn clean install</pre>
+<b>Run the web application using Jetty:</b><br />
+<pre class="sh-code">
+$ mvn jetty:run</pre>
+You should see output similar to:<br />
+<pre class="text-code">
+[INFO] Configuring Jetty for project: mtitek-maven-war-samples
+[INFO] Context path = /
+[INFO] Started Jetty Server</pre>
+<b>Test the web application:</b><br />
+<pre class="sh-code">
+$ curl http://localhost:8080/</pre>
+Expected response:<br />
+<pre class="xml-code">
+&lt;html&gt;
+&lt;body&gt;
+&lt;h2&gt;Hello World!&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+<b>Stop the server:</b><br />
+Press <b>Ctrl+C</b> in the terminal.<br />
+<br />
+If the Jetty server was started with <b>mvn jetty:start</b>, then use the <b>mvn jetty:stop command</b>.<br />
+<br />
+If Tomcat was configured instead of Jetty,then you should use the following commands:<br />
+<pre class="sh-code">
+$ mvn tomcat10:start
+$ mvn tomcat10:run
+$ mvn tomcat10:stop</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

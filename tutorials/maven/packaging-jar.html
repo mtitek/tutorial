@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create a Client Module JAR with Maven – Step-by-Step Guide | MTI TEK</title>
+<meta name="description" content="Learn how to create a client module JAR file using Maven. This tutorial covers project setup and pom.xml configuration for easy Java module packaging." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Create a Client Module JAR with Maven – Step-by-Step Guide | MTI TEK" />
+<meta property="og:description" content="Learn how to create a client module JAR file using Maven. This tutorial covers project setup and pom.xml configuration for easy Java module packaging." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/packaging-jar.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Create a Client Module JAR with Maven – Step-by-Step Guide | MTI TEK" />
+<meta name="twitter:description" content="Learn how to create a client module JAR file using Maven. This tutorial covers project setup and pom.xml configuration for easy Java module packaging." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/packaging-jar.html",
+        "description": "Learn how to create a client module JAR file using Maven. This tutorial covers project setup and pom.xml configuration for easy Java module packaging.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/packaging-jar.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Create a client module (JAR file)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Create a Maven Project</a></li>
+<li><a href="#sec_id_2">Update the pom.xml file</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Create a Maven Project</span>
+<div class="tutorialSectionTextDiv1">
+Create a new Maven Java application project using the maven archetype:<br />
+<pre class="sh-code">
+$ mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.maven.archetypes \
+  -DarchetypeArtifactId=maven-archetype-quickstart \
+  -DarchetypeVersion=1.5 \
+  -DgroupId=mtitek.maven.jar.samples \
+  -DartifactId=mtitek-maven-jar-samples \
+  -Dpackage=mtitek.maven.jar.samples \
+  -Dversion=1.0.0-SNAPSHOT \
+  -DinteractiveMode=false</pre>
+The generated project structure will look like this:<br />
+<pre class="sh-code">
+$ find ./mtitek-maven-jar-samples/ -type f
+./mtitek-maven-jar-samples/pom.xml
+./mtitek-maven-jar-samples/src/main/java/mtitek/maven/jar/samples/App.java
+./mtitek-maven-jar-samples/src/test/java/mtitek/maven/jar/samples/AppTest.java</pre>
+The archetype creates a minimal structure. Typically the project structure should look like:<br />
+<pre class="text-code">
+mtitek-maven-jar-samples/
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── mtitek/
+│   │   │       └── maven/
+│   │   │           └── jar/
+│   │   │               └── samples/
+│   │   │                   ├── App.java
+│   │   │                   └── SomeClass.java
+│   │   ├── resources/
+│   │   │   └── application.properties
+│   │   └── test/
+│   │       └── java/
+│   │           └── mtitek/
+│   │               └── maven/
+│   │                   └── jar/
+│   │                       └── samples/
+│   │                           └── AppTest.java
+└── target/
+    └── mtitek-maven-jar-samples-1.0.0-SNAPSHOT.jar</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Update the pom.xml file</span>
+<div class="tutorialSectionTextDiv1">
+Once the project is generated, you should update the pom.xml file. Here's an example:<br />
+<pre class="xml-code">
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;mtitek.maven.jar.samples&lt;/groupId&gt;
+    &lt;artifactId&gt;mtitek-maven-jar-samples&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+
+        &lt;!-- Spring Boot property --&gt;
+        &lt;java.version&gt;23&lt;/java.version&gt;
+
+        &lt;!-- maven-compiler-plugin properties --&gt;
+        &lt;maven.compiler.source&gt;23&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;23&lt;/maven.compiler.target&gt;
+        &lt;maven.compiler.release&gt;23&lt;/maven.compiler.release&gt;
+
+        &lt;!-- format of maven.build.timestamp environment variable --&gt;
+        &lt;maven.build.timestamp.format&gt;yyyy-MM-dd HH:mm:ss&lt;/maven.build.timestamp.format&gt;
+
+        &lt;!-- Plugin versions --&gt;
+        &lt;maven-compiler-plugin.version&gt;3.14.0&lt;/maven-compiler-plugin.version&gt;
+        &lt;maven-jar-plugin.version&gt;3.4.2&lt;/maven-jar-plugin.version&gt;
+        &lt;maven-surefire-plugin.version&gt;3.5.3&lt;/maven-surefire-plugin.version&gt;
+        &lt;junit.version&gt;5.13.1&lt;/junit.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+            &lt;version&gt;${junit.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${maven-compiler-plugin.version}&lt;/version&gt;
+
+                &lt;configuration&gt;
+                    &lt;encoding&gt;UTF-8&lt;/encoding&gt;
+
+                    &lt;!-- optional if maven.compiler.source property is set --&gt;
+                    &lt;source&gt;${maven.compiler.source}&lt;/source&gt;
+                    &lt;!-- optional if maven.compiler.target property is set --&gt;
+                    &lt;target&gt;${maven.compiler.target}&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- Surefire plugin for JUnit 5 support --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${maven-surefire-plugin.version}&lt;/version&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${maven-jar-plugin.version}&lt;/version&gt;
+
+                &lt;configuration&gt;
+                    &lt;archive&gt;
+                        &lt;manifest&gt;
+                            &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+                            &lt;mainClass&gt;mtitek.maven.jar.samples.App&lt;/mainClass&gt;
+                            &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+                        &lt;/manifest&gt;
+
+                        &lt;manifestEntries&gt;
+                            &lt;Implementation-Build&gt;${maven.build.timestamp}&lt;/Implementation-Build&gt;
+
+                            &lt;Implementation-Title&gt;mtitek maven jar samples&lt;/Implementation-Title&gt;
+                            &lt;Implementation-Version&gt;${project.version}&lt;/Implementation-Version&gt;
+                            &lt;Implementation-Vendor-Id&gt;mtitek&lt;/Implementation-Vendor-Id&gt;
+                            &lt;Implementation-URL&gt;http://www.mtitek.com&lt;/Implementation-URL&gt;
+
+                            &lt;custom-manifest-entry&gt;mtitek&lt;/custom-manifest-entry&gt;
+                        &lt;/manifestEntries&gt;
+                    &lt;/archive&gt;
+                &lt;/configuration&gt;
+
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;default-jar&lt;/id&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;jar&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+
+                    &lt;execution&gt;
+                        &lt;id&gt;test-jar&lt;/id&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;test-jar&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+<!--
+&lt;excludes&gt;
+&lt;exclude&gt;**/config.*&lt;/exclude&gt;
+&lt;/excludes&gt;
+-->
+Build the project:<br />
+<pre class="sh-code">
+$ mvn clean install</pre>
+Use the command "<b>java -jar</b>" to test your jar:<br />
+<pre class="sh-code">
+$ java -jar target/mtitek-maven-jar-samples-1.0.0-SNAPSHOT.jar</pre>
+<pre class="text-code">
+Hello World!</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

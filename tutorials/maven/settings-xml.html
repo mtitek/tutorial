@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven settings.xml | MTI TEK</title>
+<meta name="description" content="Maven settings.xml" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven settings.xml | MTI TEK" />
+<meta property="og:description" content="Maven settings.xml" />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/settings-xml.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven settings.xml | MTI TEK" />
+<meta name="twitter:description" content="Maven settings.xml" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/settings-xml.html",
+        "description": "Maven settings.xml",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/settings-xml.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">settings.xml</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Content of settings.xml</a></li>
+<li><a href="#sec_id_2">Profile Configuration</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Content of settings.xml</span>
+<div class="tutorialSectionTextDiv1">
+For comprehensive documentation on Maven settings, see:
+<a href="https://maven.apache.org/settings.html">https://maven.apache.org/settings.html</a><br />
+<br />
+Maven's behavior can be customized through the "<b>settings.xml</b>" configuration file.<br />
+<br />
+Maven's distribution includes a global settings template located at
+"<b>${MAVEN_HOME}/conf/settings.xml</b>".
+This file contains global Maven configuration that applies to all users and builds on the system.<br />
+<br />
+You can create user-specific settings that override global configuration
+by placing a customized settings file at:
+"<b>${user.home}/.m2/settings.xml</b>".<br />
+<br />
+Maven processes settings in the following order of precedence:
+<ul class="ul_square_1">
+<li>User settings: <b>${user.home}/.m2/settings.xml</b> (highest priority)<br /></li>
+<li>Global settings: <b>${MAVEN_HOME}/conf/settings.xml</b><br /></li>
+</ul>
+<br />
+Here's a reference to the global template:
+<a href="data/settings-3.9.9.xml">settings.xml</a><br />
+<br />
+<b>Key Elements of settings.xml:</b>
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Element</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>localRepository</b></td>
+<td class="csstd1">Specifies the path where Maven stores downloaded artifacts (dependencies, plugins, etc.).<br />
+Default: <b>${user.home}/.m2/repository</b><br />
+Example: <b>&lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;</b></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>interactiveMode</b></td>
+<td class="csstd1">Controls whether Maven prompts for user input when needed<br />
+Default: <b>true</b><br />
+Set to <b>false</b> for automated builds or CI/CD environments.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>offline</b></td>
+<td class="csstd1">When <b>true</b>, Maven operates in offline mode and won't attempt network connections to download artifacts.<br />
+Default: <b>false</b><br />
+Useful when working without internet connectivity.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>pluginGroups</b></td>
+<td class="csstd1">Additional group IDs to search when resolving plugins by their prefix.<br />
+Example: Adding <b>org.springframework.boot</b> allows using <b>mvn spring-boot:run</b></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>proxies</b></td>
+<td class="csstd1">Configuration for HTTP/HTTPS proxies when Maven needs to connect through corporate firewalls.<br />
+Include host, port, username, password, and nonProxyHosts settings.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>servers</b></td>
+<td class="csstd1">Authentication credentials for accessing remote repositories and deployment targets.<br />
+Contains server-id, username, password, and other authentication details.<br />
+Use password encryption or environment variables for sensitive data.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>mirrors</b></td>
+<td class="csstd1">Repository mirrors that redirect artifact requests to alternative locations.<br />
+Commonly used for corporate repositories or faster regional mirrors.<br />
+Can mirror specific repositories or use <b>*</b> for all repositories.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>profiles</b></td>
+<td class="csstd1">Named sets of configuration that can be activated conditionally.<br />
+Can contain repositories, plugin repositories, properties, and plugin configuration.<br />
+Activated by conditions like JDK version, OS, system properties, or explicitly by name.</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>activeProfiles</b></td>
+<td class="csstd1">List of profile IDs that are automatically active for all builds.<br />
+Profiles listed here don't require explicit activation.<br />
+Use sparingly as they apply globally.</td>
+</tr>
+</table>
+<br />
+<b>Best Practices:</b>
+<ul class="ul_square_1">
+<li>Use profiles for environment-specific settings (development, staging, production).<br /></li>
+<li>Avoid putting project-specific configuration in settings.xml (use pom.xml instead).<br /></li>
+<li>Store sensitive information like passwords using Maven's password encryption feature.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Profile Configuration</span>
+<div class="tutorialSectionTextDiv1">
+Profiles in settings.xml allow you to create environment-specific configurations that can be activated based on various conditions.<br />
+<br />
+<b>Profile Activation:</b>
+<table class="csstable3">
+<tr class="csstr1">
+<th class="cssth1" width="200">Activation Type</th>
+<th class="cssth1" width="500">Description</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>By Default</b></td>
+<td class="csstd1">Activated automatically unless deactivated.<br />
+<b>&lt;activeByDefault&gt;true&lt;/activeByDefault&gt;</b></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>By JDK Version</b></td>
+<td class="csstd1">Activate based on Java version.<br />
+<b>&lt;jdk&gt;23&lt;/jdk&gt;</b><br />
+<b>&lt;jdk&gt;[1.8,)&lt;/jdk&gt;</b></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>By OS</b></td>
+<td class="csstd1">Activate based on operating system.<br />
+<b>&lt;os&gt;&lt;family&gt;windows&lt;/family&gt;&lt;/os&gt;</b></td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><b>By Property</b></td>
+<td class="csstd1">Activate when system property exists.<br />
+<b>&lt;property&gt;&lt;name&gt;env&lt;/name&gt;&lt;value&gt;dev&lt;/value&gt;&lt;/property&gt;</b></td>
+</tr>
+</table>
+<br />
+You can Explicitly activate with <b>-P PROFILE-ID</b>: <code class="code1">mvn clean install -P dev</code><br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

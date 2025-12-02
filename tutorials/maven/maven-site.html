@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Generate &amp;amp; Deploy Maven Sites with Reports | Javadoc, Tests &amp;amp; Coverage | MTI TEK</title>
+<meta name="description" content="Learn how to generate and deploy Maven project sites with integrated reports including Javadoc, unit tests, code coverage, and SpotBugs." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Generate &amp;amp; Deploy Maven Sites with Reports | Javadoc, Tests &amp;amp; Coverage | MTI TEK" />
+<meta property="og:description" content="Learn how to generate and deploy Maven project sites with integrated reports including Javadoc, unit tests, code coverage, and SpotBugs." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-site.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Generate &amp;amp; Deploy Maven Sites with Reports | Javadoc, Tests &amp;amp; Coverage | MTI TEK" />
+<meta name="twitter:description" content="Learn how to generate and deploy Maven project sites with integrated reports including Javadoc, unit tests, code coverage, and SpotBugs." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-site.html",
+        "description": "Learn how to generate and deploy Maven project sites with integrated reports including Javadoc, unit tests, code coverage, and SpotBugs.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-site.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Site and Reports</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">References</a></li>
+<li><a href="#sec_id_2">Generating a site</a></li>
+<li><a href="#sec_id_3">Deploying a site (FTP Server)</a></li>
+<li><a href="#sec_id_4">Javadoc Reports</a></li>
+<li><a href="#sec_id_5">Unit Test Reports</a></li>
+<li><a href="#sec_id_6">Code Coverage Reports</a></li>
+<li><a href="#sec_id_7">SpotBugs Report</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">References</span>
+<div class="tutorialSectionTextDiv1">
+See this page for more details about maven site:<br />
+<a href="https://maven.apache.org/guides/mini/guide-site.html">https://maven.apache.org/guides/mini/guide-site.html</a><br />
+<a href="https://maven.apache.org/plugins/maven-site-plugin/">Maven Site Plugin Documentation</a><br />
+<br />
+See this page for more details on how to install and configure:<br />
+<a href="/tutorials/tools/vsftpd.html">vsftpd (FTP server)</a><br />
+<a href="/tutorials/tools/httpd.html">Apache HTTP Server</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Generating a site</span>
+<div class="tutorialSectionTextDiv1">
+Update the pom.xml file and add the <b>maven-site-plugin</b> plugin with the latest stable version:
+<pre class="xml-code">
+&lt;properties&gt;
+    &lt;maven.compiler.source&gt;11&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;11&lt;/maven.compiler.target&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+&lt;/properties&gt;
+
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+            &lt;version&gt;4.0.0-M13&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;locales&gt;en&lt;/locales&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+
+&lt;reporting&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-project-info-reports-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.6.2&lt;/version&gt;
+            &lt;reportSets&gt;
+                &lt;reportSet&gt;
+                    &lt;reports&gt;
+                        &lt;report&gt;index&lt;/report&gt;
+                        &lt;report&gt;summary&lt;/report&gt;
+                        &lt;report&gt;dependencies&lt;/report&gt;
+                        &lt;report&gt;dependency-info&lt;/report&gt;
+                        &lt;report&gt;dependency-management&lt;/report&gt;
+                        &lt;report&gt;plugin-management&lt;/report&gt;
+                        &lt;report&gt;plugins&lt;/report&gt;
+                        &lt;report&gt;team&lt;/report&gt;
+                        &lt;report&gt;scm&lt;/report&gt;
+                        &lt;report&gt;issue-management&lt;/report&gt;
+                        &lt;report&gt;licenses&lt;/report&gt;
+                    &lt;/reports&gt;
+                &lt;/reportSet&gt;
+            &lt;/reportSets&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/reporting&gt;</pre>
+To generate the site:<br />
+<pre class="sh-code">
+$ mvn clean site</pre>
+By default, the resulting site will be in "<b>target/site/</b>" folder:<br />
+<pre class="sh-code">
+$ ls -1 target/site/</pre>
+<pre class="text-code">
+index.html
+project-info.html
+dependencies.html
+plugins.html
+css/
+images/
+...</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Deploying a site (FTP Server)</span>
+<div class="tutorialSectionTextDiv1">
+First let create the folder "<b>maven-sites</b>" where the site will be created:<br />
+<pre class="sh-code">
+$ sudo mkdir /srv/ftp/maven-sites
+$ sudo chmod -R 775 /srv/ftp/maven-sites/
+$ sudo chown -R mtitek:ftp /srv/ftp/maven-sites/</pre>
+You should replace <b>mtitek</b> with your actual user name.<br />
+<br />
+Modify the "<b>settings.xml</b>" file to include the FTP server configuration:<br />
+<pre class="xml-code">
+&lt;servers&gt;
+    &lt;server&gt;
+        &lt;id&gt;ftpServer&lt;/id&gt;
+        &lt;username&gt;admin1&lt;/username&gt;
+        &lt;password&gt;{encrypted_password}&lt;/password&gt;
+    &lt;/server&gt;
+&lt;/servers&gt;</pre>
+Modify the "<b>pom.xml</b>" file of your project to include the "<b>site</b>" configuration:<br />
+<pre class="xml-code">
+&lt;distributionManagement&gt;
+    &lt;site&gt;
+        &lt;id&gt;ftpServer&lt;/id&gt;
+        &lt;url&gt;ftp://admin1@localhost/srv/ftp/maven-sites/mtitek-svn-test-a&lt;/url&gt;
+    &lt;/site&gt;
+&lt;/distributionManagement&gt;</pre>
+Modify the "<b>pom.xml</b>" file to include the "<b>wagon-ftp</b>" extension:<br />
+<pre class="xml-code">
+&lt;build&gt;
+    &lt;extensions&gt;
+        &lt;extension&gt;
+            &lt;groupId&gt;org.apache.maven.wagon&lt;/groupId&gt;
+            &lt;artifactId&gt;wagon-ftp&lt;/artifactId&gt;
+            &lt;version&gt;3.5.3&lt;/version&gt;
+        &lt;/extension&gt;
+    &lt;/extensions&gt;
+&lt;/build&gt;</pre>
+Generating and deploying the Site:<br />
+<pre class="sh-code">
+$ mvn clean site-deploy</pre>
+HTTP server: Creating a soft link to the site folder:<br />
+<pre class="sh-code">
+$ sudo ln -s /srv/ftp/maven-sites /var/www/html/maven-sites</pre>
+You can use the browser to access the generated site: http://localhost/maven-sites/your-project-name/<br />
+<br />
+<img alt="HTTP - Maven site" src="img/maven-site-http.png" width="700" />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Javadoc Reports</span>
+<div class="tutorialSectionTextDiv1">
+To generate javadoc reports, you need to add Maven Javadoc Plugin to your pom.xml file:<br />
+<pre class="xml-code">
+&lt;reporting&gt;
+    &lt;plugins&gt;
+        &lt;!-- maven-project-info-reports-plugin --&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-javadoc-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.6.3&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;doclint&gt;none&lt;/doclint&gt;
+                &lt;failOnError&gt;false&lt;/failOnError&gt;
+                &lt;quiet&gt;true&lt;/quiet&gt;
+                &lt;source&gt;${maven.compiler.source}&lt;/source&gt;
+                &lt;additionalJOptions&gt;
+                    &lt;additionalJOption&gt;-Xdoclint:none&lt;/additionalJOption&gt;
+                &lt;/additionalJOptions&gt;
+            &lt;/configuration&gt;
+            &lt;reportSets&gt;
+                &lt;reportSet&gt;
+                    &lt;reports&gt;
+                        &lt;report&gt;javadoc&lt;/report&gt;
+                        &lt;report&gt;test-javadoc&lt;/report&gt;
+                    &lt;/reports&gt;
+                &lt;/reportSet&gt;
+            &lt;/reportSets&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/reporting&gt;</pre>
+To generate the reports:<br />
+<pre class="sh-code">
+$ mvn clean site</pre>
+By default, the resulting javadoc will be in the folders "<b>target/site/apidocs/</b>" and "<b>target/site/testapidocs/</b>":<br />
+<pre class="sh-code">
+$ ls -1 target/site/apidocs/</pre>
+<pre class="text-code">
+index.html
+allclasses-index.html
+allpackages-index.html
+overview-tree.html
+...</pre>
+<pre class="sh-code">
+$ ls -1 target/site/testapidocs/</pre>
+<pre class="text-code">
+index.html
+allclasses-index.html
+allpackages-index.html
+...</pre>
+Reports: JavaDoc - Unit Test - Code Quality:<br />
+<img alt="Reports: JavaDoc - Unit Test - Code Quality" src="img/javadoc-test-bugs-reports.png" width="700" />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Unit Test Reports</span>
+<div class="tutorialSectionTextDiv1">
+To generate unit test reports, you need to add Maven Surefire Report Plugin to your pom.xml file:<br />
+<pre class="xml-code">
+&lt;reporting&gt;
+    &lt;plugins&gt;
+        &lt;!-- maven-project-info-reports-plugin --&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-surefire-report-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.2.5&lt;/version&gt;
+            &lt;reportSets&gt;
+                &lt;reportSet&gt;
+                    &lt;reports&gt;
+                        &lt;report&gt;report&lt;/report&gt;
+                        &lt;report&gt;failsafe-report&lt;/report&gt;
+                    &lt;/reports&gt;
+                &lt;/reportSet&gt;
+            &lt;/reportSets&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/reporting&gt;</pre>
+<b>Note:</b> This plugin also generates integration test reports if you're using the Failsafe plugin.<br />
+<br />
+To generate the reports:<br />
+<pre class="sh-code">
+$ mvn clean test site</pre>
+By default, the resulting unit test reports will be in:<br />
+- "<b>target/site/surefire-report.html</b>" (unit tests)<br />
+- "<b>target/site/failsafe-report.html</b>" (integration tests)<br />
+<br />
+See screenshot above (Reports: JavaDoc - Unit Test - Code Quality).<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Code Coverage Reports</span>
+<div class="tutorialSectionTextDiv1">
+JaCoCo is a code coverage tool that provides a measurement of how much source code was covered by unit tests.<br />
+<br />
+To generate code coverage reports, you need to add JaCoCo Plugin to your pom.xml file:<br />
+<pre class="xml-code">
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;!-- maven-site-plugin --&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+            &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;0.8.11&lt;/version&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;jacoco-prepare-agent&lt;/id&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;prepare-agent&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;jacoco-prepare-agent-integration&lt;/id&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;prepare-agent-integration&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;jacoco-report&lt;/id&gt;
+                    &lt;phase&gt;test&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;report&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;jacoco-integration-report&lt;/id&gt;
+                    &lt;phase&gt;post-integration-test&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;report-integration&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;jacoco-check&lt;/id&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;check&lt;/goal&gt;
+                    &lt;/goals&gt;
+                    &lt;configuration&gt;
+                        &lt;rules&gt;
+                            &lt;rule&gt;
+                                &lt;element&gt;BUNDLE&lt;/element&gt;
+                                &lt;limits&gt;
+                                    &lt;limit&gt;
+                                        &lt;counter&gt;INSTRUCTION&lt;/counter&gt;
+                                        &lt;value&gt;COVEREDRATIO&lt;/value&gt;
+                                        &lt;minimum&gt;0.80&lt;/minimum&gt;
+                                    &lt;/limit&gt;
+                                &lt;/limits&gt;
+                            &lt;/rule&gt;
+                        &lt;/rules&gt;
+                    &lt;/configuration&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+
+&lt;reporting&gt;
+    &lt;plugins&gt;
+        &lt;!-- maven-project-info-reports-plugin --&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+            &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;0.8.11&lt;/version&gt;
+            &lt;reportSets&gt;
+                &lt;reportSet&gt;
+                    &lt;reports&gt;
+                        &lt;report&gt;report&lt;/report&gt;
+                    &lt;/reports&gt;
+                &lt;/reportSet&gt;
+            &lt;/reportSets&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/reporting&gt;</pre>
+To generate the reports:<br />
+<pre class="sh-code">
+$ mvn clean test site</pre>
+By default, the resulting code coverage reports will be in the folder "<b>target/site/jacoco/</b>":<br />
+<pre class="sh-code">
+$ ls -1 target/site/jacoco/</pre>
+<pre class="text-code">
+index.html
+jacoco.xml
+jacoco.csv
+jacoco-resources/
+...</pre>
+<b>Tip:</b> You can set coverage thresholds to fail the build if coverage is too low, as shown in the configuration above (80% minimum).<br />
+<br />
+<img alt="Reports: JaCoCo Code Coverage" src="img/jacoco-reports.png" width="700" />
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">SpotBugs Report</span>
+<div class="tutorialSectionTextDiv1">
+SpotBugs is a static code analysis tool that checks for bugs in the source code. It's the successor to FindBugs.<br />
+<br />
+To generate bug reports, you need to add SpotBugs Plugin to your pom.xml file:<br />
+<pre class="xml-code">
+&lt;reporting&gt;
+    &lt;plugins&gt;
+        &lt;!-- maven-project-info-reports-plugin --&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;com.github.spotbugs&lt;/groupId&gt;
+            &lt;artifactId&gt;spotbugs-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;4.8.3.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;effort&gt;Max&lt;/effort&gt;
+                &lt;threshold&gt;Low&lt;/threshold&gt;
+                &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+                &lt;spotbugsXmlOutputDirectory&gt;${project.build.directory}/spotbugs&lt;/spotbugsXmlOutputDirectory&gt;
+                &lt;excludeFilterFile&gt;spotbugs-exclude.xml&lt;/excludeFilterFile&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/reporting&gt;</pre>
+<b>Optional:</b> Create a <b>spotbugs-exclude.xml</b> file in your project root to exclude certain bug patterns:<br />
+<pre class="xml-code">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;FindBugsFilter&gt;
+    &lt;Match&gt;
+        &lt;Bug pattern="DM_EXIT"/&gt;
+    &lt;/Match&gt;
+    &lt;Match&gt;
+        &lt;Class name="~.*\.Test.*"/&gt;
+    &lt;/Match&gt;
+&lt;/FindBugsFilter&gt;</pre>
+To generate the reports:<br />
+<pre class="sh-code">
+$ mvn clean compile site</pre>
+By default, the resulting bug report will be in "<b>target/site/spotbugs.html</b>" file.<br />
+<br />
+See screenshot above (Reports: JavaDoc - Unit Test - Code Quality).<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

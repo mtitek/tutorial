@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven Source Plugin Guide: Generate Source JARs in Your Build | MTI TEK</title>
+<meta name="description" content="Learn how to use the Maven Source Plugin to generate source JARs for your project. Includes usage examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven Source Plugin Guide: Generate Source JARs in Your Build | MTI TEK" />
+<meta property="og:description" content="Learn how to use the Maven Source Plugin to generate source JARs for your project. Includes usage examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-plugin-source.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven Source Plugin Guide: Generate Source JARs in Your Build | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use the Maven Source Plugin to generate source JARs for your project. Includes usage examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-plugin-source.html",
+        "description": "Learn how to use the Maven Source Plugin to generate source JARs for your project. Includes usage examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-plugin-source.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven Source Plugin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Maven Source Plugin</a></li>
+<li><a href="#sec_id_2">The help goal</a></li>
+<li><a href="#sec_id_3">Example: Using source plugin</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Maven Source Plugin</span>
+<div class="tutorialSectionTextDiv1">
+Creates a JAR archive of the source files of the current project. This plugin is essential for generating source JARs that can be used by IDEs for debugging and code navigation, and is often required when publishing artifacts to Maven Central.<br />
+<br />
+<b>Plugin coordinates</b>:<br />
+<ul class="ul_square_1">
+<li><b>Group Id</b>: org.apache.maven.plugins<br /></li>
+<li><b>Artifact Id</b>: maven-source-plugin<br /></li>
+<li><b>Version</b>: 3.3.1<br /></li>
+</ul>
+<br />
+<b>Plugin Prefix</b>: source<br />
+<br />
+The <b>source</b> plugin has the following goals:<br />
+<ul class="ul_square_1">
+<li>
+<b>help</b>:
+Displays help information about the maven-source-plugin.<br />
+<br /></li>
+<li>
+<b>jar</b>:
+Bundles all the sources into a JAR archive. The JAR file is created in the target directory with the classifier "sources".<br />
+<br /></li>
+<li>
+<b>test-jar</b>:
+Bundles all the test sources into a JAR archive. The JAR file is created with the classifier "test-sources".<br />
+<br /></li>
+<li>
+<b>jar-no-fork</b>:
+Bundles all the sources into a JAR archive. This goal does not fork the build and is suitable for attaching to the build lifecycle. It is recommended for most use cases.<br />
+<br /></li>
+<li>
+<b>test-jar-no-fork</b>:
+Bundles all the test sources into a JAR archive. This goal does not fork the build and is suitable for attaching to the build lifecycle.<br />
+<br /></li>
+<li>
+<b>aggregate</b>:
+Aggregates sources for all modules in an aggregator project. This goal is useful for multi-module Maven projects.<br />
+<br /></li>
+<li>
+<b>generated-test-jar</b>:
+Bundles all the generated test sources into a JAR archive. This includes sources generated during the build process.<br />
+<br /></li>
+</ul>
+Command line usage examples:<br />
+<pre class="sh-code">
+# Generate source JAR for current project
+$ mvn source:jar
+
+# Generate test source JAR
+$ mvn source:test-jar
+
+# Generate both during package phase
+$ mvn clean package
+
+# Generate source JAR without forking
+$ mvn source:jar-no-fork</pre>
+When configured properly, the plugin will generate files like:<br />
+<ul class="ul_square_1">
+<li><b>my-project-1.0.0-sources.jar</b> - Contains main source files<br /></li>
+<li><b>my-project-1.0.0-test-sources.jar</b> - Contains test source files<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The help goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>help</b> goal provides general information about the <b>source</b> plugin, including available goals and their parameters.<br />
+<br />
+Use the <b>detail</b> parameter to get detailed information about all goals and their configuration options:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn source:help
+
+# Display detailed information about all goals and parameters
+$ mvn source:help -Ddetail=true</pre>
+If you need to use the plugin's full coordinates instead of its prefix, you can do that as follows:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn org.apache.maven.plugins:maven-source-plugin:3.3.1:help
+
+# Display detailed information about all goals and parameters
+$ mvn org.apache.maven.plugins:maven-source-plugin:3.3.1:help -Ddetail=true</pre>
+You can also use the Maven <b>help</b> plugin to describe the <b>source</b> plugin:<br />
+<pre class="sh-code">
+# Basic plugin description using help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-source-plugin:3.3.1"
+
+# Detailed plugin description with all parameters
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-source-plugin:3.3.1" -Ddetail=true</pre>
+To get specific information about a goal, use the <b>goal</b> parameter:<br />
+<pre class="sh-code">
+# Help for the 'jar' goal
+$ mvn org.apache.maven.plugins:maven-source-plugin:3.3.1:help -Dgoal=jar -Ddetail=true
+
+# Help for the 'jar' goal using the help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-source-plugin:3.3.1" -Dgoal=jar -Ddetail=true</pre>
+<b>Note</b>: When using the plugin's help goal directly, you don't need to specify the version if the plugin is already configured in your POM or if you want to use the latest version.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Using source goals in the project pom.xml file</span>
+<div class="tutorialSectionTextDiv1">
+Adjust your pom.xml file with the following configuration to automatically generate source JARs during the package phase:<br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.3.1&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;attach-sources&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;jar-no-fork&lt;/goal&gt;
+                &lt;goal&gt;test-jar-no-fork&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+<b>Note:</b> Using <b>jar-no-fork</b> and <b>test-jar-no-fork</b> goals is recommended over <b>jar</b> and <b>test-jar</b> as they don't fork the build process, making the build more efficient.<br />
+<br />
+For a simpler configuration that only generates the main source JAR:<br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.3.1&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;attach-sources&lt;/id&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;jar&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

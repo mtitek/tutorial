@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to Install and Configure Apache Maven on Your System | MTI TEK</title>
+<meta name="description" content="Step-by-step guide to install and configure Apache Maven, including setting up the .m2 directory." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to Install and Configure Apache Maven on Your System | MTI TEK" />
+<meta property="og:description" content="Step-by-step guide to install and configure Apache Maven, including setting up the .m2 directory." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/installation.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to Install and Configure Apache Maven on Your System | MTI TEK" />
+<meta name="twitter:description" content="Step-by-step guide to install and configure Apache Maven, including setting up the .m2 directory." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/installation.html",
+        "description": "Step-by-step guide to install and configure Apache Maven, including setting up the .m2 directory.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/installation.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Installing and Configuring Maven</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">References</a></li>
+<li><a href="#sec_id_2">Install Maven</a></li>
+<li><a href="#sec_id_3">Configure Maven</a></li>
+<li><a href="#sec_id_4">Configure the ".m2" Directory</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">References</span>
+<div class="tutorialSectionTextDiv1">
+To use Maven, make sure that Java is properly installed and configured.<br />
+See the following page to install and configure Java:
+<a href="/tutorials/java/ubuntu_java_setup.html">Install Java (Ubuntu)</a><br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Install Maven</span>
+<div class="tutorialSectionTextDiv1">
+You can download Maven from the Apache Maven Project website:
+<a href="http://maven.apache.org/download.html">http://maven.apache.org/download.html</a><br />
+<br />
+Download the file: <b>apache-maven-3.9.9-bin.tar.gz</b><br />
+<br />
+Extract the contents of this file to a location of your choice: <b>/opt/apache-maven-3.9.9</b><br />
+<pre class="sh-code">
+$ tar -xf ~/Downloads/apache-maven-3.9.9-bin.tar.gz -C /opt/
+$ chmod -R 755 /opt/apache-maven-3.9.9/
+$ sudo chown -R mtitek:mtitek /opt/apache-maven-3.9.9/
+</pre>
+Create a symbolic link:<br />
+<pre class="sh-code">
+$ sudo ln -s /opt/apache-maven-3.9.9/ /opt/apache-maven
+$ sudo chown -R mtitek:mtitek /opt/apache-maven
+</pre>
+You should replace <b>mtitek:mtitek</b> with your actual user/group names.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Configure Maven</span>
+<div class="tutorialSectionTextDiv1">
+This section refers to the <b>MAVEN_HOME</b> environment variable.<br />
+This variable contains the path to the Apache Maven binary distribution (where Maven is installed).<br />
+The environment variable is optional but it's recommended,
+to simplify integration with applications that use it to locate the default Maven installation.<br />
+<br />
+You can add the "<b>${MAVEN_HOME}/bin</b>" directory
+to your <b>PATH</b> environment variable.<br />
+<br />
+You can also configure the <b>M2_REPO</b> environment variable
+to specify an alternative path to the <b>repository</b> folder
+(default is <b>"${user.home}/.m2/repository"</b>).<br />
+This path can also be configured in the user or global "<b>settings.xml</b>" file
+by setting the value of the "<b>localRepository</b>" element.<br />
+<br />
+The <b>MAVEN_OPTS</b> environment variable
+allows you to set options (e.g., initial heap size:<b>-Xms</b>, maximum heap size:<b>-Xmx</b>)
+used to start the JVM running Maven
+and can be used to provide additional parameters.<br />
+See <a href="http://docs.oracle.com/en/java/javase/23/docs/specs/man/java.html">http://docs.oracle.com/en/java/javase/23/docs/specs/man/java.html</a><br />
+<br />
+Environment variables (Linux):<br />
+<pre class="sh-code">
+$ vi .bash_profile
+</pre>
+<pre class="sh-code">
+export MAVEN_HOME="/opt/apache-maven"
+export M2_REPO="$HOME/.m2/repository"
+export MAVEN_OPTS="-Xms512m -Xmx1024m"
+
+export PATH="${MAVEN_HOME}/bin:$PATH"
+</pre>
+<b>Note:</b> Depending on your system, you may need to edit <b>.bashrc</b>
+or <b>.profile</b> instead of <b>.bash_profile</b>.<br />
+<br />
+Run "<b>mvn -v</b>" to verify that Maven is correctly installed:<br />
+<pre class="sh-code">
+$ mvn -v
+</pre>
+<pre class="text-code">
+Apache Maven 3.9.9
+Maven home: /opt/apache-maven
+Java version: 23.0.2, vendor: Oracle Corporation, runtime: /opt/jdk-23.0.2
+...
+</pre>
+<b>Note</b>:
+To add an environment variable on Windows:<br />
+<ul class="ul_square_1">
+<li>
+Right-click on "<b>This PC</b>".
+</li>
+<li>
+Click on "<b>Properties</b>".
+</li>
+<li>
+Click the "<b>Advanced</b>" tab.
+</li>
+<li>
+Click the "<b>Environment Variables</b>" button.
+</li>
+<li>
+Add the <b>MAVEN_HOME</b> environment variable
+with the path where Maven is installed.
+</li>
+<li>
+Select the "<b>Path</b>" system variable and click "<b>Edit</b>".
+</li>
+<li>
+Add the path: <b>${MAVEN_HOME}/bin</b>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Configure the ".m2" Directory</span>
+<div class="tutorialSectionTextDiv1">
+The "<b>.m2</b>" directory is, by default,
+located in the <b>${user.home}</b> directory (<b>${user.home}</b>).<br />
+<br />
+<b>Note:</b>
+The <b>${user.home}</b> variable
+refers to the user's home directory path.<br />
+For example, on my VM this variable corresponds to: "<b>/home/mtitek</b>".<br />
+<br />
+By default, the "<b>.m2</b>" directory may contain:<br />
+<ul class="ul_square_1">
+<li>
+The "<b>settings.xml</b>" file: this file contains user-specific configurations.<br />
+It allows you to customize the global "<b>${MAVEN_HOME}/conf/settings.xml</b>" file.<br />
+See more information about this file: <a href="settings-xml.html">settings.xml</a><br />
+<br />
+You can copy the global "<b>${MAVEN_HOME}/conf/settings.xml</b>" file
+to the "<b>${user.home}/.m2/</b>" directory
+and adjust it as needed to configure your user-specific settings.<br />
+<br />
+</li>
+<li>
+The "<b>repository</b>" folder: this folder contains the components installed locally by Maven,
+as well as all dependencies (and plugins) downloaded from remote Maven repositories.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

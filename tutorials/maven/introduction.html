@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Getting Started with Maven | MTI TEK</title>
+<meta name="description" content="Learn how to create and configure a Maven project. Understand pom.xml, plugin goals, lifecycle phases." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Getting Started with Maven | MTI TEK" />
+<meta property="og:description" content="Learn how to create and configure a Maven project. Understand pom.xml, plugin goals, lifecycle phases." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/introduction.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Getting Started with Maven | MTI TEK" />
+<meta name="twitter:description" content="Learn how to create and configure a Maven project. Understand pom.xml, plugin goals, lifecycle phases." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/introduction.html",
+        "description": "Learn how to create and configure a Maven project. Understand pom.xml, plugin goals, lifecycle phases.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/introduction.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Getting Started with Maven</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction</a></li>
+<li><a href="#sec_id_2">Creating a Maven Project</a></li>
+<li><a href="#sec_id_3">The Configuration File of a Maven Project: "pom.xml"</a></li>
+<li><a href="#sec_id_4">Maven Project Attributes</a></li>
+<li><a href="#sec_id_5">Variables</a></li>
+<li><a href="#sec_id_6">Default Configuration of a Maven Project</a></li>
+<li><a href="#sec_id_7">Maven Plugin Goals</a></li>
+<li><a href="#sec_id_8">Executing a Plugin Goal in Maven</a></li>
+<li><a href="#sec_id_9">Executing Multiple Goals</a></li>
+<li><a href="#sec_id_10">Maven Build Lifecycle Phases</a></li>
+<li><a href="#sec_id_11">Goals Associated by Default with a Phase</a></li>
+<li><a href="#sec_id_12">Packaging: Goals Associated by Default with a Phase</a></li>
+<li><a href="#sec_id_13">Associating Goals with a Phase</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction</span>
+<div class="tutorialSectionTextDiv1">
+See the following page for a detailed description of Maven:
+<a href="http://maven.apache.org/what-is-maven.html">http://maven.apache.org/what-is-maven.html</a><br />
+<br />
+See the following page to install and configure Maven:
+<a href="installation.html">Installing and Configuring Maven</a><br />
+<br />
+Maven is a project management tool based on the concept of a "Project Object Model" (POM).<br />
+Maven allows you to build a project, generate reports, generate documentation, and more.<br />
+<br />
+Maven is based on the following concepts:<br />
+<ul class="ul_square_1">
+<li>Standardized directory structure (source, test, resources, ...)</li>
+<li>Declarative dependency management (pom.xml)</li>
+<li>Plugins</li>
+<li>Archetypes (templates)</li>
+</ul>
+<br />
+Integration with external services:<br />
+<ul class="ul_square_1">
+<li>Maven SCM Plugin (source code management)</li>
+<li>Maven Release Plugin</li>
+<li>Maven Wagon Plugin (HTTP, FTP, ...)</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Creating a Maven Project</span>
+<div class="tutorialSectionTextDiv1">
+To create a Maven project, you can use the "<b>mvn archetype:generate</b>" command.<br />
+It uses the "archetype" plugin and the "generate" goal.<br />
+<pre class="sh-code">
+$ mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.maven.archetypes \
+  -DarchetypeArtifactId=maven-archetype-quickstart \
+  -DarchetypeVersion=1.5 \
+  -DgroupId=mtitek.maven.samples \
+  -DartifactId=mtitek-maven-samples \
+  -Dpackage=mtitek.maven.samples \
+  -Dversion=1.0.0-SNAPSHOT \
+  -DinteractiveMode=false</pre>
+<b>Notes:</b><br />
+- On Linux, the character "<b>\</b>" allows you to write a command over multiple lines.<br />
+- On Windows, you should use the character "<b>^</b>".<br />
+<br />
+If you run the "<b>mvn archetype:generate</b>" command, a list of available archetypes (project templates) will be displayed:<br />
+<pre class="sh-code">
+$ mvn archetype:generate</pre>
+<pre class="sh-code">
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------&lt; org.apache.maven:standalone-pom &gt;-------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] &gt;&gt;&gt; archetype:3.4.0:generate (default-cli) &gt; generate-sources @ standalone-pom &gt;&gt;&gt;
+[INFO]
+[INFO] &lt;&lt;&lt; archetype:3.4.0:generate (default-cli) &lt; generate-sources @ standalone-pom &lt;&lt;&lt;
+[INFO]
+[INFO]
+[INFO] --- archetype:3.4.0:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Interactive mode
+[INFO] No archetype defined. Using maven-archetype-quickstart (org.apache.maven.archetypes:maven-archetype-quickstart:1.0)
+Choose archetype:
+1: remote -&gt; am.ik.archetype:elm-spring-boot-blank-archetype (Blank multi project for Spring Boot + Elm)
+2: remote -&gt; am.ik.archetype:graalvm-blank-archetype (Blank project for GraalVM)
+...
+3562: remote -&gt; za.co.absa.hyperdrive:component-archetype_2.11 (-)
+3563: remote -&gt; za.co.absa.hyperdrive:component-archetype_2.12 (-)
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 2253:</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">The Configuration File of a Maven Project: "pom.xml"</span>
+<div class="tutorialSectionTextDiv1">
+Each Maven project comes with a configuration file named "<b>pom.xml</b>", which contains the project's properties:
+its identifier, group ID, version, packaging type, dependencies, build options, and more.<br />
+<br />
+This file is located at the root of the project. Here is an example of the "<b>pom.xml</b>" file for the "<b>mtitek-maven-samples</b>" project:<br />
+<pre class="xml-code">
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;mtitek.maven.samples&lt;/groupId&gt;
+    &lt;artifactId&gt;mtitek-maven-samples&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;!-- &lt;packaging&gt;jar&lt;/packaging&gt; --&gt; &lt;!-- if packaging is not specified, the default value is jar --&gt;
+&lt;/project&gt;</pre>
+Maven commands are always executed on the effective version of the "<b>pom.xml</b>" file.<br />
+<br />
+The final pom.xml file is the result of merging:
+<ul class="ul_square_1">
+<li>the project's pom.xml file,<br /></li>
+<li>the parent projects' pom.xml files,<br /></li>
+<li>and the super POM.<br /></li>
+</ul>
+<br />
+In addition to the values defined in the project's own properties, the final POM inherits:
+<ul class="ul_square_1">
+<li>properties from parent projects,<br /></li>
+<li>properties from the super POM,<br /></li>
+<li>properties from Maven's configuration files.<br /></li>
+</ul>
+<br />
+To display the effective version of the "<b>pom.xml</b>" file, you can run the <b>mvn help:effective-pom</b>
+command from the project folder.<br />
+<br />
+In Eclipse (m2e), simply open the project's "<b>pom.xml</b>" file and click the "<b>Effective POM</b>" tab.<br />
+<br />
+<b>Note</b>:
+The Maven super POM (/org/apache/maven/model/pom-4.0.0.xml) is located within the JAR file:
+<b>${MAVEN_HOME}/lib/maven-model-builder-3.9.9.jar</b><br />
+<br />
+See the file: <a href="data/pom-4.0.0.xml">pom-4.0.0.xml</a>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Maven Project Attributes</span>
+<div class="tutorialSectionTextDiv1">
+A Maven project is identified by the following four attributes:
+<b>groupId</b>,
+<b>artifactId</b>,
+<b>version</b>,
+<b>packaging</b><br />
+<br />
+To modify these attributes, you need to edit them in the "<b>pom.xml</b>" file of your Maven project.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+<b>groupId</b><br />
+A Maven project belongs to a group identified by a unique identifier (<b>groupId</b>).<br />
+A group can contain multiple projects.<br />
+The group identifier should typically be a sequence of words separated by dots.<br />
+The <b>groupId</b> can consist of the company's domain name followed by a series of words identifying a set of projects.<br />
+<br />
+For example: <b>org.apache.maven.plugins</b><br />
+<br />
+The words in the group identifier correspond to directories created in the folder: "<b>${user.home}/.m2/repository/</b>"<br />
+<br />
+For example: <b>${user.home}/.m2/repository/org/apache/maven/plugins</b><br />
+<pre class="text-code">
+|+ ${user.home}
+   |+ .m2
+      |+ repository
+         |+ org
+            |+ apache
+               |+ maven
+                  |+ plugins</pre>
+</li>
+<li>
+<b>artifactId</b><br />
+A project is identified by an identifier (<b>artifactId</b>) unique within a group of projects.<br />
+Typically, the project identifier is a sequence of words separated by the "<b>-</b>" character.<br />
+These words can correspond to part of the words in the group identifier, plus words specific to the project.<br />
+<br />
+For example: <b>maven-help-plugin</b><br />
+<br />
+The project identifier corresponds to a directory created in the group folder: "<b>${user.home}/.m2/repository/[GROUP_PATH]/</b>"<br />
+<br />
+For example: <b>${user.home}/.m2/repository/org/apache/maven/plugins/maven-help-plugin</b><br />
+<pre class="text-code">
+|+ ${user.home}
+   |+ .m2
+      |+ repository
+         |+ org
+            |+ apache
+               |+ maven
+                  |+ plugins
+                     |+ maven-help-plugin</pre>
+</li>
+<li>
+<b>version</b><br />
+A project can have multiple versions.<br />
+<br />
+A project's version is typically defined as follows:
+<b>MajorVersion.MinorVersion.IncrementalVersion-qualifier</b><br />
+<br />
+The values of <b>MajorVersion</b>,
+<b>MinorVersion</b>,
+and <b>IncrementalVersion</b>
+are numeric.<br />
+The value of <b>qualifier</b> is a string.<br />
+<br />
+Examples: 1, 1.0, 1.0.1, 1.0.1-SNAPSHOT, 1.0.1-23, 1.0.1-beta, 1.0.1-beta-23<br />
+<br />
+The version that Maven treats as the most recent is the one with the highest <b>MajorVersion</b> value.
+If those are the same, it looks at the highest <b>MinorVersion</b>.
+If that's also the same, it checks the <b>IncrementalVersion</b>.
+If all of those match, Maven finally compares the <b>qualifier</b> values.
+Since qualifiers are just strings, it’s important to keep their format consistent across versions—
+otherwise, Maven might mistakenly pick an older version.<br />
+<br />
+Note that versions with a <b>qualifier</b>
+are considered older than the same version without a <b>qualifier</b>.<br />
+<br />
+Also note that versions not following Maven's standard will be compared as strings.
+This can result in Maven selecting an older version instead of a newer one.
+It can also affect the behavior of some Maven plugins (release, version, etc.).<br />
+<br />
+Adding <b>SNAPSHOT</b> to a version allows Maven to assign a timestamp to the project's components when they are deployed.
+Thus, when referencing a component as a dependency, Maven will fetch the version with the most recent timestamp.<br />
+<br />
+Each new version of the project corresponds to a directory created in the folder: "<b>${user.home}/.m2/repository/[GROUP_PATH]/[ARTIFACT_ID]/</b>"<br />
+For example: <b>${user.home}/.m2/repository/org/apache/maven/plugins/maven-help-plugin/2.1.1</b><br />
+<pre class="text-code">
+|+ ${user.home}
+   |+ .m2
+      |+ repository
+         |+ org
+            |+ apache
+               |+ maven
+                  |+ plugins
+                     |+ maven-help-plugin
+                        |+ 2.1.1</pre>
+</li>
+<li>
+<b>packaging</b><br />
+The <b>packaging</b> attribute defines the project's type and specifies how it will be built.<br />
+The value of this attribute can be:
+"<b>jar</b>" (default), "<b>war</b>", "<b>ejb</b>", "<b>ear</b>", "<b>pom</b>", "<b>maven-plugin</b>", ...<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Variables</span>
+<div class="tutorialSectionTextDiv1">
+Maven allows the use of predefined or custom variables within the pom.xml file.<br />
+If a variable reference (either a POM model element or a property) is defined in a child pom.xml file,
+its value will override the value defined in a parent project.<br />
+<br />
+Any POM model element with a simple value can be referenced as a variable.<br />
+For example, to use the <b>&lt;project&gt;&lt;version&gt;</b> element as a variable,
+you should reference it as follows: <b>${project.version}</b><br />
+<br />
+To reference properties defined in the <b>settings.xml</b> file,
+you must use the "<b>settings.</b>" prefix
+(for example: <b>${settings.localRepository}</b>).<br />
+<br />
+To reference environment variable values,
+use the "<b>env.</b>" prefix
+(for example: <b>${env.HOME}</b>).<br />
+<br />
+System properties can be referenced directly
+(for example: <b>${user.home}</b>).<br />
+<br />
+You can also directly reference a property defined in the <b>pom.xml</b> file
+(within <b>&lt;properties&gt;</b>) as:
+<b>${property1}</b><br />
+<br />
+Maven provides three predefined variables:<br />
+<ul class="ul_square_1">
+<li>
+<b>project.basedir</b>: The path to the project directory (For example: $HOME/dev/mtitek-maven-samples).<br />
+<br />
+</li>
+<li>
+<b>project.baseUri</b>: The project directory path, represented as a URI (For example: file:$HOME/dev/mtitek-maven-samples/).<br />
+<br />
+</li>
+<li>
+<b>maven.build.timestamp</b>: The (UTC) date and time when the build started.<br />
+<br />
+</li>
+</ul>
+The build timestamp format can be customized by declaring the <b>maven.build.timestamp.format</b> property:<br />
+<pre class="xml-code">
+&lt;project&gt;
+  &lt;properties&gt;
+    &lt;maven.build.timestamp.format&gt;yyyy-MM-dd'T'HH:mm:ss'Z'&lt;/maven.build.timestamp.format&gt; &lt;!-- default value --&gt;
+  &lt;/properties&gt;
+&lt;/project&gt;</pre>
+The date format must follow the syntax defined by SimpleDateFormat.<br />
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Default Configuration of a Maven Project</span>
+<div class="tutorialSectionTextDiv1">
+Here is the default configuration for Maven projects:<br />
+<ul class="ul_square_1">
+<li>
+The <b>source code</b> must be placed in the folder: "<b>${project.basedir}/src/main/java/</b>".<br />
+<br />
+</li>
+<li>
+The <b>unit test source code</b> must be placed in the folder: "<b>${project.basedir}/src/test/java/</b>".<br />
+<br />
+</li>
+<li>
+<b>Resource files</b> must be placed in the folder: "<b>${project.basedir}/src/main/resources/</b>".<br />
+<br />
+</li>
+<li>
+<b>Unit test resource files</b> must be placed in the folder: "<b>${project.basedir}/src/test/resources/</b>".<br />
+<br />
+</li>
+<li>
+Maven generates the project's <b>compiled bytecode</b> in the folder: "<b>${project.basedir}/target/classes/</b>".<br />
+<br />
+</li>
+<li>
+Maven generates the <b>compiled test bytecode</b> in the folder: "<b>${project.basedir}/target/test-classes/</b>".<br />
+<br />
+</li>
+<li>
+Maven generates the packaged project file (<b>.jar</b>, <b>.war</b>, <b>.ear</b>) in the folder: "<b>${project.basedir}/target/</b>".<br />
+<br />
+</li>
+</ul>
+To verify this configuration, you can display the effective version of the "<b>pom.xml</b>" file.<br />
+<br />
+Below is a view of the effective "<b>pom.xml</b>" file of the "<b>mtitek-maven-samples</b>" project:<br />
+<pre class="xml-code">
+&lt;build&gt;
+    &lt;sourceDirectory&gt;$HOME/dev/mtitek-maven-samples/src/main/java&lt;/sourceDirectory&gt;
+    &lt;testSourceDirectory&gt;$HOME/dev/mtitek-maven-samples/src/test/java&lt;/testSourceDirectory&gt;
+
+    &lt;outputDirectory&gt;$HOME/dev/mtitek-maven-samples/target/classes&lt;/outputDirectory&gt;
+    &lt;testOutputDirectory&gt;$HOME/dev/mtitek-maven-samples/target/test-classes&lt;/testOutputDirectory&gt;
+
+    &lt;resources&gt;
+        &lt;resource&gt;
+            &lt;directory&gt;$HOME/dev/mtitek-maven-samples/src/main/resources&lt;/directory&gt;
+        &lt;/resource&gt;
+    &lt;/resources&gt;
+
+    &lt;testResources&gt;
+        &lt;testResource&gt;
+            &lt;directory&gt;$HOME/dev/mtitek-maven-samples/src/test/resources&lt;/directory&gt;
+        &lt;/testResource&gt;
+    &lt;/testResources&gt;
+
+    &lt;directory&gt;$HOME/dev/mtitek-maven-samples/target&lt;/directory&gt;
+
+&lt;!-- ... --&gt;</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">Maven Plugin Goals</span>
+<div class="tutorialSectionTextDiv1">
+Maven provides services (compilation, build, reporting, etc.) using plugins.<br />
+A plugin is a program that implements features grouped into tasks (or units of work).<br />
+In Maven, these tasks are called goals.<br />
+A plugin exposes its goals using the "<b>plugin.xml</b>" file located in the "<b>META-INF\maven</b>" directory of the plugin's JAR file.<br />
+<br />
+For example, the "<b>plugin.xml</b>" file of the "<b>maven-help-plugin-2.1.1</b>" plugin has the following format:<br />
+<pre class="xml-code">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;plugin&gt;
+    &lt;name&gt;Maven Help Plugin&lt;/name&gt;
+
+    &lt;description&gt;...&lt;/description&gt;
+
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-help-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.1.1&lt;/version&gt;
+
+    &lt;goalPrefix&gt;help&lt;/goalPrefix&gt;
+
+    &lt;!-- ... --&gt;
+
+    &lt;mojos&gt;
+        &lt;mojo&gt;
+            &lt;goal&gt;describe&lt;/goal&gt;
+
+            &lt;!-- ... --&gt;
+
+            &lt;parameters&gt;
+                &lt;parameter&gt;
+                    &lt;name&gt;artifactId&lt;/name&gt;
+                    &lt;type&gt;java.lang.String&lt;/type&gt;
+                    &lt;required&gt;false&lt;/required&gt;
+
+                    &lt;!-- ... --&gt;
+                &lt;/parameter&gt;
+
+                &lt;!-- ... --&gt;
+            &lt;/parameters&gt;
+
+            &lt;configuration&gt;
+                &lt;artifactId implementation="java.lang.String"&gt;${artifactId}&lt;/artifactId&gt;
+
+                &lt;!-- ... --&gt;
+            &lt;/configuration&gt;
+
+            &lt;!-- ... --&gt;
+        &lt;/mojo&gt;
+
+        &lt;!-- ... --&gt;
+    &lt;/mojos&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- ... --&gt;
+    &lt;/dependencies&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Executing a Plugin Goal in Maven</span>
+<div class="tutorialSectionTextDiv1">
+A plugin specifies a prefix (or alias) using the "<b>goalPrefix</b>" element.<br />
+For example, the "<b>maven-help-plugin</b>" uses the following prefix: <b>&lt;goalPrefix&gt;help&lt;/goalPrefix&gt;</b><br />
+<br />
+Maven maintains a list of plugins and their prefixes in the "<b>maven-metadata-central.xml</b>" file.<br />
+There are two copies of this file:<br />
+<ul class="ul_square_1">
+<li>
+One is located in the folder "<b>${user.home}/.m2/repository/org/apache/maven/plugins/</b>", which contains the list of core plugins.<br />
+<br />
+</li>
+<li>
+The other is located in the folder "<b>${user.home}/.m2/repository/org/codehaus/mojo/</b>", which contains the list of non-core plugins.<br />
+<br />
+</li>
+</ul>
+This file has the following format:<br />
+<pre class="xml-code">
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;metadata&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;name&gt;Maven Help Plugin&lt;/name&gt;
+            &lt;artifactId&gt;maven-help-plugin&lt;/artifactId&gt;
+            &lt;prefix&gt;help&lt;/prefix&gt;
+        &lt;/plugin&gt;
+
+        &lt;!-- ... --&gt;
+    &lt;/plugins&gt;
+&lt;/metadata&gt;</pre>
+To execute a plugin goal, you use the plugin prefix followed by the goal name.<br />
+For example, to execute the "<b>help</b>" goal of the "<b>maven-help-plugin</b>"
+(which has the prefix <b>help</b>), use the following syntax:<br />
+<pre class="sh-code">
+$ mvn help:help</pre>
+You can also use the plugin coordinates ("groupId":"artifactId":"version") to execute a goal:<br />
+<pre class="sh-code">
+$ mvn org.apache.maven.plugins:maven-help-plugin:help
+$ mvn org.apache.maven.plugins:maven-help-plugin:3.3.0:help</pre>
+If a project defines multiple executions (with different configurations) for a goal in the pom.xml file,
+you can specify an execution by appending its identifier (<b>id</b>) after the goal name,
+separated by the character '<b>@</b>':<br />
+<pre class="sh-code">
+$ mvn plugin-prefix:plugin-goal@goal-execution-id</pre>
+To pass values to goal parameters, use the syntax "<b>-Dparam_name=param_value</b>":<br />
+<pre class="sh-code">
+$ mvn help:help -Ddetail=true
+$ mvn org.apache.maven.plugins:maven-help-plugin:3.3.0:help -Ddetail=true</pre>
+All writable parameters of the plugin can be initialized in the project's pom.xml file
+in the "<b>&lt;configuration&gt;</b>" section of the plugin:<br />
+<pre class="xml-code">
+...
+&lt;configuration&gt;
+  &lt;detail&gt;true&lt;/detail&gt;
+&lt;/configuration&gt;
+...</pre>
+Parameters that can be initialized either via the command line
+or in the pom.xml file's "<b>&lt;properties&gt;</b>" section
+are those that define a "<b>property</b>" attribute (<b>User property</b>).<br />
+<br />
+For example, the "<b>detail</b>" parameter can be initialized on the command line:<br />
+<pre class="sh-code">
+$ mvn help:help -Ddetail=true</pre>
+<pre class="text-code">
+...
+Available parameters:
+  detail (Default: false)
+  If true, display all settable properties for each goal.
+  User property: detail
+...</pre>
+It can also be initialized in the project's pom.xml file in the "<b>&lt;properties&gt;</b>" section:<br />
+<pre class="xml-code">
+...
+&lt;properties&gt;
+  &lt;detail&gt;true&lt;/detail&gt;
+&lt;/properties&gt;
+...</pre>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">Executing Multiple Goals</span>
+<div class="tutorialSectionTextDiv1">
+In some cases, you may want to group the execution of several goals into a single command line.<br />
+For example, to execute both the "<b>compile</b>" goal of the "<b>compiler</b>" plugin
+and the "<b>jar</b>" goal of the "<b>jar</b>" plugin in one command, use the syntax:
+<b>mvn compiler:compile jar:jar</b><br />
+<br />
+Here is the output of running this command on the "mtitek-maven-samples" project:<br />
+<pre class="text-code">
+[INFO] ------------------------------------------------------------------------
+[INFO] Building mtitek-maven-samples 1.0.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-cli) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-jar-plugin:2.3.2:jar (default-cli) @ mtitek-maven-samples ---
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------</pre>
+You can see that the build process executed:<br />
+<ul class="ul_square_1">
+<li>
+First, the "<b>compile</b>" goal of the "<b>maven-compiler-plugin</b>" (version 2.3.2),<br />
+<br />
+</li>
+<li>
+And then the "<b>jar</b>" goal of the "<b>maven-jar-plugin</b>" (version 2.3.2).<br />
+<br />
+</li>
+</ul>
+The order in which goals are executed depends on their position in the command line.<br />
+The order is important for correct execution, as one goal may depend on the result of another.<br />
+For example, you cannot package a Java project before compiling it.<br />
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">Maven Build Lifecycle Phases</span>
+<div class="tutorialSectionTextDiv1">
+Executing multiple goals in a single command is useful,
+but it can be impractical in scenarios where you need different command lines for each project,
+especially when managing goal-specific parameters.<br />
+<br />
+Maven provides a way to use aliases that correspond to build lifecycles of a Maven project.<br />
+Each lifecycle is made up of several phases, and each phase can include multiple goals.<br />
+<br />
+See the following page for more details on the phases in each lifecycle:
+<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a><br />
+<br />
+Maven defines three built-in lifecycles:<br />
+<ul class="ul_square_1">
+<li>
+<b>clean</b>: handles project cleaning.<br />
+<br />
+</li>
+<li>
+<b>default</b>: handles project deployment.<br />
+<br />
+</li>
+<li>
+<b>site</b>: handles the creation of project documentation (site).<br />
+<br />
+</li>
+</ul>
+The phases in the "<b>clean</b>" lifecycle are:<br />
+<ul class="ul_square_1">
+<li><b>pre-clean</b></li>
+<li><b>clean</b></li>
+<li><b>post-clean</b></li>
+</ul><br />
+The phases in the "<b>default</b>" lifecycle are:<br />
+<ul class="ul_square_1">
+<li><b>validate</b></li>
+<li><b>initialize</b></li>
+<li><b>generate-sources</b></li>
+<li><b>process-sources</b></li>
+<li><b>generate-resources</b></li>
+<li><b>process-resources</b></li>
+<li><b>compile</b></li>
+<li><b>process-classes</b></li>
+<li><b>generate-test-sources</b></li>
+<li><b>process-test-sources</b></li>
+<li><b>generate-test-resources</b></li>
+<li><b>process-test-resources</b></li>
+<li><b>test-compile</b></li>
+<li><b>process-test-classes</b></li>
+<li><b>test</b></li>
+<li><b>prepare-package</b></li>
+<li><b>package</b></li>
+<li><b>pre-integration-test</b></li>
+<li><b>integration-test</b></li>
+<li><b>post-integration-test</b></li>
+<li><b>verify</b></li>
+<li><b>install</b></li>
+<li><b>deploy</b></li>
+</ul><br />
+The phases in the "<b>site</b>" lifecycle are:<br />
+<ul class="ul_square_1">
+<li><b>pre-site</b></li>
+<li><b>site</b></li>
+<li><b>post-site</b></li>
+<li><b>site-deploy</b></li>
+</ul><br />
+The phases in each lifecycle are defined in a specific order,
+and they are executed in that order.<br />
+Additionally, when you specify a particular phase on the command line,
+Maven ensures that all phases preceding it (in the predefined order) are executed first.<br />
+<br />
+To execute the "<b>install</b>" phase and all phases leading up to it, simply run: <b>mvn install</b><br />
+Here is the output of this command on the "<b>mtitek-maven-samples</b>" project:<br />
+<pre class="text-code">
+[INFO] ------------------------------------------------------------------------
+[INFO] Building mtitek-maven-samples 1.0.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-surefire-plugin:2.10:test (default-test) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-jar-plugin:2.3.2:jar (default-jar) @ mtitek-maven-samples ---
+[INFO]
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ mtitek-maven-samples ---
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------</pre>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">Goals Associated by Default with a Phase</span>
+<div class="tutorialSectionTextDiv1">
+Some phases have goals associated with them by default.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Phases in the "<b>clean</b>" lifecycle:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+clean                    clean:clean</pre>
+</li>
+<li>
+Phases in the "<b>site</b>" lifecycle:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+site                     site:site
+site-deploy              site:deploy</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">Packaging: Goals Associated by Default with a Phase</span>
+<div class="tutorialSectionTextDiv1">
+One factor that influences the execution of phases in the "<b>default</b>" lifecycle is the packaging type (<b>jar</b>, <b>war</b>, ...):<br />
+Each packaging type may require the execution of all or part of the lifecycle phases.<br />
+The selected packaging type assigns specific goals to each phase.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+"<b>jar</b>", "<b>war</b>", "<b>ejb</b>", "<b>rar</b>": These packaging types require the execution of the following phases and goals:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+process-resources        resources:resources
+compile                  compiler:compile
+process-test-resources   resources:testResources
+test-compile             compiler:testCompile
+test                     surefire:test
+package                  jar:jar / war:war / ejb:ejb / rar:rar
+install                  install:install
+deploy                   deploy:deploy</pre>
+</li>
+<li>
+"<b>ear</b>": This packaging type requires the execution of the following phases and goals:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+generate-resources       ear:generate-application-xml
+process-resources        resources:resources
+package                  ear:ear
+install                  install:install
+deploy                   deploy:deploy</pre>
+</li>
+<li>
+"<b>pom</b>": This packaging type requires the execution of the following phases and goals:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+package                  site:attach-descriptor
+install                  install:install
+deploy                   deploy:deploy</pre>
+</li>
+<li>
+"<b>maven-plugin</b>": This packaging type requires the execution of the following phases and goals:<br />
+<pre class="text-code">
+phase                    goal
+----------------------   -------------------------------------
+generate-resources       plugin:descriptor
+process-resources        resources:resources
+compile                  compiler:compile
+process-test-resources   resources:testResources
+test-compile             compiler:testCompile
+test                     surefire:test
+package                  jar:jar + plugin:addPluginArtifactMetadata
+install                  install:install
+deploy                   deploy:deploy</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_13">
+<span class="tutorialSubSectionTitleSpan1">Associating Goals with a Phase</span>
+<div class="tutorialSectionTextDiv1">
+By default, Maven associates one or more goals from Maven plugins with a lifecycle phase.<br />
+You can view the default configuration for your project by examining the effective version of the "<b>pom.xml</b>" file.<br />
+You can also see the details of the executed goals by adding the "<b>-X</b>" option to the "<b>mvn</b>" command.<br />
+<br />
+The default configuration can be modified in the "<b>pom.xml</b>" file.<br />
+You can also add new goals from other plugins and associate them with a specific phase of the selected packaging (<b>jar</b>, <b>war</b>, <b>ejb</b>, <b>ear</b>, ...) for your project.<br />
+<br />
+For example, for a project with "<b>jar</b>" packaging, Maven will associate the "<b>jar</b>" goal of the "<b>maven-jar-plugin</b>" with the "<b>package</b>" phase (id: "<b>default-jar</b>").<br />
+<br />
+In the following example, we modify the default execution of the "<b>maven-jar-plugin</b>" (id: "<b>default-jar</b>") to add configuration to the "<b>jar</b>" goal, renaming the generated "<b>.jar</b>" file to "<b>${project.artifactId}-default-${project.version}.jar</b>".<br />
+<br />
+We also associate an execution to the "<b>package</b>" phase for the "<b>run</b>" goal of the "<b>maven-antrun-plugin</b>" (id: "<b>echo-package-name</b>"): this displays the project coordinates "<b>groupId</b>":"<b>artifactId</b>":"<b>packaging</b>":"<b>version</b>".<br />
+<pre class="xml-code">
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.0.2&lt;/version&gt;
+
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;default-jar&lt;/id&gt;
+
+                    &lt;configuration&gt;
+                        &lt;finalName&gt;${project.artifactId}-default-${project.version}&lt;/finalName&gt;
+                    &lt;/configuration&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.8&lt;/version&gt;
+
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;echo-package-name&lt;/id&gt;
+                    &lt;phase&gt;package&lt;/phase&gt;
+
+                    &lt;goals&gt;
+                        &lt;goal&gt;run&lt;/goal&gt;
+                    &lt;/goals&gt;
+
+                    &lt;configuration&gt;
+                        &lt;target&gt;
+                            &lt;echo&gt;project coordinates: ${project.groupId}:${project.artifactId}:${project.packaging}:${project.version}
+                            &lt;/echo&gt;
+                        &lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

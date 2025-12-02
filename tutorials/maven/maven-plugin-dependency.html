@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maven Dependency Plugin Guide | Goals &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn how to use the Maven Dependency Plugin, including practical usage examples to manage project dependencies effectively." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Maven Dependency Plugin Guide | Goals &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn how to use the Maven Dependency Plugin, including practical usage examples to manage project dependencies effectively." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/maven-plugin-dependency.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maven Dependency Plugin Guide | Goals &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use the Maven Dependency Plugin, including practical usage examples to manage project dependencies effectively." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/maven-plugin-dependency.html",
+        "description": "Learn how to use the Maven Dependency Plugin, including practical usage examples to manage project dependencies effectively.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/maven-plugin-dependency.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/maven/">Maven</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Maven Dependency Plugin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Maven Dependency Plugin</a></li>
+<li><a href="#sec_id_2">The help goal</a></li>
+<li><a href="#sec_id_3">Example: Using dependency plugin</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Maven Dependency Plugin</span>
+<div class="tutorialSectionTextDiv1">
+The Maven Dependency Plugin provides utility goals to manage and work with dependencies, including copying, unpacking, analyzing, and resolving dependencies.<br />
+<br />
+<b>Plugin coordinates</b>:<br />
+<ul class="ul_square_1">
+<li><b>Group Id</b>: org.apache.maven.plugins<br /></li>
+<li><b>Artifact Id</b>: maven-dependency-plugin<br /></li>
+<li><b>Version</b>: 3.8.1<br /></li>
+</ul>
+<br />
+<b>Plugin Prefix</b>: dependency<br />
+<br />
+The <b>dependency</b> plugin provides the following goals:<br />
+<ul class="ul_square_1">
+<li>
+<b>help</b>:
+Displays help information about the maven-dependency-plugin.
+Use <b>mvn dependency:help -Ddetail=true -Dgoal=&lt;goal-name&gt;</b> to display parameter details for specific goals.<br />
+<br /></li>
+<li>
+<b>analyze</b>:
+Analyzes project dependencies and categorizes them as: used and declared, used and undeclared, or unused and declared. This helps identify dependency issues in your project.<br />
+<br /></li>
+<li>
+<b>analyze-dep-mgt</b>:
+Examines dependencies after resolution and identifies mismatches in the <b>&lt;dependencyManagement&gt;</b> section.<br />
+<br /></li>
+<li>
+<b>analyze-duplicate</b>:
+Identifies duplicate dependencies declared in the <b>&lt;dependencies/&gt;</b> and <b>&lt;dependencyManagement/&gt;</b> sections of the pom.xml.<br />
+<br /></li>
+<li>
+<b>analyze-only</b>:
+Performs the same analysis as the <b>analyze</b> goal but does not fail the build based on the results.<br />
+<br /></li>
+<li>
+<b>analyze-report</b>:
+Generates a report summarizing dependency analysis results, showing used/declared, used/undeclared, and unused/declared dependencies.<br />
+<br /></li>
+<li>
+<b>resolve</b>:
+Resolves project dependencies from the repository and downloads them to the local repository.<br />
+<br /></li>
+<li>
+<b>resolve-plugins</b>:
+Resolves all project plugins, reports, and their dependencies.<br />
+<br /></li>
+<li>
+<b>tree</b>:
+Displays the dependency tree for the project, showing all dependencies and their transitive dependencies in a hierarchical format.<br />
+<br /></li>
+<li>
+<b>list</b>:
+Displays a list of all dependencies for the project.<br />
+<br /></li>
+<li>
+<b>list-classes</b>:
+Retrieves a specified artifact from remote repositories and lists all classes contained within it.<br />
+<br /></li>
+<li>
+<b>list-repositories</b>:
+Lists all repositories used by the build and by transitive dependencies after resolving all project dependencies.<br />
+<br /></li>
+<li>
+<b>display-ancestors</b>:
+Displays all ancestor POMs of the current project.<br />
+<br /></li>
+<li>
+<b>sources</b>:
+Resolves and downloads source artifacts for project dependencies from the repository.<br />
+<br /></li>
+<li>
+<b>copy</b>:
+Copies specified artifacts from the repository to defined locations on the file system.<br />
+<br /></li>
+<li>
+<b>copy-dependencies</b>:
+Copies all project dependencies from the repository to a specified location.<br />
+<br /></li>
+<li>
+<b>collect</b>:
+Collects project dependencies from the repository. This goal is primarily used internally by Maven.<br />
+<br /></li>
+<li>
+<b>unpack</b>:
+Retrieves specified artifacts from the repository and unpacks them to a defined location.<br />
+<br /></li>
+<li>
+<b>unpack-dependencies</b>:
+Unpacks all project dependencies from the repository to a specified location.<br />
+<br /></li>
+<li>
+<b>purge-local-repository</b>:
+Removes project dependencies from the local repository and optionally re-resolves them.<br />
+<br /></li>
+<li>
+<b>build-classpath</b>:
+Generates a classpath string containing dependencies from the local repository and outputs it to a file or log.<br />
+<br /></li>
+<li>
+<b>get</b>:
+Resolves a single artifact, including its transitive dependencies if specified, from remote repositories.<br />
+<br /></li>
+<li>
+<b>go-offline</b>:
+Resolves all project dependencies, plugins, and reports along with their dependencies to prepare for offline usage.<br />
+<br /></li>
+<li>
+<b>properties</b>:
+Creates a property for each project dependency that points to the artifact's file location.<br />
+<br /></li>
+</ul>
+Common usage examples of the <b>maven-dependency-plugin</b>:<br />
+<pre class="sh-code">
+$ mvn dependency:analyze</pre>
+<pre class="sh-code">
+$ mvn dependency:resolve</pre>
+<pre class="sh-code">
+$ mvn dependency:tree</pre>
+<pre class="sh-code">
+$ mvn dependency:purge-local-repository</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">The help goal</span>
+<div class="tutorialSectionTextDiv1">
+The <b>help</b> goal provides general information about the <b>dependency</b> plugin, including available goals and their parameters.<br />
+<br />
+Use the <b>detail</b> parameter to get detailed information about all goals and their configuration options:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn dependency:help
+
+# Display detailed information about all goals and parameters
+$ mvn dependency:help -Ddetail=true</pre>
+If you need to use the plugin's full coordinates instead of its prefix, you can do that as follows:<br />
+<pre class="sh-code">
+# Display basic plugin information
+$ mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:help
+
+# Display detailed information about all goals and parameters
+$ mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:help -Ddetail=true</pre>
+You can also use the Maven <b>help</b> plugin to describe the <b>dependency</b> plugin:<br />
+<pre class="sh-code">
+# Basic plugin description using help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-dependency-plugin:3.8.1"
+
+# Detailed plugin description with all parameters
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-dependency-plugin:3.8.1" -Ddetail=true</pre>
+To get specific information about a goal, use the <b>goal</b> parameter:<br />
+<pre class="sh-code">
+# Help for the 'analyze' goal
+$ mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:help -Dgoal=analyze -Ddetail=true
+
+# Help for the 'analyze' goal using the help plugin
+$ mvn help:describe -Dplugin="org.apache.maven.plugins:maven-dependency-plugin:3.8.1" -Dgoal=analyze -Ddetail=true</pre>
+<b>Note</b>: When using the plugin's help goal directly, you don't need to specify the version if the plugin is already configured in your POM or if you want to use the latest version.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Example: Using dependency plugin</span>
+<div class="tutorialSectionTextDiv1">
+This example shows how to configure the dependency plugin in your pom.xml file.<br />
+<br />
+The configuration includes two executions.
+The first execution runs dependency analysis during the package phase and is configured to fail the build if warnings are found.
+The second execution copies a specific artifact to the endorsed directory during the validate phase.<br />
+<pre class="xml-code">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.8.1&lt;/version&gt;
+
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;dependency-analyze&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;analyze&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;failOnWarning&gt;true&lt;/failOnWarning&gt;
+                &lt;ignoreNonCompile&gt;true&lt;/ignoreNonCompile&gt;
+                &lt;ignoredDependencies&gt;true&lt;/ignoredDependencies&gt;
+                &lt;outputXML&gt;true&lt;/outputXML&gt;
+
+                &lt;ignoredUnusedDeclaredDependencies&gt;
+                    &lt;ignoredUnusedDeclaredDependency&gt;commons-io:commons-io:jar:*&lt;/ignoredUnusedDeclaredDependency&gt;
+                &lt;/ignoredUnusedDeclaredDependencies&gt;
+
+                &lt;ignoredUsedUndeclaredDependencies&gt;
+                    &lt;ignoredUsedUndeclaredDependency&gt;org.apache.httpcomponents:httpcore:jar:*&lt;/ignoredUsedUndeclaredDependency&gt;
+                &lt;/ignoredUsedUndeclaredDependencies&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+
+        &lt;execution&gt;
+            &lt;phase&gt;validate&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;copy&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;outputDirectory&gt;${project.build.directory}/endorsed&lt;/outputDirectory&gt;
+                &lt;silent&gt;true&lt;/silent&gt;
+                &lt;artifactItems&gt;
+                    &lt;artifactItem&gt;
+                        &lt;groupId&gt;javax&lt;/groupId&gt;
+                        &lt;artifactId&gt;javaee-endorsed-api&lt;/artifactId&gt;
+                        &lt;version&gt;6.0&lt;/version&gt;
+                        &lt;type&gt;jar&lt;/type&gt;
+                    &lt;/artifactItem&gt;
+                &lt;/artifactItems&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

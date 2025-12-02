@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Complete Maven Tutorial: Installation, Plugins, Project Packaging &amp;amp; More | MTI TEK</title>
+<meta name="description" content="Learn to install, configure, and use Maven for dependency management, project packaging (JAR/WAR), and plugin integration (JaCoCo, SpotBugs)." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Complete Maven Tutorial: Installation, Plugins, Project Packaging &amp;amp; More | MTI TEK" />
+<meta property="og:description" content="Learn to install, configure, and use Maven for dependency management, project packaging (JAR/WAR), and plugin integration (JaCoCo, SpotBugs)." />
+<meta property="og:url" content="http://mtitek.com/tutorials/maven/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Complete Maven Tutorial: Installation, Plugins, Project Packaging &amp;amp; More | MTI TEK" />
+<meta name="twitter:description" content="Learn to install, configure, and use Maven for dependency management, project packaging (JAR/WAR), and plugin integration (JaCoCo, SpotBugs)." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/maven/",
+        "description": "Learn to install, configure, and use Maven for dependency management, project packaging (JAR/WAR), and plugin integration (JaCoCo, SpotBugs).",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/maven/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialContentsDiv1">
+<span class="tutorialContentsSpan1">Maven</span>
+<hr class="tutorialContentsHr1" />
+<ol class="ol_decimal_1">
+<li><a href="installation.html">Installing and Configuring Maven</a></li>
+<li><a href="introduction.html">Getting Started with Maven</a></li>
+<li><a href="pom-dependencies.html">Maven Project Dependencies</a></li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Appendix</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li><a href="mvn-cli-help.html">Maven CLI Help</a></li>
+<li><a href="settings-xml.html">Maven settings.xml</a></li>
+<li><a href="settings-encrypt-passwords.html">Encrypt Passwords in Maven settings.xml</a></li>
+<li><a href="maven-site.html">Site and Reports</a></li>
+<li>Maven Plugins
+<ol class="ol_lower_roman_1">
+<li><a href="maven-plugin-help.html">Maven Help Plugin</a></li>
+<li><a href="maven-plugin-dependency.html">Maven Dependency Plugin</a></li>
+<li><a href="maven-plugin-assembly.html">Maven Assembly Plugin</a></li>
+<li><a href="maven-plugin-resources.html">Maven Resources Plugin</a></li>
+<li><a href="maven-plugin-javadoc.html">Maven Javadoc Plugin</a></li>
+<li><a href="maven-plugin-source.html">Maven Source Plugin</a></li>
+</ol>
+</li>
+<li>Project Validation Tools
+<ol class="ol_lower_roman_1">
+<li><a href="/tutorials/testing/jacoco.html">JaCoCo: Java Code Coverage Library</a></li>
+<li><a href="/tutorials/testing/forbiddenapis.html">Forbidden API Checker</a></li>
+<li><a href="/tutorials/testing/spotbugs.html">SpotBugs: Bug Detection</a></li>
+</ol>
+</li>
+<li>Create Maven Project Packages
+<ol class="ol_lower_roman_1">
+<li><a href="packaging-jar.html">Create a Client Module (JAR file)</a>
+<!-- <ol class="ol_lower_latin_1">
+<li><a href="maven-plugin-jar.html">Maven JAR Plugin (maven-jar-plugin)</a></li>
+</ol> -->
+</li>
+<li><a href="packaging-war.html">Create a Web Module (WAR file)</a>
+<!-- <ol class="ol_lower_latin_1">
+<li><a href="maven-plugin-war.html">Maven WAR Plugin (maven-war-plugin)</a></li>
+</ol> -->
+</li>
+<!--
+<li><a href="packaging-ejb.html">Create an EJB Module (JAR file)</a>
+<ol class="ol_lower_latin_1">
+<li><a href="maven-plugin-ejb.html">Maven EJB Plugin (maven-ejb-plugin)</a></li>
+</ol>
+</li>
+<li><a href="packaging-ear.html">Create an EAR Module (EAR file)</a>
+<ol class="ol_lower_latin_1">
+<li><a href="maven-plugin-ear.html">Maven EAR Plugin (maven-ear-plugin)</a></li>
+</ol>
+</li>
+    -->
+</ol>
+</li>
+</ol>
+</div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Maven: The Definitive Guide</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Sonatype Company
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> O'Reilly Media; (October 2008)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-0596517335
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="references-category">
+<h3 class="references-category-title">Documentation & Resources</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Apache Maven Project</h4>
+<a href="http://maven.apache.org/index.html" class="reference-link">http://maven.apache.org/index.html</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Maven by Example</h4>
+<a href="http://books.sonatype.com/mvnex-book/reference/index.html" class="reference-link">http://books.sonatype.com/mvnex-book/reference/index.html</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Maven: The Complete Reference</h4>
+<a href="http://books.sonatype.com/mvnref-book/reference/index.html" class="reference-link">http://books.sonatype.com/mvnref-book/reference/index.html</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
