@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle NLSSORT Function Indexes | MTI TEK</title>
+<meta name="description" content="Complete guide to Oracle NLSSORT function indexes for linguistic sorting." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle NLSSORT Function Indexes | MTI TEK" />
+<meta property="og:description" content="Complete guide to Oracle NLSSORT function indexes for linguistic sorting." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/index_nlssort.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle NLSSORT Function Indexes | MTI TEK" />
+<meta name="twitter:description" content="Complete guide to Oracle NLSSORT function indexes for linguistic sorting." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/index_nlssort.html",
+        "description": "Complete guide to Oracle NLSSORT function indexes for linguistic sorting.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/index_nlssort.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">NLSSORT Function Indexes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Best Practices</a></li>
+<li><a href="#sec_id_1">Binary Sorting with Regular Indexes</a></li>
+<li><a href="#sec_id_2">Linguistic Sorting with Function-Based Indexes</a></li>
+<li><a href="#sec_id_3">Common Issues and Limitations</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Best Practices</span>
+<div class="tutorialSectionTextDiv1">
+The NLSSORT function in Oracle enables linguistic sorting and comparison operations that respect different language-specific collation rules.<br />
+<br />
+The key parameters that control sorting and comparison behavior are:<br />
+<ul class="ul_square_1">
+<li><strong>NLS_SORT:</strong> Determines the collation sequence used for sorting operations.
+Common values include BINARY, BINARY_AI, BINARY_CI, and linguistic values like FRENCH, GERMAN, etc.</li>
+<li><strong>NLS_COMP:</strong> Controls how string comparisons are performed.
+Set to BINARY for byte-by-byte comparison or LINGUISTIC to use the NLS_SORT parameter rules.</li>
+</ul>
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+For binary sorting (accent-sensitive and case-sensitive):<br />
+<ul class="ul_circle_1">
+<li>Set NLS_SORT to BINARY</li>
+<li>Set NLS_COMP to BINARY</li>
+<li>Use regular indexes without functions for optimal performance</li>
+</ul>
+<br /></li>
+<li>
+For linguistic sorting that remains accent-sensitive and case-sensitive:<br />
+<ul class="ul_circle_1">
+<li>Set NLS_SORT to a linguistic value (e.g., FRENCH, GERMAN)</li>
+<li>Set NLS_COMP to LINGUISTIC</li>
+<li>Create function-based indexes using NLSSORT with the same NLS_SORT value</li>
+</ul>
+<br /></li>
+<li>
+For accent-insensitive and/or case-insensitive sorting:<br />
+<ul class="ul_circle_1">
+<li>Set NLS_SORT to BINARY_AI (accent-insensitive), BINARY_CI (case-insensitive), or linguistic values with _AI/_CI extensions</li>
+<li>Set NLS_COMP to LINGUISTIC</li>
+<li>Create function-based indexes using NLSSORT with matching NLS_SORT parameters</li>
+</ul>
+</li>
+</ul>
+For detailed explanation of NLS_SORT parameter values, see <a href="nls_sort.html">NLS_SORT Parameter</a><br />
+For detailed explanation of NLS_COMP parameter values, see <a href="nls_comp.html">NLS_COMP Parameter</a><br />
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_nlssort
+(
+    id NUMBER(2,0) NOT NULL
+,   desc1 NVARCHAR2(2) NOT NULL
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_nlssort (id, desc1) VALUES (1, 'aé');
+INSERT INTO table_nlssort (id, desc1) VALUES (2, 'ae');
+INSERT INTO table_nlssort (id, desc1) VALUES (3, 'af');
+INSERT INTO table_nlssort (id, desc1) VALUES (4, 'ad');
+INSERT INTO table_nlssort (id, desc1) VALUES (5, 'aÉ');
+INSERT INTO table_nlssort (id, desc1) VALUES (6, 'aE');
+INSERT INTO table_nlssort (id, desc1) VALUES (7, 'aF');
+INSERT INTO table_nlssort (id, desc1) VALUES (8, 'aD');
+
+COMMIT;
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Binary Sorting with Regular Indexes</span>
+<div class="tutorialSectionTextDiv1">
+When NLS_SORT is set to BINARY, Oracle performs exact byte-by-byte comparisons.
+This means that 'a', 'A', 'á', and 'Á' are all treated as distinct characters.
+In this scenario, regular B-tree indexes provide the most efficient access path.<br />
+<br />
+Session Configuration:<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT = BINARY;
+ALTER SESSION SET NLS_COMP = LINGUISTIC;
+</pre>
+Index Creation and Statistics:<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_nlssort_desc1 ON table_nlssort ( desc1 );
+ANALYZE INDEX idx_table_nlssort_desc1 COMPUTE STATISTICS;
+</pre>
+Query Execution with Regular Index:<br />
+<pre class="sql-code">
+SELECT * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME             | OPTIONS        | Access Predicates |
++-------------------------+----------------+-------------------+
+| TABLE_NLSSORT           | BY INDEX ROWID |                   |
+| IDX_TABLE_NLSSORT_DESC1 | RANGE SCAN     | DESC1 = U'a\00C9' |
+</pre>
+The execution plan shows that Oracle efficiently uses the index with a RANGE SCAN operation, which is optimal for this type of query.<br />
+<br />
+Incompatible Function-Based Index Example:<br />
+<pre class="sql-code">
+DROP INDEX idx_table_nlssort_desc1;
+CREATE INDEX idx_table_nlssort_desc1 ON table_nlssort ( NLSSORT(desc1,'nls_sort=''BINARY_AI''') );
+ANALYZE INDEX idx_table_nlssort_desc1 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME   | OPTIONS | Filter Predicates |
++---------------+---------+-------------------+
+| TABLE_NLSSORT | FULL    | DESC1 = U'a\00C9' |
+</pre>
+When the session NLS_SORT setting doesn't match the function-based index definition, Oracle cannot use the index and resorts to a full table scan.
+This demonstrates the importance of aligning session parameters with index definitions.<br />
+<br />
+Forcing Index Usage with Hints:<br />
+<pre class="sql-code">
+SELECT /*+ index(table_nlssort idx_table_nlssort_desc1) */ * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME             | OPTIONS        | Filter Predicates |
+| ------------------------+----------------+-------------------+
+| TABLE_NLSSORT           | BY INDEX ROWID | DESC1 = U'a\00C9' |
+| IDX_TABLE_NLSSORT_DESC1 | FULL SCAN      |                   |
+</pre>
+While it's possible to force index usage with hints, this results in a FULL SCAN of the index rather than an efficient RANGE SCAN, which is typically less performant for selective queries.
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Linguistic Sorting with Function-Based Indexes</span>
+<div class="tutorialSectionTextDiv1">
+When using linguistic sorting parameters like BINARY_AI (accent-insensitive), Oracle transforms string comparisons using the NLSSORT function.
+This transformation means that 'aé', 'ae', 'aÉ', and 'aE' would be considered equivalent for comparison purposes.
+Regular indexes cannot handle these transformations, making function-based indexes essential.<br />
+<br />
+Session Configuration for Accent-Insensitive Sorting:<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT = BINARY_AI;
+ALTER SESSION SET NLS_COMP = LINGUISTIC;
+</pre>
+Regular Index Limitation:<br />
+<pre class="sql-code">
+DROP INDEX idx_table_nlssort_desc1;
+CREATE INDEX idx_table_nlssort_desc1 ON table_nlssort ( desc1 );
+ANALYZE INDEX idx_table_nlssort_desc1 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME   | OPTIONS | Filter Predicates                                              |
++---------------+---------+----------------------------------------------------------------+
+| TABLE_NLSSORT | FULL    | NLSSORT(DESC1,'nls_sort=''BINARY_AI''')=HEXTORAW('0061006500') |
+</pre>
+Oracle automatically applies the NLSSORT function to the column in the WHERE clause, but since the index is on the raw column value, it cannot be used effectively.
+The HEXTORAW value represents the normalized sort key for the comparison.<br />
+<br />
+Forced Index Usage (Inefficient):<br />
+<pre class="sql-code">
+SELECT /*+ index(table_nlssort idx_table_nlssort_desc1) */ * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME             | OPTIONS        | Filter Predicates                                              |
++-------------------------+----------------+----------------------------------------------------------------+
+| TABLE_NLSSORT           | BY INDEX ROWID |                                                                |
+| IDX_TABLE_NLSSORT_DESC1 | FULL SCAN      | NLSSORT(DESC1,'nls_sort=''BINARY_AI''')=HEXTORAW('0061006500') |
+</pre>
+Even when forced, the index requires a full scan because the transformation must be applied to every indexed value during the scan.<br />
+<br />
+Proper Function-Based Index Solution:<br />
+<pre class="sql-code">
+DROP INDEX idx_table_nlssort_desc1;
+CREATE INDEX idx_table_nlssort_desc1 ON table_nlssort ( NLSSORT(desc1,'nls_sort=''BINARY_AI''') );
+ANALYZE INDEX idx_table_nlssort_desc1 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT * FROM table_nlssort WHERE desc1 = 'aÉ';
+</pre>
+Execution Plan:<br />
+<pre class="text-code">
+| OBJECT_NAME             | OPTIONS        | Access Predicates                                              |
++-------------------------+----------------+----------------------------------------------------------------+
+| TABLE_NLSSORT           | BY INDEX ROWID |                                                                |
+| IDX_TABLE_NLSSORT_DESC1 | RANGE SCAN     | NLSSORT(DESC1,'nls_sort=''BINARY_AI''')=HEXTORAW('0061006500') |
+</pre>
+With the properly configured function-based index, Oracle can efficiently perform a RANGE SCAN operation, providing optimal query performance.
+The index stores the pre-computed NLSSORT values, eliminating the need for runtime transformations.
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Common Issues and Limitations</span>
+<div class="tutorialSectionTextDiv1">
+When working with NLSSORT function-based indexes, several important considerations and limitations must be understood to avoid common pitfalls.<br />
+<br />
+<strong>Unique Index Constraints:</strong><br />
+Creating unique indexes on NLSSORT functions can lead to constraint violations when different character representations normalize to the same sort key.
+This is particularly common with accent-insensitive or case-insensitive collations.<br />
+<br />
+Example of Problematic Unique Index:<br />
+<pre class="sql-code">
+CREATE UNIQUE INDEX idx_table_nlssort_desc1 ON table_nlssort (NLSSORT(desc1,'NLS_SORT=BINARY_AI'));
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+CREATE UNIQUE INDEX IDX_TABLE_NLSSORT_DESC1 ON TABLE_NLSSORT (NLSSORT(DESC1,'NLS_SORT=BINARY_AI'))
+
+Error at Command Line:1 Column:69
+
+Error report:
+SQL Error: ORA-00904: "DESC1": invalid identifier.
+*Cause:
+*Action:
+</pre>
+This error occurs because the NLSSORT function generates identical sort keys for values that are considered equivalent under the specified collation (such as 'aé' and 'ae' with BINARY_AI).
+Since multiple rows would produce the same index key, the unique constraint cannot be enforced.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

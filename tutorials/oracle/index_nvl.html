@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle NVL Function Indexes: NULL Value Handling | MTI TEK</title>
+<meta name="description" content="Learn Oracle NVL function-based indexes for handling NULL values." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle NVL Function Indexes: NULL Value Handling | MTI TEK" />
+<meta property="og:description" content="Learn Oracle NVL function-based indexes for handling NULL values." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/index_nvl.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle NVL Function Indexes: NULL Value Handling | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle NVL function-based indexes for handling NULL values." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/index_nvl.html",
+        "description": "Learn Oracle NVL function-based indexes for handling NULL values.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/index_nvl.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">NVL Function Indexes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Key Concepts</a></li>
+<li><a href="#sec_id_1">Index Behavior with NULL Values</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">Creating a Standard Index on Non-NULL Column</a></li>
+<li><a href="#sec_id_1_2">Creating a Standard Index on Column with NULL Values</a></li>
+<li><a href="#sec_id_1_3">Creating a Function-Based Index with NVL</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Key Concepts</span>
+<div class="tutorialSectionTextDiv1">
+Oracle's handling of NULL values in indexes is a critical consideration for database performance optimization.
+Understanding how the NVL function works with indexes can significantly impact query execution plans and overall system performance.<br />
+<br />
+Notes:<br />
+<ul class="ul_square_1">
+<li>Standard B*Tree indexes do not store entries for NULL values, which means columns containing NULL values are excluded from the index entirely.<br /><br /></li>
+<li>Function-based indexes using NVL can include NULL values by converting them to a specific non-NULL value, allowing the index to cover all rows in the table.<br /><br /></li>
+<li>When creating a function-based index with NVL, the same function must be used in query predicates for the optimizer to utilize the index effectively.<br /><br /></li>
+<li>The percentage of NULL values in a column and the frequency of IS NULL queries should influence your indexing strategy decisions.<br /><br /></li>
+<li>Oracle's cost-based optimizer may still choose full table scans over index access when it determines this is more efficient, particularly when data blocks are already cached in the buffer pool.<br /></li>
+</ul>
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_nvl
+(
+    id NUMBER(10,0) NOT NULL
+,   refid NUMBER(10,0)
+);
+</pre>
+<pre class="sql-code">
+DECLARE
+indexLoop NUMBER(5,0);
+
+BEGIN
+FOR indexLoop IN 1..50000 LOOP
+    IF MOD(indexLoop,2) = 0 THEN
+        INSERT INTO table_nvl (id, refid) VALUES (DBMS_RANDOM.VALUE(1,50000), indexLoop);
+    ELSE
+        INSERT INTO table_nvl (id, refid) VALUES (DBMS_RANDOM.VALUE(1,50000), NULL);
+    END IF;
+END LOOP;
+END;
+/
+</pre>
+This creates a table with 50,000 rows where approximately 50% of the REFID values are NULL, providing a good scenario to demonstrate the differences between standard and function-based indexing approaches.
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Index Behavior with NULL Values</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">Creating a Standard Index on Non-NULL Column</span>
+<div class="tutorialSectionTextDiv1">
+The ID column contains no NULL values, so a standard index will include all rows from the table.<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_nvl_id ON table_nvl (id);
+ANALYZE INDEX idx_table_nvl_id COMPUTE STATISTICS;
+ANALYZE INDEX idx_table_nvl_id VALIDATE STRUCTURE;
+</pre>
+<pre class="sql-code">
+SELECT name, lf_rows FROM index_stats;
+</pre>
+Query result:
+<pre class="text-code">
+| NAME             | LF_ROWS |
++------------------+---------+
+| IDX_TABLE_NVL_ID | 50000   |
+</pre>
+As expected, the index contains 50,000 entries, matching the total number of rows in the table.
+This index will be effective for queries filtering on the ID column.
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">Creating a Standard Index on Column with NULL Values</span>
+<div class="tutorialSectionTextDiv1">
+When creating a standard index on the REFID column, which contains approximately 50% NULL values, observe how Oracle handles the NULL entries.<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_nvl_refid ON table_nvl (refid);
+ANALYZE INDEX idx_table_nvl_refid COMPUTE STATISTICS;
+ANALYZE INDEX idx_table_nvl_refid VALIDATE STRUCTURE;
+</pre>
+<pre class="sql-code">
+SELECT name, lf_rows FROM index_stats;
+</pre>
+Query result:
+<pre class="text-code">
+| NAME                | LF_ROWS |
++---------------------+---------+
+| IDX_TABLE_NVL_REFID | 25000   |
+</pre>
+The index contains only 25,000 entries despite the table having 50,000 rows.
+This demonstrates that Oracle's B*Tree indexes exclude NULL values entirely.
+The missing 25,000 entries correspond to the rows where REFID is NULL.<br />
+<br />
+Impact on query execution plans:<br />
+Queries involving NULL value predicates will result in full table scans because the NULL values are not represented in the index.<br />
+<ul class="ul_square_1">
+<li>Searching for NULL values:
+<pre class="sql-code">
+SELECT * FROM table_nvl WHERE refid IS NULL;
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME | OPTIONS |
++-------------+---------+
+| TABLE_NVL   | FULL    |
+</pre>
+</li>
+<li>Searching for NOT NULL values:
+<pre class="sql-code">
+SELECT * FROM table_nvl WHERE refid IS NOT NULL;
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME | OPTIONS |
++-------------+---------+
+| TABLE_NVL   | FULL    |
+</pre>
+</li>
+</ul>
+Even with index hints, NULL value searches cannot utilize the standard index effectively:<br />
+<ul class="ul_square_1">
+<li>Forced index usage for NULL search:
+<pre class="sql-code">
+SELECT /*+ index(table_nvl idx_table_nvl_refid)*/ * FROM table_nvl WHERE refid IS NULL;
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME | OPTIONS |
++-------------+---------+
+| TABLE_NVL   | FULL    |
+</pre>
+</li>
+<li>Forced index usage for NOT NULL search:
+<pre class="sql-code">
+SELECT /*+ index(table_nvl idx_table_nvl_refid)*/ * FROM table_nvl WHERE refid IS NOT NULL;
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME         | OPTIONS        |
++---------------------+----------------+
+| TABLE_NVL           | BY INDEX ROWID |
+| IDX_TABLE_NVL_REFID | FULL SCAN      |
+</pre>
+</li>
+</ul>
+Alternative approach for NOT NULL searches using range predicates:<br />
+<pre class="sql-code">
+SELECT * FROM table_nvl WHERE refid > 0;
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME         | OPTIONS        |
++---------------------+----------------+
+| TABLE_NVL           | BY INDEX ROWID |
+| IDX_TABLE_NVL_REFID | RANGE SCAN     |
+</pre>
+This approach works because it implicitly excludes NULL values and can utilize the index for efficient range scanning.
+</div>
+</li>
+<li id="sec_id_1_3">
+<span class="tutorialSubSectionTitleSpan1">Creating a Function-Based Index with NVL</span>
+<div class="tutorialSectionTextDiv1">
+Function-based indexes using NVL can solve the NULL value indexing limitation by converting NULL values to a specified non-NULL value, ensuring all rows are included in the index.<br />
+<pre class="sql-code">
+DROP INDEX idx_table_nvl_refid;
+CREATE INDEX idx_table_nvl_refid ON table_nvl (NVL(refid,0));
+ANALYZE INDEX idx_table_nvl_refid COMPUTE STATISTICS;
+ANALYZE INDEX idx_table_nvl_refid VALIDATE STRUCTURE;
+</pre>
+<pre class="sql-code">
+SELECT name, lf_rows FROM index_stats;
+</pre>
+Query result:
+<pre class="text-code">
+| NAME                | LF_ROWS |
++---------------------+---------+
+| IDX_TABLE_NVL_REFID | 50000   |
+</pre>
+The function-based index now contains all 50,000 rows.
+NULL values in REFID are converted to 0 and stored in the index, making them searchable.<br />
+<br />
+<b>Note</b>:<br />
+The same NVL function used in the index definition must be used in query predicates for the optimizer to recognize and utilize the index.
+Standard column references will not match the function-based index.<br />
+<br />
+These queries will result in full table scans because they do not match the index function:<br />
+<pre class="sql-code">
+SELECT * FROM table_nvl WHERE refid = 10;
+
+SELECT * FROM table_nvl WHERE refid IS NULL;
+
+SELECT * FROM table_nvl WHERE refid IS NOT NULL;
+
+SELECT * FROM table_nvl WHERE refid > 0; -- IS NOT NULL
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME | OPTIONS |
++-------------+---------+
+| TABLE_NVL   | FULL    |
+</pre>
+Correct usage with NVL function to utilize the function-based index:<br />
+<pre class="sql-code">
+SELECT * FROM table_nvl WHERE nvl(refid,0) = 10;
+SELECT /*+ index(table_nvl idx_table_nvl_refid)*/ * FROM table_nvl WHERE nvl(refid,0) = 10;
+
+SELECT * FROM table_nvl WHERE nvl(refid,0) = 0; -- IS NULL
+SELECT /*+ index(table_nvl idx_table_nvl_refid)*/ * FROM table_nvl WHERE nvl(refid,0) = 0; -- IS NULL
+
+SELECT * FROM table_nvl WHERE nvl(refid,0) > 0; -- IS NOT NULL
+SELECT /*+ index(table_nvl idx_table_nvl_refid)*/ * FROM table_nvl WHERE nvl(refid,0) > 0; -- IS NOT NULL
+</pre>
+Execution plan:
+<pre class="text-code">
+| OBJECT_NAME         | OPTIONS        |
++---------------------+----------------+
+| TABLE_NVL           | BY INDEX ROWID |
+| IDX_TABLE_NVL_REFID | RANGE SCAN     |
+</pre>
+The function-based index enables efficient access for all scenarios: searching for specific values, NULL values (converted to 0), and NOT NULL values (greater than 0).
+This approach provides comprehensive index coverage while maintaining query performance for all possible search patterns on the column.
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

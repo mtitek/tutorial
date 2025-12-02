@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle NLS (National Language Support) Tutorial - Parameters &amp; Configuration Guide | MTI TEK</title>
+<meta name="description" content="Complete Oracle NLS tutorial covering National Language Support parameters, configuration views, and session management. Learn database, instance, and session-level NLS settings." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle NLS (National Language Support) Tutorial - Parameters &amp; Configuration Guide | MTI TEK" />
+<meta property="og:description" content="Complete Oracle NLS tutorial covering National Language Support parameters, configuration views, and session management. Learn database, instance, and session-level NLS settings." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/nls.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle NLS (National Language Support) Tutorial - Parameters &amp; Configuration Guide | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle NLS tutorial covering National Language Support parameters, configuration views, and session management. Learn database, instance, and session-level NLS settings." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/nls.html",
+        "description": "Complete Oracle NLS tutorial covering National Language Support parameters, configuration views, and session management. Learn database, instance, and session-level NLS settings.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/nls.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Oracle National Language Support (NLS) Overview</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding NLS (Oracle's National Language Support)</a></li>
+<li><a href="#sec_id_2">Querying Valid NLS Values with V$NLS_VALID_VALUES</a></li>
+<li><a href="#sec_id_3">Database-Level NLS Settings (NLS_DATABASE_PARAMETERS)</a></li>
+<li><a href="#sec_id_4">Instance-Level NLS Settings (NLS_INSTANCE_PARAMETERS)</a></li>
+<li><a href="#sec_id_5">Session-Level NLS Settings and Modifications (NLS_SESSION_PARAMETERS)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding NLS (Oracle's National Language Support)</span>
+<div class="tutorialSectionTextDiv1">
+Oracle's National Language Support (NLS) is a comprehensive globalization framework that enables Oracle Database to store, process, and retrieve data in native languages and formats.
+The NLS architecture provides automatic adaptation of database behavior according to preconfigured language and locale parameters, ensuring applications can operate seamlessly across different cultural and linguistic environments.<br />
+<br />
+NLS affects multiple aspects of database operations including data storage character sets, display formats for dates and numbers, sorting algorithms, error message languages, and calendar systems.
+The framework operates at three distinct levels: database, instance, and session, with session-level settings taking precedence over instance settings, which in turn override database-level defaults.<br />
+<br />
+Key NLS parameters include:<br />
+<ul class="ul_square_1">
+<li><code class="code1">NLS_LANGUAGE</code>: Determines the language for error messages, day and month names, and default sorting rules.<br /></li>
+<li><code class="code1">NLS_TERRITORY</code>: Specifies default date format, decimal character, group separator, and currency symbol based on geographic location.<br /><br /></li>
+<li><code class="code1">NLS_CURRENCY</code>: Defines the local currency symbol used in number formatting.<br /></li>
+<li><code class="code1">NLS_DUAL_CURRENCY</code>: Specifies the dual currency symbol for euro currency support.<br /></li>
+<li><code class="code1">NLS_ISO_CURRENCY</code>: Sets the ISO currency code used in number formatting.<br /><br /></li>
+<li><code class="code1">NLS_NUMERIC_CHARACTERS</code>: Defines decimal and group separator characters for numeric display.<br /><br /></li>
+<li><code class="code1">NLS_LENGTH_SEMANTICS</code> { '<code class="code1">BYTE</code>' | '<code class="code1">CHAR</code>' }:
+Controls whether the length of <code class="code1">CHAR</code>, <code class="code1">VARCHAR2</code>, and <code class="code1">LONG</code> columns is defined in bytes or characters.
+This is particularly important for multibyte character sets where a single character may occupy multiple bytes.<br /></li>
+<li><code class="code1">NLS_CHARACTERSET</code>:
+Specifies the character encoding used for data stored in <code class="code1">CHAR</code>, <code class="code1">VARCHAR2</code>, <code class="code1">CLOB</code>, and <code class="code1">LONG</code> columns.
+This is set at database creation and cannot be changed afterward.<br /></li>
+<li><code class="code1">NLS_NCHAR_CHARACTERSET</code>:
+Defines the character encoding for national character datatypes <code class="code1">NCHAR</code>, <code class="code1">NVARCHAR2</code>, and <code class="code1">NCLOB</code>.
+Commonly set to AL16UTF16 or UTF8.<br /><br /></li>
+<li><code class="code1">NLS_NCHAR_CONV_EXCP</code>: { <code class="code1">FALSE</code> | <code class="code1">TRUE</code> }:
+Determines whether data conversion between CHAR and NCHAR datatypes raises an exception when data loss might occur.<br /><br /></li>
+<li><code class="code1">NLS_CALENDAR</code>:
+Specifies the calendar system used for date calculations and formatting:
+{'<code class="code1">Arabic Hijrah</code>' |
+'<code class="code1">English Hijrah</code>' |
+'<code class="code1">Gregorian</code>' |
+'<code class="code1">Japanese Imperial</code>' |
+'<code class="code1">Persian</code>' |
+'<code class="code1">ROC Official (Republic of China)</code>' |
+'<code class="code1">Thai Buddha</code>' }<br /></li>
+<li><code class="code1">NLS_DATE_LANGUAGE</code>: Controls the language used for day and month names in date formatting.<br /></li>
+<li><code class="code1">NLS_DATE_FORMAT</code>: Sets the default format mask for DATE datatype display and input.<br /></li>
+<li><code class="code1">NLS_TIMESTAMP_FORMAT</code>: Defines the default format for TIMESTAMP datatypes.<br /></li>
+<li><code class="code1">NLS_TIMESTAMP_TZ_FORMAT</code>: Specifies the format for TIMESTAMP WITH TIME ZONE datatypes.<br /><br /></li>
+<li><code class="code1">NLS_SORT</code>: { <code class="code1">BINARY</code> | <code class="code1">linguistic_definition</code> }:
+Determines the collation sequence for character data sorting.
+BINARY provides fastest performance, while linguistic definitions support language-specific sorting rules.<br /></li>
+<li><code class="code1">NLS_COMP</code>: { <code class="code1">BINARY</code> | <code class="code1">LINGUISTIC</code> | <code class="code1">ANSI</code> }:
+Controls comparison semantics for character data in WHERE clauses and comparison operations.</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Querying Valid NLS Values with V$NLS_VALID_VALUES</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">V$NLS_VALID_VALUES</code> dynamic performance view provides a comprehensive list of valid values for specific NLS parameters.
+This view is essential to verify supported configurations before implementing NLS changes.<br />
+<br />
+To see which NLS parameters have predefined valid values, query the distinct parameter names:<br />
+<pre class="sql-code">
+SELECT DISTINCT parameter FROM v$nls_valid_values;
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER    |
++--------------+
+| CHARACTERSET |
+| LANGUAGE     |
+| SORT         |
+| TERRITORY    |
+</pre>
+Each parameter in this view represents an NLS setting with a finite set of supported values.
+The <code class="code1">CHARACTERSET</code> parameter shows available character encodings, <code class="code1">LANGUAGE</code> lists supported languages, <code class="code1">SORT</code> displays available linguistic sorting definitions, and <code class="code1">TERRITORY</code> contains valid territory specifications.<br />
+<br />
+To retrieve all possible values for a specific parameter, use a filtered query.
+For example, to see available character sets:<br />
+<pre class="sql-code">
+SELECT * FROM v$nls_valid_values WHERE parameter = 'CHARACTERSET';
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER    | VALUE     |
+---------------+-----------|
+| CHARACTERSET | US7ASCII  |
+| CHARACTERSET | UTF8      |
+| CHARACTERSET | AL16UTF16 |
+...
+</pre>
+This information is particularly important when troubleshooting character set related issues.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Database-Level NLS Settings (NLS_DATABASE_PARAMETERS)</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">NLS_DATABASE_PARAMETERS</code> view displays the NLS parameter values that were established when the database was created.
+These settings serve as the foundation for all NLS behavior and can only be changed through database recreation or specific administrative procedures for certain parameters.<br />
+<br />
+Database-level NLS parameters are stored in the data dictionary and remain constant throughout the database lifecycle unless explicitly modified through supported Oracle procedures.
+These values act as defaults when instance or session-level parameters are not explicitly set.<br />
+<pre class="sql-code">
+SELECT parameter, value FROM nls_database_parameters;
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER               | VALUE                            |
+--------------------------+----------------------------------+
+| NLS_LANGUAGE            | AMERICAN                         |
+| NLS_TERRITORY           | AMERICA                          |
+|                                                            |
+| NLS_CURRENCY            | $                                |
+| NLS_DUAL_CURRENCY       | $                                |
+| NLS_ISO_CURRENCY        | AMERICA                          |
+|                                                            |
+| NLS_NUMERIC_CHARACTERS  | '.,'                             |
+|                                                            |
+| NLS_LENGTH_SEMANTICS    | BYTE                             |
+| NLS_CHARACTERSET        |                                  |
+| NLS_NCHAR_CHARACTERSET  |                                  |
+|                                                            |
+| NLS_NCHAR_CONV_EXCP     | FALSE                            |
+|                                                            |
+| NLS_CALENDAR            | Gregorian                        |
+| NLS_DATE_LANGUAGE       | AMERICAN                         |
+| NLS_DATE_FORMAT         | 'YYYY-MM-DD'                     |
+| NLS_TIMESTAMP_FORMAT    | 'YYYY-MM-DD HH:MI:SS.FF'         |
+| NLS_TIMESTAMP_TZ_FORMAT | 'YYYY-MM-DD HH:MI:SS.FF TZH:TZM' |
+|                                                            |
+| NLS_SORT                | BINARY                           |
+| NLS_COMP                | LINGUISTIC                       |
+</pre>
+Note that character set parameters (<code class="code1">NLS_CHARACTERSET</code> and <code class="code1">NLS_NCHAR_CHARACTERSET</code>) are fundamental database properties that cannot be easily changed after database creation.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Instance-Level NLS Settings (NLS_INSTANCE_PARAMETERS)</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">NLS_INSTANCE_PARAMETERS</code> view shows NLS parameter values that are set at the database instance level.
+These parameters can be configured in the initialization parameter file (SPFILE or PFILE) and take effect when the instance starts.
+Instance-level settings override database-level defaults but can be superseded by session-level modifications.<br />
+<br />
+Instance parameters provide a way to establish consistent NLS behavior across all sessions connecting to the database while still allowing individual sessions to override settings as needed.
+Changes to instance-level NLS parameters typically require an instance restart to take effect.<br />
+<pre class="sql-code">
+SELECT parameter, value FROM nls_instance_parameters;
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER               | VALUE                            |
+--------------------------+----------------------------------+
+| NLS_LANGUAGE            | AMERICAN                         |
+| NLS_TERRITORY           | AMERICA                          |
+|                                                            |
+| NLS_CURRENCY            | $                                |
+| NLS_DUAL_CURRENCY       | $                                |
+| NLS_ISO_CURRENCY        | AMERICA                          |
+|                                                            |
+| NLS_NUMERIC_CHARACTERS  | '.,'                             |
+|                                                            |
+| NLS_LENGTH_SEMANTICS    | BYTE                             |
+|                                                            |
+| NLS_NCHAR_CONV_EXCP     | FALSE                            |
+|                                                            |
+| NLS_CALENDAR            | Gregorian                        |
+| NLS_DATE_LANGUAGE       | AMERICAN                         |
+| NLS_DATE_FORMAT         | 'YYYY-MM-DD'                     |
+| NLS_TIMESTAMP_FORMAT    | 'YYYY-MM-DD HH:MI:SS.FF'         |
+| NLS_TIMESTAMP_TZ_FORMAT | 'YYYY-MM-DD HH:MI:SS.FF TZH:TZM' |
+|                                                            |
+| NLS_SORT                | BINARY                           |
+| NLS_COMP                | LINGUISTIC                       |
+</pre>
+Instance-level NLS parameters are particularly useful in environments where multiple applications with different localization requirements connect to the same database, as they provide a consistent baseline while allowing application-specific customization at the session level.
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Session-Level NLS Settings and Modifications (NLS_SESSION_PARAMETERS)</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">NLS_SESSION_PARAMETERS</code> view displays the current NLS parameter values for your active database session.
+These are the actual values that Oracle uses for formatting, sorting, and processing data within your session.
+Session-level parameters take the highest precedence in Oracle's NLS hierarchy and can be dynamically modified without affecting other database sessions.<br />
+<br />
+Session parameters can be inherited from instance settings, set through client environment variables (such as NLS_LANG), or explicitly modified using the <code class="code1">ALTER SESSION</code> statement.
+This flexibility allows applications to customize their locale behavior without impacting other users or requiring database-wide changes.<br />
+<pre class="sql-code">
+SELECT parameter, value FROM nls_session_parameters;
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER               | VALUE                            |
+--------------------------+----------------------------------+
+| NLS_LANGUAGE            | AMERICAN                         |
+| NLS_TERRITORY           | AMERICA                          |
+|                                                            |
+| NLS_CURRENCY            | $                                |
+| NLS_DUAL_CURRENCY       | $                                |
+| NLS_ISO_CURRENCY        | AMERICA                          |
+|                                                            |
+| NLS_NUMERIC_CHARACTERS  | '.,'                             |
+|                                                            |
+| NLS_LENGTH_SEMANTICS    | BYTE                             |
+|                                                            |
+| NLS_NCHAR_CONV_EXCP     | FALSE                            |
+|                                                            |
+| NLS_CALENDAR            | Gregorian                        |
+| NLS_DATE_LANGUAGE       | AMERICAN                         |
+| NLS_DATE_FORMAT         | 'YYYY-MM-DD'                     |
+| NLS_TIMESTAMP_FORMAT    | 'YYYY-MM-DD HH:MI:SS.FF'         |
+| NLS_TIMESTAMP_TZ_FORMAT | 'YYYY-MM-DD HH:MI:SS.FF TZH:TZM' |
+|                                                            |
+| NLS_SORT                | BINARY                           |
+| NLS_COMP                | LINGUISTIC                       |
+</pre>
+Session-level NLS parameters can be modified using the <code class="code1">ALTER SESSION</code> command, which immediately changes the behavior for the current session without requiring reconnection.
+These changes remain in effect until the session ends or the parameter is explicitly changed again.<br />
+<br />
+For example, to change the sorting behavior to use binary comparison for improved performance:<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT = BINARY;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

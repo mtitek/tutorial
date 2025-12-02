@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Database Recycle Bin: View and Purge Deleted Objects Guide | MTI TEK</title>
+<meta name="description" content="Learn how to use Oracle Database recycle bin to view, manage, and purge deleted tables and indexes." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Database Recycle Bin: View and Purge Deleted Objects Guide | MTI TEK" />
+<meta property="og:description" content="Learn how to use Oracle Database recycle bin to view, manage, and purge deleted tables and indexes." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/recyclebin.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Database Recycle Bin: View and Purge Deleted Objects Guide | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Oracle Database recycle bin to view, manage, and purge deleted tables and indexes." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/recyclebin.html",
+        "description": "Learn how to use Oracle Database recycle bin to view, manage, and purge deleted tables and indexes.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/recyclebin.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Oracle Database Recycle Bin</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding the Recycle Bin</a></li>
+<li><a href="#sec_id_2">Viewing Deleted Objects</a></li>
+<li><a href="#sec_id_3">Purging Deleted Objects</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding the Recycle Bin</span>
+<div class="tutorialSectionTextDiv1">
+The Oracle Database recycle bin is a logical container that stores dropped database objects such as tables and indexes.
+When you drop a table or index, Oracle does not immediately remove the object from the database.
+Instead, it renames the object and places it in the recycle bin, allowing for potential recovery through the FLASHBACK TABLE statement.<br />
+<br />
+When objects are dropped, they are renamed with a system-generated name that begins with "BIN$" followed by a unique identifier.
+The original object name and metadata are preserved in the recycle bin views for reference and recovery purposes.<br />
+<br />
+The recycle bin structure contains the following key columns:<br />
+<pre class="text-code">
+desc recyclebin;
+
+Name           NULL     Type
+-------------- -------- ------------
+OBJECT_NAME    NOT NULL VARCHAR2(30)
+ORIGINAL_NAME           VARCHAR2(32)
+OPERATION               VARCHAR2(9)
+TYPE                    VARCHAR2(25)
+TS_NAME                 VARCHAR2(30)
+CREATETIME              VARCHAR2(19)
+DROPTIME                VARCHAR2(19)
+DROPSCN                 NUMBER
+PARTITION_NAME          VARCHAR2(32)
+CAN_UNDROP              VARCHAR2(3)
+CAN_PURGE               VARCHAR2(3)
+RELATED        NOT NULL NUMBER
+BASE_OBJECT    NOT NULL NUMBER
+PURGE_OBJECT   NOT NULL NUMBER
+SPACE                   NUMBER</pre>
+The OBJECT_NAME column contains the system-generated name, while ORIGINAL_NAME stores the original object name.<br />
+The CAN_UNDROP column indicates whether the object can be restored using FLASHBACK TABLE.<br />
+The CAN_PURGE column shows if the object can be permanently removed.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Viewing Deleted Objects</span>
+<div class="tutorialSectionTextDiv1">
+Oracle provides several views to examine objects in the recycle bin.
+These views allow you to see what objects are available for recovery and their current status.<br />
+<br />
+To view all deleted objects for the current user:<br />
+<pre class="sql-code">
+SELECT * FROM user_recyclebin;</pre>
+This view has a synonym: <code class="code1">recyclebin</code>, which provides the same information and can be used interchangeably.<br />
+<br />
+To view all deleted objects across the entire database (requires DBA privileges):<br />
+<pre class="sql-code">
+SELECT * FROM dba_recyclebin;</pre>
+To see specific columns that provide the most useful information about dropped objects:<br />
+<pre class="sql-code">
+SELECT object_name, original_name, type, ts_name, droptime, can_undrop
+FROM user_recyclebin;</pre>
+This query shows the system-generated name, original name, object type, tablespace, drop time, and whether the object can be restored.
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Purging Deleted Objects</span>
+<div class="tutorialSectionTextDiv1">
+Purging removes objects permanently from the recycle bin, freeing up the space they occupied.
+Once purged, objects cannot be recovered using FLASHBACK TABLE.
+You can purge individual objects, entire tablespaces, or the entire recycle bin.<br />
+<br />
+Syntax:<br />
+<pre class="sql-code">
+PURGE
+{ TABLE table_name | INDEX index_name }
+| TABLESPACE tablespace_name [ USER user_name ]
+| { USER_RECYCLEBIN | RECYCLEBIN | DBA_RECYCLEBIN }</pre>
+The PURGE TABLE command removes a specific table from the recycle bin.
+You can use either the original table name or the system-generated object name.<br />
+The PURGE TABLESPACE command removes all objects from a specific tablespace.<br />
+The PURGE RECYCLEBIN command removes all objects from the current user's recycle bin.<br />
+<br />
+Example:<br />
+<ul class="ul_square_1">
+<li>
+Create a test table:<br />
+<pre class="sql-code">
+CREATE TABLE TABLE_PURGE
+(
+    ID NUMBER(1,0)
+);</pre>
+</li>
+<li>
+Drop the table:<br />
+<pre class="sql-code">
+DROP TABLE table_purge;</pre>
+</li>
+<li>
+Display the contents of the recycle bin:<br />
+<pre class="sql-code">
+SELECT object_name, original_name, type, ts_name, can_undrop, can_purge FROM user_recyclebin;</pre>
+Query result:<br />
+<pre class="text-code">
+OBJECT_NAME ORIGINAL_NAME TYPE TS_NAME CAN_UNDROP CAN_PURGE
+------------------------------ -------------------------------- ------------------------- ------------------------------ ---------- ---------
+BIN$kE4ti/oXT02ThCYJ+4263A==$0 TABLE_PURGE TABLE USERS YES YES</pre>
+</li>
+<li>
+Purge the table:<br />
+<pre class="sql-code">
+PURGE TABLE table_purge;</pre>
+</li>
+</ul>
+After purging, the table is permanently removed from the database and no longer appears in the recycle bin views.
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

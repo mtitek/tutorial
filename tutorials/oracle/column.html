@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Column Management: CREATE, ALTER, DROP &amp; MODIFY Columns Tutorial | MTI TEK</title>
+<meta name="description" content="Learn Oracle column operations with examples: create columns with CREATE TABLE, add columns with ALTER TABLE ADD, drop columns, modify column data types, and rename columns in Oracle Database." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Column Management: CREATE, ALTER, DROP &amp; MODIFY Columns Tutorial | MTI TEK" />
+<meta property="og:description" content="Learn Oracle column operations with examples: create columns with CREATE TABLE, add columns with ALTER TABLE ADD, drop columns, modify column data types, and rename columns in Oracle Database." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/column.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Column Management: CREATE, ALTER, DROP &amp; MODIFY Columns Tutorial | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle column operations with examples: create columns with CREATE TABLE, add columns with ALTER TABLE ADD, drop columns, modify column data types, and rename columns in Oracle Database." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/column.html",
+        "description": "Learn Oracle column operations with examples: create columns with CREATE TABLE, add columns with ALTER TABLE ADD, drop columns, modify column data types, and rename columns in Oracle Database.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/column.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Working with Columns</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Creating Columns During Table Creation</a></li>
+<li><a href="#sec_id_2">Adding Columns to Existing Tables</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1">Add a Single Column</a></li>
+<li><a href="#sec_id_2_2">Add Multiple Columns</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_4">Modifying Existing Columns</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Modify a Single Column</a></li>
+<li><a href="#sec_id_4_2">Modify Multiple Columns</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_5">Renaming Columns</a></li>
+<li><a href="#sec_id_3">Dropping Columns</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Drop a Single Column</a></li>
+<li><a href="#sec_id_3_2">Drop Multiple Columns</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Columns During Table Creation</span>
+<div class="tutorialSectionTextDiv1">
+Define columns with their data types, precision, scale, and constraints during table creation. Column definitions include the column name, data type, size specifications, and optional constraints like NOT NULL.<br />
+<pre class="sql-code">
+CREATE TABLE table_column
+(
+    pkid NUMBER(1,0) NOT NULL
+,   code VARCHAR2(2) NOT NULL
+);
+</pre>
+Verify column creation by querying the data dictionary view <code class="code1">USER_TAB_COLUMNS</code>, which contains metadata about all columns in your schema:<br />
+<pre class="sql-code">
+SELECT table_name, column_name, data_type, data_length, data_precision, data_scale, nullable
+FROM user_tab_columns
+WHERE upper(table_name) = 'TABLE_COLUMN';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| TABLE_NAME   | COLUMN_NAME | DATA_TYPE | DATA_LENGTH | DATA_PRECISION | DATA_SCALE | NULLABLE |
++--------------+-------------+-----------+-------------+----------------+------------+----------+
+| TABLE_COLUMN | PKID        | NUMBER    | 22          | 1              | 0          | N        |
+| TABLE_COLUMN | CODE        | VARCHAR2  | 2           |                |            | N        |
+</pre>
+<b>Note:</b> DATA_LENGTH shows the internal storage size (22 bytes for NUMBER), while DATA_PRECISION and DATA_SCALE show the defined numeric precision and scale.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Adding Columns to Existing Tables</span>
+<div class="tutorialSectionTextDiv1">
+Use ALTER TABLE with the ADD clause to add new columns to existing tables.
+New columns are always added at the end of the table structure and are initially NULL for existing rows unless a DEFAULT value is specified.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1">Add a Single Column</span>
+<div class="tutorialSectionTextDiv1">
+Add a single column using the simple syntax without parentheses:<br />
+<pre class="sql-code">
+ALTER TABLE table_column ADD desc1 VARCHAR2(50);
+</pre>
+Alternatively, use parentheses for consistency with multi-column operations:<br />
+<pre class="sql-code">
+ALTER TABLE table_column ADD
+(
+    desc2 VARCHAR2(50)
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1">Add Multiple Columns</span>
+<div class="tutorialSectionTextDiv1">
+Add multiple columns in a single statement for better performance and transaction management:<br />
+<pre class="sql-code">
+ALTER TABLE table_column ADD
+(
+    desc3 VARCHAR2(50)
+,   desc4 VARCHAR2(50)
+);
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Modifying Existing Columns</span>
+<div class="tutorialSectionTextDiv1">
+Use ALTER TABLE with the MODIFY clause to change column properties such as data type, size, default values, or NULL/NOT NULL constraints.
+Some modifications require the column to be empty or have compatible data.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Modify a Single Column</span>
+<div class="tutorialSectionTextDiv1">
+Modify a single column to change its size, data type, or constraints:<br />
+<pre class="sql-code">
+ALTER TABLE table_column MODIFY CODE VARCHAR2(10);
+</pre>
+Alternative syntax using parentheses:<br />
+<pre class="sql-code">
+ALTER TABLE table_column MODIFY
+(
+    code VARCHAR2(10)
+);
+</pre>
+<b>Note:</b> You can only increase VARCHAR2 size, or decrease it if all existing data fits in the new size.<br />
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Modify Multiple Columns</span>
+<div class="tutorialSectionTextDiv1">
+Modify multiple columns simultaneously for better performance:<br />
+<pre class="sql-code">
+ALTER TABLE table_column MODIFY
+(
+    pkid NUMBER(10,0)
+,   code VARCHAR2(10)
+);
+</pre>
+<b>Note:</b> Data type changes may require the column to be empty, or the new type must be compatible with existing data.<br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Renaming Columns</span>
+<div class="tutorialSectionTextDiv1">
+Use ALTER TABLE with RENAME COLUMN to change column names.
+This operation updates the column name in the data dictionary and all dependent objects like indexes, constraints, and views.<br />
+<pre class="sql-code">
+ALTER TABLE table_column RENAME COLUMN CODE TO CODE_NEW_NAME;
+</pre>
+<b>Impact:</b> Renaming columns may invalidate dependent database objects like views, stored procedures, and triggers that reference the old column name.
+Plan to recompile or update these objects after renaming.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Dropping Columns</span>
+<div class="tutorialSectionTextDiv1">
+Use ALTER TABLE with DROP to permanently remove columns from tables.
+This operation cannot be undone and will free up storage space.
+Dropping columns also removes associated indexes and constraints.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Drop a Single Column</span>
+<div class="tutorialSectionTextDiv1">
+Drop a single column using the COLUMN keyword:<br />
+<pre class="sql-code">
+ALTER TABLE table_column DROP COLUMN desc1;
+</pre>
+Alternative syntax without the COLUMN keyword:<br />
+<pre class="sql-code">
+ALTER TABLE table_column DROP
+(
+    desc2
+);
+</pre>
+<b>Note:</b> For large tables, consider using SET UNUSED followed by DROP UNUSED COLUMNS for faster operation during business hours.<br />
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Drop Multiple Columns</span>
+<div class="tutorialSectionTextDiv1">
+Drop multiple columns in a single operation for better performance:<br />
+<pre class="sql-code">
+ALTER TABLE table_column DROP
+(
+    desc3
+,   desc4
+);
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

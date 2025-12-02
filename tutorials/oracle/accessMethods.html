@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Database Table Access Methods: Full Scan, Index Scan &amp; ROWID Access | MTI TEK</title>
+<meta name="description" content="Learn Oracle Database table access methods including TABLE ACCESS FULL, INDEX ROWID, UNIQUE SCAN, RANGE SCAN, and SKIP SCAN with execution plans and examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Database Table Access Methods: Full Scan, Index Scan &amp; ROWID Access | MTI TEK" />
+<meta property="og:description" content="Learn Oracle Database table access methods including TABLE ACCESS FULL, INDEX ROWID, UNIQUE SCAN, RANGE SCAN, and SKIP SCAN with execution plans and examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/accessMethods.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Database Table Access Methods: Full Scan, Index Scan &amp; ROWID Access | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle Database table access methods including TABLE ACCESS FULL, INDEX ROWID, UNIQUE SCAN, RANGE SCAN, and SKIP SCAN with execution plans and examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/accessMethods.html",
+        "description": "Learn Oracle Database table access methods including TABLE ACCESS FULL, INDEX ROWID, UNIQUE SCAN, RANGE SCAN, and SKIP SCAN with execution plans and examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/accessMethods.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Table Access Methods</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Setup</a></li>
+<li><a href="#sec_id_1">Table Access Methods</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">TABLE ACCESS FULL</a></li>
+<li><a href="#sec_id_1_2">TABLE ACCESS BY INDEX ROWID</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Index Access Methods</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1">INDEX UNIQUE SCAN</a></li>
+<li><a href="#sec_id_2_2">INDEX RANGE SCAN</a></li>
+<li><a href="#sec_id_2_3">INDEX FULL SCAN</a></li>
+<li><a href="#sec_id_2_4">INDEX FAST FULL SCAN</a></li>
+<li><a href="#sec_id_2_5">INDEX SKIP SCAN</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Setup</span>
+<div class="tutorialSectionTextDiv1">
+This tutorial demonstrates various Oracle Database access methods using execution plans.<br />
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_access_methods
+(
+    id1 NUMBER(5,0) NOT NULL
+,   id2 NUMBER(5,0) NOT NULL
+,   type1 NUMBER(1,0) NOT NULL
+,   desc1 NVARCHAR2(2000) NOT NULL
+);
+</pre>
+<pre class="sql-code">
+DECLARE
+indexLoop NUMBER(5,0);
+
+BEGIN
+FOR indexLoop IN 1..50000 LOOP
+    IF MOD(indexLoop,2) = 0 THEN
+        INSERT INTO table_access_methods (id1, id2, type1, desc1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 1, 'ABCD');
+    ELSE
+        INSERT INTO table_access_methods (id1, id2, type1, desc1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 2, 'ZYZW');
+    END IF;
+END LOOP;
+END;
+/
+
+COMMIT;
+</pre>
+The sample data creates 50,000 rows with alternating type1 values (1 and 2) and random id2 values.
+This distribution provides realistic scenarios for demonstrating different access methods.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Table Access Methods</span>
+<div class="tutorialSectionTextDiv1">
+Table access methods determine how Oracle retrieves data directly from table segments.
+The optimizer chooses these methods based on available indexes, query predicates, and statistics.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">TABLE ACCESS FULL</span>
+<div class="tutorialSectionTextDiv1">
+A TABLE ACCESS FULL operation reads all blocks in a table segment sequentially from the first block to the high water mark.
+This method is chosen when:<br />
+<ul class="ul_square_1">
+<li>No suitable indexes exist for the query predicates.<br /></li>
+<li>The WHERE clause contains no conditions or uses non-indexed columns.<br /></li>
+<li>The optimizer estimates that a large percentage of rows will be returned.<br /></li>
+<li>Parallel processing is enabled for large table scans.<br /></li>
+<li>The cost-based optimizer determines it's more efficient than index access.<br /></li>
+</ul>
+Full table scans use multiblock I/O operations, making them efficient for processing large portions of a table.
+However, they can be resource-intensive for large tables when only a small subset of data is needed.<br />
+<pre class="sql-code">
+SELECT * FROM table_access_methods;
+</pre>
+Execution plan:
+<pre class="text-code">
+----------------------------------------------------------------------------------------------------
+| Id  | Operation         | Name                 | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+----------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |                      |      1 |        |     50 |00:00:00.01 |       4 |
+|   1 |  TABLE ACCESS FULL| TABLE_ACCESS_METHODS |      1 |  48819 |     50 |00:00:00.01 |       4 |
+----------------------------------------------------------------------------------------------------
+</pre>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">TABLE ACCESS BY INDEX ROWID</span>
+<div class="tutorialSectionTextDiv1">
+This access method retrieves table rows using ROWIDs obtained from index entries.
+The process involves two steps:<br />
+<ul class="ul_square_1">
+<li>Access the index to find ROWIDs that match the query criteria.<br /></li>
+<li>Use those ROWIDs to directly access the corresponding table rows.<br /></li>
+</ul>
+This method is highly efficient for selective queries because ROWIDs provide the exact physical location of rows, eliminating the need to scan multiple blocks.
+It's typically chosen when:<br />
+<ul class="ul_square_1">
+<li>An appropriate index exists on the queried columns.<br /></li>
+<li>The query is selective (returns a small percentage of total rows).<br /></li>
+<li>The index access cost is lower than a full table scan.<br /></li>
+</ul>
+The ROWID access is a single-block I/O operation, making it very fast for retrieving specific rows.<br />
+<pre class="sql-code">
+CREATE INDEX ix_table_access_methods_id2 ON table_access_methods (id2);
+ANALYZE INDEX ix_table_access_methods_id2 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT * FROM table_access_methods WHERE ID2 = 2;
+</pre>
+Execution plan:
+<pre class="text-code">
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                             |      1 |        |      4 |00:00:00.01 |       6 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_ACCESS_METHODS        |      1 |      4 |      4 |00:00:00.01 |       6 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_ACCESS_METHODS_ID2 |      1 |    195 |      4 |00:00:00.01 |       2 |
+---------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("ID2"=2)
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Index Access Methods</span>
+<div class="tutorialSectionTextDiv1">
+Index access methods determine how Oracle navigates and retrieves data from index structures.
+These methods are often combined with table access operations to complete query execution.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1">INDEX UNIQUE SCAN</span>
+<div class="tutorialSectionTextDiv1">
+An INDEX UNIQUE SCAN is used when Oracle accesses a unique index (including primary key indexes) with an equality predicate.
+This operation:<br />
+<ul class="ul_square_1">
+<li>Guarantees at most one matching index entry.<br /></li>
+<li>Uses a direct path through the B-tree structure to locate the entry.<br /></li>
+<li>Is the most efficient index access method.<br /></li>
+<li>Stops immediately after finding the matching entry or determining no match exists.<br /></li>
+</ul>
+This scan type provides optimal performance for point lookups on unique columns.<br />
+<pre class="sql-code">
+CREATE UNIQUE INDEX ix_table_access_methods_id1 ON table_access_methods (id1);
+ANALYZE INDEX ix_table_access_methods_id1 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT * FROM table_access_methods WHERE ID1 = 2;
+</pre>
+Execution plan:
+<pre class="text-code">
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                             |      1 |        |      1 |00:00:00.01 |       3 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_ACCESS_METHODS        |      1 |      1 |      1 |00:00:00.01 |       3 |
+|*  2 |   INDEX UNIQUE SCAN         | IX_TABLE_ACCESS_METHODS_ID1 |      1 |      1 |      1 |00:00:00.01 |       2 |
+---------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("ID1"=2)
+</pre>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1">INDEX RANGE SCAN</span>
+<div class="tutorialSectionTextDiv1">
+An INDEX RANGE SCAN reads index entries within a specified range of values.
+This method is used when:<br />
+<ul class="ul_square_1">
+<li>Query predicates involve range conditions (&gt;, &gt;=, &lt;, &lt;=, BETWEEN).<br /></li>
+<li>Equality predicates are used on non-unique indexes.<br /></li>
+<li>The leading columns of a composite index match the query predicates.<br /></li>
+</ul>
+The scan starts at the first qualifying index entry and continues until no more entries satisfy the condition.
+It's highly efficient for selective range queries and supports both ascending and descending access paths depending on query requirements and available indexes.<br />
+<pre class="sql-code">
+SELECT * FROM table_access_methods WHERE id1 > 2;
+</pre>
+Execution plan:
+<pre class="text-code">
+---------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+---------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                             |      1 |        |     50 |00:00:00.01 |       3 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_ACCESS_METHODS        |      1 |  48812 |     50 |00:00:00.01 |       3 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_ACCESS_METHODS_ID1 |      1 |    439 |     50 |00:00:00.01 |       2 |
+---------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("ID1">2)
+</pre>
+</div>
+</li>
+<li id="sec_id_2_3">
+<span class="tutorialSubSectionTitleSpan1">INDEX FULL SCAN</span>
+<div class="tutorialSectionTextDiv1">
+An INDEX FULL SCAN reads all entries in an index in sorted order, from the first leaf block to the last.
+This method is chosen when:<br />
+<ul class="ul_square_1">
+<li>All required columns are available in the index (covering index).<br /></li>
+<li>The query requires sorted results that match the index order.<br /></li>
+<li>It's more efficient than accessing the table data.<br /></li>
+</ul>
+Unlike a table full scan, an index full scan reads only the index blocks, which are typically much smaller and fewer in number than table blocks.
+This makes it particularly useful for queries that only need indexed columns or for providing pre-sorted data to eliminate separate sorting operations.<br />
+<pre class="sql-code">
+SELECT ID1 FROM table_access_methods ORDER BY id1;
+</pre>
+Execution plan:
+<pre class="text-code">
+----------------------------------------------------------------------------------------------------------
+| Id  | Operation        | Name                        | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+----------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT |                             |      1 |        |     50 |00:00:00.01 |       2 |
+|   1 |  INDEX FULL SCAN | IX_TABLE_ACCESS_METHODS_ID1 |      1 |  48819 |     50 |00:00:00.01 |       2 |
+----------------------------------------------------------------------------------------------------------
+</pre>
+</div>
+</li>
+<li id="sec_id_2_4">
+<span class="tutorialSubSectionTitleSpan1">INDEX FAST FULL SCAN</span>
+<div class="tutorialSectionTextDiv1">
+An INDEX FAST FULL SCAN reads all index blocks using multiblock I/O operations, but not necessarily in sorted order.
+This method is chosen when:<br />
+<ul class="ul_square_1">
+<li>All required columns are contained in the index.<br /></li>
+<li>At least one indexed column has a NOT NULL constraint.<br /></li>
+<li>Sorted output is not required.<br /></li>
+<li>The goal is maximum throughput rather than ordered access.<br /></li>
+</ul>
+This scan type can utilize parallel processing and is often faster than INDEX FULL SCAN when sorted results are not needed.
+The NOT NULL constraint requirement ensures that no qualifying rows are missed, since NULL values might not be stored in the index.<br />
+<pre class="sql-code">
+CREATE INDEX ix_table_access_methods_type1 ON table_access_methods (type1, id2);
+ANALYZE INDEX ix_table_access_methods_type1 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+SELECT type1, id2 FROM table_access_methods;
+</pre>
+Execution plan:
+<pre class="text-code">
+----------------------------------------------------------------------------------------------------------------
+| Id  | Operation            | Name                          | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+----------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |                               |      1 |        |     50 |00:00:00.01 |       7 |
+|   1 |  INDEX FAST FULL SCAN| IX_TABLE_ACCESS_METHODS_TYPE1 |      1 |  48819 |     50 |00:00:00.01 |       7 |
+----------------------------------------------------------------------------------------------------------------
+</pre>
+</div>
+</li>
+<li id="sec_id_2_5">
+<span class="tutorialSubSectionTitleSpan1">INDEX SKIP SCAN</span>
+<div class="tutorialSectionTextDiv1">
+An INDEX SKIP SCAN allows Oracle to use a composite index even when the leading column is not specified in the WHERE clause.
+This method:<br />
+<ul class="ul_square_1">
+<li>Logically splits the index into smaller sub-indexes based on distinct values of the leading column.<br /></li>
+<li>Performs separate range scans on each sub-index.<br /></li>
+<li>Is most effective when the leading column has low cardinality (few distinct values).<br /></li>
+<li>Becomes less efficient as the number of distinct leading column values increases.<br /></li>
+</ul>
+Skip scans are particularly useful for queries on composite indexes where only non-leading columns are specified in predicates.
+The optimizer considers this method when it estimates fewer distinct leading column values than would make a full table scan more efficient.<br />
+<pre class="sql-code">
+SELECT * FROM table_access_methods WHERE id2 = 100;
+</pre>
+This query would use INDEX SKIP SCAN on ix_table_access_methods_type1 (type1, id2) because id2 is the second column in the index but type1 is not specified in the WHERE clause.
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

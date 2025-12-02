@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle NOT NULL Constraint Tutorial: Implementation &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn Oracle NOT NULL constraints with practical examples. Compare standard NOT NULL vs CHECK constraint approaches, view error handling." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle NOT NULL Constraint Tutorial: Implementation &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn Oracle NOT NULL constraints with practical examples. Compare standard NOT NULL vs CHECK constraint approaches, view error handling." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/constraint_notnull.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle NOT NULL Constraint Tutorial: Implementation &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle NOT NULL constraints with practical examples. Compare standard NOT NULL vs CHECK constraint approaches, view error handling." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/constraint_notnull.html",
+        "description": "Learn Oracle NOT NULL constraints with practical examples. Compare standard NOT NULL vs CHECK constraint approaches, view error handling.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/constraint_notnull.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">NOT NULL Constraints</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Standard NOT NULL Constraint Implementation</a></li>
+<li><a href="#sec_id_2">Alternative NOT NULL Implementation Using CHECK Constraints</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Standard NOT NULL Constraint Implementation</span>
+<div class="tutorialSectionTextDiv1">
+The NOT NULL constraint prevents NULL values from being inserted into a column.
+Oracle provides two ways to define constraint names: system-generated or user-defined.
+
+<pre class="sql-code">
+CREATE TABLE table_not_null_1
+(
+    id1 NUMBER(1,0) NOT NULL -- the NOT NULL constraint name will be generated automatically by Oracle as "SYS_C007034"
+,   id2 NUMBER(1,0) CONSTRAINT cc_table_not_null_1_id2 NOT NULL -- the NOT NULL constraint name is explicitly defined as "CC_TABLE_NOT_NULL_1_ID2"
+);
+</pre>
+<ul class="ul_square_1">
+<li>
+Check the creation of the constraint:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, search_condition
+FROM user_constraints
+WHERE table_name = 'TABLE_NOT_NULL_1';
+</pre>
+Query result:
+<pre class="text-code">
++-------------------------+-----------------+----------------+-------------------+
+| CONSTRAINT_NAME         | CONSTRAINT_TYPE | GENERATED      | SEARCH_CONDITION  |
++-------------------------+-----------------+----------------+-------------------+
+| SYS_C007034             | C               | GENERATED NAME | "ID1" IS NOT NULL |
++-------------------------+-----------------+----------------+-------------------+
+| CC_TABLE_NOT_NULL_1_ID2 | C               | USER NAME      | "ID2" IS NOT NULL |
++-------------------------+-----------------+----------------+-------------------+
+</pre>
+Note: CONSTRAINT_TYPE 'C' indicates a CHECK constraint, which is how Oracle internally implements NOT NULL constraints.<br />
+<br /></li>
+<li>
+Check the nullability of the table columns:<br />
+<pre class="sql-code">
+SELECT column_name, CASE WHEN nullable = 'N' THEN 'NO' ELSE 'YES' END AS nullable
+FROM user_tab_columns
+WHERE table_name = 'TABLE_NOT_NULL_1';
+</pre>
+Query result:
+<pre class="text-code">
++-------------+----------+
+| COLUMN_NAME | NULLABLE |
++-------------+----------+
+| ID1         | NO       |
++-------------+----------+
+| ID2         | NO       |
++-------------+----------+
+</pre>
+The NULLABLE column in USER_TAB_COLUMNS shows 'N' for columns with NOT NULL constraints.<br />
+<br /></li>
+<li>
+Insert NULL values into the table:<br />
+<pre class="sql-code">
+INSERT INTO table_not_null_1(id1, id2) VALUES(NULL, 1);
+INSERT INTO table_not_null_1(id1, id2) VALUES(1, NULL);
+</pre>
+Query result:
+<pre class="text-code">
+Error starting at line 1 in command:
+INSERT INTO TABLE_NOT_NULL_1(ID1, ID2) VALUES(NULL, 1)
+Error report: ORA-01400: cannot insert NULL into ("HR"."TABLE_NOT_NULL_1"."ID1")
+*Cause: A NULL value was inserted into a column defined as NOT NULL.
+*Action: Do not insert NULLs or modify the column definition.
+
+Error starting at line 2 in command:
+INSERT INTO TABLE_NOT_NULL_1(ID1, ID2) VALUES(1, NULL)
+Error report: ORA-01400: cannot insert NULL into ("HR"."TABLE_NOT_NULL_1"."ID2")
+*Cause: A NULL value was inserted into a column defined as NOT NULL.
+*Action: Do not insert NULLs or modify the column definition.
+</pre>
+Oracle returns ORA-01400 error when attempting to insert NULL values into NOT NULL columns.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Alternative NOT NULL Implementation Using CHECK Constraints</span>
+<div class="tutorialSectionTextDiv1">
+While the standard NOT NULL syntax is preferred, you can achieve the same result using an explicit CHECK constraint.
+This approach provides more control over constraint naming but does not modify the column's NULLABLE property in the data dictionary.
+
+<pre class="sql-code">
+CREATE TABLE table_not_null_2
+(
+    ID1 NUMBER(1,0) CONSTRAINT CC_table_not_null_2_ID1 CHECK ( ID1 IS NOT NULL )
+);
+</pre>
+<ul class="ul_square_1">
+<li>
+Check the creation of the constraint:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, search_condition
+FROM user_constraints
+WHERE table_name = 'TABLE_NOT_NULL_2';
+</pre>
+Query result:
+<pre class="text-code">
++-------------------------+-----------------+----------------+-------------------+
+| CONSTRAINT_NAME         | CONSTRAINT_TYPE | GENERATED      | SEARCH_CONDITION  |
++-------------------------+-----------------+----------------+-------------------+
+| CC_TABLE_NOT_NULL_2_ID1 | C               | USER NAME      | ID1 IS NOT NULL   |
++-------------------------+-----------------+----------------+-------------------+
+</pre>
+</li>
+<li>
+Check the nullability of the table columns:<br />
+<pre class="sql-code">
+SELECT column_name, CASE WHEN nullable = 'N' THEN 'NO' ELSE 'YES' END AS nullable
+FROM user_tab_columns
+WHERE table_name = 'TABLE_NOT_NULL_2';
+</pre>
+Query result:
+<pre class="text-code">
++-------------+----------+
+| COLUMN_NAME | NULLABLE |
++-------------+----------+
+| ID1         | YES      |
++-------------+----------+
+</pre>
+<b>Note:</b> Using CHECK constraints to enforce NOT NULL does not update the column's NULLABLE property to 'N' in the data dictionary, even though NULL values are still prevented.<br />
+<br /></li>
+<li>
+Insert NULL values into the table:<br />
+<pre class="sql-code">
+INSERT INTO table_not_null_2(ID1) VALUES(NULL);
+</pre>
+Query result:
+<pre class="text-code">
+Error starting at line 1 in command:
+INSERT INTO table_not_null_2(ID1) VALUES(NULL)
+Error report: ORA-02290: check constraint (HR.CC_TABLE_NOT_NULL_2_ID1) violated
+*Cause: The values being inserted do not satisfy the named check constraint.
+*Action: Do not insert values that violate the constraint.
+</pre>
+Oracle returns ORA-02290 error for CHECK constraint violations, which differs from the ORA-01400 error for standard NOT NULL constraints.
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

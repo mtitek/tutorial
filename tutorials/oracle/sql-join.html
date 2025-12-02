@@ -1,0 +1,1262 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL JOIN Tutorial: Complete Guide with Examples | INNER, OUTER, CROSS | MTI TEK</title>
+<meta name="description" content="Master Oracle SQL JOINs with this comprehensive tutorial. Learn INNER, LEFT/RIGHT OUTER, FULL OUTER, CROSS JOINs, Semi/Anti joins, UNION &amp; INTERSECT with practical examples and syntax." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL JOIN Tutorial: Complete Guide with Examples | INNER, OUTER, CROSS | MTI TEK" />
+<meta property="og:description" content="Master Oracle SQL JOINs with this comprehensive tutorial. Learn INNER, LEFT/RIGHT OUTER, FULL OUTER, CROSS JOINs, Semi/Anti joins, UNION &amp; INTERSECT with practical examples and syntax." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/sql-join.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL JOIN Tutorial: Complete Guide with Examples | INNER, OUTER, CROSS | MTI TEK" />
+<meta name="twitter:description" content="Master Oracle SQL JOINs with this comprehensive tutorial. Learn INNER, LEFT/RIGHT OUTER, FULL OUTER, CROSS JOINs, Semi/Anti joins, UNION &amp; INTERSECT with practical examples and syntax." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/sql-join.html",
+        "description": "Master Oracle SQL JOINs with this comprehensive tutorial. Learn INNER, LEFT/RIGHT OUTER, FULL OUTER, CROSS JOINs, Semi/Anti joins, UNION &amp; INTERSECT with practical examples and syntax.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/sql-join.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">SQL JOIN Reference Guide</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Sample Data Setup</a></li>
+<li><a href="#sec_id_2">INNER JOIN - Matching Records Only</a></li>
+<li><a href="#sec_id_3">LEFT OUTER JOIN - All Left Table Records</a></li>
+<li><a href="#sec_id_4">LEFT OUTER JOIN (excluding INNER JOIN) - Left Table Only Records</a></li>
+<li><a href="#sec_id_5">RIGHT OUTER JOIN - All Right Table Records</a></li>
+<li><a href="#sec_id_6">RIGHT OUTER JOIN (excluding INNER JOIN) - Right Table Only Records</a></li>
+<li><a href="#sec_id_7">FULL OUTER JOIN - All Records from Both Tables</a></li>
+<li><a href="#sec_id_8">FULL OUTER JOIN (excluding INNER JOIN) - Non-Matching Records Only</a></li>
+<li><a href="#sec_id_9">CROSS JOIN - Cartesian Product</a></li>
+<li><a href="#sec_id_10">SEMI JOIN - Existence Check</a></li>
+<li><a href="#sec_id_11">ANTI JOIN - Non-Existence Check</a></li>
+<li><a href="#sec_id_12">UNION - Combine Distinct Records</a></li>
+<li><a href="#sec_id_13">INTERSECT - Common Records</a></li>
+<li><a href="#sec_id_1">SQL JOIN Quick Reference Guide</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+This tutorial explains how to use different types of SQL JOIN operations to combine records from two tables.
+JOINs are fundamental operations that allow you to retrieve related data from multiple tables in a single query.<br />
+<br />
+Joining two tables requires that the related columns used in JOIN conditions are properly indexed for optimal performance.
+The related columns are typically primary keys and foreign keys of the joined tables, which establish referential integrity between tables.<br />
+<br />
+Oracle Database supports all standard SQL JOIN types and provides additional set operations.
+The execution plan and performance characteristics may vary based on table size, available indexes, and optimizer statistics.<br />
+<br />
+For detailed explanation of SQL JOIN, see <a href="join.html">JOIN Operations</a><br />
+<br />
+These tables and sample data are used in the examples below:<br />
+<ul class="ul_none_1">
+<li>
+<pre class="sql-code">
+create table table1 (rownum1 int, c1 char, primary key (rownum1));</pre>
+</li>
+<li>
+<pre class="sql-code">
+create table table2 (rownum2 int, c2 char, primary key (rownum2));</pre>
+</li>
+<li>
+<pre class="sql-code">
+insert into table1(rownum1,c1) values(1,'a');
+insert into table1(rownum1,c1) values(2,'a');
+insert into table1(rownum1,c1) values(3,'b');
+insert into table1(rownum1,c1) values(4,'c');
+insert into table1(rownum1,c1) values(5,'c');
+insert into table1(rownum1,c1) values(6,'d');
+
+COMMIT;</pre>
+</li>
+<li>
+<pre class="sql-code">
+insert into table2(rownum2,c2) values(1,'a');
+insert into table2(rownum2,c2) values(2,'b');
+insert into table2(rownum2,c2) values(3,'b');
+insert into table2(rownum2,c2) values(4,'e');
+insert into table2(rownum2,c2) values(5,'e');
+insert into table2(rownum2,c2) values(6,'f');
+
+COMMIT;</pre>
+</li>
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#f4f4f4" valign="middle" align="left" style="padding:10px">Table1
+<pre class="text-code">
+"a"
+"a"
+"b"
+"c"
+"c"
+"d"</pre>
+</td>
+<td class="csstd1" width="1" height="50" bgcolor="#f4f4f4" valign="middle" align="left" style="padding:10px">&nbsp;</td>
+<td class="csstd1" width="100" height="50" bgcolor="#f4f4f4" valign="middle" align="left" style="padding:10px">Table2
+<pre class="text-code">
+"a"
+"b"
+"b"
+"e"
+"e"
+"f"</pre>
+</td>
+</tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">INNER JOIN - Matching Records Only</span>
+<div class="tutorialSectionTextDiv1">
+INNER JOIN returns only the rows that have matching values in both tables based on the JOIN condition.
+This is the most restrictive type of JOIN and is often the default choice when you need data that exists in both tables.
+Oracle's cost-based optimizer typically chooses the most efficient join method (nested loop, hash join, or sort-merge join) based on table statistics and available indexes.<br />
+<br />
+The keyword INNER is optional; writing just JOIN defaults to an INNER JOIN in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1
+inner join table2 t2 on t1.c1=t2.c2
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  for (rownum2,c2) in table2
+    if c1==c2
+      print rownum1,c1,rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">LEFT OUTER JOIN - All Left Table Records</span>
+<div class="tutorialSectionTextDiv1">
+LEFT OUTER JOIN returns all rows from the left table and matching rows from the right table.
+When no match is found in the right table, NULL values are returned for all columns from the right table.
+This is useful when you want to preserve all records from the primary table while optionally including related data from a secondary table.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1
+left outer join table2 t2 on t1.c1=t2.c2
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  flag=not-found
+  for (rownum2,c2) in table2
+    if c1==c2 {
+      print rownum1,c1,rownum2,c2
+      flag=found
+    }
+  if flag==not-found
+    print rownum1,c1,(null),(null)</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">LEFT OUTER JOIN (excluding INNER JOIN) - Left Table Only Records</span>
+<div class="tutorialSectionTextDiv1">
+This variation of LEFT OUTER JOIN filters out the matching records, returning only records from the left table that have no corresponding match in the right table.
+This is accomplished by adding a WHERE clause that checks for NULL values in the right table's primary key or any non-nullable column.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+left outer join table2 t2 on t1.c1=t2.c2
+where t2.rownum2 is null
+order by t1.rownum1</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  flag=not-found
+  for c2 in table2
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print rownum1,c1</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">RIGHT OUTER JOIN - All Right Table Records</span>
+<div class="tutorialSectionTextDiv1">
+RIGHT OUTER JOIN returns all rows from the right table and matching rows from the left table.
+When no match is found in the left table, NULL values are returned for all columns from the left table.
+This is the mirror image of LEFT OUTER JOIN and is less commonly used in practice, as most developers prefer to restructure the query to use LEFT OUTER JOIN for better readability.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-RIGHT OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1
+right outer join table2 t2 on t1.c1=t2.c2
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum2,c2) in table2
+  flag=not-found
+  for (rownum1,c1) in table1
+    if c1==c2 {
+      print rownum1,c1,rownum2,c2
+      flag=found
+    }
+  if flag==not-found
+    print (null),(null),rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">RIGHT OUTER JOIN (excluding INNER JOIN) - Right Table Only Records</span>
+<div class="tutorialSectionTextDiv1">
+This variation of RIGHT OUTER JOIN filters out the matching records, returning only records from the right table that have no corresponding match in the left table.
+Similar to the LEFT OUTER JOIN exclusion pattern, this uses a WHERE clause to check for NULL values in the left table's primary key.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-RIGHT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t2.rownum2,t2.c2
+from table1 t1
+right outer join table2 t2 on t1.c1=t2.c2
+where t1.rownum1 is null
+order by t2.rownum2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum2,c2) in table2
+  flag=not-found
+  for c1 in table1
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">FULL OUTER JOIN - All Records from Both Tables</span>
+<div class="tutorialSectionTextDiv1">
+FULL OUTER JOIN returns all rows when there is a match in either table.
+It combines the results of both LEFT OUTER JOIN and RIGHT OUTER JOIN.
+This operation can be resource-intensive for large tables and may require temporary storage for sorting and merging operations in Oracle Database.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query (1):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1
+full outer join table2 t2 on t1.c1=t2.c2
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Sample Query (2):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2 from table1 t1 left outer join table2 t2 on t1.c1=t2.c2
+union
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2 from table1 t1 right outer join table2 t2 on t1.c1=t2.c2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  flag=not-found
+  for (rownum2,c2) in table2
+    if c1==c2 {
+      print rownum1,c1,rownum2,c2
+      flag=found
+    }
+  if flag==not-found
+    print rownum1,c1,(null),(null)
+
+for (rownum2,c2) in table2
+  flag=not-found
+  for c1 in table1
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print (null),(null),rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">FULL OUTER JOIN (excluding INNER JOIN) - Non-Matching Records Only</span>
+<div class="tutorialSectionTextDiv1">
+This variation of FULL OUTER JOIN returns only the records that do not have matches in the opposite table.
+It effectively combines LEFT OUTER JOIN exclusion and RIGHT OUTER JOIN exclusion into a single result set, showing orphaned records from both tables.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query (1):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1
+full outer join table2 t2 on t1.c1=t2.c2
+where t1.rownum1 is null or t2.rownum2 is null
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Sample Query (2):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2 from table1 t1 left outer join table2 t2 on t1.c1=t2.c2 where t2.rownum2 is null
+union
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2 from table1 t1 right outer join table2 t2 on t1.c1=t2.c2 where t1.rownum1 is null</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  flag=not-found
+  for c2 in table2
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print rownum1,c1,(null),(null)
+
+for (rownum2,c2) in table2
+  flag=not-found
+  for c1 in table1
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print (null),(null),rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">(null)</td><td class="csstd1">(null)</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">(null)</td><td class="csstd1">(null)</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_9">
+<span class="tutorialSubSectionTitleSpan1">CROSS JOIN - Cartesian Product</span>
+<div class="tutorialSectionTextDiv1">
+CROSS JOIN produces the Cartesian product of two tables, returning every possible combination of rows from both tables.
+This operation should be used with caution as it can produce very large result sets.
+CROSS JOIN is equivalent to the traditional comma-separated table syntax in the FROM clause without a WHERE condition.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1,t2.rownum2,t2.c2
+from table1 t1,table2 t2
+order by t1.rownum1,t2.rownum2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  for (rownum2,c2) in table2
+    print rownum1,c1,rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum2</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c2</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_10">
+<span class="tutorialSubSectionTitleSpan1">SEMI JOIN - Existence Check</span>
+<div class="tutorialSectionTextDiv1">
+Semi Join returns rows from the first table where one or more matches are found in the second table, but only returns columns from the first table.
+This is typically implemented using EXISTS or IN clauses.
+Oracle's optimizer often converts IN subqueries to semi joins automatically for better performance.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query (1):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+where t1.c1 in
+(
+  select t2.c2
+  from table2 t2
+)
+order by t1.rownum1</pre>
+</li>
+<li>
+Sample Query (2):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+where exists
+(
+  select 1
+  from table2 t2
+  where t2.c2=t1.c1
+)
+order by t1.rownum1</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  for c2 in table2
+    if c1==c2 {
+      print rownum1,c1
+      break
+    }</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_11">
+<span class="tutorialSubSectionTitleSpan1">ANTI JOIN - Non-Existence Check</span>
+<div class="tutorialSectionTextDiv1">
+Anti Join returns rows from the first table where no matches are found in the second table.
+This is the opposite of Semi Join and is typically implemented using NOT EXISTS or NOT IN clauses.
+When using NOT IN, be careful with NULL values as they can produce unexpected results.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query (1):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+where t1.c1 not in
+(
+  select t2.c2
+  from table2 t2
+)
+order by t1.rownum1</pre>
+</li>
+<li>
+Sample Query (2):<br />
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+where not exists
+(
+  select 1
+  from table2 t2
+  where t2.c2=t1.c1
+)
+order by t1.rownum1</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  flag=not-found
+  for c2 in table2
+    if c1==c2 {
+      flag=found
+      break
+    }
+  if flag==not-found
+    print rownum1,c1</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum1</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c1</th></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_12">
+<span class="tutorialSubSectionTitleSpan1">UNION - Combine Distinct Records</span>
+<div class="tutorialSectionTextDiv1">
+UNION combines the result sets of two or more SELECT statements, automatically removing duplicate rows.
+The SELECT statements must have the same number of columns with compatible data types.
+Oracle performs an implicit DISTINCT operation, which requires sorting and can be resource-intensive for large result sets.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1 as "rownum",t1.c1 as "c" from table1 t1
+union
+select t2.rownum2 as "rownum",t2.c2 as "c" from table2 t2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  for (rownum2,c2) in table2
+    if rownum1==rownum2 &amp;&amp; c1==c2 {
+      put (rownum1,c1) in set-without-duplicates
+      break
+    }
+
+
+for (rownum1,c1) in set-without-duplicates
+  print rownum1,c1
+
+for (rownum1,c1) in table1
+  if (rownum1,c1) not in set-without-duplicates
+    print rownum1,c1
+
+for (rownum2,c2) in table2
+  if (rownum2,c2) not in set-without-duplicates
+    print rownum2,c2</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">2</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">4</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"c"</td></tr>
+<tr class="csstr1"><td class="csstd1">5</td><td class="csstd1">"e"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"d"</td></tr>
+<tr class="csstr1"><td class="csstd1">6</td><td class="csstd1">"f"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_13">
+<span class="tutorialSubSectionTitleSpan1">INTERSECT - Common Records</span>
+<div class="tutorialSectionTextDiv1">
+INTERSECT returns only the rows that appear in both result sets, effectively finding the common records between two SELECT statements.
+Like UNION, the SELECT statements must have the same number of columns with compatible data types.
+This operation is useful for finding shared data between tables.<br />
+<ul class="ul_none_1">
+<li>
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+</table>
+</li>
+<li>
+Sample Query:<br />
+<pre class="sql-code">
+select t1.rownum1 as "rownum",t1.c1 as "c" from table1 t1
+intersect
+select t2.rownum2 as "rownum",t2.c2 as "c" from table2 t2</pre>
+</li>
+<li>
+Pseudo-code:<br />
+<pre class="java-code">
+for (rownum1,c1) in table1
+  for (rownum2,c2) in table2
+    if rownum1==rownum2 &amp;&amp; c1==c2 {
+      put (rownum1,c1) in set-without-duplicates
+      break
+    }
+
+
+for (rownum1,c1) in set-without-duplicates
+  print rownum1,c1</pre>
+</li>
+<li>
+Query output:<br />
+<table class="csstable3">
+<tr class="csstr1" bgcolor="#f4f4f4"><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">rownum</th><th class="cssth1" style="width: 100px; padding: 10px 10px 10px 10px;">c</th></tr>
+<tr class="csstr1"><td class="csstd1">1</td><td class="csstd1">"a"</td></tr>
+<tr class="csstr1"><td class="csstd1">3</td><td class="csstd1">"b"</td></tr>
+</table>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">SQL JOIN Quick Reference Guide</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<tr class="csstr1" valign="top" align="left" style="border-top: 1px solid #a3a3a3; border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" colspan="2" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">INNER JOIN</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+inner join table2 t2 on t1.c1=t2.c2</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr class="csstr1" valign="top" align="left" style="border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">LEFT OUTER JOIN</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+left outer join table2 t2 on t1.c1=t2.c2</pre>
+</td>
+</tr>
+</table>
+</td>
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">LEFT OUTER JOIN (excluding INNER JOIN)</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select t1.rownum1,t1.c1
+from table1 t1
+left outer join table2 t2 on t1.c1=t2.c2
+where t2.rownum2 is null</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr class="csstr1" valign="top" align="left" style="border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">RIGHT OUTER JOIN</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-RIGHT OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+right outer join table2 t2 on t1.c1=t2.c2</pre>
+</td>
+</tr>
+</table>
+</td>
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">RIGHT OUTER JOIN (excluding INNER JOIN)</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-RIGHT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select t2.rownum2,t2.c2
+from table1 t1
+right outer join table2 t2 on t1.c1=t2.c2
+where t1.rownum1 is null</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr class="csstr1" valign="top" align="left" style="border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">FULL OUTER JOIN</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+full outer join table2 t2 on t1.c1=t2.c2</pre>
+</td>
+</tr>
+</table>
+</td>
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">FULL OUTER JOIN (excluding INNER JOIN)</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+full outer join table2 t2 on t1.c1=t2.c2
+where t1.rownum1 is null or t2.rownum2 is null</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr class="csstr1" valign="top" align="left" style="border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" colspan="2" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">CROSS JOIN</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1,table2 t2</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr class="csstr1" valign="top" align="left" style="border-bottom: 1px solid #a3a3a3;">
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">Semi join</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#c3c3c3" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+where exists
+(
+  select 1
+  from table2 t2
+  where t2.c2=t1.c1
+)</pre>
+</td>
+</tr>
+</table>
+</td>
+<td class="csstd1" style="padding:10px">
+<table class="csstable3" style="border: 1px solid #e3e3e3;">
+<tr class="csstr1" bgcolor="#f4f4f4">
+<th class="cssth1" style="text-align: center" colspan="3">Anti join</th>
+</tr>
+<tr class="csstr1">
+<td class="csstd1" width="100" height="50" bgcolor="#c3c3c3" valign="middle" align="center">Table1</td>
+<td class="csstd1" width="200" height="50" bgcolor="#ffffff" valign="middle" align="center"><i>Table1 / Table2</i></td>
+<td class="csstd1" width="100" height="50" bgcolor="#ffffff" valign="middle" align="center">Table2</td>
+</tr>
+<tr class="csstr1" bgcolor="#ffffff">
+<td class="csstd1" style="text-align: center" colspan="3">
+<img src="img/sql-join-LEFT OUTER JOIN-INNER.png" width="180" height="100"/>
+</td>
+</tr>
+<tr class="csstr1" bgcolor="#f4f4f4">
+<td class="csstd1" colspan="3">
+<pre class="sql-code">
+select *
+from table1 t1
+where not exists
+(
+  select 1
+  from table2 t2
+  where t2.c2=t1.c1
+)</pre>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL Tutorial: Tables, Columns, Constraints, Indexes &amp; Query Guide | MTI TEK</title>
+<meta name="description" content="Complete Oracle SQL tutorial covering tables, column management, constraints, indexes, SELECT/INSERT/UPDATE/DELETE operations, execution plans, and NLS. Learn Oracle database fundamentals with examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL Tutorial: Tables, Columns, Constraints, Indexes &amp; Query Guide | MTI TEK" />
+<meta property="og:description" content="Complete Oracle SQL tutorial covering tables, column management, constraints, indexes, SELECT/INSERT/UPDATE/DELETE operations, execution plans, and NLS. Learn Oracle database fundamentals with examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL Tutorial: Tables, Columns, Constraints, Indexes &amp; Query Guide | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle SQL tutorial covering tables, column management, constraints, indexes, SELECT/INSERT/UPDATE/DELETE operations, execution plans, and NLS. Learn Oracle database fundamentals with examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/",
+        "description": "Complete Oracle SQL tutorial covering tables, column management, constraints, indexes, SELECT/INSERT/UPDATE/DELETE operations, execution plans, and NLS. Learn Oracle database fundamentals with examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.contents.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialContentsDiv1">
+<span class="tutorialContentsSpan1">Oracle SQL (19c)</span>
+<hr class="tutorialContentsHr1" />
+<ol class="ol_decimal_1">
+<li><span class="tutorialSectionTitleSpan1">Tables</span>
+<ol class="ol_lower_latin_1">
+<li><a href="table.html">Standard Tables (Heap-Organized)</a></li>
+<li><a href="iot.html">Index-Organized Tables (IOT)</a></li>
+<li><a href="gtt.html">Global Temporary Tables (GTT)</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Column Management</span>
+<ol class="ol_lower_latin_1">
+<li><a href="column.html">Working with Columns</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Integrity Constraints</span>
+<ol class="ol_lower_latin_1">
+<li><a href="constraint.html">Constraint Management</a></li>
+<li><a href="constraint_notnull.html">NOT NULL Constraints</a></li>
+<li><a href="constraint_check.html">CHECK Constraints</a></li>
+<li><a href="constraint_unique.html">UNIQUE Constraints</a></li>
+<li><a href="primarykey.html">PRIMARY KEY Constraints</a></li>
+<li><a href="foreignkey.html">FOREIGN KEY Constraints</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">SQL Operations</span>
+<ol class="ol_lower_latin_1">
+<li><a href="select.html">SELECT Statements</a>
+<ol class="ol_lower_roman_1">
+<li><a href="orderby.html">ORDER BY Clause and Row Limiting</a></li>
+<li><a href="connectby.html">Hierarchical Queries (CONNECT BY)</a></li>
+<li><a href="join.html">JOIN Operations</a></li>
+<li><a href="null.html">Handling NULL Values in Oracle SQL</a></li>
+</ol>
+</li>
+<li><a href="insert.html">INSERT Statements</a></li>
+<li><a href="update.html">UPDATE Statements</a></li>
+<li><a href="delete.html">DELETE Statements</a></li>
+<li><a href="merge.html">MERGE Statements</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Index Management</span>
+<ol class="ol_lower_latin_1">
+<li><a href="indexes.html">Working with Indexes</a></li>
+<li><span class="tutorialSectionTitleSpan1">Function-Based Indexes</span>
+<ol class="ol_lower_roman_1">
+<li><a href="index_nvl.html">NVL Function Indexes</a></li>
+<li><a href="index_nlssort.html">NLSSORT Function Indexes</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">National Language Support (NLS)</span>
+<ol class="ol_lower_latin_1">
+<li><a href="nls.html">Oracle National Language Support Overview</a></li>
+<li><a href="nls_sort.html">NLS_SORT Parameter</a></li>
+<li><a href="nls_comp.html">NLS_COMP Parameter</a></li>
+</ol>
+</li>
+<li><span class="tutorialSectionTitleSpan1">Query Execution Plans</span>
+<ol class="ol_lower_latin_1">
+<li><a href="explainPlan.html">Estimated Execution Plans</a></li>
+<li><a href="executionPlan.html">Actual Execution Plans</a></li>
+<li><a href="accessMethods.html">Table Access Methods</a></li>
+<li><a href="joinMethods.html">SQL Join Methods</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="tutorialAnnexesDiv1">
+<span class="tutorialAnnexesSpan1">Appendix</span>
+<hr class="tutorialAnnexesHr1" />
+<ol class="ol_decimal_1">
+<li><a href="sql-join.html">SQL JOIN Reference Guide</a></li>
+<li><a href="recyclebin.html">Oracle Database Recycle Bin</a></li>
+</ol>
+</div>
+<div class="tutorialReferencesDiv1">
+<span class="tutorialReferencesSpan1">References</span>
+<hr class="tutorialReferencesHr1" />
+<div class="references-category">
+<h3 class="references-category-title">Books</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Expert Oracle Database Architecture: Oracle Database 9i, 10g, and 11g Programming Techniques and Solutions</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Thomas Kyte
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Apress; 2 Edition (July 2010)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1430229469
+</div>
+</div>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Pro Oracle SQL (Expert's Voice in Oracle)</h4>
+<div class="reference-meta">
+<div class="reference-meta-item">
+<span class="reference-meta-label">Authors:</span> Karen Morton, Kerry Osborne, Robyn Sands, Riyaj Shamsudeen, Jared Still
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">Publisher:</span> Apress (December 2010)
+</div>
+<div class="reference-meta-item">
+<span class="reference-meta-label">ISBN:</span> 978-1430232285
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="references-category">
+<h3 class="references-category-title">Documentation & Resources</h3>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Oracle® Database Reference - 19c</h4>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/index.html" class="reference-link">https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/index.html</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Oracle® Database Globalization Support Guide - 19c</h4>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/nlspg/index.html" class="reference-link">https://docs.oracle.com/en/database/oracle/oracle-database/19/nlspg/index.html</a>
+</div>
+</div>
+<div class="reference-item">
+<div class="reference-content">
+<h4 class="reference-title">Oracle® Text Application Developer's Guide - 19c</h4>
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/ccapp/index.html" class="reference-link">https://docs.oracle.com/en/database/oracle/oracle-database/19/ccapp/index.html</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

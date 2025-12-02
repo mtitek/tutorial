@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle PRIMARY KEY Constraints Tutorial - Create, Manage &amp; Examples | MTI TEK</title>
+<meta name="description" content="Complete Oracle PRIMARY KEY constraints guide with SQL examples. Learn to create, disable, enable, and drop primary keys. Compare primary key vs unique index behavior." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle PRIMARY KEY Constraints Tutorial - Create, Manage &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Complete Oracle PRIMARY KEY constraints guide with SQL examples. Learn to create, disable, enable, and drop primary keys. Compare primary key vs unique index behavior." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/primarykey.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle PRIMARY KEY Constraints Tutorial - Create, Manage &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle PRIMARY KEY constraints guide with SQL examples. Learn to create, disable, enable, and drop primary keys. Compare primary key vs unique index behavior." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/primarykey.html",
+        "description": "Complete Oracle PRIMARY KEY constraints guide with SQL examples. Learn to create, disable, enable, and drop primary keys. Compare primary key vs unique index behavior.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/primarykey.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">PRIMARY KEY Constraints</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Key Concepts</a></li>
+<li><a href="#sec_id_1">Creating Primary Key Constraints</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">Method 1: Named Constraint with CREATE TABLE</a></li>
+<li><a href="#sec_id_1_2">Method 2: Inline Definition with CREATE TABLE</a></li>
+<li><a href="#sec_id_1_3">Method 3: Adding Primary Key with ALTER TABLE</a></li>
+<li><a href="#sec_id_1_4">Method 4: Using Pre-existing Index</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Disabling Primary Key Constraints</a></li>
+<li><a href="#sec_id_3">Enabling Primary Key Constraints</a></li>
+<li><a href="#sec_id_4">Dropping Primary Key Constraints</a></li>
+<li><a href="#sec_id_5">Primary Key vs Unique Index Comparison</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_5_1">Primary Key Behavior with NULL Values</a></li>
+<li><a href="#sec_id_5_2">Unique Index Behavior with NULL Values</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Key Concepts</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+A primary key is a constraint defined on one or more columns of a table that uniquely identifies each row.<br />
+<br />
+</li>
+<li>
+Primary key constraints enforce entity integrity by ensuring that each row in a table can be uniquely identified.<br />
+<br />
+</li>
+<li>
+The values of these columns combined ensure the uniqueness of each row in the table and cannot be duplicated.<br />
+<br />
+</li>
+<li>
+Primary key columns cannot contain null values.
+Oracle automatically applies NOT NULL constraints to all primary key columns.<br />
+<br />
+</li>
+<li>
+Each table can have only one primary key constraint, but it can span multiple columns (composite primary key).<br />
+<br />
+</li>
+<li>
+When you create a primary key constraint, Oracle automatically creates a unique index to enforce the constraint unless you specify an existing index to use.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Primary Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">Method 1: Named Constraint with CREATE TABLE</span>
+<div class="tutorialSectionTextDiv1">
+This method creates a primary key constraint with an explicitly named constraint, which is considered best practice for maintainability and clarity.<br />
+<pre class="sql-code">
+CREATE TABLE table_primary_key_1
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cp_table_primary_key_1_id PRIMARY KEY (id) -- PRIMARY KEY
+);
+</pre>
+<b>Note:</b>
+If the primary key is a composite key of multiple columns, you must specify those columns separated by commas (column1, column2, …).<br />
+<br />
+Creating the primary key generates two objects: a primary key constraint and a unique index:<br />
+<ul class="ul_square_1">
+<li>
+Check the existence of the primary key constraint in the data dictionary:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, table_name
+FROM user_constraints
+WHERE table_name = 'TABLE_PRIMARY_KEY_1';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| CONSTRAINT_NAME           | CONSTRAINT_TYPE | TABLE_NAME          |
++---------------------------+-----------------+---------------------+
+| CP_TABLE_PRIMARY_KEY_1_ID | P               | TABLE_PRIMARY_KEY_1 |
+</pre>
+</li>
+<li>
+Check the existence of the unique index in the data dictionary:<br />
+<pre class="sql-code">
+SELECT index_name, index_type, uniqueness
+FROM user_indexes
+WHERE table_name = 'TABLE_PRIMARY_KEY_1';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| INDEX_NAME                | INDEX_TYPE | UNIQUENESS |
++---------------------------+------------+------------+
+| CP_TABLE_PRIMARY_KEY_1_ID | NORMAL     | UNIQUE     |
+</pre>
+</li>
+<li>
+If you try to drop this index directly, you will get an error because it's used to enforce the primary key constraint:<br />
+<pre class="sql-code">
+DROP INDEX cp_table_primary_key_1_id;
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+DROP INDEX CP_TABLE_PRIMARY_KEY_1_ID
+
+Error report:
+SQL Error: ORA-02429: cannot drop index used for enforcement of unique/primary key.
+*Cause: user attempted to drop an index that is being used as the enforcement mechanism for unique or primary key.
+*Action: drop the constraint instead of the index.
+</pre>
+</li>
+<li>
+Dropping the primary key constraint will also drop the associated index:<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_1 DROP CONSTRAINT cp_table_primary_key_1_id;
+</pre>
+Check the existence of the unique index in the data dictionary:<br />
+<pre class="sql-code">
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'TABLE_PRIMARY_KEY_1';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| INDEX_NAME |
++------------+
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">Method 2: Inline Definition with CREATE TABLE</span>
+<div class="tutorialSectionTextDiv1">
+This method creates a primary key constraint without explicitly naming it.
+Oracle will automatically generate a system-generated constraint name.<br />
+<pre class="sql-code">
+CREATE TABLE table_primary_key_2
+(
+    id NUMBER(1,0)
+,   PRIMARY KEY (id) -- PRIMARY KEY
+);
+</pre>
+The difference from the previous syntax is that no explicit name is given to the primary key constraint.<br />
+In this case, Oracle automatically generates a constraint name in the format SYS_Cnnnnn.<br />
+<ul class="ul_square_1">
+<li>
+Check the existence of the primary key constraint in the data dictionary:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, table_name
+FROM user_constraints
+WHERE table_name = 'TABLE_PRIMARY_KEY_2';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_NAME          |
++-----------------+-----------------+---------------------+
+| SYS_C007205     | P               | TABLE_PRIMARY_KEY_2 |
+</pre>
+</li>
+<li>
+Check the existence of the unique index in the data dictionary:<br />
+<pre class="sql-code">
+SELECT index_name, index_type, uniqueness
+FROM user_indexes
+WHERE table_name = 'TABLE_PRIMARY_KEY_2';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| INDEX_NAME    | INDEX_TYPE | UNIQUENESS |
++---------------+------------+------------+
+| SYS_C007205   | NORMAL     | UNIQUE     |
+</pre>
+</li>
+</ul>
+<b>Note:</b> It is good practice to specify meaningful names for constraints to improve code maintainability and make debugging easier.
+</div>
+</li>
+<li id="sec_id_1_3">
+<span class="tutorialSubSectionTitleSpan1">Method 3: Adding Primary Key with ALTER TABLE</span>
+<div class="tutorialSectionTextDiv1">
+This method allows you to add a primary key constraint to an existing table.
+This is useful when you need to modify the table structure after creation.<br />
+<pre class="sql-code">
+CREATE TABLE table_primary_key_3
+(
+    id NUMBER(1,0)
+);
+</pre>
+Specify an explicit name for the constraint:<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_3 ADD CONSTRAINT cp_table_primary_key_3_id PRIMARY KEY (id); -- PRIMARY KEY
+</pre>
+Or allow Oracle to generate a system name:<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_3 ADD PRIMARY KEY (id); -- PRIMARY KEY
+</pre>
+<b>Note:</b> Before adding a primary key constraint to an existing table, ensure that the target column(s) contain no duplicate values and no NULL values, otherwise the operation will fail.
+</div>
+</li>
+<li id="sec_id_1_4">
+<span class="tutorialSubSectionTitleSpan1">Method 4: Using Pre-existing Index</span>
+<div class="tutorialSectionTextDiv1">
+This method allows you to use an existing index to enforce the primary key constraint, which can be beneficial for performance tuning and index management.<br />
+<pre class="sql-code">
+CREATE TABLE table_primary_key_4
+(
+    id NUMBER(1,0)
+);
+</pre>
+<pre class="sql-code">
+CREATE INDEX in_table_primary_key_4_id ON table_primary_key_4 (id);
+</pre>
+<pre class="sql-code">
+ALTER TABLE table_primary_key_4 ADD CONSTRAINT cp_table_primary_key_4_id PRIMARY KEY (id) USING INDEX in_table_primary_key_4_id; -- PRIMARY KEY
+</pre>
+Note that the primary key can use a non-unique index.
+Oracle will automatically make it function as a unique index for constraint enforcement.<br />
+<br />
+<b>IMPORTANT NOTES:</b><br />
+<ul class="ul_square_1">
+<li>
+As seen previously, you cannot drop the index once the primary key constraint is using it.
+You will get an error if you try to drop it:<br />
+<pre class="sql-code">
+DROP INDEX in_table_primary_key_4_id;
+</pre>
+<pre class="text-code">
+Error starting at line 1 in command:
+DROP INDEX IN_TABLE_PRIMARY_KEY_4_ID
+
+Error report:
+SQL Error: ORA-02429: cannot drop index used for enforcement of unique/primary key.
+*Cause: user attempted to drop an index that is being used as the enforcement mechanism for unique or primary key.
+*Action: drop the constraint instead of the index.
+</pre>
+</li>
+<li>
+However, when using a pre-existing index, dropping the primary key constraint will not drop the index (unlike the previous methods):<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_4 DROP PRIMARY KEY;
+</pre>
+Check the existence of the index in the data dictionary:<br />
+<pre class="sql-code">
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'TABLE_PRIMARY_KEY_4';
+</pre>
+Query result:<br />
+<pre class="text-code">
+| INDEX_NAME                |
++---------------------------+
+| IN_TABLE_PRIMARY_KEY_4_ID |
+</pre>
+This behavior allows you to maintain the index for query performance even after removing the primary key constraint.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Disabling Primary Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Disabling a primary key constraint temporarily removes the constraint enforcement without dropping the constraint definition.
+This is useful during data loading operations or maintenance tasks where you need to temporarily bypass constraint checking.<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_1 DISABLE CONSTRAINT cp_table_primary_key_1_id;
+</pre>
+<b>Important:</b> When a primary key constraint is disabled, Oracle does not enforce uniqueness or NOT NULL restrictions, but the underlying index may still exist depending on how the constraint was created.
+Disabling constraints should be done carefully as it can lead to data integrity issues.
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Enabling Primary Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Enabling a previously disabled primary key constraint restores constraint enforcement.
+Oracle will validate all existing data against the constraint rules when you enable it.<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_1 ENABLE CONSTRAINT cp_table_primary_key_1_id;
+</pre>
+<b>Note:</b> If the table contains data that violates the primary key constraint (duplicate values or NULL values in primary key columns), the enable operation will fail.
+You must clean up the data before enabling the constraint.
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Dropping Primary Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Dropping a primary key constraint permanently removes both the constraint definition and its enforcement.
+This operation also affects the associated index depending on how the constraint was created.<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_1 DROP PRIMARY KEY;
+</pre>
+Or specify the constraint name explicitly:<br />
+<pre class="sql-code">
+ALTER TABLE table_primary_key_1 DROP CONSTRAINT cp_table_primary_key_1_id;
+</pre>
+<b>Reminder:</b>
+Dropping the primary key constraint also drops the associated index, except when the index was created separately before adding the constraint.
+This can significantly impact query performance if the index was being used by other queries.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Primary Key vs Unique Index Comparison</span>
+<div class="tutorialSectionTextDiv1">
+While both primary key constraints and unique indexes enforce uniqueness, they have different behaviors regarding NULL values and constraint enforcement.<br />
+<br />
+The values of each primary key column must be unique and can never be NULL.
+In fact, the primary key constraint implicitly enforces the NOT NULL constraint on each column in the primary key.
+If you try to insert a NULL value into a primary key column, you will get an error.<br />
+<br />
+This is what differentiates a primary key from a UNIQUE constraint or a unique index.
+See the differences between UNIQUE constraint and unique index on the <a href="constraint_unique.html">UNIQUE Constraints</a> page.<br />
+<br />
+<b>Note:</b>
+A primary key can technically be replaced, if truly needed, by creating a unique index and/or UNIQUE constraint on the primary key columns and adding NOT NULL constraints on those columns.
+However, using a proper primary key constraint is the recommended approach.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_5_1">
+<span class="tutorialSubSectionTitleSpan1">Primary Key Behavior with NULL Values</span>
+<div class="tutorialSectionTextDiv1">
+Primary key constraints strictly prohibit NULL values in any of the constituent columns, even in composite primary keys.<br />
+<pre class="sql-code">
+CREATE TABLE table_primary_key_5
+(
+    id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+,   CONSTRAINT cp_table_primary_key_5_id PRIMARY KEY (id1, id2) -- PRIMARY KEY
+);
+</pre>
+<ul class="ul_square_1">
+<li>
+Example 1: Attempting to insert NULL in the second column of a composite primary key:<br />
+<pre class="sql-code">
+INSERT INTO table_primary_key_5 (id1, id2) VALUES (1, NULL);
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+INSERT INTO TABLE_PRIMARY_KEY_5 (ID1, ID2) VALUES (1, NULL)
+
+Error report:
+SQL Error: ORA-01400: cannot insert NULL into ("TABLE_PRIMARY_KEY_5"."ID2")
+*Cause:
+*Action:
+</pre>
+</li>
+<li>
+Example 2: Attempting to insert NULL in the first column of a composite primary key:<br />
+<pre class="sql-code">
+INSERT INTO table_primary_key_5 (id1, id2) VALUES (NULL, 1);
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+INSERT INTO TABLE_PRIMARY_KEY_5 (ID1, ID2) VALUES (NULL, 1);
+
+Error report:
+SQL Error: ORA-01400: cannot insert NULL into ("TABLE_PRIMARY_KEY_5"."ID1")
+*Cause:
+*Action:
+</pre>
+</li>
+<li>
+Example 3: Attempting to insert NULL in both columns:<br />
+<pre class="sql-code">
+INSERT INTO table_primary_key_5 (id1, id2) VALUES (NULL, NULL);
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+INSERT INTO TABLE_PRIMARY_KEY_5 (ID1, ID2) VALUES (NULL, NULL);
+
+Error report:
+SQL Error: ORA-01400: cannot insert NULL into ("TABLE_PRIMARY_KEY_5"."ID1")
+*Cause:
+*Action:
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_5_2">
+<span class="tutorialSubSectionTitleSpan1">Unique Index Behavior with NULL Values</span>
+<div class="tutorialSectionTextDiv1">
+Unique indexes have different NULL handling behavior compared to primary key constraints.
+They allow NULL values but still enforce uniqueness for non-NULL combinations.<br />
+<pre class="sql-code">
+CREATE TABLE table_pk_vs_unique_index
+(
+    id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+);
+</pre>
+<pre class="sql-code">
+CREATE UNIQUE INDEX in_table_pk_vs_unique_index ON table_pk_vs_unique_index (id1, id2);
+</pre>
+<ul class="ul_square_1">
+<li>
+Example 1: Unique index allows one NULL value but prevents duplicates:<br />
+<pre class="sql-code">
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (1, NULL); -- OK
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (1, NULL); -- ERROR
+</pre>
+Query result:<br />
+<pre class="text-code">
+1 rows inserted.
+
+Error starting at line 2 in command:
+INSERT INTO TABLE_PK_VS_UNIQUE_INDEX (ID1, ID2) VALUES (1, NULL)
+Error report:
+SQL Error: ORA-00001: unique constraint (HR.IN_TABLE_PK_VS_UNIQUE_INDEX) violated
+*Cause:    An UPDATE or INSERT statement attempted to insert a duplicate key.
+           For Trusted Oracle configured in DBMS MAC mode, you may see
+           this message if a duplicate entry exists at a different level.
+*Action:   Either remove the unique restriction or do not insert the key.
+</pre>
+</li>
+<li>
+Example 2: Similar behavior with NULL in different column position:<br />
+<pre class="sql-code">
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (NULL, 1); -- OK
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (NULL, 1); -- ERROR
+</pre>
+Query result:<br />
+<pre class="text-code">
+1 rows inserted.
+
+Error starting at line 2 in command:
+INSERT INTO TABLE_PK_VS_UNIQUE_INDEX (ID1, ID2) VALUES (NULL, 1)
+Error report:
+SQL Error: ORA-00001: unique constraint (HR.IN_TABLE_PK_VS_UNIQUE_INDEX) violated
+*Cause:    An UPDATE or INSERT statement attempted to insert a duplicate key.
+           For Trusted Oracle configured in DBMS MAC mode, you may see
+           this message if a duplicate entry exists at a different level.
+*Action:   Either remove the unique restriction or do not insert the key.
+</pre>
+</li>
+<li>
+Example 3: Multiple rows with all NULL values are allowed:<br />
+<pre class="sql-code">
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (NULL, NULL); -- OK
+INSERT INTO table_pk_vs_unique_index (id1, id2) VALUES (NULL, NULL); -- OK!
+</pre>
+Query result:<br />
+<pre class="text-code">
+1 rows inserted.
+1 rows inserted.
+</pre>
+In this last example, both inserts were successful.
+It's important to remember that a standard (B*Tree) index does not index NULL values when all indexed columns are NULL.
+Since the value of both columns composing the index is <code class="code1">NULL</code>, these rows are not indexed and therefore do not violate the uniqueness constraint.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

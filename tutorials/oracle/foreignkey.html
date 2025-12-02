@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Foreign Key Constraints Tutorial - CREATE, ALTER, CASCADE, SET NULL | MTI TEK</title>
+<meta name="description" content="Complete Oracle SQL foreign key tutorial with examples. Learn to create, modify, disable, and drop foreign key constraints using CREATE TABLE, ALTER TABLE, ON DELETE CASCADE, and SET NULL options." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Foreign Key Constraints Tutorial - CREATE, ALTER, CASCADE, SET NULL | MTI TEK" />
+<meta property="og:description" content="Complete Oracle SQL foreign key tutorial with examples. Learn to create, modify, disable, and drop foreign key constraints using CREATE TABLE, ALTER TABLE, ON DELETE CASCADE, and SET NULL options." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/foreignkey.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Foreign Key Constraints Tutorial - CREATE, ALTER, CASCADE, SET NULL | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle SQL foreign key tutorial with examples. Learn to create, modify, disable, and drop foreign key constraints using CREATE TABLE, ALTER TABLE, ON DELETE CASCADE, and SET NULL options." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/foreignkey.html",
+        "description": "Complete Oracle SQL foreign key tutorial with examples. Learn to create, modify, disable, and drop foreign key constraints using CREATE TABLE, ALTER TABLE, ON DELETE CASCADE, and SET NULL options.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/foreignkey.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">FOREIGN KEY Constraints</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Sample Data Setup</a></li>
+<li><a href="#sec_id_1">Creating Foreign Key Constraints</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">Creating Foreign Keys with CREATE TABLE</a></li>
+<li><a href="#sec_id_1_2">Adding Foreign Keys with ALTER TABLE</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Foreign Key with ON DELETE CASCADE</a></li>
+<li><a href="#sec_id_3">Foreign Key with ON DELETE SET NULL</a></li>
+<li><a href="#sec_id_4">Disabling Foreign Key Constraints</a></li>
+<li><a href="#sec_id_5">Enabling Foreign Key Constraints</a></li>
+<li><a href="#sec_id_6">Dropping Foreign Key Constraints</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+<ul class="ul_square_1">
+<li>
+A foreign key is a constraint that enforces referential integrity between two tables by ensuring that values in the foreign key column(s) must exist in the referenced table's primary key or unique key column(s).<br />
+<br /></li>
+<li>
+The foreign key columns must reference either the primary key or a unique key columns of the referenced table.
+The data types of the foreign key and referenced columns must be compatible.<br />
+<br /></li>
+<li>
+Foreign key constraints prevent orphaned rows and maintain data consistency across related tables.
+When a foreign key is defined, Oracle automatically creates an index on the foreign key columns if one doesn't already exist.<br />
+</li>
+</ul>
+This table is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_unique_1
+(
+    id NUMBER(1,0)
+,   id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+,   CONSTRAINT cp_table_unique_1_id PRIMARY KEY (id) -- PRIMARY KEY
+,   CONSTRAINT cu_table_unique_1_id UNIQUE (id1, id2) -- UNIQUE
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Foreign Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Foreign key constraints can be created during table creation with CREATE TABLE or added later using ALTER TABLE.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Foreign Keys with CREATE TABLE</span>
+<div class="tutorialSectionTextDiv1">
+When creating a table, you can define foreign key constraints as part of the table definition.
+This approach is useful when the table structure and relationships are known during the initial design phase.<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_1
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_foreign_key_1_id FOREIGN KEY (id) REFERENCES table_unique_1 (id) -- the name of the foreign key constraint is explicit: "CR_table_foreign_key_1_ID"
+);
+</pre>
+<b>Important:</b>
+The column (<code class="code1">id</code>) referenced by the foreign key must have either a <code class="code1">PRIMARY KEY</code> or a <code class="code1">UNIQUE</code> constraint.
+Oracle will return an error if you attempt to reference a column without these constraints.<br />
+<br />
+<b>Note:</b>
+If the constraint name is omitted, Oracle will generate a system name automatically.
+While functional, explicit naming improves maintainability and troubleshooting:<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_2
+(
+    id NUMBER(1,0)
+,   FOREIGN KEY (id) REFERENCES table_unique_1 (id) -- the foreign key constraint name will be dynamically generated by Oracle
+);
+</pre>
+<b>Composite Foreign Keys:</b>
+When the foreign key consists of multiple columns, all columns must be specified in the same order as they appear in the referenced unique or primary key constraint:<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_3
+(
+    id NUMBER(1,0)
+,   fk_id1 NUMBER(1,0)
+,   fk_id2 NUMBER(1,0)
+,   CONSTRAINT cr_table_foreign_key_3_id FOREIGN KEY (fk_id1, fk_id2) REFERENCES table_unique_1 (id1, id2)
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">Adding Foreign Keys with ALTER TABLE</span>
+<div class="tutorialSectionTextDiv1">
+Foreign key constraints can be added to existing tables using ALTER TABLE.
+This approach is useful when modifying existing database schemas or when foreign key relationships are identified after table creation.<br />
+First, create the table without the foreign key constraint:<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_4
+(
+    id NUMBER(1,0)
+);
+</pre>
+Then add the foreign key constraint using ALTER TABLE with an explicit constraint name:<br />
+<pre class="sql-code">
+ALTER TABLE table_foreign_key_4 ADD CONSTRAINT cr_table_foreign_key_4_id FOREIGN KEY (id) REFERENCES table_unique_1 (id); -- the foreign key constraint name is explicit: "CR_TABLE_FOREIGN_KEY_4_ID"
+</pre>
+Alternatively, you can let Oracle generate the constraint name automatically:<br />
+<pre class="sql-code">
+ALTER TABLE table_foreign_key_4 ADD FOREIGN KEY (id) REFERENCES table_unique_1 (id); -- the foreign key constraint name will be dynamically generated by Oracle
+</pre>
+<b>Note:</b>
+When adding a foreign key to a table with existing data, Oracle validates that all existing foreign key values have corresponding entries in the referenced table.
+If any orphaned rows exist, the ALTER TABLE statement will fail.<br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Foreign Key with ON DELETE CASCADE</span>
+<div class="tutorialSectionTextDiv1">
+The ON DELETE CASCADE option automatically deletes child rows when the parent row is deleted.
+This maintains referential integrity by preventing orphaned rows, but use it carefully as data deletion cascades through the relationship chain.<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_5
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_foreign_key_5_id FOREIGN KEY (id) REFERENCES table_unique_1 (id) ON DELETE CASCADE
+);
+</pre>
+The "<code class="code1">ON DELETE CASCADE</code>" option means that if a row is deleted from the "<code class="code1">table_unique_1</code>" table,
+then any rows in the "<code class="code1">table_foreign_key_5</code>" table that reference it will also be deleted automatically.<br />
+Verify the creation of the constraint by querying the data dictionary:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, delete_rule
+FROM user_constraints
+WHERE table_name = 'TABLE_FOREIGN_KEY_5';
+</pre>
+Query result:
+<pre class="text-code">
++---------------------------+-----------------+----------------+-------------+
+| CONSTRAINT_NAME           | CONSTRAINT_TYPE | GENERATED      | DELETE_RULE |
++---------------------------+-----------------+----------------+-------------+
+| CR_TABLE_FOREIGN_KEY_5_ID | R               | GENERATED NAME | CASCADE     |
++---------------------------+-----------------+----------------+-------------+
+</pre>
+<b>Demonstration:</b><br />
+Insert test data into both tables:<br />
+<pre class="sql-code">
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (0,0,0);
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (1,0,1);
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (2,1,0);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_foreign_key_5 (id) VALUES (0);
+INSERT INTO table_foreign_key_5 (id) VALUES (1);
+INSERT INTO table_foreign_key_5 (id) VALUES (2);
+</pre>
+Delete parent rows to trigger the cascade:<br />
+<pre class="sql-code">
+DELETE FROM table_unique_1 WHERE id &lt; 2;
+</pre>
+Check the data in "<code class="code1">table_foreign_key_5</code>" after deleting data from "<code class="code1">table_unique_1</code>".
+Notice that the child rows with id values 0 and 1 were automatically deleted:<br />
+<pre class="sql-code">
+SELECT id FROM table_foreign_key_5;
+</pre>
+<pre class="text-code">
++----+
+| ID |
++----+
+| 2  |
++----+
+</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Foreign Key with ON DELETE SET NULL</span>
+<div class="tutorialSectionTextDiv1">
+The ON DELETE SET NULL option sets foreign key column values to NULL when the referenced parent row is deleted.
+This preserves the child rows while removing the invalid foreign key reference.
+The foreign key column must allow NULL values for this option to work.<br />
+<pre class="sql-code">
+CREATE TABLE table_foreign_key_6
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_foreign_key_6_id FOREIGN KEY (id) REFERENCES table_unique_1 (id) ON DELETE SET NULL
+);
+</pre>
+The "<code class="code1">ON DELETE SET NULL</code>" option means that if a row is deleted from the "<code class="code1">table_unique_1</code>" table,
+then the foreign key column values in the "<code class="code1">table_foreign_key_6</code>" table that reference it will be set to NULL, preserving the child rows.<br />
+<br />
+Verify the creation of the constraint:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, delete_rule
+FROM user_constraints
+WHERE table_name = 'TABLE_FOREIGN_KEY_6';
+</pre>
+Query result:
+<pre class="text-code">
++---------------------------+-----------------+----------------+-------------+
+| CONSTRAINT_NAME           | CONSTRAINT_TYPE | GENERATED      | DELETE_RULE |
++---------------------------+-----------------+----------------+-------------+
+| CR_TABLE_FOREIGN_KEY_6_ID | R               | GENERATED NAME | SET NULL    |
++---------------------------+-----------------+----------------+-------------+
+</pre>
+<b>Demonstration:</b><br />
+Insert test data into both tables:<br />
+<pre class="sql-code">
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (0,0,0);
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (1,0,1);
+INSERT INTO table_unique_1 (id, id1, id2) VALUES (2,1,0);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_foreign_key_6 (id) VALUES (0);
+INSERT INTO table_foreign_key_6 (id) VALUES (1);
+INSERT INTO table_foreign_key_6 (id) VALUES (2);
+</pre>
+Delete parent rows to trigger the SET NULL action:<br />
+<pre class="sql-code">
+DELETE FROM table_unique_1 WHERE id &lt; 2;
+</pre>
+Check the data in "<code class="code1">table_foreign_key_6</code>" after deleting data from "<code class="code1">table_unique_1</code>".
+Notice that the child rows remain but their foreign key values are set to NULL:<br />
+<pre class="sql-code">
+SELECT id FROM table_foreign_key_6;
+</pre>
+<pre class="text-code">
++--------+
+| ID     |
++--------+
+| (null) |
+| (null) |
+| 2      |
++--------+
+</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Disabling Foreign Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Disabling a foreign key constraint temporarily suspends referential integrity checking without removing the constraint definition.
+This is useful during bulk data operations, data migration, or troubleshooting.
+The constraint remains in the data dictionary but is not enforced.<br />
+<pre class="sql-code">
+ALTER TABLE table_foreign_key_1 DISABLE CONSTRAINT cr_table_foreign_key_1_id;
+</pre>
+<b>Important:</b>
+When a foreign key constraint is disabled, Oracle does not validate data inserted or updated in the child table.
+Re-enabling the constraint will validate all existing data, and the operation will fail if any referential integrity violations are found.
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Enabling Foreign Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Enabling a previously disabled foreign key constraint restores referential integrity checking.
+Oracle validates all existing data in the child table against the parent table when the constraint is enabled.<br />
+<pre class="sql-code">
+ALTER TABLE table_foreign_key_1 ENABLE CONSTRAINT cr_table_foreign_key_1_id;
+</pre>
+<b>Note:</b>
+If any existing data violates the foreign key constraint, the ENABLE operation will fail with an error.
+You must either correct the data or use the ENABLE NOVALIDATE option to enable the constraint without validating existing data (not recommended for data integrity).
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Dropping Foreign Key Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Dropping a foreign key constraint permanently removes it from the table definition.
+This operation cannot be undone, and the constraint must be recreated if needed later.<br />
+<pre class="sql-code">
+ALTER TABLE table_foreign_key_1 DROP CONSTRAINT cr_table_foreign_key_1_id;
+</pre>
+<b>Warning:</b> All foreign key constraints referencing a table must be dropped before the referenced table can be dropped.
+Oracle prevents dropping tables that are referenced by foreign keys to maintain referential integrity:<br />
+<pre class="sql-code">
+DROP TABLE table_unique_1;
+</pre>
+Query result:
+<pre class="text-code">
+Error starting at line 1 in command:
+DROP TABLE TABLE_UNIQUE_1
+
+Error report:
+SQL Error: ORA-02449: unique/primary keys in table referenced by foreign keys.
+*Cause: An attempt was made to drop a table with unique or primary keys referenced by foreign keys in another table.
+*Action: Before performing the above operation, drop the foreign key constraints in the other tables.
+         You can see which constraints reference a table by issuing the following command:
+         SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'TABNAM';
+</pre>
+<b>Alternative:</b>
+You can use the CASCADE CONSTRAINTS option with DROP TABLE to automatically drop all foreign key constraints that reference the table being dropped:
+<pre class="sql-code">
+DROP TABLE table_unique_1 CASCADE CONSTRAINTS;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

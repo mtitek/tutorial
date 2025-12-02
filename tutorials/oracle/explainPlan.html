@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL Execution Plans Tutorial: EXPLAIN PLAN &amp; AUTOTRACE Guide | MTI TEK</title>
+<meta name="description" content="Learn Oracle SQL execution plans with EXPLAIN PLAN and AUTOTRACE commands. Complete tutorial covering PLAN_TABLE structure, performance tuning, and query optimization techniques." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL Execution Plans Tutorial: EXPLAIN PLAN &amp; AUTOTRACE Guide | MTI TEK" />
+<meta property="og:description" content="Learn Oracle SQL execution plans with EXPLAIN PLAN and AUTOTRACE commands. Complete tutorial covering PLAN_TABLE structure, performance tuning, and query optimization techniques." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/explainPlan.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL Execution Plans Tutorial: EXPLAIN PLAN &amp; AUTOTRACE Guide | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle SQL execution plans with EXPLAIN PLAN and AUTOTRACE commands. Complete tutorial covering PLAN_TABLE structure, performance tuning, and query optimization techniques." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/explainPlan.html",
+        "description": "Learn Oracle SQL execution plans with EXPLAIN PLAN and AUTOTRACE commands. Complete tutorial covering PLAN_TABLE structure, performance tuning, and query optimization techniques.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/explainPlan.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Estimated Execution Plans</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Sample Data Setup</a></li>
+<li><a href="#sec_id_1">Introduction to Execution Plans</a></li>
+<li><a href="#sec_id_2">Understanding the PLAN_TABLE Structure</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1">PLAN_TABLE Architecture and Storage</a></li>
+<li><a href="#sec_id_2_2">Key Columns in PLAN_TABLE</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_3">Using the EXPLAIN PLAN Command</a></li>
+<li><a href="#sec_id_4">Using the AUTOTRACE Command</a></li>
+<li><a href="#sec_id_5">Querying Execution Plans Directly from PLAN_TABLE</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_explain_plan_1
+(
+    id1 NUMBER(5,0) NOT NULL
+,   id2 NUMBER(5,0) NOT NULL
+,   type1 NUMBER(1,0) NOT NULL
+);
+</pre>
+<pre class="sql-code">
+DECLARE
+indexLoop NUMBER(5,0);
+
+BEGIN
+FOR indexLoop IN 1..50000 LOOP
+    IF MOD(indexLoop,2) = 0 THEN
+        INSERT INTO table_explain_plan_1 (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 1);
+    ELSE
+        INSERT INTO table_explain_plan_1 (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 2);
+    END IF;
+END LOOP;
+END;
+/
+
+COMMIT;
+</pre>
+<pre class="sql-code">
+CREATE INDEX ix_table_explain_plan_1_type1 ON table_explain_plan_1 (type1);
+ANALYZE INDEX ix_table_explain_plan_1_type1 COMPUTE STATISTICS;
+</pre>
+The table contains 50,000 rows with an even distribution of type1 values (1 and 2), making it ideal for demonstrating execution plan behavior.<br />
+<br />
+The index on type1 column is important for Oracle's cost-based optimizer to make informed decisions about query execution paths.
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction to Execution Plans</span>
+<div class="tutorialSectionTextDiv1">
+The estimated execution plan of a query provides a detailed roadmap of how Oracle's cost-based optimizer intends to execute a SQL statement.
+This plan is generated before query execution and represents Oracle's best estimate based on available table and index statistics.
+
+The estimated execution plan takes into account the statistics available at the time it is generated, including table cardinality, column selectivity, index statistics, and system resources.
+These statistics are important for the optimizer to calculate costs and choose the most efficient access paths.
+
+Execution plans are essential for performance tuning as they reveal potential bottlenecks such as full table scans on large tables, inefficient join methods, or missing indexes.
+They can be used to debug queries that take a long time to execute and to verify that SQL modifications produce the expected optimization improvements.
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Understanding the PLAN_TABLE Structure</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1">PLAN_TABLE Architecture and Storage</span>
+<div class="tutorialSectionTextDiv1">
+Oracle stores estimated execution plans in a special table called PLAN_TABLE.<br />
+<pre class="sql-code">
+SELECT object_type, owner FROM dba_objects WHERE object_name = 'PLAN_TABLE';
+</pre>
+Query result:
+<pre class="text-code">
+| OBJECT_TYPE  | OWNER  |
++--------------+--------+
+| SYNONYM      | PUBLIC |
+</pre>
+PLAN_TABLE is actually a public synonym that points to the underlying PLAN_TABLE$ table owned by SYS:<br />
+<pre class="sql-code">
+SELECT table_name, table_owner, owner FROM dba_synonyms WHERE synonym_name = 'PLAN_TABLE';
+</pre>
+Query result:
+<pre class="text-code">
+| table_name  | table_owner | owner  |
++-------------+-------------+--------|
+| PLAN_TABLE$ | SYS         | PUBLIC |
+</pre>
+The PLAN_TABLE$ is implemented as a Global Temporary Table (GTT) with session-specific storage, meaning each session maintains its own execution plan data that is automatically cleaned up when the session ends:<br />
+<pre class="sql-code">
+SELECT temporary, duration FROM dba_tables WHERE table_name = 'PLAN_TABLE$';
+</pre>
+Query result:
+<pre class="text-code">
+| temporary | duration    |
++-----------+-------------+
+| Y         | SYS$SESSION |
+</pre>
+The complete DDL for creating the PLAN_TABLE$ can be found in the "catplan.sql" script located in the "$ORACLE_HOME/rdbms/admin/" directory. This table structure has evolved across Oracle versions to support new optimizer features and execution plan attributes.
+
+<pre class="sql-code">
+create global temporary table plan_table$
+(
+    statement_id       varchar2(30),
+    plan_id            number,
+    timestamp          date,
+    remarks            varchar2(4000),
+    operation          varchar2(30),
+    options            varchar2(255),
+    object_node        varchar2(128),
+    object_owner       varchar2(30),
+    object_name        varchar2(30),
+    object_alias       varchar2(65),
+    object_instance    numeric,
+    object_type        varchar2(30),
+    optimizer          varchar2(255),
+    search_columns     number,
+    id                 numeric,
+    parent_id          numeric,
+    depth              numeric,
+    position           numeric,
+    cost               numeric,
+    cardinality        numeric,
+    bytes              numeric,
+    other_tag          varchar2(255),
+    partition_start    varchar2(255),
+    partition_stop     varchar2(255),
+    partition_id       numeric,
+    other              long,
+    other_xml          clob,
+    distribution       varchar2(30),
+    cpu_cost           numeric,
+    io_cost            numeric,
+    temp_space         numeric,
+    access_predicates  varchar2(4000),
+    filter_predicates  varchar2(4000),
+    projection         varchar2(4000),
+    time               numeric,
+    qblock_name        varchar2(30)
+) on commit preserve rows
+/
+</pre>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1">Key Columns in PLAN_TABLE</span>
+<div class="tutorialSectionTextDiv1">
+The PLAN_TABLE contains numerous columns that provide detailed information about each step in the execution plan.
+The most important columns include:<br />
+<ul class="ul_square_1">
+<li>
+<b>ID and PARENT_ID:</b> These columns establish the hierarchical relationship between execution plan steps, where each step references its parent operation.<br />
+</li>
+<li>
+<b>OPERATION and OPTIONS:</b> Describe the type of database operation (TABLE ACCESS, INDEX SCAN, etc.) and specific method (FULL, BY INDEX ROWID, RANGE SCAN, etc.).<br />
+</li>
+<li>
+<b>OBJECT_NAME and OBJECT_OWNER:</b> Identify the database objects (tables, indexes, views) involved in each operation.<br />
+</li>
+<li>
+<b>COST, CARDINALITY, and BYTES:</b> Provide optimizer estimates for resource consumption, number of rows, and data volume for each operation.<br />
+</li>
+<li>
+<b>ACCESS_PREDICATES and FILTER_PREDICATES:</b> Show the WHERE clause conditions applied at each step, distinguishing between access predicates (used for index lookups) and filter predicates (applied after data retrieval).<br />
+</li>
+<li>
+<b>CPU_COST, IO_COST, and TIME:</b> Break down the estimated costs into CPU and I/O components, with time estimates for each operation.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Using the EXPLAIN PLAN Command</span>
+<div class="tutorialSectionTextDiv1">
+The EXPLAIN PLAN command is the most commonly used method for generating estimated execution plans.
+It populates the PLAN_TABLE with execution plan data without actually executing the SQL statement, making it safe for use in production environments.<br />
+<br />
+The basic syntax requires the FOR keyword followed by the SQL statement to be analyzed:<br />
+<pre class="sql-code">
+EXPLAIN PLAN
+FOR
+SELECT * FROM table_explain_plan_1 WHERE type1 = 1;
+</pre>
+After running EXPLAIN PLAN, you can retrieve the formatted execution plan using the DBMS_XPLAN.DISPLAY function, which provides a readable, hierarchical representation of the execution steps:<br />
+<pre class="sql-code">
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+</pre>
+<pre class="text-code">
+Plan hash value: 3358088968
+
+-------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                          | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                               | 24721 |   941K|    50   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_EXPLAIN_PLAN_1          | 24721 |   941K|    50   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_EXPLAIN_PLAN_1_TYPE1 |   208 |       |    49   (0)| 00:00:01 |
+-------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("TYPE1"=1)
+</pre>
+The execution plan shows that Oracle chose to use an index range scan followed by table access by rowid, which is typically efficient for selective queries.
+The asterisk (*) next to operation ID 2 indicates that predicate information is available for that step.
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Using the AUTOTRACE Command</span>
+<div class="tutorialSectionTextDiv1">
+The AUTOTRACE command is a SQL*Plus and SQL Developer feature that provides a convenient way to generate execution plans without requiring separate queries to retrieve the plan information.
+Unlike EXPLAIN PLAN, AUTOTRACE can also show actual execution statistics when the query is run.<br />
+<br />
+AUTOTRACE offers several modes of operation.
+The TRACEONLY EXPLAIN option generates only the estimated execution plan without executing the statement:<br />
+<pre class="sql-code">
+SET AUTOTRACE TRACEONLY EXPLAIN
+SELECT * FROM table_explain_plan_1 WHERE type1 = 1
+/
+</pre>
+<pre class="text-code">
+Plan hash value: 3358088968
+
+-------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                          | Rows  | Bytes | Cost (%CPU)| Time     |
+-------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                               | 24721 |   941K|    50   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_EXPLAIN_PLAN_1          | 24721 |   941K|    50   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_EXPLAIN_PLAN_1_TYPE1 |   208 |       |    49   (0)| 00:00:01 |
+-------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("TYPE1"=1)
+</pre>
+Additional AUTOTRACE options include TRACEONLY STATISTICS (shows execution statistics without the plan) and ON (displays query results, execution plan, and statistics).
+The AUTOTRACE command automatically formats the output and doesn't require manual querying of PLAN_TABLE, making it convenient for interactive performance analysis sessions.
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Querying Execution Plans Directly from PLAN_TABLE</span>
+<div class="tutorialSectionTextDiv1">
+For advanced analysis and custom reporting, you can query the PLAN_TABLE directly.
+This approach provides access to all execution plan columns and allows for custom formatting and filtering of plan information.<br />
+When using EXPLAIN PLAN with a custom STATEMENT_ID, you can organize and retrieve specific execution plans from multiple analyzed statements:<br />
+<pre class="sql-code">
+EXPLAIN PLAN
+SET STATEMENT_ID = 'table_explain_plan_1_1'
+FOR
+SELECT * FROM table_explain_plan_1 WHERE type1 = 1;
+</pre>
+The following query demonstrates how to construct a hierarchical view of the execution plan using Oracle's CONNECT BY syntax.
+This approach replicates the tree structure shown by DBMS_XPLAN.DISPLAY:<br />
+<pre class="sql-code">
+SELECT
+    id
+,   parent_id
+,   cardinality AS "ROWS"
+,   lpad(' ',level-1)||operation||' '||options||' '||object_name AS "STEP"
+FROM PLAN_TABLE
+CONNECT BY prior id = parent_id AND prior statement_id = statement_id
+START WITH id = 0 AND statement_id = 'table_explain_plan_1_1'
+ORDER BY id;
+</pre>
+Query result:
+<pre class="text-code">
+| id | parent_id | ROWS  | STEP                                              |
++----+-----------+-------+---------------------------------------------------|
+| 0  |           | 24721 | SELECT STATEMENT                                  |
+| 1  | 0         | 24721 |  TABLE ACCESS BY INDEX ROWID table_explain_plan_1 |
+| 2  | 1         | 208   |   INDEX RANGE SCAN ix_table_explain_plan_1_type1  |
+</pre>
+This direct query approach allows you to access additional columns not displayed by standard formatting tools, such as CPU_COST, IO_COST, ACCESS_PREDICATES, and FILTER_PREDICATES, which can be valuable for detailed performance analysis and optimization efforts.
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

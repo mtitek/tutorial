@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL Index Tutorial: CREATE, ALTER, DROP &amp; Management Guide | MTI TEK</title>
+<meta name="description" content="Complete Oracle SQL index tutorial covering CREATE INDEX, UNIQUE indexes, statistics, rebuilding, and maintenance operations with examples." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL Index Tutorial: CREATE, ALTER, DROP &amp; Management Guide | MTI TEK" />
+<meta property="og:description" content="Complete Oracle SQL index tutorial covering CREATE INDEX, UNIQUE indexes, statistics, rebuilding, and maintenance operations with examples." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/indexes.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL Index Tutorial: CREATE, ALTER, DROP &amp; Management Guide | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle SQL index tutorial covering CREATE INDEX, UNIQUE indexes, statistics, rebuilding, and maintenance operations with examples." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/indexes.html",
+        "description": "Complete Oracle SQL index tutorial covering CREATE INDEX, UNIQUE indexes, statistics, rebuilding, and maintenance operations with examples.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/indexes.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Working with Indexes</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Index Fundamentals and Types</a></li>
+<li><a href="#sec_id_1">Creating Basic Indexes</a></li>
+<li><a href="#sec_id_2">Creating Unique Indexes</a></li>
+<li><a href="#sec_id_3">Index Statistics Management</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Computing Statistics During Index Creation</a></li>
+<li><a href="#sec_id_3_2">Computing Statistics for Existing Indexes</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_4">Index Maintenance Operations</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Marking an Index as Unusable</a></li>
+<li><a href="#sec_id_4_2">Rebuilding an Index</a></li>
+<li><a href="#sec_id_4_3">Renaming an Index</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_5">Function-Based Index Management</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_5_1">Disabling Function-Based Indexes</a></li>
+<li><a href="#sec_id_5_2">Enabling Function-Based Indexes</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_6">Dropping Indexes</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Index Fundamentals and Types</span>
+<div class="tutorialSectionTextDiv1">
+Indexes are database objects that improve query performance by providing fast access paths to table data.
+Oracle Database supports several index types, each optimized for different use cases:<br />
+<ul class="ul_square_1">
+<li>
+<code class="code1"><b>NORMAL</b></code> (index type: <code class="code1"><b>N</b></code>):  B-tree indexes suitable for high-cardinality columns and range queries.<br />
+<br /></li>
+<li>
+<code class="code1"><b>FUNCTION-BASED NORMAL</b></code> (index type: <code class="code1"><b>NF</b></code>):  B-tree indexes on expressions or functions applied to columns.<br />
+<br /></li>
+<li>
+<code class="code1"><b>BITMAP</b></code> (index type: <code class="code1"><b>B</b></code>):  Efficient for low-cardinality columns and data warehouse environments.<br />
+<br /></li>
+<li>
+<code class="code1"><b>FUNCTION-BASED BITMAP</b></code> (index type: <code class="code1"><b>BF</b></code>):  Bitmap indexes on expressions or functions.<br />
+<br /></li>
+<li>
+<code class="code1"><b>DOMAIN</b></code> (index type: <code class="code1"><b>D</b></code>):  Application-specific indexes for specialized data types.<br />
+</li>
+</ul>
+<br />
+These tables and sample data are used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_index
+(
+    id NUMBER(1,0)
+);
+
+CREATE TABLE table_index_unique
+(
+    ID NUMBER(1,0)
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Basic Indexes</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">CREATE INDEX</code> statement creates a B-tree index by default.
+Non-unique indexes allow duplicate values and are commonly used to improve query performance on frequently searched columns.<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_index_id ON table_index (id);
+</pre>
+Show the indexes of the table:<br />
+<pre class="sql-code">
+SELECT index_name, index_type, uniqueness, compression, blevel, num_rows
+FROM user_indexes -- user_indexes | all_indexes | dba_indexes
+WHERE table_name = 'TABLE_INDEX';
+</pre>
+Query result:
+<pre class="text-code">
+| INDEX_NAME             | INDEX_TYPE | UNIQUENESS | COMPRESSION | BLEVEL | NUM_ROWS |
++------------------------+------------+------------+-------------+--------+----------+
+| IDX_TABLE_INDEX_ID     | NORMAL     | NONUNIQUE  | DISABLED    | 0      | 0        |
+</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Creating Unique Indexes</span>
+<div class="tutorialSectionTextDiv1">
+Unique indexes enforce uniqueness constraints and prevent duplicate values in the indexed columns.
+They are automatically created when you define primary key or unique constraints.<br />
+<pre class="sql-code">
+CREATE UNIQUE INDEX idx_table_index_unique ON table_index_unique (id);
+</pre>
+Show the indexes of the table:<br />
+<pre class="sql-code">
+SELECT index_name, index_type, uniqueness, compression, blevel, num_rows
+FROM user_indexes -- user_indexes | all_indexes | dba_indexes
+WHERE table_name = 'TABLE_INDEX_UNIQUE';
+</pre>
+Query result:
+<pre class="text-code">
+| INDEX_NAME             | INDEX_TYPE | UNIQUENESS | COMPRESSION | BLEVEL | NUM_ROWS |
++------------------------+------------+------------+-------------+--------+----------+
+| IDX_TABLE_INDEX_UNIQUE | NORMAL     | UNIQUE     | DISABLED    | 0      | 0        |
+</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Index Statistics Management</span>
+<div class="tutorialSectionTextDiv1">
+Index statistics help the Oracle optimizer make informed decisions about query execution plans.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Computing Statistics During Index Creation</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">COMPUTE STATISTICS</code> clause gathers index statistics immediately during index creation.<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_index_id ON table_index (id) COMPUTE STATISTICS;
+</pre>
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Computing Statistics for Existing Indexes</span>
+<div class="tutorialSectionTextDiv1">
+Use <code class="code1">ANALYZE INDEX</code> to gather statistics for existing indexes.<br />
+<pre class="sql-code">
+ANALYZE INDEX idx_table_index_id COMPUTE STATISTICS;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Index Maintenance Operations</span>
+<div class="tutorialSectionTextDiv1">
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Marking an Index as Unusable</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">UNUSABLE</code> clause marks an index as unusable, preventing Oracle from using it in query execution plans.<br />
+<pre class="sql-code">
+ALTER INDEX idx_table_index_id UNUSABLE;
+</pre>
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Rebuilding an Index</span>
+<div class="tutorialSectionTextDiv1">
+Index rebuilding eliminates fragmentation and can reclaim space.
+It also makes unusable indexes available again.<br />
+<pre class="sql-code">
+ALTER INDEX idx_table_index_id REBUILD;
+</pre>
+It is possible to compute statistics while rebuilding the index:<br />
+<pre class="sql-code">
+ALTER INDEX idx_table_index_id REBUILD COMPUTE STATISTICS;
+</pre>
+</div>
+</li>
+<li id="sec_id_4_3">
+<span class="tutorialSubSectionTitleSpan1">Renaming an Index</span>
+<div class="tutorialSectionTextDiv1">
+Index renaming allows you to change the index name without dropping and recreating it.<br />
+<pre class="sql-code">
+ALTER INDEX idx_table_index_id RENAME TO idx_table_index_id_new;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">Function-Based Index Management</span>
+<div class="tutorialSectionTextDiv1">
+Function-based indexes allow indexing on expressions or function results.
+They require special management operations that are not available for regular indexes.<br />
+<br />
+<b>Note:</b> The function must be valid and marked as <code class="code1">DETERMINISTIC</code>, and its signature must match the signature used when the index was created.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_5_1">
+<span class="tutorialSubSectionTitleSpan1">Disabling Function-Based Indexes</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">DISABLE</code> clause can only be used with function-based indexes.
+This temporarily prevents the optimizer from using the index without dropping it.<br />
+<pre class="sql-code">
+CREATE INDEX idx_table_index_nvl_id ON table_index (NVL(id,0));
+</pre>
+<pre class="sql-code">
+ALTER INDEX idx_table_index_nvl_id DISABLE;
+</pre>
+Attempting to disable a non-function-based index will result in an ORA-02243 error:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+ALTER INDEX IDX_TABLE_INDEX_ID DISABLE
+
+Error report:
+SQL Error: ORA-02243: invalid ALTER INDEX or ALTER MATERIALIZED VIEW option.
+*Cause: An option other than INITRANS, MAXTRANS, or STORAGE is specified in an ALTER INDEX statement or in the USING INDEX clause of an ALTER MATERIALIZED VIEW statement.
+*Action: Specify only legal options.
+</pre>
+</div>
+</li>
+<li id="sec_id_5_2">
+<span class="tutorialSubSectionTitleSpan1">Enabling Function-Based Indexes</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">ENABLE</code> clause re-enables a previously disabled function-based index, making it available for the optimizer to use.<br />
+<pre class="sql-code">
+ALTER INDEX idx_table_index_nvl_id ENABLE;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">Dropping Indexes</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">DROP INDEX</code> statement permanently removes an index from the database.<br />
+<pre class="sql-code">
+DROP INDEX idx_table_index_id;
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL NULL Handling Guide: IN, NOT IN, EXISTS &amp; Aggregation Functions | MTI TEK</title>
+<meta name="description" content="Complete Oracle SQL NULL handling tutorial with examples. Learn how NULL values work with IN, NOT IN, EXISTS, aggregation functions, and set operations in Oracle Database." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL NULL Handling Guide: IN, NOT IN, EXISTS &amp; Aggregation Functions | MTI TEK" />
+<meta property="og:description" content="Complete Oracle SQL NULL handling tutorial with examples. Learn how NULL values work with IN, NOT IN, EXISTS, aggregation functions, and set operations in Oracle Database." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/null.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL NULL Handling Guide: IN, NOT IN, EXISTS &amp; Aggregation Functions | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle SQL NULL handling tutorial with examples. Learn how NULL values work with IN, NOT IN, EXISTS, aggregation functions, and set operations in Oracle Database." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/null.html",
+        "description": "Complete Oracle SQL NULL handling tutorial with examples. Learn how NULL values work with IN, NOT IN, EXISTS, aggregation functions, and set operations in Oracle Database.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/null.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Handling NULL Values in Oracle SQL</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding <code class="code1">NULL</code> Values</a></li>
+<li><a href="#sec_id_2">NULL Behavior with Aggregation Functions</a></li>
+<li><a href="#sec_id_3">NULL Handling in Conditional Operators</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Operator: <code class="code1">IN</code></a>
+<ol class="ol_lower_latin_contents_1">
+<li><a href="#sec_id_3_1_1">Standard matching behavior</a></li>
+<li><a href="#sec_id_3_1_2">Behavior with all NULL values or empty lists</a></li>
+<li><a href="#sec_id_3_1_3">Behavior when expression is NULL</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_3_2">Operator: <code class="code1">NOT IN</code></a>
+<ol class="ol_lower_latin_contents_1">
+<li><a href="#sec_id_3_2_1">Behavior with NULL values in list</a></li>
+<li><a href="#sec_id_3_2_2">Behavior when expression is NULL</a></li>
+<li><a href="#sec_id_3_2_3">Behavior with empty lists</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><a href="#sec_id_4">NULL Behavior with Existence Operators</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_4_1">Operator: <code class="code1">EXISTS</code></a>
+<ol class="ol_lower_latin_contents_1">
+<li><a href="#sec_id_4_1_1">True condition behavior</a></li>
+<li><a href="#sec_id_4_1_2">False condition behavior</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_4_2">Operator: <code class="code1">NOT EXISTS</code></a>
+<ol class="ol_lower_latin_contents_1">
+<li><a href="#sec_id_4_2_1">True condition behavior</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><a href="#sec_id_5">NULL Handling in Set Operations</a></li>
+<li><a href="#sec_id_6">NULL Behavior with <code class="code1">DISTINCT</code></a></li>
+<li><a href="#sec_id_7">NULL Handling in Grouping and Sorting</a></li>
+<li><a href="#sec_id_8">Quick Reference Summary</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding <code class="code1">NULL</code> Values</span>
+<div class="tutorialSectionTextDiv1">
+In Oracle SQL, <code class="code1">NULL</code> represents the absence of a value or an unknown value.
+The fundamental principle is that NULL is not equal to anything, including itself, and most operations involving NULL result in NULL.<br />
+<br />
+Key principles of NULL handling:<br />
+<ul class="ul_square_1">
+<li>
+<b>NULL comparisons:</b> The <code class="code1">NULL</code> value cannot be compared to any other value using standard comparison operators (=, !=, <, >, etc.).
+The <code class="code1">NULL</code> value is neither equal, nor greater than, nor less than, nor different from any other value, even if the other value is also <code class="code1">NULL</code>.<br />
+<br />
+All comparison operations with <code class="code1">NULL</code> evaluate to UNKNOWN, which is treated as FALSE in WHERE clauses and other boolean contexts.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   NULL = NULL
+OR      NULL != NULL
+OR      NULL = 1
+OR      NULL != 1
+</pre>
+Query result :<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+<li>
+<b>NULL arithmetic operations:</b> The <code class="code1">NULL</code> value cannot be added, subtracted, multiplied, or divided by any other value, even if the other value is also <code class="code1">NULL</code>.<br />
+<br />
+Any arithmetic operation involving <code class="code1">NULL</code> propagates the NULL value, meaning the result is always <code class="code1">NULL</code>.
+This includes concatenation operations as well.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+SELECT  NULL + NULL AS v1
+,       NULL + 1 AS v2
+FROM    DUAL
+</pre>
+Query result :<br />
+<pre class="text-code">
+v1     v2
+------ ------
+(null) (null)
+</pre>
+</li>
+<li>
+<b>Testing for NULL values:</b> To test if a value is <code class="code1">NULL</code> or not, you must use the predicates <code class="code1">IS NULL</code> and <code class="code1">IS NOT NULL</code>.
+These are the only reliable ways to check for NULL values in Oracle SQL.<br />
+<br />
+Example 1 :<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   NULL IS NULL
+</pre>
+Query result :<br />
+<pre class="text-code">
+v1
+--
+ 1
+</pre>
+Example 2 :<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   1 IS NOT NULL
+</pre>
+Query result :<br />
+<pre class="text-code">
+v1
+--
+ 1
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">NULL Behavior with Aggregation Functions</span>
+<div class="tutorialSectionTextDiv1">
+Oracle's aggregation functions have specific rules for handling NULL values.<br />
+<br />
+<b>General behavior:</b> Most aggregation functions ignore NULL values when processing a column.
+However, if all values in the aggregated set are NULL or if no rows are returned, the behavior differs between <code class="code1">COUNT</code> and other functions.<br />
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+<code class="code1">COUNT</code> returns 0 when all values are NULL or no rows exist or when passing a literal NULL value as an argument.<br />
+</li>
+<li>
+Other functions (<code class="code1">SUM</code>, <code class="code1">MIN</code>, <code class="code1">MAX</code>, <code class="code1">AVG</code>)
+return NULL when all values are NULL or no rows exist or when passing a literal NULL value as an argument.<br />
+</li>
+</ul>
+<br />
+<b>Examples:</b><br />
+<ul class="ul_square_1">
+<li>
+Example 1: The column <code class="code1">a.v1</code> is <code class="code1">NULL</code> for all rows in the query result.<br />
+<pre class="sql-code">
+SELECT  COUNT(a.v1), SUM(a.v1), MIN(a.v1), MAX(a.v1), AVG(a.v1)
+FROM
+(
+    SELECT NULL AS v1
+    FROM   DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+) a
+</pre>
+Query result :<br />
+<pre class="text-code">
+COUNT(a.v1) SUM(a.v1) MIN(a.v1) MAX(a.v1) AVG(a.v1)
+----------- --------- --------- --------- ---------
+          0 (null)    (null)    (null)    (null)
+</pre>
+</li>
+<li>
+Example 2: The query returns no rows.<br />
+<pre class="sql-code">
+SELECT  COUNT(a.v1), SUM(a.v1), MIN(a.v1), MAX(a.v1), AVG(a.v1)
+FROM
+(
+    SELECT  NULL AS v1
+    FROM    DUAL
+    WHERE   1=0
+) a
+</pre>
+Query result :<br />
+<pre class="text-code">
+COUNT(a.v1) SUM(a.v1) MIN(a.v1) MAX(a.v1) AVG(a.v1)
+----------- --------- --------- --------- ---------
+          0 (null)    (null)    (null)    (null)
+</pre>
+</li>
+<li>
+Example 3: Explicitly passing the <code class="code1">NULL</code> value as an argument to these functions !!<br />
+<pre class="sql-code">
+SELECT  COUNT(NULL), SUM(NULL), MIN(NULL), MAX(NULL), AVG(NULL)
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+</pre>
+Query result :<br />
+<pre class="text-code">
+COUNT(a.v1) SUM(a.v1) MIN(a.v1) MAX(a.v1) AVG(a.v1)
+----------- --------- --------- --------- ---------
+          0 (null)    (null)    (null)    (null)
+</pre>
+</li>
+<li>
+Example 4: The column <code class="code1">a.v1</code> is <code class="code1">NULL</code> for some rows in the query result.<br />
+The functions ignore rows where the column <code class="code1">a.v1</code> is <code class="code1">NULL</code>.<br />
+<pre class="sql-code">
+SELECT  COUNT(a.v1), SUM(a.v1), MIN(a.v1), MAX(a.v1), AVG(a.v1)
+FROM
+(
+    SELECT  1 AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  2 AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+) a
+</pre>
+Query result :<br />
+<pre class="text-code">
+COUNT(a.v1) SUM(a.v1) MIN(a.v1) MAX(a.v1) AVG(a.v1)
+----------- --------- --------- --------- ---------
+          2         3         1         2       1.5
+</pre>
+</li>
+<li>
+Example 5: Explicitly passing a numeric value as an argument to these functions !!<br />
+It is possible to specify a numeric value as an argument to these functions,
+in which case their behavior is to apply the operation of the function to the argument value for each row returned by the query.<br />
+<br />
+The <code class="code1">COUNT</code> function is an exception to this rule,
+as it does not consider the value of the argument,
+as long as the value is not <code class="code1">NULL</code>, of course.<br />
+<br />
+The <code class="code1">COUNT</code> function can also take the character "*" as an argument.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+SELECT  COUNT(10), SUM(10), MIN(10), MAX(10), AVG(10)
+FROM
+(
+    SELECT  NULL AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  1 AS v1
+    FROM    DUAL
+) a
+</pre>
+Query result :<br />
+<pre class="text-code">
+COUNT(a.v1) SUM(a.v1) MIN(a.v1) MAX(a.v1) AVG(a.v1)
+----------- --------- --------- --------- ---------
+          2        20        10        10        10
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">NULL Handling in Conditional Operators</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">IN</code> and <code class="code1">NOT IN</code> operators have complex behavior when dealing with NULL values.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Operator: <code class="code1">IN</code></span>
+<div class="tutorialSectionTextDiv1">
+<b>Syntax:</b> <code class="code1">expression IN (expression_list)</code><br />
+<br />
+The <code class="code1">IN</code> operator performs multiple equality comparisons and returns TRUE if any comparison succeeds.
+Since NULL comparisons always return UNKNOWN (treated as FALSE), NULL values in either the expression or the list can affect the result.<br />
+<br />
+"<code class="code1">expression_list</code>" can be a list of values or a subquery that can return multiple rows (with a single column).<br />
+<br />
+The value of "<code class="code1">expression</code>" is compared with each element in the "<code class="code1">expression_list</code>".<br />
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+The condition is true if the value of "<code class="code1">expression</code>" is equal to at least one element in "<code class="code1">expression_list</code>".<br />
+</li>
+<li>
+The condition is false if the value of "<code class="code1">expression</code>" is different from each element in "<code class="code1">expression_list</code>".<br />
+</li>
+<li>
+The condition always returns <b>false</b> if the value of "<code class="code1">expression</code>" is <code class="code1">NULL</code>, the list of elements is empty, or the elements in the subquery are all <code class="code1">NULL</code>.<br />
+</li>
+</ul>
+<ol class="ol_lower_latin_1">
+<li id="sec_id_3_1_1">
+<span class="tutorialSubSectionTitleSpan1">Standard matching behavior</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   1 IN (1,2,NULL)
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+ 1
+</pre>
+</li>
+</ul>
+</li>
+<li id="sec_id_3_1_2">
+<span class="tutorialSubSectionTitleSpan1">Behavior with all NULL values or empty lists</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   1 IN (NULL,NULL)
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  NULL AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+        )
+</pre>
+</li>
+<li>
+Example 3:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+                WHERE   1=0
+            ) b
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+</ul>
+</li>
+<li id="sec_id_3_1_3">
+<span class="tutorialSubSectionTitleSpan1">Behavior when expression is NULL</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  1 AS v1
+FROM    DUAL
+WHERE   NULL IN (1,2,NULL)
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT NULL AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Operator: <code class="code1">NOT IN</code></span>
+<div class="tutorialSectionTextDiv1">
+<b>Syntax:</b> <code class="code1">expression NOT IN (expression_list)</code><br />
+<br />
+The <code class="code1">NOT IN</code> operator is particularly tricky with NULL values.
+It requires that the expression be different from ALL values in the list.
+If any comparison results in UNKNOWN (due to NULL), the entire condition becomes FALSE.<br />
+<br />
+"<code class="code1">expression_list</code>" can be a list of values or a subquery that can return multiple rows (with a single column).<br />
+<br />
+The value of "<code class="code1">expression</code>" is compared with each element in the "<code class="code1">expression_list</code>".<br />
+<br />
+<b>Notes:</b><br />
+<ul class="ul_square_1">
+<li>
+The condition is true if the value of "<code class="code1">expression</code>" is different from each element in "<code class="code1">expression_list</code>".<br />
+</li>
+<li>
+The condition is true if the list of elements is empty.<br />
+</li>
+<li>
+The condition returns false if the value of "<code class="code1">expression</code>" is equal to at least one element in "<code class="code1">expression_list</code>".<br />
+</li>
+<li>
+The condition always returns <b>false</b> if the value of "<code class="code1">expression</code>" is <code class="code1">NULL</code> or at least one element in "<code class="code1">expression_list</code>" is <code class="code1">NULL</code>.<br />
+</li>
+</ul>
+<ol class="ol_lower_latin_1">
+<li id="sec_id_3_2_1">
+<span class="tutorialSubSectionTitleSpan1">Behavior with NULL values in list</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  5 AS v1
+FROM    DUAL
+WHERE   5 NOT IN (1,2,NULL)
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 5 AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 NOT IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+</ul>
+</li>
+<li id="sec_id_3_2_2">
+<span class="tutorialSubSectionTitleSpan1">Behavior when expression is NULL</span>
+<ul class="ul_square_1">
+<li>
+Example 1 :<br />
+<pre class="sql-code">
+SELECT  NULL AS v1
+FROM    DUAL
+WHERE   NULL NOT IN (1,2,NULL)
+</pre>
+</li>
+<li>
+Example 2 :<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT NULL AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 NOT IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+</ul>
+</li>
+<li id="sec_id_3_2_3">
+<span class="tutorialSubSectionTitleSpan1">Behavior with empty lists</span>
+<ul class="ul_square_1">
+<li>
+Example:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 5 AS v1
+    FROM   DUAL
+) a
+WHERE   a.v1 NOT IN
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+                WHERE   1=0
+            ) b
+        )
+</pre>
+Query result :<br />
+<pre class="text-code">
+v1
+--
+ 5
+</pre>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">NULL Behavior with Existence Operators</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">EXISTS</code> and <code class="code1">NOT EXISTS</code> operators behave differently from <code class="code1">IN</code> and <code class="code1">NOT IN</code> when dealing with NULL values.
+These operators only care about whether the subquery returns any rows, not the actual values returned.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_4_1">
+<span class="tutorialSubSectionTitleSpan1">Operator: <code class="code1">EXISTS</code></span>
+<div class="tutorialSectionTextDiv1">
+<b>Syntax:</b> <code class="code1">EXISTS (subquery)</code><br />
+<br />
+The <code class="code1">EXISTS</code> operator returns TRUE if the subquery returns at least one row, regardless of whether those rows contain NULL values.
+The actual data values in the subquery result are irrelevant.<br />
+<br />
+<b>Note:</b>
+The presence or absence of <code class="code1">NULL</code> values only affects the subquery: as long as the subquery returns a row,
+the <code class="code1">EXISTS</code> operator returns true; otherwise, it returns false.<br />
+<ol class="ol_lower_latin_1">
+<li id="sec_id_4_1_1">
+<span class="tutorialSubSectionTitleSpan1">True condition behavior</span>
+<ul class="ul_square_1">
+<li>
+Example:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+WHERE   EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+--
+ 1
+</pre>
+</li>
+</ul>
+</li>
+<li id="sec_id_4_1_2">
+<span class="tutorialSubSectionTitleSpan1">False condition behavior</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 1 AS v1
+    FROM   DUAL
+) a
+WHERE   EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+                WHERE   1=0
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT NULL AS v1
+    FROM   DUAL
+) a
+WHERE   EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+</li>
+<li>
+Queries results:<br />
+<pre class="text-code">
+v1
+--
+</pre>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4_2">
+<span class="tutorialSubSectionTitleSpan1">Operator: <code class="code1">NOT EXISTS</code></span>
+<div class="tutorialSectionTextDiv1">
+<b>Syntax:</b> <code class="code1">NOT EXISTS (subquery)</code><br />
+<br />
+The <code class="code1">NOT EXISTS</code> operator returns TRUE if the subquery returns no rows.
+Unlike <code class="code1">NOT IN</code>, the presence of NULL values in the subquery does not affect the result - only the row count matters.<br />
+<br />
+<b>Note:</b>
+Be careful, the behavior of the <code class="code1">NOT EXISTS</code> operator is completely different from the <code class="code1">NOT IN</code> operator when it comes to <code class="code1">NULL</code> values;
+the presence or absence of <code class="code1">NULL</code> values only affects the subquery: as long as the subquery does not return any rows,
+the <code class="code1">NOT EXISTS</code> operator returns true; otherwise, it returns false.<br />
+<ol class="ol_lower_latin_1">
+<li id="sec_id_4_2_1">
+<span class="tutorialSubSectionTitleSpan1">True condition behavior</span>
+<ul class="ul_square_1">
+<li>
+Example 1:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 5 AS v1
+    FROM   DUAL
+) a
+WHERE   NOT EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+--
+ 5
+</pre>
+</li>
+<li>
+Example 2:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT NULL AS v1
+    FROM   DUAL
+) a
+WHERE   NOT EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  2 AS v2
+                FROM    DUAL
+
+                UNION ALL
+
+                SELECT  NULL AS v2
+                FROM    DUAL
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+(null)
+</pre>
+</li>
+<li>
+Example 3:<br />
+<pre class="sql-code">
+SELECT  a.v1
+FROM
+(
+    SELECT 5 AS v1
+    FROM   DUAL
+) a
+WHERE   NOT EXISTS
+        (
+            SELECT b.v2
+            FROM
+            (
+                SELECT  1 AS v2
+                FROM    DUAL
+                WHERE   1=0
+            ) b
+            WHERE   b.v2 = a.v1
+        )
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+--
+ 5
+</pre>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">NULL Handling in Set Operations</span>
+<div class="tutorialSectionTextDiv1">
+Set operations in Oracle SQL treat NULL values differently than comparison operators.
+For set operations, NULL values are considered equal to other NULL values and distinct from all non-NULL values.
+This behavior is consistent across all set operations.
+This allows set operations to properly eliminate or combine duplicate NULL values.<br />
+<ul class="ul_square_1">
+<li>
+Example 1: UNION<br />
+<pre class="sql-code">
+SELECT  NULL AS v1
+FROM    DUAL
+
+UNION
+
+SELECT  NULL AS v1
+FROM    DUAL
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+(null)
+</pre>
+</li>
+<li>
+Example 2: UNION ALL<br />
+<pre class="sql-code">
+SELECT  NULL AS v1
+FROM    DUAL
+
+UNION ALL
+
+SELECT  NULL AS v1
+FROM    DUAL
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+(null)
+(null)
+</pre>
+</li>
+<li>
+Example 3: INTERSECT<br />
+<pre class="sql-code">
+SELECT  NULL AS v1
+FROM    DUAL
+
+INTERSECT
+
+SELECT  NULL AS v1
+FROM    DUAL
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+(null)
+</pre>
+</li>
+<li>
+Example 4: MINUS<br />
+<pre class="sql-code">
+SELECT  NULL AS v1
+FROM    DUAL
+
+MINUS
+
+SELECT  NULL AS v1
+FROM    DUAL
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_6">
+<span class="tutorialSubSectionTitleSpan1">NULL Behavior with <code class="code1">DISTINCT</code></span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">DISTINCT</code> operator follows the same NULL handling rules as set operations.
+Multiple NULL values are considered identical and are reduced to a single NULL value in the result set.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+SELECT DISTINCT a.v1
+FROM
+(
+    SELECT  1 AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+) a
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1
+------
+     1
+(null)
+</pre>
+</div>
+</li>
+<li id="sec_id_7">
+<span class="tutorialSubSectionTitleSpan1">NULL Handling in Grouping and Sorting</span>
+<div class="tutorialSectionTextDiv1">
+Both <code class="code1">GROUP BY</code> and <code class="code1">ORDER BY</code> clauses treat NULL values consistently with set operations.
+NULL values are considered equal to each other for grouping purposes and are sorted together in ordering operations.<br />
+<br />
+<b>Grouping behavior:</b> All NULL values are placed in the same group when using <code class="code1">GROUP BY</code>.<br />
+<br />
+<b>Sorting behavior:</b> NULL values are typically sorted together, with their position (first or last) depending on the database configuration and specific ORDER BY clause options.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+SELECT  a.v1, COUNT(1) AS nbr
+FROM
+(
+    SELECT  1 AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+
+    UNION ALL
+
+    SELECT  NULL AS v1
+    FROM    DUAL
+) a
+GROUP BY v1
+ORDER BY v1 DESC
+</pre>
+Query result:<br />
+<pre class="text-code">
+v1     nbr
+------ ------
+(null)      2
+     1      1
+</pre>
+</div>
+</li>
+<li id="sec_id_8">
+<span class="tutorialSubSectionTitleSpan1">Quick Reference Summary</span>
+<div class="tutorialSectionTextDiv1">
+<table class="csstable3">
+<thead>
+<tr class="csstr1">
+<th class="cssth1">Operation</th>
+<th class="cssth1">NULL Scenario</th>
+<th class="cssth1">Result</th>
+<th class="cssth1">Returns Rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="csstd1"><code class="code1">expr = NULL</code></td>
+<td class="csstd1">Any comparison with NULL</td>
+<td class="csstd1">Always FALSE</td>
+<td class="csstd1">No</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">expr IS NULL</code></td>
+<td class="csstd1">Testing for NULL values</td>
+<td class="csstd1">TRUE if expr is NULL</td>
+<td class="csstd1">Yes (if NULL)</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">expr IN (list)</code></td>
+<td class="csstd1">expr is NULL</td>
+<td class="csstd1">Always FALSE</td>
+<td class="csstd1">No</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">expr IN (list)</code></td>
+<td class="csstd1">List contains only NULLs</td>
+<td class="csstd1">Always FALSE</td>
+<td class="csstd1">No</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">expr NOT IN (list)</code></td>
+<td class="csstd1">expr is NULL</td>
+<td class="csstd1">Always FALSE</td>
+<td class="csstd1">No</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">expr NOT IN (list)</code></td>
+<td class="csstd1">List contains any NULL</td>
+<td class="csstd1">Always FALSE</td>
+<td class="csstd1">No</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">EXISTS (subquery)</code></td>
+<td class="csstd1">Subquery returns NULLs</td>
+<td class="csstd1">TRUE if any rows returned</td>
+<td class="csstd1">Yes (if rows exist)</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">NOT EXISTS (subquery)</code></td>
+<td class="csstd1">Subquery returns NULLs</td>
+<td class="csstd1">FALSE if any rows returned</td>
+<td class="csstd1">No (if rows exist)</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">COUNT(column)</code></td>
+<td class="csstd1">Column contains NULLs</td>
+<td class="csstd1">Ignores NULL values</td>
+<td class="csstd1">Returns count of non-NULLs</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">SUM/MIN/MAX/AVG(column)</code></td>
+<td class="csstd1">All values are NULL</td>
+<td class="csstd1">Returns NULL</td>
+<td class="csstd1">Returns NULL result</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">DISTINCT</code></td>
+<td class="csstd1">Multiple NULL values</td>
+<td class="csstd1">Treats NULLs as equal</td>
+<td class="csstd1">Returns single NULL</td>
+</tr>
+<tr class="csstr1">
+<td class="csstd1"><code class="code1">GROUP BY</code></td>
+<td class="csstd1">NULL values in grouping column</td>
+<td class="csstd1">Groups all NULLs together</td>
+<td class="csstd1">Creates NULL group</td>
+</tr>
+<tr>
+<td class="csstd1"><code class="code1">Set Operations</code></td>
+<td class="csstd1">UNION/INTERSECT/MINUS with NULLs</td>
+<td class="csstd1">Treats NULLs as equal</td>
+<td class="csstd1">Handles NULLs consistently</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

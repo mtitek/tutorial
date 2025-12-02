@@ -1,0 +1,414 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Database INSERT Statements Tutorial - VALUES, SELECT &amp; Multi-Table | MTI TEK</title>
+<meta name="description" content="Complete Oracle Database INSERT tutorial covering INSERT VALUES, INSERT SELECT, and multi-table operations with INSERT ALL and INSERT FIRST." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Database INSERT Statements Tutorial - VALUES, SELECT &amp; Multi-Table | MTI TEK" />
+<meta property="og:description" content="Complete Oracle Database INSERT tutorial covering INSERT VALUES, INSERT SELECT, and multi-table operations with INSERT ALL and INSERT FIRST." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/insert.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Database INSERT Statements Tutorial - VALUES, SELECT &amp; Multi-Table | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle Database INSERT tutorial covering INSERT VALUES, INSERT SELECT, and multi-table operations with INSERT ALL and INSERT FIRST." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/insert.html",
+        "description": "Complete Oracle Database INSERT tutorial covering INSERT VALUES, INSERT SELECT, and multi-table operations with INSERT ALL and INSERT FIRST.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/insert.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">INSERT Statements</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Sample Data Setup</a></li>
+<li><a href="#sec_id_1">Basic INSERT Operations</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1"><code class="code1">INSERT ... VALUES</code></a></li>
+<li><a href="#sec_id_1_2"><code class="code1">INSERT ... SELECT</code></a></li>
+<li><a href="#sec_id_1_3"><code class="code1">INSERT ... SELECT ... WHERE</code></a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Multi-Table INSERT Operations</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_2_1"><code class="code1">INSERT ALL</code></a></li>
+<li><a href="#sec_id_2_2"><code class="code1">INSERT FIRST</code></a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+These tables and sample data are used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_insert_1
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR2(2)
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_insert_2
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR2(2)
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_insert_3
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR2(2)
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_insert_4
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR2(2)
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Basic INSERT Operations</span>
+<div class="tutorialSectionTextDiv1">
+Oracle provides several methods for inserting data into tables.
+These range from simple value insertion to more complex operations involving subqueries and conditional logic.
+
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">INSERT ... VALUES</code></span>
+<div class="tutorialSectionTextDiv1">
+The most basic form of INSERT statement allows you to specify explicit values for each column.
+This method is ideal for inserting single rows with known values.
+Column names can be specified explicitly or omitted if values are provided for all columns in table order.<br />
+Example:<br />
+<pre class="sql-code">
+INSERT INTO table_insert_1 (id1, desc1)
+VALUES (1, 'A');
+</pre>
+Select data from the table "<code class="code1">table_insert_1</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+</pre>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">INSERT ... SELECT</code></span>
+<div class="tutorialSectionTextDiv1">
+This method allows you to insert data derived from expressions or calculations.
+The SELECT clause can include literal values, function calls, or calculations.
+Using DUAL is common when inserting literal values, as it provides a single-row result set.<br />
+Example:<br />
+<pre class="sql-code">
+INSERT INTO table_insert_1 (id1, desc1)
+SELECT 2, 'B' FROM dual;
+</pre>
+Select data from the table "<code class="code1">table_insert_1</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+2     B
+</pre>
+</div>
+</li>
+<li id="sec_id_1_3">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">INSERT ... SELECT ... WHERE</code></span>
+<div class="tutorialSectionTextDiv1">
+This variation adds conditional logic to control when data is inserted.
+The WHERE clause can include subqueries to check for existing data, preventing duplicate insertions or implementing business rules.
+The EXISTS operator is commonly used to verify whether related data already exists.<br />
+Example:<br />
+<pre class="sql-code">
+INSERT INTO table_insert_1 (id1, desc1)
+SELECT 3, 'C' FROM dual
+WHERE NOT EXISTS (SELECT 1 FROM table_insert_1 WHERE id1 = 3);
+</pre>
+Select data from the table "<code class="code1">table_insert_1</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+2     B
+3     C
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Multi-Table INSERT Operations</span>
+<div class="tutorialSectionTextDiv1">
+Oracle Database provides specialized syntax for inserting data into multiple tables simultaneously.
+These multi-table INSERT statements allow you to distribute data from a single source query across multiple target tables based on conditional logic.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_2_1">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">INSERT ALL</code></span>
+<div class="tutorialSectionTextDiv1">
+The INSERT ALL statement evaluates all WHEN conditions for each row from the source query.
+If multiple conditions are true for a single row, that row will be inserted into multiple tables.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+INSERT ALL
+WHEN id1 = 1 THEN INTO table_insert_2
+WHEN id1 = 2 THEN INTO table_insert_3
+ELSE INTO table_insert_4
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+<br />
+<ul class="ul_square_1">
+<li>
+Select data from the table "<code class="code1">table_insert_2</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_2;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_3</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_3;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+2     B
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_4</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_4;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+3     C
+</pre>
+</li>
+</ul>
+<b>Note:</b>
+All WHEN clauses are evaluated for each row returned by the subquery.
+If multiple conditions evaluate to true for the same row, the insert statements will be executed for all matching WHEN clauses.
+This can result in the same data being inserted into multiple tables.<br />
+<br />
+To illustrate this behavior, consider the following example with overlapping conditions:<br />
+<pre class="sql-code">
+INSERT ALL
+WHEN id1 &lt; 2 THEN INTO table_insert_2
+WHEN id1 &lt; 3 THEN INTO table_insert_3
+ELSE INTO table_insert_4
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+<br />
+<ul class="ul_square_1">
+<li>
+Select data from the table "<code class="code1">table_insert_2</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_2;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_3</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_3;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+2     B
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_4</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_4;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+3     C
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2_2">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">INSERT FIRST</code></span>
+<div class="tutorialSectionTextDiv1">
+The INSERT FIRST statement provides an alternative behavior where WHEN clauses are evaluated sequentially, and only the first matching condition is executed for each row.
+Once a condition evaluates to true, the remaining WHEN clauses are skipped for that row.
+This ensures that each source row is inserted into exactly one target table.<br />
+<pre class="sql-code">
+INSERT FIRST
+WHEN id1 &lt; 2 THEN INTO table_insert_2
+WHEN id1 &lt; 3 THEN INTO table_insert_3
+ELSE INTO table_insert_4
+SELECT id1, desc1 FROM table_insert_1;
+</pre>
+<br />
+<ul class="ul_square_1">
+<li>
+Select data from the table "<code class="code1">table_insert_2</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_2;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+1     A
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_3</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_3;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+2     B
+</pre>
+</li>
+<li>
+Select data from the table "<code class="code1">table_insert_4</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_insert_4;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+3     C
+</pre>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Database Constraints Tutorial: Create, Manage &amp; Query Constraints | MTI TEK</title>
+<meta name="description" content="Complete Oracle database constraints guide covering PRIMARY KEY, FOREIGN KEY, UNIQUE, and CHECK constraints. Learn to create, view, enable, disable, and drop constraints with practical SQL examples" />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Database Constraints Tutorial: Create, Manage &amp; Query Constraints | MTI TEK" />
+<meta property="og:description" content="Complete Oracle database constraints guide covering PRIMARY KEY, FOREIGN KEY, UNIQUE, and CHECK constraints. Learn to create, view, enable, disable, and drop constraints with practical SQL examples" />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/constraint.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Database Constraints Tutorial: Create, Manage &amp; Query Constraints | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle database constraints guide covering PRIMARY KEY, FOREIGN KEY, UNIQUE, and CHECK constraints. Learn to create, view, enable, disable, and drop constraints with practical SQL examples" />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/constraint.html",
+        "description": "Complete Oracle database constraints guide covering PRIMARY KEY, FOREIGN KEY, UNIQUE, and CHECK constraints. Learn to create, view, enable, disable, and drop constraints with practical SQL examples",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/constraint.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Constraint Management</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Constraint Types Overview</a></li>
+<li><a href="#sec_id_1">Creating Constraints</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1">During Table Creation (CREATE TABLE)</a></li>
+<li><a href="#sec_id_1_2">After Table Creation (ALTER TABLE)</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Viewing Constraint Information</a></li>
+<li><a href="#sec_id_3">Managing Constraints</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Disabling Constraints</a></li>
+<li><a href="#sec_id_3_2">Enabling Constraints</a></li>
+<li><a href="#sec_id_3_3">Dropping Constraints</a></li>
+</ol>
+</li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Constraint Types Overview</span>
+<div class="tutorialSectionTextDiv1">
+Oracle Database supports several types of constraints to enforce data integrity.
+Each constraint type serves a specific purpose and has a corresponding constraint type code in the data dictionary:<br />
+<ul class="ul_square_1">
+<li><code class="code1"><b>PRIMARY KEY</b></code> (constraint type: <code class="code1"><b>P</b></code>) - Ensures each row is uniquely identifiable. Automatically creates a unique index and enforces NOT NULL on all key columns.<br /></li>
+<li><code class="code1"><b>FOREIGN KEY</b></code> (constraint type: <code class="code1"><b>R</b></code>) - Maintains referential integrity between tables by ensuring values match those in the referenced table's primary or unique key.<br /></li>
+<li><code class="code1"><b>UNIQUE</b></code> (constraint type: <code class="code1"><b>U</b></code>) - Prevents duplicate values in specified columns while allowing NULL values. Automatically creates a unique index.<br /></li>
+<li><code class="code1"><b>CHECK</b></code> (constraint type: <code class="code1"><b>C</b></code>) - Validates data based on specified conditions. Also includes NOT NULL constraints which are implemented as CHECK constraints internally.</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Constraints can be defined at two different times: during table creation or after the table already exists.
+Naming constraints explicitly is recommended for easier maintenance and troubleshooting.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1">During Table Creation (CREATE TABLE)</span>
+<div class="tutorialSectionTextDiv1">
+Define constraints inline with column definitions or as table-level constraints:<br />
+<pre class="sql-code">
+CREATE TABLE table_constraint_1
+(
+    id NUMBER(1,0) NOT NULL -- NOT NULL
+,   CONSTRAINT cp_table_constraint_1_id PRIMARY KEY (id) -- PRIMARY KEY
+,   CONSTRAINT cc_table_constraint_1_id CHECK (id > 0 AND id &lt; 100) -- CHECK
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_constraint_2
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_constraint_2_id FOREIGN KEY (id) REFERENCES table_constraint_1 (id) -- FOREIGN KEY
+,   CONSTRAINT cu_table_constraint_2_id UNIQUE (id) -- UNIQUE
+);
+</pre>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1">After Table Creation (ALTER TABLE)</span>
+<div class="tutorialSectionTextDiv1">
+Add constraints to existing tables using ALTER TABLE with the ADD CONSTRAINT clause.
+This is useful when modifying existing database schemas or adding business rules later:<br />
+<pre class="sql-code">
+ALTER TABLE table_constraint_2 ADD CONSTRAINT cc_table_constraint_2_id CHECK (id IS NOT NULL); -- CHECK
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Viewing Constraint Information</span>
+<div class="tutorialSectionTextDiv1">
+Use the <code class="code1">USER_CONSTRAINTS</code> data dictionary view to retrieve information about constraints.
+Key columns include CONSTRAINT_NAME, CONSTRAINT_TYPE, GENERATED (shows if name was user-defined or system-generated), SEARCH_CONDITION (for CHECK constraints), and INDEX_NAME (for constraints with associated indexes).<br />
+<ul class="ul_square_1">
+<li>
+Display constraints for the table "<code class="code1">table_constraint_1</code>":<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, search_condition, index_name
+FROM user_constraints
+WHERE table_name = 'TABLE_CONSTRAINT_1';
+</pre>
+Query result:<pre class="text-code">
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+| CONSTRAINT_NAME          | CONSTRAINT_TYPE | GENERATED      | SEARCH_CONDITION    | INDEX_NAME               |
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+| SYS_C007078              | C               | GENERATED NAME | "ID" IS NOT NULL    | (null)                   |
+| CC_TABLE_CONSTRAINT_1_ID | C               | USER NAME      | ID > 0 AND ID &lt; 100 | (null)                   |
+| CP_TABLE_CONSTRAINT_1_ID | P               | USER NAME      | (null)              | CP_TABLE_CONSTRAINT_1_ID |
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+</pre>
+<b>Note:</b> The SYS_C007078 constraint was automatically created for the NOT NULL declaration.
+Oracle generates system names starting with "SYS_C" when constraints are not explicitly named.<br />
+</li>
+<li>
+Display constraints for the table "<code class="code1">table_constraint_2</code>":<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, search_condition, index_name
+FROM user_constraints
+WHERE table_name = 'TABLE_CONSTRAINT_2';
+</pre>
+Query result:<pre class="text-code">
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+| CONSTRAINT_NAME          | CONSTRAINT_TYPE | GENERATED      | SEARCH_CONDITION    | INDEX_NAME               |
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+| CU_TABLE_CONSTRAINT_2_ID | U               | USER NAME      | (null)              | CU_TABLE_CONSTRAINT_2_ID |
+| CR_TABLE_CONSTRAINT_2_ID | R               | USER NAME      | (null)              | (null)                   |
+| CC_TABLE_CONSTRAINT_2_ID | C               | USER NAME      | ID IS NOT NULL      | (null)                   |
++--------------------------+-----------------+----------------+---------------------+--------------------------+
+</pre>
+<b>Additional Views:</b> Use <code class="code1">USER_CONS_COLUMNS</code> to see which columns are involved in each constraint, and <code class="code1">ALL_CONSTRAINTS</code> or <code class="code1">DBA_CONSTRAINTS</code> to view constraints across schemas.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Managing Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Oracle provides several operations to manage existing constraints without recreating tables.
+These operations are useful for maintenance, data loading, and troubleshooting scenarios.<br />
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Disabling Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Temporarily disable constraint checking while keeping the constraint definition.
+This is useful during bulk data loads or when you need to perform operations that would temporarily violate constraints:<br />
+<pre class="sql-code">
+ALTER TABLE table_constraint_2 DISABLE CONSTRAINT cc_table_constraint_2_id;
+</pre>
+<b>Important:</b> Disabling a PRIMARY KEY or UNIQUE constraint also drops the associated index.
+Use DISABLE NOVALIDATE to keep the index while disabling constraint enforcement.<br />
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Enabling Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Re-enable previously disabled constraints.
+Oracle will validate all existing data against the constraint when it's enabled:<br />
+<pre class="sql-code">
+ALTER TABLE table_constraint_2 ENABLE CONSTRAINT cc_table_constraint_2_id;
+</pre>
+<b>Note:</b> If existing data violates the constraint, the ENABLE operation will fail.
+Use ENABLE NOVALIDATE to enable the constraint without checking existing data, or fix the data first.<br />
+</div>
+</li>
+<li id="sec_id_3_3">
+<span class="tutorialSubSectionTitleSpan1">Dropping Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Permanently remove a constraint from the table.
+This action cannot be undone and will also drop any associated indexes for PRIMARY KEY and UNIQUE constraints:<br />
+<pre class="sql-code">
+ALTER TABLE table_constraint_2 DROP CONSTRAINT cc_table_constraint_2_id;
+</pre>
+<b>Note:</b> When dropping PRIMARY KEY constraints referenced by foreign keys, use CASCADE to automatically drop dependent foreign key constraints, or drop the foreign keys first.<br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

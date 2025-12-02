@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle MERGE Statement Tutorial - INSERT, UPDATE, DELETE in One Query  | MTI TEK</title>
+<meta name="description" content="Learn Oracle MERGE statements with practical examples. Learn INSERT, UPDATE, and DELETE operations in a single query." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle MERGE Statement Tutorial - INSERT, UPDATE, DELETE in One Query  | MTI TEK" />
+<meta property="og:description" content="Learn Oracle MERGE statements with practical examples. Learn INSERT, UPDATE, and DELETE operations in a single query." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/merge.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle MERGE Statement Tutorial - INSERT, UPDATE, DELETE in One Query  | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle MERGE statements with practical examples. Learn INSERT, UPDATE, and DELETE operations in a single query." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/merge.html",
+        "description": "Learn Oracle MERGE statements with practical examples. Learn INSERT, UPDATE, and DELETE operations in a single query.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/merge.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">MERGE Statements</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Introduction and Setup</a></li>
+<li><a href="#sec_id_1">Basic MERGE INTO Syntax and Operations</a></li>
+<li><a href="#sec_id_2">Troubleshooting: ORA-30926 Error</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Introduction and Setup</span>
+<div class="tutorialSectionTextDiv1">
+The MERGE statement in Oracle Database is a powerful Data Manipulation Language (DML) statement that allows you to perform INSERT, UPDATE, and DELETE operations in a single statement based on specified conditions.<br />
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE TABLE_MERGE
+(
+ID1 NUMBER(2,0)
+, CODE VARCHAR(50)
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_merge (id1, code) VALUES (11, 'A_11');
+INSERT INTO table_merge (id1, code) VALUES (12, 'A_12');
+INSERT INTO table_merge (id1, code) VALUES (13, 'A_13');
+INSERT INTO table_merge (id1, code) VALUES (14, 'A_14');
+INSERT INTO table_merge (id1, code) VALUES (15, 'A_15');
+INSERT INTO table_merge (id1, code) VALUES (16, 'A_16');
+INSERT INTO table_merge (id1, code) VALUES (17, 'A_17');
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Basic MERGE INTO Syntax and Operations</span>
+<div class="tutorialSectionTextDiv1">
+The MERGE statement compares rows in a target table with rows from a source query or table.
+Based on the comparison results, it can perform different actions using WHEN MATCHED and WHEN NOT MATCHED clauses.
+The basic syntax structure is:<br />
+<pre class="sql-code">
+MERGE INTO target_table USING source_query ON (join_condition)
+WHEN MATCHED THEN [UPDATE/DELETE operations]
+WHEN NOT MATCHED THEN [INSERT operations]
+</pre>
+The purpose of using MERGE statements is to be able to use a query to add, modify, and delete rows from a table based on conditions defined in the query.
+This eliminates the need for separate INSERT, UPDATE, and DELETE statements and ensures atomic execution of all operations.<br />
+<br />
+Example:<br />
+<pre class="sql-code">
+MERGE INTO table_merge a
+USING
+(
+    SELECT id1, 1 AS flag FROM table_merge WHERE id1 IN (12,13)
+
+    UNION ALL
+
+    SELECT 18 as id1, 1 AS flag FROM DUAL
+
+    UNION ALL
+
+    SELECT id1, 0 AS flag FROM table_merge WHERE id1 IN (14,15)
+) b
+ON (b.id1 = a.id1)
+WHEN MATCHED THEN
+    UPDATE SET a.code = a.code || '-MATCHED'
+    DELETE WHERE b.flag != 1
+WHEN NOT MATCHED THEN
+    INSERT (a.id1, a.code)
+    VALUES (b.id1, 'NOT MATCHED');
+</pre>
+In this example:<br />
+<ul class="ul_square_1">
+<li>Rows with id1 IN (12,13) will be updated with '-MATCHED' suffix.<br /></li>
+<li>Rows with id1 IN (14,15) will be deleted (flag = 0).<br /></li>
+<li>A new row with id1 = 18 will be inserted.<br /></li>
+<li>Rows with id1 IN (11,16,17) remain unchanged.<br /></li>
+</ul>
+<br />
+Select data from the "<code class="code1">table_merge</code>" table: <br />
+<pre class="sql-code">
+SELECT id1, code FROM table_merge;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1 code
+----- ----
+11 A_11
+12 A_12-MATCHED
+13 A_13-MATCHED
+16 A_16
+17 A_17
+18 NOT MATCHED
+</pre>
+The following rows were deleted:<br />
+<pre class="text-code">
+id1 code
+----- ----
+14 A_14
+15 A_15
+</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Troubleshooting: ORA-30926 Error</span>
+<div class="tutorialSectionTextDiv1">
+One of the most common errors encountered when using MERGE statements is ORA-30926: "unable to get a stable set of rows in the source tables".<br />
+<br />
+This error occurs if you try to modify a column multiple times; the table or subquery returns multiple rows that match the ON condition.
+Oracle requires that each target row can be matched with at most one source row to maintain data consistency.<br />
+<pre class="sql-code">
+MERGE INTO table_merge a
+USING
+(
+    SELECT 11 AS id1, 'NEW_CODE_1' AS code FROM DUAL
+
+    UNION ALL
+
+    SELECT 11 AS id1, 'NEW_CODE_2' AS code FROM DUAL
+) b
+ON (b.id1 = a.id1)
+WHEN MATCHED THEN
+    UPDATE SET a.code = b.code;
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+
+Error report:
+SQL Error: ORA-30926: unable to get a stable set of rows in the source tables
+*Cause: A stable set of rows could not be obtained because of large DML activity or a non-deterministic WHERE clause.
+*Action: Remove any non-deterministic WHERE clauses and reissue the DML.
+</pre>
+Cause of the error: the query first modifies the code (id1=11) to 'NEW_CODE_1', then modifies it again to 'NEW_CODE_2'.
+Oracle cannot determine which value should be the final result.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

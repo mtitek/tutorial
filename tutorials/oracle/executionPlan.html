@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Actual Execution Plans Tutorial - dbms_xplan.display_cursor Guide | MTI TEK</title>
+<meta name="description" content="Learn how to use Oracle&#039;s dbms_xplan.display_cursor function to view actual execution plans." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Actual Execution Plans Tutorial - dbms_xplan.display_cursor Guide | MTI TEK" />
+<meta property="og:description" content="Learn how to use Oracle&#039;s dbms_xplan.display_cursor function to view actual execution plans." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/executionPlan.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Actual Execution Plans Tutorial - dbms_xplan.display_cursor Guide | MTI TEK" />
+<meta name="twitter:description" content="Learn how to use Oracle&#039;s dbms_xplan.display_cursor function to view actual execution plans." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/executionPlan.html",
+        "description": "Learn how to use Oracle&#039;s dbms_xplan.display_cursor function to view actual execution plans.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/executionPlan.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Actual Execution Plans</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Introduction to Actual Execution Plans</a></li>
+<li><a href="#sec_id_2">Setting Up Test Data</a></li>
+<li><a href="#sec_id_3">Using dbms_xplan.display_cursor to View Actual Plans</a></li>
+<li><a href="#sec_id_4">Understanding Execution Plan Output</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Introduction to Actual Execution Plans</span>
+<div class="tutorialSectionTextDiv1">
+Actual execution plans show the true execution path that Oracle took when running a query, as opposed to estimated execution plans which show what the optimizer thinks will happen.
+Actual execution plans provide real statistics including actual row counts, buffer gets, physical reads, and execution times.<br />
+<br />
+To generate actual execution plans, Oracle must collect runtime statistics during query execution.
+This is accomplished using the gather_plan_statistics hint or by enabling statistics gathering at the session or system level.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Setting Up Test Data</span>
+<div class="tutorialSectionTextDiv1">
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_exec_plan_1
+(
+    id1 NUMBER(5,0) NOT NULL
+,   id2 NUMBER(5,0) NOT NULL
+,   type1 NUMBER(1,0) NOT NULL
+);
+</pre>
+The following PL/SQL block populates the table with 50,000 rows, alternating the type1 column between values 1 and 2:<br />
+<pre class="sql-code">
+DECLARE
+indexLoop NUMBER(5,0);
+
+BEGIN
+FOR indexLoop IN 1..50000 LOOP
+    IF MOD(indexLoop,2) = 0 THEN
+        INSERT INTO table_exec_plan_1 (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 1);
+    ELSE
+        INSERT INTO table_exec_plan_1 (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 2);
+    END IF;
+END LOOP;
+END;
+/
+
+COMMIT;
+</pre>
+An index is created on the type1 column to demonstrate index usage in the execution plans:<br />
+<pre class="sql-code">
+CREATE INDEX ix_table_exec_plan_1_type1 ON table_exec_plan_1 (type1) COMPUTE STATISTICS;
+</pre>
+The COMPUTE STATISTICS clause ensures that Oracle collects index statistics immediately, which helps the optimizer make better decisions about index usage.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Using dbms_xplan.display_cursor to View Actual Plans</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">dbms_xplan.display_cursor</code> function displays actual execution plans for queries that have been executed and cached in the shared pool.
+This function requires that runtime statistics were collected during query execution.<br />
+<br />
+Here is the step-by-step process to view an actual execution plan:<br />
+<pre class="sql-code">
+SELECT /*+ gather_plan_statistics */ /* ora_sql_hint_exec_plan */ * FROM table_exec_plan_1 WHERE type1 = 1;
+</pre>
+The gather_plan_statistics hint instructs Oracle to collect detailed runtime statistics during query execution.
+The comment with ora_sql_hint_exec_plan serves as a unique identifier to locate this specific query in the shared pool.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+First, retrieve the query information from the <code class="code1">v$sql</code> view to find the SQL_ID and child number:<br />
+<pre class="sql-code">
+select sql_id, child_number, sql_text
+from v$sql
+where sql_text like '%ora_sql_hint_exec_plan%';
+</pre>
+Query result:<br />
+<pre class="text-code">
++---------------+--------------+---------------------------------------------------------------------------------------------------------------+
+| SQL_ID        | CHILD_NUMBER | SQL_TEXT                                                                                                      |
++---------------+--------------+---------------------------------------------------------------------------------------------------------------+
+| aqwka0b74ph07 | 0            |  SELECT /*+ gather_plan_statistics */ /* ora_sql_hint_exec_plan */ * FROM table_exec_plan_1 WHERE type1 = 1 |
++---------------+--------------+---------------------------------------------------------------------------------------------------------------+
+</pre>
+<br /></li>
+<li>
+Display the actual execution plan using the retrieved SQL_ID and child number:<br />
+<pre class="sql-code">
+SELECT * FROM table(dbms_xplan.display_cursor('__SQL_ID__', __CHILD_NUMBER__, 'ALLSTATS LAST'));
+</pre>
+Replace "<code class="code1">__SQL_ID__</code>" with the correct value (in this example: "<code class="code1">aqwka0b74ph07</code>") and "<code class="code1">__CHILD_NUMBER__</code>" with the correct value (in this example: "<code class="code1">0</code>").<br />
+<br />
+The 'ALLSTATS LAST' format parameter provides comprehensive statistics from the most recent execution, including row counts, buffer gets, and timing information.<br />
+<br />
+Query result:<br />
+<pre class="text-code">
+SQL_ID  aqwka0b74ph07, child number 0
+-------------------------------------
+SELECT /*+ gather_plan_statistics */ /* ora_sql_hint_exec_plan */ * FROM table_exec_plan_1 WHERE type1 = 1
+
+Plan hash value: 10875406
+
+-----------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                       | Starts | E-Rows | A-Rows |   A-Time   | Buffers | Reads  |
+-----------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                            |      1 |        |     50 |00:00:00.49 |       3 |      4 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_EXEC_PLAN_1          |      1 |  24687 |     50 |00:00:00.49 |       3 |      4 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_EXEC_PLAN_1_TYPE1 |      1 |    198 |     50 |00:00:00.01 |       2 |      4 |
+-----------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("TYPE1"=1)
+
+Note
+-----
+   - dynamic sampling used for this statement (level=2)
+</pre>
+The Predicate Information section shows the filter and access conditions applied at each step.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Understanding Execution Plan Output</span>
+<div class="tutorialSectionTextDiv1">
+The actual execution plan output contains several important columns that provide insight into query performance:<br />
+<pre class="text-code">
+-----------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name                       | Starts | E-Rows | A-Rows |   A-Time   | Buffers | Reads  |
+-----------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                            |      1 |        |     50 |00:00:00.49 |       3 |      4 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| TABLE_EXEC_PLAN_1          |      1 |  24687 |     50 |00:00:00.49 |       3 |      4 |
+|*  2 |   INDEX RANGE SCAN          | IX_TABLE_EXEC_PLAN_1_TYPE1 |      1 |    198 |     50 |00:00:00.01 |       2 |      4 |
+-----------------------------------------------------------------------------------------------------------------------------
+</pre>
+<ul class="ul_square_1">
+<li>
+<strong>Id:</strong> The step number in the execution plan.
+Steps are executed in a specific order, typically from the innermost (highest Id) to outermost (Id 0).<br />
+<br /></li>
+<li>
+<strong>Operation:</strong> The specific operation performed at each step, such as TABLE ACCESS FULL, INDEX RANGE SCAN, or NESTED LOOPS.<br />
+<br /></li>
+<li>
+<strong>Starts:</strong> The number of times each operation was executed.
+This is particularly important for operations inside loops.<br />
+<br /></li>
+<li>
+<strong>E-Rows:</strong> The estimated number of rows the optimizer expected this operation to return.
+Large discrepancies with A-Rows often indicate stale or missing statistics.<br />
+<br /></li>
+<li>
+<strong>A-Rows:</strong> The actual number of rows returned by the operation during execution.
+This is the real row count that occurred.<br />
+<br /></li>
+<li>
+<strong>A-Time:</strong> The actual elapsed time spent in this operation.
+This helps identify which steps consumed the most time during execution.<br />
+<br /></li>
+<li>
+<strong>Buffers:</strong> The number of logical I/O operations (buffer gets) performed by this step.
+High buffer counts may indicate inefficient access methods.<br />
+<br /></li>
+<li>
+<strong>Reads:</strong> The number of physical I/O operations required when data was not found in the buffer cache.<br />
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

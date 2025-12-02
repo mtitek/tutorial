@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Global Temporary Tables: Transaction vs Session Level GTT Guide | MTI TEK</title>
+<meta name="description" content="Learn Oracle Global Temporary Tables (GTT) with examples. Create transaction-level and session-level temporary tables using ON COMMIT DELETE/PRESERVE ROWS syntax." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Global Temporary Tables: Transaction vs Session Level GTT Guide | MTI TEK" />
+<meta property="og:description" content="Learn Oracle Global Temporary Tables (GTT) with examples. Create transaction-level and session-level temporary tables using ON COMMIT DELETE/PRESERVE ROWS syntax." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/gtt.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Global Temporary Tables: Transaction vs Session Level GTT Guide | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle Global Temporary Tables (GTT) with examples. Create transaction-level and session-level temporary tables using ON COMMIT DELETE/PRESERVE ROWS syntax." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/gtt.html",
+        "description": "Learn Oracle Global Temporary Tables (GTT) with examples. Create transaction-level and session-level temporary tables using ON COMMIT DELETE/PRESERVE ROWS syntax.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/gtt.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Global Temporary Tables (GTT)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_1">Understanding Global Temporary Tables</a></li>
+<li><a href="#sec_id_2">Transaction-Level Temporary Tables</a></li>
+<li><a href="#sec_id_3">Session-Level Temporary Tables</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Understanding Global Temporary Tables</span>
+<div class="tutorialSectionTextDiv1">
+Global Temporary Tables (GTT) are specialized database objects designed to store temporary data that is automatically managed by Oracle.
+Unlike regular tables, GTT definitions are permanent and visible to all sessions, but the data within them is private to each session or transaction.<br /><br />
+Temporary tables are a tool that can be very important for solving performance issues in some very complex queries.
+Also, these tables can be used to store temporary results from queries that are executed multiple times within code.<br /><br />
+Many Oracle DBAs believe that temporary tables are unnecessary and that the Oracle optimizer can efficiently handle all queries, and that solving performance issues is the responsibility of SQL developers (who must write efficient SQL) and DBAs (who must design and manage the database's logical and physical structure—indexes, datafiles, etc.).<br /><br />
+While that is partly true, it does not eliminate the fact that in practice there are always exceptions.
+In fact, Oracle created temporary tables because there are certainly cases where they can be useful! Personally, I believe it's the responsibility of SQL developers and DBAs to discuss the various possible solutions (including temporary tables) and weigh the time and effort required to implement each solution against the expected performance gains.<br /><br />
+Oracle allows the creation of two types of temporary tables: transaction-level and session-level temporary tables.<br /><br />
+<b>Key Characteristics of GTT:</b><br />
+<ul class="ul_square_1">
+<li>Table structure is permanent and shared across all sessions.<br /></li>
+<li>Data is private to each session or transaction.<br /></li>
+<li>No logging to redo logs (faster DML operations).<br /></li>
+<li>Automatic cleanup when session/transaction ends.<br /></li>
+<li>Support for indexes, constraints, and triggers.<br /></li>
+<li>Statistics are maintained separately for each session.<br /></li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Transaction-Level Temporary Tables</span>
+<div class="tutorialSectionTextDiv1">
+Transaction-level GTTs automatically delete their data when a transaction commits or rolls back.
+This makes them ideal for storing intermediate results during complex multi-step operations within a single transaction.<br />
+<pre class="sql-code">
+CREATE GLOBAL TEMPORARY TABLE table_gtt_transaction
+(
+    pkid NUMBER(1,0) NOT NULL
+,   code VARCHAR2(2) NOT NULL
+) ON COMMIT DELETE ROWS;
+</pre>
+The <code class="code1">ON COMMIT DELETE ROWS</code> clause indicates that the data is private to the current transaction (it is invisible outside that transaction) and will be automatically deleted at the end of the transaction.<br /><br />
+By default, if the <code class="code1">ON COMMIT</code> clause is not specified, the table is treated as a transaction-level temporary table.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Session-Level Temporary Tables</span>
+<div class="tutorialSectionTextDiv1">
+Session-level GTTs preserve data across multiple transactions within the same database session.
+Data persists until the session ends or is explicitly deleted, making them suitable for longer-term temporary storage needs.<br />
+<pre class="sql-code">
+CREATE GLOBAL TEMPORARY TABLE table_gtt_session
+(
+    pkid NUMBER(1,0) NOT NULL
+,   code VARCHAR2(2) NOT NULL
+) ON COMMIT PRESERVE ROWS;
+</pre>
+The <code class="code1">ON COMMIT PRESERVE ROWS</code> clause indicates that the data is private to the current SQL session (it is invisible outside that session) and will be automatically deleted at the end of the session.<br /><br />
+<b>Important Session Considerations:</b><br />
+The session refers to the SQL session, not the application session.
+When a user connects to a web application, the web container (such as Tomcat) may create a unique application session (if configured to do so), and this application session is unrelated to the SQL session created by Oracle.<br /><br />
+There are two scenarios to consider when creating a session-level temporary table:<br />
+<ul class="ul_square_1">
+<li>Several application sessions can share the same SQL session, so inserts made by one user in an application session may be visible to other users who share the same SQL session.</li>
+<li>A user accessing a web application may be routed to a different SQL session for each new HTTP request.</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL Join Methods: Nested Loops, Hash &amp; Sort-Merge Joins Explained | MTI TEK</title>
+<meta name="description" content="Learn Oracle Database join algorithms: nested loops, hash joins, and sort-merge joins. Complete tutorial with execution plans and practical examples for SQL optimization." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL Join Methods: Nested Loops, Hash &amp; Sort-Merge Joins Explained | MTI TEK" />
+<meta property="og:description" content="Learn Oracle Database join algorithms: nested loops, hash joins, and sort-merge joins. Complete tutorial with execution plans and practical examples for SQL optimization." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/joinMethods.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL Join Methods: Nested Loops, Hash &amp; Sort-Merge Joins Explained | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle Database join algorithms: nested loops, hash joins, and sort-merge joins. Complete tutorial with execution plans and practical examples for SQL optimization." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/joinMethods.html",
+        "description": "Learn Oracle Database join algorithms: nested loops, hash joins, and sort-merge joins. Complete tutorial with execution plans and practical examples for SQL optimization.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/joinMethods.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">SQL Join Methods</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Setup</a></li>
+<li><a href="#sec_id_1">Nested Loops Joins</a></li>
+<li><a href="#sec_id_2">Hash Joins</a></li>
+<li><a href="#sec_id_3">Sort-Merge Joins</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Setup</span>
+<div class="tutorialSectionTextDiv1">
+Oracle Database uses three primary join algorithms to combine data from multiple tables.
+The optimizer automatically selects the most efficient method based on table statistics, available indexes, and data volume:<br />
+<ul class="ul_square_1">
+<li><code class="code1">Nested Loops Joins</code>: Best for small result sets and when one table is much smaller.<br /></li>
+<li><code class="code1">Hash Joins</code>: Optimal for large result sets with sufficient memory.<br /></li>
+<li><code class="code1">Sort-Merge Joins</code>: Effective when both tables are large and pre-sorted.<br /></li>
+</ul>
+<br />
+Each join method can be used with different join types (<code class="code1">INNER</code>, <code class="code1">LEFT OUTER</code>, <code class="code1">RIGHT OUTER</code>, <code class="code1">FULL OUTER</code>, <code class="code1">CARTESIAN</code>) depending on the SQL requirements.<br />
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_join_methods
+(
+    id1 NUMBER(5,0) NOT NULL
+,   id2 NUMBER(5,0) NOT NULL
+,   type1 NUMBER(1,0) NOT NULL
+,   CONSTRAINT cp_table_join_methods_id1 PRIMARY KEY (id1)
+);
+</pre>
+<pre class="sql-code">
+DECLARE
+indexLoop NUMBER(5,0);
+
+BEGIN
+FOR indexLoop IN 1..50000 LOOP
+    IF MOD(indexLoop,2) = 0 THEN
+        INSERT INTO table_join_methods (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 1);
+    ELSE
+        INSERT INTO table_join_methods (id1, id2, type1) VALUES (indexLoop, DBMS_RANDOM.VALUE(1,50000), 2);
+    END IF;
+END LOOP;
+END;
+/
+
+COMMIT;
+</pre>
+<pre class="sql-code">
+CREATE INDEX ix_table_join_methods_id2 ON table_join_methods (id2);
+ANALYZE INDEX ix_table_join_methods_id2 COMPUTE STATISTICS;
+</pre>
+<pre class="sql-code">
+CREATE INDEX ix_table_join_methods_type1_id2 ON table_join_methods (type1,id2);
+ANALYZE INDEX ix_table_join_methods_type1_id2 COMPUTE STATISTICS;
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Nested Loops Joins</span>
+<div class="tutorialSectionTextDiv1">
+Nested loops joins use a simple algorithm with two nested iterations.
+The outer loop processes rows from the driving table, and for each row, the inner loop searches the second table for matching records.
+This method is highly efficient when the driving table returns few rows and the inner table has an appropriate index on the join column.<br />
+<br />
+The optimizer typically chooses this method when:<br />
+<ul class="ul_square_1">
+<li>The driving table returns a small number of rows.<br /></li>
+<li>There is an efficient index on the inner table's join column.<br /></li>
+<li>The join condition is selective.<br /></li>
+<li>Memory constraints limit the use of hash joins.<br /></li>
+</ul>
+<pre class="sql-code">
+SELECT tjm1.id1
+FROM table_join_methods tjm1
+JOIN table_join_methods tjm2 ON tjm2.id2 = tjm1.id1
+</pre>
+Execution plan:
+<pre class="text-code">
+-------------------------------------------------------------------------------------------------------------
+| Id  | Operation             | Name                      | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+-------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT      |                           |      1 |        |     50 |00:00:00.01 |      16 |
+|   1 |  NESTED LOOPS         |                           |      1 |  41763 |     50 |00:00:00.01 |      16 |
+|   2 |   INDEX FAST FULL SCAN| IX_TABLE_JOIN_METHODS_ID2 |      1 |  41763 |     50 |00:00:00.01 |       7 |
+|*  3 |   INDEX UNIQUE SCAN   | CP_TABLE_JOIN_METHODS_ID1 |     50 |      1 |     50 |00:00:00.01 |       9 |
+-------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   3 - access("TJM2"."ID2"="TJM1"."ID1")
+</pre>
+In this execution plan, the optimizer uses the index on id2 as the driving source, then performs index unique scans on the primary key for each matching row.
+The low buffer count indicates efficient index usage.
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Hash Joins</span>
+<div class="tutorialSectionTextDiv1">
+Hash joins build an in-memory hash table from the smaller dataset (typically the one with fewer rows after applying WHERE clause filters), then probe this hash table for each row in the larger dataset.
+This method excels when sufficient memory is available and both tables contribute significant numbers of rows to the result set.
+If memory is insufficient, Oracle may spill to disk, which can degrade performance significantly.<br /><br />
+<br />
+The process works as follows:<br />
+<ul class="ul_square_1">
+<li>The smaller table (build table) is read and a hash table is created in memory.<br /></li>
+<li>Each row from the larger table (probe table) is processed.<br /></li>
+<li>Hash function is applied to join column values to find potential matches.<br /></li>
+<li>Matching rows are returned based on the join condition.<br /></li>
+</ul>
+<pre class="sql-code">
+SELECT tjm1.id1
+FROM table_join_methods tjm1
+JOIN table_join_methods tjm2 ON tjm2.id2 = tjm1.id1
+WHERE tjm1.type1 = 1
+</pre>
+Execution plan:
+<pre class="text-code">
+----------------------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation             | Name                      | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+----------------------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT      |                           |      1 |        |     50 |00:00:00.01 |     166 |       |       |          |
+|*  1 |  HASH JOIN            |                           |      1 |  36890 |     50 |00:00:00.01 |     166 |  1295K|  1295K| 1738K (0)|
+|*  2 |   TABLE ACCESS FULL   | TABLE_JOIN_METHODS        |      1 |  20887 |  25000 |00:00:00.01 |     159 |       |       |          |
+|   3 |   INDEX FAST FULL SCAN| IX_TABLE_JOIN_METHODS_ID2 |      1 |  41763 |     96 |00:00:00.01 |       7 |       |       |          |
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   1 - access("TJM2"."ID2"="TJM1"."ID1")
+   2 - filter("TJM1"."TYPE1"=1)
+</pre>
+The execution plan shows that Oracle built the hash table from the filtered table data (25,000 rows with type1 = 1) and probed it with rows from the index scan.
+The Used-Mem column indicates the hash table fit entirely in memory.
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Sort-Merge Joins</span>
+<div class="tutorialSectionTextDiv1">
+Sort-merge joins sort both input datasets by their join columns, then merge the sorted results to identify matching rows.
+This method is particularly effective when both tables are large, when the data is already sorted, or when indexes exist that can provide pre-sorted access paths.<br />
+<br />
+The algorithm consists of three phases:<br />
+<ul class="ul_square_1">
+<li>Sort phase: Both datasets are sorted by the join columns.<br /></li>
+<li>Merge phase: Sorted datasets are merged in a single pass.<br /></li>
+<li>Output phase: Matching rows are returned to the calling operation.<br /></li>
+</ul>
+<br />
+Sort-merge joins are advantageous when memory is limited for hash operations, when both tables are approximately the same size, or when the query can benefit from existing indexes that provide sorted access.<br />
+<pre class="sql-code">
+SELECT tjm1.id2, tjm2.id2
+FROM table_join_methods tjm1
+JOIN table_join_methods tjm2 ON tjm1.id2 = tjm2.id2
+WHERE tjm1.type1 = 1
+AND tjm2.type1 = 2
+</pre>
+Execution plan:
+<pre class="text-code">
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation            | Name                            | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+---------------------------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT     |                                 |      1 |        |  1250K |00:00:00.03 |     134 |       |       |          |
+|   1 |  MERGE JOIN          |                                 |      1 |    626M|  1250K |00:00:00.03 |     134 |       |       |          |
+|*  2 |   INDEX RANGE SCAN   | IX_TABLE_JOIN_METHODS_TYPE1_ID2 |      1 |  25000 |  25000 |00:00:00.01 |      67 |       |       |          |
+|*  3 |   INDEX RANGE SCAN   | IX_TABLE_JOIN_METHODS_TYPE1_ID2 |      1 |  25000 |  25000 |00:00:00.01 |      67 |       |       |          |
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access("TJM1"."TYPE1"=1)
+   3 - access("TJM2"."TYPE1"=2)
+</pre>
+In this example, Oracle benefits from the composite index on (type1, id2) which provides pre-sorted data, eliminating the need for explicit sort operations.
+The merge join efficiently combines the two sorted streams based on the id2 values.
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

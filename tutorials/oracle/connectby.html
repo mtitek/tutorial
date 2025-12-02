@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle Hierarchical Queries Tutorial: CONNECT BY, START WITH &amp; SYS_CONNECT_BY_PATH Examples | MTI TEK</title>
+<meta name="description" content="Learn Oracle hierarchical queries with practical CONNECT BY examples. Learn CONNECT_BY_ROOT, START WITH, SYS_CONNECT_BY_PATH functions for tree-structured data in Oracle SQL." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle Hierarchical Queries Tutorial: CONNECT BY, START WITH &amp; SYS_CONNECT_BY_PATH Examples | MTI TEK" />
+<meta property="og:description" content="Learn Oracle hierarchical queries with practical CONNECT BY examples. Learn CONNECT_BY_ROOT, START WITH, SYS_CONNECT_BY_PATH functions for tree-structured data in Oracle SQL." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/connectby.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle Hierarchical Queries Tutorial: CONNECT BY, START WITH &amp; SYS_CONNECT_BY_PATH Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle hierarchical queries with practical CONNECT BY examples. Learn CONNECT_BY_ROOT, START WITH, SYS_CONNECT_BY_PATH functions for tree-structured data in Oracle SQL." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/connectby.html",
+        "description": "Learn Oracle hierarchical queries with practical CONNECT BY examples. Learn CONNECT_BY_ROOT, START WITH, SYS_CONNECT_BY_PATH functions for tree-structured data in Oracle SQL.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/connectby.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">Hierarchical Queries (CONNECT BY)</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Setup and Sample Data</a></li>
+<li><a href="#sec_id_1">Basic Hierarchical Query with CONNECT_BY_ROOT</a></li>
+<li><a href="#sec_id_2">Starting from a Specific Node with START WITH</a></li>
+<li><a href="#sec_id_3">Displaying Hierarchical Paths with SYS_CONNECT_BY_PATH</a></li>
+<li><a href="#sec_id_4">Filtering Hierarchical Results with WHERE</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Setup and Sample Data</span>
+<div class="tutorialSectionTextDiv1">
+Oracle hierarchical queries allow you to traverse tree-like data structures using the CONNECT BY clause.
+These queries are particularly useful for organizational charts, bill of materials, menu structures, and any parent-child relationships.<br /><br />
+The following table structure demonstrates a self-referencing hierarchy where each row can have a parent row:<br />
+<pre class="sql-code">
+CREATE TABLE table_connect_by
+(
+    id1 NUMBER(2,0)
+,   parent_id1 NUMBER(2,0)
+,   code VARCHAR(50)
+,   CONSTRAINT pk_table_connect_by PRIMARY KEY (id1)
+,   CONSTRAINT fk_table_connect_by FOREIGN KEY (parent_id1) REFERENCES table_connect_by (id1)
+);
+</pre>
+The sample data creates two hierarchical trees: one starting with node 11 (A_11) and another with node 21 (B_21).
+The hierarchy depth varies, with some branches extending to level 4:<br />
+<pre class="sql-code">
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (11, null, 'A_11');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (12, 11, 'A_11_12');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (13, 11, 'A_11_13');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (14, 12, 'A_11_12_14');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (15, 12, 'A_11_12_15');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (16, 14, 'A_11_12_14_16');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (17, 14, 'A_11_12_14_17');
+
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (21, null, 'B_21');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (22, 21, 'B_21_22');
+INSERT INTO table_connect_by (id1, parent_id1, code) VALUES (23, 21, 'B_21_23');
+
+COMMIT;
+</pre>
+Hierarchical Structure of table_connect_by:<br />
+<pre class="text-code">
+11 (A_11) [ROOT]
+├── 12 (A_11_12)
+│   ├── 14 (A_11_12_14)
+│   │   ├── 16 (A_11_12_14_16)
+│   │   └── 17 (A_11_12_14_17)
+│   └── 15 (A_11_12_15)
+└── 13 (A_11_13)
+
+21 (B_21) [ROOT]
+├── 22 (B_21_22)
+└── 23 (B_21_23)
+
+Legend:
+- Numbers represent the id1 values
+- Text in parentheses shows the code values
+- [ROOT] indicates top-level nodes (parent_id1 = NULL)
+</pre>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Basic Hierarchical Query with CONNECT_BY_ROOT</span>
+<div class="tutorialSectionTextDiv1">
+The CONNECT_BY_ROOT operator identifies the top-level ancestor for each row in the hierarchical query result.
+This query traverses all possible hierarchical relationships in the table, starting from every node and including all its descendants.<br /><br />
+The CONNECT BY PRIOR clause defines the parent-child relationship direction.
+The syntax "PRIOR t1.id1 = t1.parent_id1" means "find children where the parent's id1 equals the child's parent_id1":<br />
+<pre class="sql-code">
+SELECT
+        CONNECT_BY_ROOT -- specifies the column that will be the parent
+        t1.id1 AS root_parent_id -- the main parent
+,       t1.id1 AS child_id -- children of the main parent
+,       NVL(t1.parent_id1, 0) AS parent_id1 -- direct parent of the selected child
+,       t1.code AS code
+,       LEVEL AS level_parent_child -- distance between the main parent and selected child
+FROM    table_connect_by t1
+CONNECT BY PRIOR t1.id1 = t1.parent_id1;
+</pre>
+The LEVEL pseudocolumn indicates the depth in the hierarchy, starting from 1 for root nodes.
+To organize the results in a meaningful order, wrap the query in a subquery and apply ORDER BY:<br />
+<pre class="sql-code">
+SELECT  *
+FROM
+(
+        SELECT
+                CONNECT_BY_ROOT -- specifies the column that will be the parent
+                t1.id1 AS root_parent_id -- the main parent
+        ,       t1.id1 AS child_id -- children of the main parent
+        ,       NVL(t1.parent_id1, 0) AS parent_id1 -- direct parent of the selected child
+        ,       t1.code AS code
+        ,       LEVEL AS level_parent_child -- distance between the main parent and selected child
+        FROM    table_connect_by t1
+        CONNECT BY PRIOR t1.id1 = t1.parent_id1
+)
+ORDER BY root_parent_id, parent_id1, child_id;
+</pre>
+Query result:<br />
+<pre class="text-code">
+11    11    0     A_11             1
+11    12    11    A_11_12          2
+11    13    11    A_11_13          2
+11    14    12    A_11_12_14       3
+11    15    12    A_11_12_15       3
+11    16    14    A_11_12_14_16    4
+11    17    14    A_11_12_14_17    4
+
+12    12    11    A_11_12          1
+12    14    12    A_11_12_14       2
+12    15    12    A_11_12_15       2
+12    16    14    A_11_12_14_16    3
+12    17    14    A_11_12_14_17    3
+
+13    13    11    A_11_13          1
+
+14    14    12    A_11_12_14       1
+14    16    14    A_11_12_14_16    2
+14    17    14    A_11_12_14_17    2
+
+15    15    12    A_11_12_15       1
+
+16    16    14    A_11_12_14_16    1
+
+17    17    14    A_11_12_14_17    1
+
+21    21    0     B_21             1
+21    22    21    B_21_22          2
+21    23    21    B_21_23          2
+
+22    22    21    B_21_22          1
+23    23    21    B_21_23          2
+</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Starting from a Specific Node with START WITH</span>
+<div class="tutorialSectionTextDiv1">
+The START WITH clause allows you to begin the hierarchical traversal from a specific node rather than all possible starting points.
+This is useful when you want to explore only a particular subtree within your hierarchy.<br /><br />
+In this example, we start from node 12 and retrieve all its descendants.
+The query will only return the subtree rooted at the specified starting node:<br />
+<pre class="sql-code">
+SELECT
+        CONNECT_BY_ROOT -- specifies the column that will be the parent
+        t1.id1 AS root_parent_id -- the main parent
+,       t1.id1 AS child_id -- children of the main parent
+,       NVL(t1.parent_id1, 0) AS parent_id1 -- direct parent of the selected child
+,       t1.code AS code
+,       LEVEL AS level_parent_child -- distance between the main parent and selected child
+FROM    table_connect_by t1
+START WITH t1.id1 = 12 -- specify a main parent to start the selection of sub-children
+CONNECT BY PRIOR t1.id1 = t1.parent_id1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+12    12    11    A_11_12          1
+12    14    12    A_11_12_14       2
+12    15    12    A_11_12_15       2
+12    16    14    A_11_12_14_16    3
+12    17    14    A_11_12_14_17    3
+</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Displaying Hierarchical Paths with SYS_CONNECT_BY_PATH</span>
+<div class="tutorialSectionTextDiv1">
+The SYS_CONNECT_BY_PATH function constructs a string that shows the complete path from the root to each node in the hierarchy.<br />
+<br />
+The function takes two parameters: the column to include in the path and a delimiter character.
+The path is built cumulatively as the query traverses down the hierarchy:<br />
+<pre class="sql-code">
+SELECT
+        CONNECT_BY_ROOT -- specifies the column that will be the parent
+        t1.id1 AS root_parent_id -- the main parent
+,       t1.id1 AS child_id -- children of the main parent
+,       NVL(t1.parent_id1, 0) AS parent_id1 -- direct parent of the selected child
+,       t1.code AS code
+,       LEVEL AS level_parent_child -- distance between the main parent and selected child
+,       SYS_CONNECT_BY_PATH(t1.parent_id1, '/') AS path_parent
+,       SYS_CONNECT_BY_PATH(t1.id1, '/') AS path_child
+FROM    table_connect_by t1
+START WITH t1.id1 = 12 -- specify a main parent to start the selection of sub-children
+CONNECT BY PRIOR t1.id1 = t1.parent_id1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+12    12    11    A_11_12          1    /11          /12
+12    14    12    A_11_12_14       2    /11/12       /12/14
+12    15    12    A_11_12_15       2    /11/12       /12/15
+12    16    14    A_11_12_14_16    3    /11/12/14    /12/14/16
+12    17    14    A_11_12_14_17    3    /11/12/14    /12/14/17
+</pre>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Filtering Hierarchical Results with WHERE</span>
+<div class="tutorialSectionTextDiv1">
+The WHERE clause in hierarchical queries allows you to filter the results after the hierarchy has been traversed.
+Unlike CONNECT BY conditions which affect the traversal itself, WHERE conditions are applied to the final result set.<br /><br />
+This example demonstrates filtering by hierarchy level and excluding specific nodes.
+The LEVEL pseudocolumn can be used in WHERE clauses to limit results to certain depths in the hierarchy:<br />
+<pre class="sql-code">
+SELECT
+        CONNECT_BY_ROOT -- specifies the column that will be the parent
+        t1.id1 AS root_parent_id -- the main parent
+,       t1.id1 AS child_id -- children of the main parent
+,       NVL(t1.parent_id1, 0) AS parent_id1 -- direct parent of the selected child
+,       t1.code AS code
+,       LEVEL AS level_parent_child -- distance between the main parent and selected child
+FROM    table_connect_by t1
+WHERE   LEVEL <= 2 AND t1.id1 != 14 -- add conditions
+START WITH t1.id1 = 12 -- specify a main parent to start the selection of sub-children
+CONNECT BY PRIOR t1.id1 = t1.parent_id1;
+</pre>
+Query result:<br />
+<pre class="text-code">
+12    12    11    A_11_12          1
+12    15    12    A_11_12_15       2
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

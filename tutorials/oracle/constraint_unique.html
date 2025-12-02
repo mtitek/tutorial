@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle UNIQUE Constraints Tutorial: Create, Manage &amp; Optimize Database Integrity | MTI TEK</title>
+<meta name="description" content="Learn Oracle UNIQUE constraints with practical examples. Learn constraint creation, index usage, NULL handling, and foreign key relationships." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle UNIQUE Constraints Tutorial: Create, Manage &amp; Optimize Database Integrity | MTI TEK" />
+<meta property="og:description" content="Learn Oracle UNIQUE constraints with practical examples. Learn constraint creation, index usage, NULL handling, and foreign key relationships." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/constraint_unique.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle UNIQUE Constraints Tutorial: Create, Manage &amp; Optimize Database Integrity | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle UNIQUE constraints with practical examples. Learn constraint creation, index usage, NULL handling, and foreign key relationships." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/constraint_unique.html",
+        "description": "Learn Oracle UNIQUE constraints with practical examples. Learn constraint creation, index usage, NULL handling, and foreign key relationships.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/constraint_unique.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">UNIQUE Constraints</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Key Concepts</a></li>
+<li><a href="#sec_id_1">Creating UNIQUE Constraints</a></li>
+<li><a href="#sec_id_2">Using Existing Indexes with UNIQUE Constraints</a></li>
+<li><a href="#sec_id_3">UNIQUE Constraints vs. UNIQUE Indexes</a></li>
+<li><a href="#sec_id_4">Composite UNIQUE Constraints and NULL Handling</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Key Concepts</span>
+<div class="tutorialSectionTextDiv1">
+A UNIQUE constraint in Oracle ensures that no duplicate values are allowed in the specified column or combination of columns.<br />
+<br />
+Key characteristics of UNIQUE constraints:<br />
+<ul class="ul_square_1">
+<li>
+UNIQUE constraints are primarily designed to enforce data integrity by preventing duplicate values in specified columns.<br />
+<br />
+</li>
+<li>
+When you create a UNIQUE constraint, Oracle automatically creates an associated UNIQUE index to enforce the constraint efficiently.<br />
+<br />
+</li>
+<li>
+UNIQUE constraints can be referenced by foreign key constraints, unlike standalone UNIQUE indexes.<br />
+<br />
+</li>
+<li>
+A UNIQUE constraint defines a uniqueness rule on one or more columns of a table, ensuring that each combination of values in these columns is unique across all rows.<br />
+<br />
+</li>
+<li>
+Columns that are part of a UNIQUE constraint can contain NULL values, unless explicitly defined with a NOT NULL constraint.<br />
+<br />
+</li>
+<li>
+For composite UNIQUE constraints, the uniqueness rule is bypassed when all columns in the constraint contain NULL values.<br />
+<br />
+</li>
+<li>
+UNIQUE constraints are stored as metadata in Oracle's data dictionary and can be queried through views like USER_CONSTRAINTS and ALL_CONSTRAINTS.<br />
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Creating UNIQUE Constraints</span>
+<div class="tutorialSectionTextDiv1">
+UNIQUE constraints can be created either during table creation or added to existing tables using ALTER TABLE statements.
+Oracle provides flexibility in naming constraints and supports both single-column and multi-column UNIQUE constraints.<br />
+<br />
+<b>Creating UNIQUE constraint during table creation:</b><br />
+<pre class="sql-code">
+CREATE TABLE table_unique_1
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_1_id UNIQUE (id)
+);
+</pre>
+<b>Adding UNIQUE constraint to existing table:</b><br />
+<pre class="sql-code">
+CREATE TABLE table_unique_1
+(
+    id NUMBER(1,0)
+);
+
+ALTER TABLE table_unique_1 ADD CONSTRAINT cu_table_unique_1_id UNIQUE (id);
+</pre>
+When you create a UNIQUE constraint, Oracle automatically generates two database objects: a UNIQUE constraint and an associated UNIQUE index with the same name.
+This index is used internally by Oracle to enforce the uniqueness rule efficiently.<br />
+<br />
+<ul class="ul_square_1">
+<li>
+Verify the UNIQUE constraint in the data dictionary:<br />
+<pre class="sql-code">
+SELECT constraint_name, constraint_type, generated, index_name
+FROM user_constraints
+WHERE table_name = 'TABLE_UNIQUE_1';
+</pre>
+Query result:
+<pre class="text-code">
++----------------------+-----------------+----------------+----------------------+
+| constraint_name      | constraint_type | generated      | index_name           |
++----------------------+-----------------+----------------+----------------------+
+| CU_TABLE_UNIQUE_1_ID | U               | USER NAME      | CU_TABLE_UNIQUE_1_ID |
++----------------------+-----------------+----------------+----------------------+
+</pre>
+</li>
+<li>
+Verify the automatically created UNIQUE index:<br />
+<pre class="sql-code">
+SELECT index_type, uniqueness
+FROM user_indexes
+WHERE index_name = 'CU_TABLE_UNIQUE_1_ID';
+</pre>
+Query result:
+<pre class="text-code">
++------------+------------+
+| INDEX_TYPE | UNIQUENESS |
++------------+------------+
+| NORMAL     | UNIQUE     |
++------------+------------+
+</pre>
+</li>
+<li>
+Attempting to drop the system-generated index will result in an error because it's required for constraint enforcement:<br />
+<pre class="sql-code">
+DROP INDEX cu_table_unique_1_id;
+</pre>
+Query result:
+<pre class="text-code">
+Error starting at line 1 in command:
+DROP INDEX CU_TABLE_UNIQUE_1_ID
+Error report:
+SQL Error: ORA-02429: cannot drop index used for enforcement of unique/primary key
+*Cause: user attempted to drop an index that is being used as the enforcement mechanism for unique or primary key.
+*Action: drop the constraint instead of the index.
+</pre>
+</li>
+<li>
+Dropping the UNIQUE constraint automatically removes its associated index:<br />
+<pre class="sql-code">
+ALTER TABLE table_unique_1 DROP CONSTRAINT cu_table_unique_1_id;
+</pre>
+<pre class="sql-code">
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'TABLE_UNIQUE_1';
+</pre>
+Query result:
+<pre class="text-code">
+INDEX_NAME
+--------------------
+</pre>
+</li>
+</ul>
+<b><i>Multi-Column UNIQUE Constraints:</i></b><br />
+<ul class="ul_square_1">
+<li>
+For composite UNIQUE constraints spanning multiple columns, specify all columns in the constraint definition separated by commas.
+Oracle creates a single composite index for the entire constraint:<br />
+<pre class="sql-code">
+CREATE TABLE table_unique_mul_1
+(
+    id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_mul_1_id12 UNIQUE (ID1,ID2)
+);
+</pre>
+</li>
+<li>
+You can also create separate UNIQUE constraints for different column combinations, with each constraint having its own associated index:<br />
+<pre class="sql-code">
+CREATE TABLE table_unique_mul_2
+(
+    id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+,   id3 NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_mul_2_id12 UNIQUE (id1,id2)
+,   CONSTRAINT cu_table_unique_mul_2_id3 UNIQUE (id3)
+);
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Using Existing Indexes with UNIQUE Constraints</span>
+<div class="tutorialSectionTextDiv1">
+Oracle allows you to create UNIQUE constraints that utilize existing indexes, providing greater control over index properties and optimization.
+This approach is useful when you want to specify custom index characteristics or reuse existing indexes.<br />
+<br />
+<b>Creating constraint with existing index - Step by step:</b><br />
+<pre class="sql-code">
+CREATE TABLE table_unique_2
+(
+    id NUMBER(1,0)
+);
+</pre>
+<pre class="sql-code">
+CREATE INDEX in_table_unique_2_id ON table_unique_2 (id);
+</pre>
+<pre class="sql-code">
+ALTER TABLE table_unique_2 ADD CONSTRAINT cu_table_unique_2_id UNIQUE (id) USING INDEX in_table_unique_2_id;
+</pre>
+<b>Creating constraint with existing index - Single statement:</b><br />
+<pre class="sql-code">
+CREATE TABLE table_unique_2
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_2_id UNIQUE (id) USING INDEX ( CREATE INDEX in_table_unique_2_id ON table_unique_2 (id) )
+);
+</pre>
+An important Oracle feature is that UNIQUE constraints can utilize non-unique indexes for enforcement.
+The constraint ensures uniqueness at the logical level, while the index provides the physical mechanism for efficient lookups:<br />
+<pre class="sql-code">
+SELECT index_type, uniqueness
+FROM user_indexes
+WHERE index_name = 'IN_TABLE_UNIQUE_2_ID';
+</pre>
+Query result:
+<pre class="text-code">
++------------+------------+
+| INDEX_TYPE | UNIQUENESS |
++------------+------------+
+| NORMAL     | NONUNIQUE  |
++------------+------------+
+</pre>
+<b>Important considerations when using existing indexes:</b><br />
+<ul class="ul_square_1">
+<li>
+Once a UNIQUE constraint is associated with an index, you cannot drop the index independently.
+Oracle protects indexes that are used for constraint enforcement:<br />
+<pre class="sql-code">
+DROP INDEX in_table_unique_2_id;
+</pre>
+<pre class="text-code">
+Error starting at line 1 in command:
+DROP INDEX IN_TABLE_UNIQUE_2_ID
+Error report:
+SQL Error: ORA-02429: cannot drop index used for enforcement of unique/primary key
+*Cause: user attempted to drop an index that is being used as the enforcement mechanism for unique or primary key.
+*Action: drop the constraint instead of the index.
+</pre>
+</li>
+<li>
+When you drop a UNIQUE constraint that uses a pre-existing index, the index remains in the database and is not automatically deleted:<br />
+<pre class="sql-code">
+ALTER TABLE table_unique_2 DROP CONSTRAINT cu_table_unique_2_id;
+</pre>
+<pre class="sql-code">
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'TABLE_UNIQUE_2';
+</pre>
+Query result:
+<pre class="text-code">
+INDEX_NAME
+--------------------
+IN_TABLE_UNIQUE_2_ID
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">UNIQUE Constraints vs. UNIQUE Indexes</span>
+<div class="tutorialSectionTextDiv1">
+While UNIQUE constraints and UNIQUE indexes both enforce uniqueness, they serve different purposes and have distinct characteristics.<br />
+<br />
+<b>Key Differences:</b><br />
+UNIQUE constraints are database objects that enforce business rules and data integrity, while UNIQUE indexes are primarily performance optimization tools.
+Both can contain NULL values, but only UNIQUE constraints can be referenced by foreign key relationships.<br />
+<br />
+<b>Foreign Key References:</b><br />
+UNIQUE constraints can serve as targets for foreign key relationships, while UNIQUE indexes cannot:<br />
+<ul class="ul_square_1">
+<li>
+UNIQUE constraint as foreign key target:<br />
+<pre class="sql-code">
+CREATE TABLE table_unique_3
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_3_id UNIQUE (ID)
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_unique_3_FK
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_unique_3_fk_id FOREIGN KEY (id) REFERENCES table_unique_3 (id) -- OK
+);
+</pre>
+</li>
+<li>
+UNIQUE index cannot be referenced by foreign keys:<br />
+<pre class="sql-code">
+CREATE TABLE table_cu_vs_unique_index
+(
+    id NUMBER(1,0)
+);
+</pre>
+<pre class="sql-code">
+CREATE UNIQUE INDEX in_table_cu_vs_unique_index ON table_cu_vs_unique_index (id);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_cu_vs_uindex_fk
+(
+    id NUMBER(1,0)
+,   CONSTRAINT cr_table_cu_vs_uindex_fk_id FOREIGN KEY (id) REFERENCES table_cu_vs_unique_index (id) -- SQL Error: ORA-02270: no matching unique or primary key for this column-list
+);
+</pre>
+Error details:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+CREATE TABLE TABLE_CU_VS_UINDEX_FK
+(
+    ID NUMBER(1,0)
+,   CONSTRAINT CR_TABLE_CU_VS_UINDEX_FK_ID FOREIGN KEY (ID) REFERENCES TABLE_CU_VS_UNIQUE_INDEX (ID)
+)
+
+Error at Command Line:4 Column:97
+
+Error report:
+SQL Error: ORA-02270: no matching unique or primary key for this column-list
+*Cause: A REFERENCES clause in a CREATE/ALTER TABLE statement gives a column-list for which there is no matching unique or primary key constraint in the referenced table.
+*Action: Find the correct column names using the ALL_CONS_COLUMNS catalog view
+</pre>
+</li>
+</ul>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">Composite UNIQUE Constraints and NULL Handling</span>
+<div class="tutorialSectionTextDiv1">
+Oracle's handling of NULL values in UNIQUE constraints follows specific rules that are important to understand, especially for composite constraints involving multiple columns.
+The behavior differs depending on whether all or only some columns contain NULL values.<br />
+<br />
+<b>NULL Value Rules:</b><br />
+Both UNIQUE constraints and UNIQUE indexes allow multiple rows to contain NULL values in the constrained columns.
+For composite constraints, the uniqueness rule is only enforced when at least one column contains a non-NULL value.
+When all columns in a composite UNIQUE constraint contain NULL values, the constraint is not enforced for that row.<br />
+<br />
+Oracle's B*Tree indexes do not store entries where all indexed columns are NULL, which explains why multiple rows with all NULL values are permitted.<br />
+<br />
+<b>Composite UNIQUE constraint with NULL handling:</b><br />
+<pre class="sql-code">
+CREATE TABLE table_unique_4
+(
+    id1 NUMBER(1,0)
+,   id2 NUMBER(1,0)
+,   CONSTRAINT cu_table_unique_4_id UNIQUE (ID1, ID2)
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_unique_4 (id1, id2) VALUES (NULL, NULL); -- OK
+INSERT INTO table_unique_4 (id1, id2) VALUES (NULL, NULL); -- OK!
+
+INSERT INTO table_unique_4 (id1, id2) VALUES (NULL, 1); -- OK
+INSERT INTO table_unique_4 (id1, id2) VALUES (1, NULL); -- OK
+INSERT INTO table_unique_4 (id1, id2) VALUES (1, 1); -- OK
+
+INSERT INTO table_unique_4 (id1, id2) VALUES (NULL, 1); -- NO: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+INSERT INTO table_unique_4 (id1, id2) VALUES (1, NULL); -- NO: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+INSERT INTO table_unique_4 (id1, id2) VALUES (1, 1); -- NO: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+</pre>
+<pre class="text-code">
+1 row inserted.
+1 row inserted.
+1 row inserted.
+1 row inserted.
+1 row inserted.
+
+Error starting at line 8 in command:
+INSERT INTO TABLE_UNIQUE_4 (id1, id2) VALUES (NULL, 1)
+Error report:
+SQL Error: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+*Cause: An UPDATE or INSERT statement attempted to insert a duplicate key.
+        For Trusted Oracle configured in DBMS MAC mode, you may see this message if a duplicate entry exists at a different level.
+*Action: Either remove the unique restriction or do not insert the key.
+
+Error starting at line 9 in command:
+INSERT INTO TABLE_UNIQUE_4 (id1, id2) VALUES (1, NULL)
+Error report:
+SQL Error: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+*Cause: An UPDATE or INSERT statement attempted to insert a duplicate key.
+        For Trusted Oracle configured in DBMS MAC mode, you may see this message if a duplicate entry exists at a different level.
+*Action: Either remove the unique restriction or do not insert the key.
+
+Error starting at line 10 in command:
+INSERT INTO TABLE_UNIQUE_4 (id1, id2) VALUES (1, 1)
+Error report:
+SQL Error: ORA-00001: unique constraint (CU_TABLE_UNIQUE_4_ID) violated
+*Cause: An UPDATE or INSERT statement attempted to insert a duplicate key.
+        For Trusted Oracle configured in DBMS MAC mode, You may see this message if a duplicate entry exists at a different level.
+*Action: Either remove the unique restriction or do not insert the key.
+</pre>
+This example demonstrates that multiple rows with (NULL, NULL) are allowed, but once a specific combination of values is inserted, subsequent attempts to insert the same combination will violate the UNIQUE constraint.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

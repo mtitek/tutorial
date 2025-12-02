@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL UPDATE Statements Tutorial: Subqueries, Multi-Column Updates &amp; Examples | MTI TEK</title>
+<meta name="description" content="Learn Oracle SQL UPDATE statements with practical examples. Learn basic syntax, correlated subqueries, multi-column updates, and inline views for efficient database modifications." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL UPDATE Statements Tutorial: Subqueries, Multi-Column Updates &amp; Examples | MTI TEK" />
+<meta property="og:description" content="Learn Oracle SQL UPDATE statements with practical examples. Learn basic syntax, correlated subqueries, multi-column updates, and inline views for efficient database modifications." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/update.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL UPDATE Statements Tutorial: Subqueries, Multi-Column Updates &amp; Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle SQL UPDATE statements with practical examples. Learn basic syntax, correlated subqueries, multi-column updates, and inline views for efficient database modifications." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/update.html",
+        "description": "Learn Oracle SQL UPDATE statements with practical examples. Learn basic syntax, correlated subqueries, multi-column updates, and inline views for efficient database modifications.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/update.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">UPDATE Statements</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Sample Data Setup</a></li>
+<li><a href="#sec_id_1">Basic UPDATE Syntax</a></li>
+<li><a href="#sec_id_2">UPDATE with Correlated Subqueries</a></li>
+<li><a href="#sec_id_3">Multi-Column UPDATE with Subqueries</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_3_1">Common Error: Multiple Rows Returned</a></li>
+<li><a href="#sec_id_3_2">Handling NULL Values in Subquery Results</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_4">UPDATE with Inline Views</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_update
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR(2)
+,   desc2 VARCHAR(2)
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_update (id1, desc1, desc2) VALUES (1, 'A', 'X');
+INSERT INTO table_update (id1, desc1, desc2) VALUES (2, 'B', 'Y');
+INSERT INTO table_update (id1, desc1, desc2) VALUES (3, 'C', 'Z');
+
+COMMIT;
+</pre>
+This creates a simple table with three columns: a numeric identifier and two character description fields.
+The sample data provides a foundation for demonstrating various UPDATE scenarios.
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Basic UPDATE Syntax</span>
+<div class="tutorialSectionTextDiv1">
+The basic UPDATE statement allows you to modify one or more columns in a table.
+The syntax includes the UPDATE keyword, the table name, a SET clause specifying the new values, and an optional WHERE clause to limit which rows are affected.
+Without a WHERE clause, all rows in the table would be updated.<br />
+<pre class="sql-code">
+UPDATE  table_update
+SET
+        id1 = 11
+,       desc1 = 'V'
+WHERE   id1 = 1;
+</pre>
+This statement updates the row where id1 equals 1, changing the id1 value to 11 and the desc1 value to 'V'.
+The WHERE clause ensures only the specified row is modified.<br />
+<br />
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+11    V
+2     B
+3     C
+</pre>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">UPDATE with Correlated Subqueries</span>
+<div class="tutorialSectionTextDiv1">
+A correlated subquery in an UPDATE statement references columns from the outer table being updated.
+This allows you to calculate new values based on existing data in the same table or related tables.
+The subquery is executed once for each row being updated, with access to the current row's values through table aliases.<br />
+<pre class="sql-code">
+UPDATE  table_update t1
+SET
+        id1 = id1 * 10
+,       t1.desc1 =
+        (
+                SELECT  t2.desc1 || t1.desc1
+                FROM    table_update t2
+                WHERE   t2.id1 = t1.id1
+        )
+WHERE   t1.id1 = 1;
+</pre>
+In this example, the subquery concatenates the existing desc1 value with itself by joining the table to itself.
+The correlation occurs through the WHERE clause matching t2.id1 = t1.id1, ensuring the subquery processes the same row being updated.<br />
+<br />
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1
+----- -----
+10    AA
+2     B
+3     C
+</pre>
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">Multi-Column UPDATE with Subqueries</span>
+<div class="tutorialSectionTextDiv1">
+Oracle allows updating multiple columns simultaneously using a single subquery that returns multiple values.
+This approach is more efficient than separate UPDATE statements and ensures atomicity of the operation.
+The syntax uses parentheses to group both the target columns and the subquery results.<br />
+<pre class="sql-code">
+UPDATE  table_update t1
+SET
+        (t1.desc1, t1.desc2) = (
+                SELECT (t2.desc1 || t1.desc1), (t2.desc2 || t1.desc2)
+                FROM table_update t2
+                WHERE t2.id1 = t1.id1
+        );
+</pre>
+This statement updates both desc1 and desc2 columns by concatenating each column with itself.
+The subquery returns two values that correspond to the two target columns specified in the SET clause.<br />
+<br />
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1 desc2
+----- ----- -----
+1     AA    XX
+2     BB    YY
+3     CC    ZZ
+</pre>
+<ol class="ol_lower_roman_1">
+<li id="sec_id_3_1">
+<span class="tutorialSubSectionTitleSpan1">Common Error: Multiple Rows Returned</span>
+<div class="tutorialSectionTextDiv1">
+A frequent error when using subqueries in UPDATE statements occurs when the subquery returns more than one row for a single row being updated.
+Oracle expects exactly one row from the subquery for each row being updated.
+This error is identified by Oracle error code ORA-01427.<br />
+<pre class="sql-code">
+UPDATE  table_update t1
+SET
+        (t1.desc1, t1.desc2) = (
+                SELECT (t2.desc1 || t1.desc1), (t2.desc2 || t1.desc2)
+                FROM table_update t2
+        );
+</pre>
+Query result:<br />
+<pre class="text-code">
+Error starting at line 1 in command:
+UPDATE  table_update t1
+SET
+        (t1.desc1, t1.desc2) = (
+                SELECT (t2.desc1 || t1.desc1), (t2.desc2 || t1.desc2)
+                FROM table_update t2
+        )
+
+Error report:
+SQL Error:
+ORA-01427: single-row subquery returns more than one row
+01427.00000 -  "single-row subquery returns more than one row"
+*Cause:
+*Action:
+</pre>
+The error occurs because the subquery lacks a WHERE clause to correlate it with the outer query, causing it to return all rows from table_update for each row being updated.
+</div>
+</li>
+<li id="sec_id_3_2">
+<span class="tutorialSubSectionTitleSpan1">Handling NULL Values in Subquery Results</span>
+<div class="tutorialSectionTextDiv1">
+When a subquery returns no rows for a particular row being updated, Oracle sets the target columns to NULL.<br />
+<pre class="sql-code">
+UPDATE  table_update t1
+SET
+        (t1.desc1, t1.desc2) = (
+                SELECT (t2.desc1 || t1.desc1), (t2.desc2 || t1.desc2)
+                FROM table_update t2
+                WHERE t2.id1 = t1.id1
+                AND t2.id1 &lt; 3
+        );
+</pre>
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1 desc2
+----- ----- -----
+1     AA    XX
+2     BB    YY
+3
+</pre>
+Since the third row had no match in the subquery, the columns were initialized to NULL.<br />
+Unless this behavior is intended, always add the same conditions in the subquery for the rows to be modified in the table:<br />
+<pre class="sql-code">
+UPDATE  table_update t1
+SET
+        (t1.desc1, t1.desc2) = (
+                SELECT (t2.desc1 || t1.desc1), (t2.desc2 || t1.desc2)
+                FROM table_update t2
+                WHERE t2.id1 = t1.id1
+                AND t2.id1 &lt; 3
+        )
+WHERE   t1.id1 &lt; 3;
+</pre>
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1 desc2
+----- ----- -----
+1     AA    XX
+2     BB    YY
+3     CC    ZZ
+</pre>
+By adding the same condition (t1.id1 &lt; 3) to the main UPDATE WHERE clause, we prevent the unwanted NULL assignment to the third row.<br />
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">UPDATE with Inline Views</span>
+<div class="tutorialSectionTextDiv1">
+Oracle allows updating data through inline views, which are subqueries in the FROM clause of an UPDATE statement.
+This technique is useful when you need to update a subset of columns from a table based on complex criteria.
+The inline view must be updatable, meaning it cannot contain certain constructs like DISTINCT, GROUP BY, or aggregate functions.<br />
+<pre class="sql-code">
+UPDATE
+(
+        SELECT  desc1, desc2
+        FROM    table_update t2
+        WHERE   t2.id1 = 3
+)
+SET desc1 = desc1 || desc1
+,   desc2 = desc2 || desc2;
+</pre>
+This approach updates only the columns specified in the inline view SELECT list.
+The WHERE clause in the inline view determines which rows are eligible for update, effectively replacing the need for a WHERE clause in the main UPDATE statement.<br />
+<br />
+Select the data from the table "<code class="code1">table_update</code>":<br />
+<pre class="sql-code">
+SELECT id1, desc1 FROM table_update;
+</pre>
+Query result:<br />
+<pre class="text-code">
+id1   desc1 desc2
+----- ----- -----
+1     A     X
+2     B     Y
+3     CC    ZZ
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

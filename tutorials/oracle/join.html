@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL JOIN Tutorial: INNER, LEFT, RIGHT, FULL OUTER &amp; CROSS JOIN Examples | MTI TEK</title>
+<meta name="description" content="Complete Oracle SQL JOIN tutorial with practical examples. Learn INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, and CROSS JOIN operations with step-by-step explanations and sample queries." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL JOIN Tutorial: INNER, LEFT, RIGHT, FULL OUTER &amp; CROSS JOIN Examples | MTI TEK" />
+<meta property="og:description" content="Complete Oracle SQL JOIN tutorial with practical examples. Learn INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, and CROSS JOIN operations with step-by-step explanations and sample queries." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/join.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL JOIN Tutorial: INNER, LEFT, RIGHT, FULL OUTER &amp; CROSS JOIN Examples | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle SQL JOIN tutorial with practical examples. Learn INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, and CROSS JOIN operations with step-by-step explanations and sample queries." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/join.html",
+        "description": "Complete Oracle SQL JOIN tutorial with practical examples. Learn INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, and CROSS JOIN operations with step-by-step explanations and sample queries.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/join.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">JOIN Operations</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Sample Data Setup</a></li>
+<li><a href="#sec_id_1">INNER JOIN</a></li>
+<li><a href="#sec_id_2">LEFT OUTER JOIN</a></li>
+<li><a href="#sec_id_3">RIGHT OUTER JOIN</a></li>
+<li><a href="#sec_id_4">FULL OUTER JOIN</a></li>
+<li><a href="#sec_id_5">CROSS JOIN (Cartesian Product)</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+JOIN operations combine rows from two or more tables based on a related column between them.<br />
+<br />
+These tables and sample data are used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_join_left
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR(20)
+);
+</pre>
+<pre class="sql-code">
+CREATE TABLE table_join_right
+(
+    id2 NUMBER(2,0)
+,   desc2 VARCHAR(20)
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_join_left (id1, desc1) VALUES (11, 'table_join_left_11');
+INSERT INTO table_join_left (id1, desc1) VALUES (12, 'table_join_left_12');
+INSERT INTO table_join_left (id1, desc1) VALUES (13, 'table_join_left_13');
+
+INSERT INTO table_join_right (id2, desc2) VALUES (11, 'table_join_right_11');
+INSERT INTO table_join_right (id2, desc2) VALUES (12, 'table_join_right_12');
+INSERT INTO table_join_right (id2, desc2) VALUES (14, 'table_join_right_13');
+
+COMMIT;
+</pre>
+<b>Understanding Join Mechanics:</b><br />
+A join operation involves two tables: a <b>left table</b> and a <b>right table</b>.
+The Oracle optimizer determines the most efficient execution strategy based on factors like table size, available indexes, and statistics.<br />
+<br />
+Conceptually, a join operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An <b>outer loop</b> that processes each row of the <b>left table</b>.<br />
+</li>
+<li>
+For each row in the <b>left table</b>, an <b>inner loop</b> examines rows in the <b>right table</b> to find matches based on the join condition.<br />
+</li>
+<li>
+When the join condition is satisfied, the matching rows are combined into a single result row.<br />
+</li>
+</ul><br />
+The conceptual join process between tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be visualized as:<br />
+<pre class="text-code">
+for(ROW RowL : table_join_left) { // outer loop: RowL represents a row of the current iteration of the outer loop on table table_join_left
+    for(ROW RowR : table_join_right) { // inner loop: RowR represents a row of the current iteration of the inner loop on table table_join_right
+        // Join condition evaluation and result processing occurs here
+    }
+}
+</pre>
+<b>Note:</b><br />
+While nested loops provide an intuitive way to understand join operations, Oracle Database uses various join algorithms including hash joins, sort-merge joins, and nested loop joins.
+The optimizer selects the most efficient method based on table statistics, available indexes, and query characteristics.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">INNER JOIN</span>
+<div class="tutorialSectionTextDiv1">
+An INNER JOIN returns only the rows that have matching values in both tables.
+It is the most commonly used join type and forms the foundation for understanding other join operations.<br />
+<br />
+The keyword INNER is optional; writing just JOIN defaults to an INNER JOIN in Oracle SQL.<br />
+<br />
+<img src="img/sql-join-INNER JOIN.png" width="180" height="100"/><br />
+<pre class="sql-code">
+SELECT  *
+FROM    table_join_left tj1
+JOIN    table_join_right tj2
+        ON tj2.id2 = tj1.id1
+</pre>
+Query result:<br />
+<pre class="text-code">
+ID1 DESC1              ID2 DESC2
+--- ------------------ --- -------------------
+11  table_join_left_11 11  table_join_right_11
+12  table_join_left_12 12  table_join_right_12
+</pre>
+<b>How INNER JOIN Works:</b><br />
+The INNER JOIN operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An outer loop that iterates through each row of the <b>left table</b> (<code class="code1">table_join_left</code>).<br />
+</li>
+<li>
+For each iteration of the outer loop, another nested loop iterates through the rows of the <b>right table</b> (<code class="code1">table_join_right</code>).<br />
+</li>
+<li>
+For each iteration of the inner loop, a join condition is applied to the current row of the outer loop and the current row of the inner loop.<br />
+</li>
+<li>
+If the condition is satisfied for both rows, they are merged into a single row, which is added to the join result.<br />
+</li>
+</ul><br />
+The join between two tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be seen as follows:<br />
+<pre class="text-code">
+for(ROW RowL : table_join_left) { // outer loop
+    for(ROW RowR : table_join_right) { // inner loop
+        if(CONDITION(RowL, RowR)) { // join condition
+            // keep the rows: RowL and RowR
+        }
+    }
+}
+</pre>
+<b>Note:</b><br />
+INNER JOINs are efficient when both tables have appropriate indexes on the join columns.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">LEFT OUTER JOIN</span>
+<div class="tutorialSectionTextDiv1">
+A LEFT OUTER JOIN returns all rows from the <b>left table</b>, along with matching rows from the <b>right table</b>.
+When no match exists, NULL values are returned for columns from the <b>right table</b>.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<br />
+<img src="img/sql-join-LEFT OUTER JOIN.png" width="180" height="100"/><br />
+<pre class="sql-code">
+SELECT  *
+FROM    table_join_left tj1
+LEFT JOIN   table_join_right tj2
+            ON tj2.id2 = tj1.id1
+</pre>
+Query result:<br />
+<pre class="text-code">
+ID1    DESC1              ID2    DESC2
+------ ------------------ ------ -------------------
+11     table_join_left_11 11     table_join_right_11
+12     table_join_left_12 12     table_join_right_12
+13     table_join_left_13 (null) (null)
+</pre>
+<b>How LEFT OUTER JOIN Works:</b><br />
+The LEFT OUTER JOIN operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An outer loop that iterates through the rows of the <b>left table</b> (<code class="code1">table_join_left</code>).<br />
+</li>
+<li>
+For each iteration of the outer loop, another nested loop iterates through the rows of the <b>right table</b> (<code class="code1">table_join_right</code>).<br />
+</li>
+<li>
+For each iteration of the inner loop, a join condition is applied to the current row of the outer loop and the current row of the inner loop.<br />
+</li>
+<li>
+If the condition is satisfied for both rows, they are merged into a single row, which is added to the join result.<br />
+</li>
+<li>
+If the inner loop finishes, but the join condition was not satisfied between any rows of the <b>right table</b> and the current row of the outer loop, then the columns of a new row from the <b>right table</b> will be initialized to NULL.
+The current row of the outer loop and the new row from the <b>right table</b> will be merged into a single row, which is added to the join result.<br />
+</li>
+</ul><br />
+The join between two tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be seen as follows:<br />
+<pre class="text-code">
+for(ROW RowL : table_join_left) { // outer loop
+    match = false;
+
+    for(ROW RowR : table_join_right) { // inner loop
+        if(CONDITION(RowL, RowR)) { // join condition
+            // keep the rows: RowL and RowR
+            match = true;
+        }
+    }
+
+    if(match == false) { // no match
+        // initialize a new empty row from table table_join_right: RowR_NULL
+        // initialize the columns of the new row to NULL
+        // keep the rows: RowL and RowR_NULL
+    }
+}
+</pre>
+<b>Note:</b><br />
+LEFT OUTER JOINs are particularly useful when you need to preserve all rows from a primary table while optionally including related data.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">RIGHT OUTER JOIN</span>
+<div class="tutorialSectionTextDiv1">
+A RIGHT OUTER JOIN is the mirror image of a LEFT OUTER JOIN.
+It returns all rows from the <b>right table</b>, along with matching rows from the <b>left table</b>.
+When no match exists, NULL values are returned for columns from the <b>left table</b>.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<br />
+<img src="img/sql-join-RIGHT OUTER JOIN.png" width="180" height="100"/><br />
+<pre class="sql-code">
+SELECT  *
+FROM    table_join_left tj1
+RIGHT JOIN  table_join_right tj2
+            ON tj2.id2 = tj1.id1
+</pre>
+Query result:<br />
+<pre class="text-code">
+ID1    DESC1              ID2    DESC2
+------ ------------------ ------ -------------------
+11     table_join_left_11 11     table_join_right_11
+12     table_join_left_12 12     table_join_right_12
+(null) (null)             14     table_join_right_13
+</pre>
+<b>How RIGHT OUTER JOIN Works:</b><br />
+The RIGHT OUTER JOIN operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An outer loop that iterates through the rows of the <b>right table</b> (<code class="code1">table_join_right</code>).<br />
+</li>
+<li>
+For each iteration of the outer loop, another nested loop iterates through the rows of the <b>left table</b> (<code class="code1">table_join_left</code>).<br />
+</li>
+<li>
+For each iteration of the inner loop, a join condition is applied to the current row of the outer loop and the current row of the inner loop.<br />
+</li>
+<li>
+If the condition is satisfied for both rows, they are merged into a single row, which is added to the join result.<br />
+</li>
+<li>
+If the inner loop finishes, but the join condition was not satisfied between any rows of the <b>left table</b> and the current row of the outer loop, then the columns of a new row from the <b>left table</b> will be initialized to NULL.
+The current row of the outer loop and the new row from the <b>left table</b> will be merged into a single row, which is added to the join result.<br />
+</li>
+</ul><br />
+The join between two tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be seen as follows:<br />
+<pre class="text-code">
+for(ROW RowR : table_join_right) { // outer loop
+    match = false;
+
+    for(ROW RowL : table_join_left) { // inner loop
+        if(CONDITION(RowL, RowR)) { // join condition
+            // keep the rows: RowL and RowR
+            match = true;
+        }
+    }
+
+    if(match == false) { // no match
+        // initialize a new empty row from table table_join_left: RowL_NULL
+        // initialize the columns of the new row to NULL
+        // keep the rows: RowL_NULL and RowR
+    }
+}
+</pre>
+<b>Note:</b><br />
+RIGHT OUTER JOINs are less commonly used than LEFT OUTER JOINs because most developers prefer to rewrite them as LEFT OUTER JOINs by switching the table order.
+This approach maintains consistency and improves query readability.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">FULL OUTER JOIN</span>
+<div class="tutorialSectionTextDiv1">
+A FULL OUTER JOIN combines the results of both LEFT and RIGHT OUTER JOINs.
+It returns all rows from both tables, matching them where possible and filling unmatched rows with NULL values for the non-contributing table.<br />
+<br />
+The keyword OUTER is optional in Oracle SQL.<br />
+<br />
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/><br />
+<pre class="sql-code">
+SELECT  *
+FROM    table_join_left tj1
+FULL JOIN   table_join_right tj2
+            ON tj2.id2 = tj1.id1
+</pre>
+Query result:<br />
+<pre class="text-code">
+ID1    DESC1              ID2    DESC2
+------ ------------------ ------ -------------------
+11     table_join_left_11 11     table_join_right_11
+12     table_join_left_12 12     table_join_right_12
+13     table_join_left_13 (null) (null)
+(null) (null)             14     table_join_right_13
+</pre>
+<b>How FULL OUTER JOIN Works:</b><br />
+The FULL OUTER JOIN operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An outer loop that iterates through the rows of the <b>left table</b> (<code class="code1">table_join_left</code>).<br />
+</li>
+<li>
+For each iteration of the outer loop, another nested loop iterates through the rows of the <b>right table</b> (<code class="code1">table_join_right</code>).<br />
+</li>
+<li>
+For each iteration of the inner loop, a join condition is applied to the current row of the outer loop and the current row of the inner loop.<br />
+</li>
+<li>
+If the condition is satisfied for both rows, they are merged into a single row, which is added to the join result.<br />
+</li>
+<li>
+If the inner loop finishes, but the join condition was not satisfied between any rows of the <b>right table</b> and the current row of the outer loop, then the columns of a new row from the <b>right table</b> will be initialized to NULL.
+The current row of the outer loop and the new row from the <b>right table</b> will be merged into a single row, which is added to the join result.<br />
+</li>
+<li>
+Additionally, for each row in the <b>right table</b> that was not matched with any row from the <b>left table</b>, the columns of a new row from the <b>left table</b> will be initialized to NULL.
+The new row from the <b>left table</b> and the current row of the <b>right table</b> will be merged into a single row, which is added to the join result.<br />
+</li>
+</ul><br />
+The join between two tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be seen as follows:<br />
+<pre class="text-code">
+for(ROW RowL : table_join_left) { // outer loop
+    match = false;
+
+    for(ROW RowR : table_join_right) { // inner loop
+        if(CONDITION(RowL, RowR)) { // join condition
+            // keep the rows: RowL and RowR
+            match = true;
+        }
+    }
+
+    if(match == false) { // no match
+        // initialize a new empty row from table table_join_right: RowR_NULL
+        // initialize the columns of the new row to NULL
+        // keep the rows: RowL and RowR_NULL
+    }
+}
+
+// Handle unmatched rows from table table_join_right
+for(ROW RowR : table_join_right) { // loop through table table_join_right
+    match = false;
+
+    for(ROW RowL : table_join_left) { // check against table table_join_left
+        if(CONDITION(RowL, RowR)) { // join condition
+            match = true;
+            break; // already processed in first loop
+        }
+    }
+
+    if(match == false) { // no match
+        // initialize a new empty row from table table_join_left: RowL_NULL
+        // initialize the columns of the new row to NULL
+        // keep the rows: RowL_NULL and RowR
+    }
+}
+</pre>
+<b>Note:</b><br />
+FULL OUTER JOINs are valuable for data reconciliation tasks, such as comparing datasets to identify missing rows in either table.
+However, they can be resource-intensive on large tables since they must process all rows from both tables.
+Consider using UNION ALL with separate LEFT and RIGHT OUTER JOINs for better performance in some scenarios.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">CROSS JOIN (Cartesian Product)</span>
+<div class="tutorialSectionTextDiv1">
+A CROSS JOIN produces the Cartesian product of two tables, returning every possible combination of rows from both tables.
+Unlike other joins, CROSS JOIN does not use a join condition and should be used with caution due to the potentially large result sets it generates.<br />
+<br />
+<img src="img/sql-join-FULL OUTER JOIN.png" width="180" height="100"/><br />
+<pre class="sql-code">
+SELECT  *
+FROM    table_join_left tj1
+CROSS JOIN  table_join_right tj2
+</pre>
+Query result:<br />
+<pre class="text-code">
+ID1 DESC1              ID2 DESC2
+--- ------------------ --- -------------------
+11  table_join_left_11 11  table_join_right_11
+11  table_join_left_11 12  table_join_right_12
+11  table_join_left_11 14  table_join_right_13
+12  table_join_left_12 11  table_join_right_11
+12  table_join_left_12 12  table_join_right_12
+12  table_join_left_12 14  table_join_right_13
+13  table_join_left_13 11  table_join_right_11
+13  table_join_left_13 12  table_join_right_12
+13  table_join_left_13 14  table_join_right_13
+</pre>
+<b>How CROSS JOIN Works:</b><br />
+The CROSS JOIN operation consists of:<br />
+<ul class="ul_square_1">
+<li>
+An outer loop that iterates through every row of the <b>left table</b> (<code class="code1">table_join_left</code>).<br />
+</li>
+<li>
+For each iteration of the outer loop, an inner loop processes every row of the <b>right table</b> (<code class="code1">table_join_right</code>).<br />
+</li>
+<li>
+For each iteration of the inner loop, the current row of the outer loop and the current row of the inner loop will be merged into a single row, which is added to the join result.<br />
+</li>
+</ul><br />
+The Cartesian product between two tables <code class="code1">table_join_left</code> and <code class="code1">table_join_right</code> can be seen as follows:<br />
+<pre class="text-code">
+for(ROW RowL : table_join_left) { // outer loop
+    for(ROW RowR : table_join_right) { // inner loop
+        // keep the rows: RowL and RowR
+    }
+}
+</pre>
+<b>Note:</b><br />
+CROSS JOINs can quickly generate enormous result sets.
+For example, joining two tables with 1,000 rows each produces 1,000,000 result rows.
+Use CROSS JOINs only when you specifically need all possible combinations.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

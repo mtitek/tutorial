@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle NLS_SORT Parameter Guide: BINARY, BINARY_CI, BINARY_AI Examples | MTI TEK</title>
+<meta name="description" content="Complete Oracle NLS_SORT parameter tutorial with examples. Learn BINARY, BINARY_CI, and BINARY_AI sorting methods for accent-sensitive and case-sensitive data handling." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle NLS_SORT Parameter Guide: BINARY, BINARY_CI, BINARY_AI Examples | MTI TEK" />
+<meta property="og:description" content="Complete Oracle NLS_SORT parameter tutorial with examples. Learn BINARY, BINARY_CI, and BINARY_AI sorting methods for accent-sensitive and case-sensitive data handling." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/nls_sort.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle NLS_SORT Parameter Guide: BINARY, BINARY_CI, BINARY_AI Examples | MTI TEK" />
+<meta name="twitter:description" content="Complete Oracle NLS_SORT parameter tutorial with examples. Learn BINARY, BINARY_CI, and BINARY_AI sorting methods for accent-sensitive and case-sensitive data handling." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/nls_sort.html",
+        "description": "Complete Oracle NLS_SORT parameter tutorial with examples. Learn BINARY, BINARY_CI, and BINARY_AI sorting methods for accent-sensitive and case-sensitive data handling.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/nls_sort.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">NLS_SORT Parameter</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Overview and Sample Data Setup</a></li>
+<li><a href="#sec_id_1">Configuring the NLS_SORT Session Parameter</a></li>
+<li><a href="#sec_id_2">Finding Valid NLS_SORT Values</a></li>
+<li><a href="#sec_id_3">BINARY Sort: Accent-Sensitive and Case-Sensitive</a></li>
+<li><a href="#sec_id_4">BINARY_CI Sort: Accent-Sensitive and Case-Insensitive</a></li>
+<li><a href="#sec_id_5">BINARY_AI Sort: Accent-Insensitive and Case-Insensitive</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Overview and Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+The <code class="code1">NLS_SORT</code> parameter controls how Oracle Database sorts character data by determining the collation sequence used for comparison operations.
+This parameter directly affects ORDER BY clauses, comparison operators, and functions like MIN, MAX, and GROUP BY operations.<br />
+<br />
+The parameter works in conjunction with <code class="code1">NLS_COMP</code>, which must be set to <code class="code1">LINGUISTIC</code> for most NLS_SORT values to take effect.
+When NLS_COMP is set to BINARY, character comparisons are performed using binary values regardless of the NLS_SORT setting.<br />
+<br />
+For detailed explanation of NLS_COMP parameter values, see <a href="nls_comp.html">NLS_COMP Parameter</a><br />
+For indexing strategies with this parameter, see <a href="index_nlssort.html">NLSSORT Function Indexes</a><br />
+<br />
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_nls_sort
+(
+    pkid NUMBER(1,0) NOT NULL
+,   code VARCHAR(2) NOT NULL
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_nls_sort (pkid, code) VALUES (1, 'aé');
+INSERT INTO table_nls_sort (pkid, code) VALUES (2, 'ae');
+INSERT INTO table_nls_sort (pkid, code) VALUES (3, 'af');
+INSERT INTO table_nls_sort (pkid, code) VALUES (4, 'ad');
+INSERT INTO table_nls_sort (pkid, code) VALUES (5, 'aÉ');
+INSERT INTO table_nls_sort (pkid, code) VALUES (6, 'aE');
+INSERT INTO table_nls_sort (pkid, code) VALUES (7, 'aF');
+INSERT INTO table_nls_sort (pkid, code) VALUES (8, 'aD');
+
+COMMIT;
+</pre>
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT = BINARY;
+ALTER SESSION SET NLS_COMP = LINGUISTIC;
+</pre>
+<pre class="sql-code">
+SELECT pkid, code FROM table_nls_sort ORDER BY code;
+</pre>
+Query result:
+<pre class="text-code">
+pkid code
+---- ----
+8    aD
+6    aE
+7    aF
+4    ad
+2    ae
+3    af
+5    aÉ
+1    aé
+</pre>
+<b>Note:</b>
+In the <code class="code1">ASCII</code> standard, uppercase characters appear before lowercase characters.
+This is why 'aD', 'aE', and 'aF' appear before their lowercase counterparts in the BINARY sort result.<br />
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">Configuring the NLS_SORT Session Parameter</span>
+<div class="tutorialSectionTextDiv1">
+The NLS_SORT parameter can be modified at the session level using the ALTER SESSION statement.
+This change affects only the current database session and does not impact other users or sessions.
+The parameter accepts either predefined binary sort types or linguistic definitions for specific languages and territories.<br />
+<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT = { BINARY | BINARY_AI | BINARY_CI | linguistic_definition };
+</pre>
+The three main binary sort options provide different levels of sensitivity:<br />
+<ul class="ul_square_1">
+<li>
+<b>BINARY:</b><br />
+Sorting will be accent-sensitive and case-sensitive.
+This is the fastest sorting method as it uses the binary values of characters directly.<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT=BINARY; -- Sorting is based on the binary values of characters
+</pre>
+</li>
+<li>
+<b>BINARY_AI:</b><br />
+Sorting will be accent-insensitive and case-insensitive.
+Characters with different accents (é, è, ê) are treated as equivalent, and uppercase/lowercase differences are ignored.<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT=BINARY_AI;
+</pre>
+</li>
+<li>
+<b>BINARY_CI:</b><br />
+Sorting will be case-insensitive but accent-sensitive.
+Uppercase and lowercase letters are treated as equivalent, but accented characters are still distinguished from their unaccented counterparts.<br />
+<pre class="sql-code">
+ALTER SESSION SET NLS_SORT=BINARY_CI;
+</pre>
+</li>
+</ul>
+For linguistic definitions, you can specify language-specific sorting rules such as <code class="code1">FRENCH</code>, <code class="code1">GERMAN</code>, or <code class="code1">SPANISH</code>.
+These linguistic sorts follow the collation rules specific to each language and culture.<br />
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Finding Valid NLS_SORT Values</span>
+<div class="tutorialSectionTextDiv1">
+Oracle provides the <code class="code1">V$NLS_VALID_VALUES</code> system view to discover all supported NLS_SORT values in your database instance.
+This view is particularly useful when working with multilingual applications or when you need to verify which linguistic definitions are available.<br />
+<br />
+The <code class="code1">V$NLS_VALID_VALUES</code> view contains information about valid parameter values for various NLS parameters, including sort definitions, and indicates whether specific values are deprecated.<br />
+<pre class="sql-code">
+SELECT PARAMETER, VALUE, ISDEPRECATED FROM v$nls_valid_values WHERE parameter = 'SORT';
+</pre>
+Query result:
+<pre class="text-code">
+| PARAMETER | VALUE     | ISDEPRECATED |
++-----------+-----------+--------------|
+| SORT      | BINARY    | FALSE        |
+| SORT      | ASCII7    | FALSE        |
+| SORT      | ARABIC    | FALSE        |
+| SORT      | BULGARIAN | FALSE        |
+| ...       | ...       | ...          |
+</pre>
+The <code class="code1">ISDEPRECATED</code> column indicates whether a particular sort value is still supported.<br />
+</div>
+</li>
+<li id="sec_id_3">
+<span class="tutorialSubSectionTitleSpan1">BINARY Sort: Accent-Sensitive and Case-Sensitive</span>
+<div class="tutorialSectionTextDiv1">
+The BINARY sort option uses the numeric values of characters in the database character set for sorting.
+This method treats each character distinctly based on its binary representation, making it both accent-sensitive and case-sensitive.
+BINARY sorting is the fastest method because it requires no linguistic processing.<br />
+<br />
+The <code class="code1">NLSSORT</code> function can be used to visualize the sort keys that Oracle generates for each character string.
+These hexadecimal values represent how Oracle internally compares the strings during sorting operations.<br />
+<br />
+Example 1:
+<pre class="sql-code">
+SELECT pkid, code, NLSSORT(code, 'NLS_SORT=BINARY') AS code_binary FROM table_nls_sort ORDER BY code_binary, code;
+</pre>
+Query result:
+<pre class="text-code">
+pkid code code_binary
+---- ---- --------------
+8    aD   614400
+6    aE   614500
+7    aF   614600
+4    ad   616400
+2    ae   616500
+3    af   616600
+5    aÉ   61C900
+1    aé   61E900
+</pre>
+Example 2:
+<pre class="sql-code">
+SELECT DISTINCT NLSSORT(code, 'NLS_SORT=BINARY') AS code_binary FROM table_nls_sort;
+</pre>
+Query result:
+<pre class="text-code">
+code_binary
+-----------
+614400
+614500
+614600
+616400
+616500
+616600
+61C900
+61E900
+</pre>
+Note that each character combination produces a unique sort key, demonstrating that BINARY sort distinguishes between all variations of case and accents.<br />
+</div>
+</li>
+<li id="sec_id_4">
+<span class="tutorialSubSectionTitleSpan1">BINARY_CI Sort: Accent-Sensitive and Case-Insensitive</span>
+<div class="tutorialSectionTextDiv1">
+The BINARY_CI (Case Insensitive) sort option ignores differences between uppercase and lowercase letters while still maintaining sensitivity to accented characters.
+This means that 'A' and 'a' are treated as equivalent, but 'a' and 'á' are still considered different characters.<br />
+<br />
+This sorting method is useful in applications where case variations should not affect sort order, but accent distinctions remain important for proper linguistic representation.<br />
+<br />
+Example 1:
+<pre class="sql-code">
+SELECT pkid, code, NLSSORT(code, 'NLS_SORT=BINARY_CI') AS code_binary_ci FROM table_nls_sort ORDER BY code_binary_ci, code;
+</pre>
+Query result:
+<pre class="text-code">
+pkid code code_binary_ci
+---- ---- --------------
+8    aD   616400
+4    ad   616400
+6    aE   616500
+2    ae   616500
+7    aF   616600
+3    af   616600
+5    aÉ   61E900
+1    aé   61E900
+</pre>
+Example 2:
+<pre class="sql-code">
+SELECT DISTINCT NLSSORT(code, 'NLS_SORT=BINARY_CI') AS code_binary_ci FROM table_nls_sort;
+</pre>
+Query result:
+<pre class="text-code">
+code_binary_ci
+--------------
+616400
+616500
+616600
+61E900
+</pre>
+Note that uppercase and lowercase versions of the same letter now produce identical sort keys (e.g., 'aD' and 'ad' both have 616400), while accented characters still generate distinct values.<br />
+</div>
+</li>
+<li id="sec_id_5">
+<span class="tutorialSubSectionTitleSpan1">BINARY_AI Sort: Accent-Insensitive and Case-Insensitive</span>
+<div class="tutorialSectionTextDiv1">
+The BINARY_AI (Accent Insensitive) sort option provides the most flexible character comparison by ignoring both case differences and accent variations.
+Under this sorting method, characters like 'a', 'A', 'á', 'à', 'â', and 'ä' are all treated as equivalent for sorting purposes.<br />
+<br />
+This sorting approach is particularly valuable in search applications, user interfaces where exact accent matching is not critical, or when dealing with data that may have inconsistent accent usage.
+However, it should be used carefully in applications where linguistic accuracy is important.<br />
+<br />
+Example 1:
+<pre class="sql-code">
+SELECT pkid, code, NLSSORT(code, 'NLS_SORT=BINARY_AI') AS code_binary_ai FROM table_nls_sort ORDER BY code_binary_ai, code;
+</pre>
+Query result:
+<pre class="text-code">
+pkid code code_binary_ai
+---- ---- --------------
+8    aD   616400
+4    ad   616400
+6    aE   616500
+2    ae   616500
+5    aÉ   616500
+1    aé   616500
+7    aF   616600
+3    af   616600
+</pre>
+Example 2:
+<pre class="sql-code">
+SELECT DISTINCT NLSSORT(code, 'NLS_SORT=BINARY_AI') AS code_binary_ai FROM table_nls_sort;
+</pre>
+Query result:
+<pre class="text-code">
+code_binary_ai
+--------------
+616400
+616500
+616600
+</pre>
+Note that all variations of 'ae' ('ae', 'aE', 'aÉ', 'aé') now produce the same sort key (616500), demonstrating that both case and accent differences are ignored in the comparison.<br />
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,415 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oracle SQL SELECT Statement Tutorial - Complete Guide with Examples | MTI TEK</title>
+<meta name="description" content="Learn Oracle SQL SELECT statements with this comprehensive tutorial. Learn SELECT, FROM, WHERE, GROUP BY, HAVING, and ORDER BY clauses with practical examples and execution order." />
+<meta name="author" content="mtitek.com" />
+<meta name="robots" content="index, follow, noarchive, nocache" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Oracle SQL SELECT Statement Tutorial - Complete Guide with Examples | MTI TEK" />
+<meta property="og:description" content="Learn Oracle SQL SELECT statements with this comprehensive tutorial. Learn SELECT, FROM, WHERE, GROUP BY, HAVING, and ORDER BY clauses with practical examples and execution order." />
+<meta property="og:url" content="http://mtitek.com/tutorials/oracle/select.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Oracle SQL SELECT Statement Tutorial - Complete Guide with Examples | MTI TEK" />
+<meta name="twitter:description" content="Learn Oracle SQL SELECT statements with this comprehensive tutorial. Learn SELECT, FROM, WHERE, GROUP BY, HAVING, and ORDER BY clauses with practical examples and execution order." />
+<meta name="twitter:site" content="@mtitek" />
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "mtitek.com",
+        "url": "http://mtitek.com/tutorials/oracle/select.html",
+        "description": "Learn Oracle SQL SELECT statements with this comprehensive tutorial. Learn SELECT, FROM, WHERE, GROUP BY, HAVING, and ORDER BY clauses with practical examples and execution order.",
+        "author": {
+            "@type": "Person",
+            "name": "MTI TEK"
+        }
+    }
+</script>
+<link rel="canonical" href="http://mtitek.com/tutorials/oracle/select.html" />
+<link rel="icon" href="/favicon-mtitek.ico" type="image/x-icon">
+<link rel="icon" href="/favicon-mtitek.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/cdnjs/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.global-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.header-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.tutorial.sections.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.footer-min.css" />
+<link rel="stylesheet" href="/css/css-j/mtitek.style.layout-min.css" />
+<script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/cdnjs/6.7.2/js/all.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+<div class="menuHeaderDiv1">
+<header class="modern-header">
+<div class="container">
+<div class="header-content">
+<div class="logo-section">
+<a href="/" class="logo">MTI TEK</a>
+</div>
+<nav class="main-nav">
+<ul class="nav-list">
+<li><a class="nav-link " href="/"><i class="fas fa-home"></i> Home</a></li>
+<li><a class="nav-link " href="/tutorials/ml/llm/"><i class="fas fa-brain"></i> LLMs</a></li>
+<li><a class="nav-link " href="/tutorials/docker/"><i class="fab fa-docker"></i> Docker</a></li>
+<li><a class="nav-link " href="/tutorials/kubernetes/"><i class="fas fa-dharmachakra"></i> Kubernetes</a></li>
+<li><a class="nav-link " href="/tutorials/java/"><i class="fab fa-java"></i> Java</a></li>
+<li><a class="nav-link " href="/all.html"><i class="fas fa-list"></i> All Resources</a></li>
+</ul>
+</nav>
+<div class="mobile-menu-toggle">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</div>
+</header>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+    }
+});
+</script>
+<div class="menuMainDiv1">
+<div class="menuMainDiv2">
+<div class="tutorialSectionDiv1">
+<a class="tutorialMainPageA1" href="/tutorials/oracle/">Oracle SQL</a>
+<span class="tutorialSectionTitleSeparatorSpan1">|</span>
+<span class="tutorialSectionTitleSpan1">SELECT Statements</span>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_contents_1">
+<li><a href="#sec_id_0">Sample Data Setup</a></li>
+<li><a href="#sec_id_1">SELECT Statement Structure and Clauses</a>
+<ol class="ol_lower_roman_contents_1">
+<li><a href="#sec_id_1_1"><code class="code1">SELECT</code> Clause</a></li>
+<li><a href="#sec_id_1_2"><code class="code1">FROM</code> Clause</a></li>
+<li><a href="#sec_id_1_3"><code class="code1">WHERE</code> Clause</a></li>
+<li><a href="#sec_id_1_4"><code class="code1">GROUP BY</code> Clause</a></li>
+<li><a href="#sec_id_1_5"><code class="code1">HAVING</code> Clause</a></li>
+<li><a href="#sec_id_1_6"><code class="code1">ORDER BY</code> Clause</a></li>
+</ol>
+</li>
+<li><a href="#sec_id_2">Query Execution Order</a></li>
+</ol>
+<hr class="tutorialSectionHr1" />
+<ol class="ol_decimal_1">
+<li id="sec_id_0">
+<span class="tutorialSubSectionTitleSpan1">Sample Data Setup</span>
+<div class="tutorialSectionTextDiv1">
+This table and sample data is used in the examples below:<br />
+<pre class="sql-code">
+CREATE TABLE table_select
+(
+    id1 NUMBER(2,0)
+,   desc1 VARCHAR2(2)
+);
+</pre>
+<pre class="sql-code">
+INSERT INTO table_select (id1, desc1) VALUES (11, 'd1');
+INSERT INTO table_select (id1, desc1) VALUES (12, 'd1');
+INSERT INTO table_select (id1, desc1) VALUES (13, 'd3');
+INSERT INTO table_select (id1, desc1) VALUES (21, 'd1');
+
+COMMIT;
+</pre>
+The table contains 4 rows with integer IDs and short description codes.
+This simple structure allows for demonstrating various SELECT operations including filtering, grouping, and ordering.
+</div>
+</li>
+<li id="sec_id_1">
+<span class="tutorialSubSectionTitleSpan1">SELECT Statement Structure and Clauses</span>
+<div class="tutorialSectionTextDiv1">
+The SELECT statement is the primary tool for querying data in Oracle databases.
+Each clause serves a specific purpose in filtering, organizing, and presenting data.
+The clauses must appear in a specific order, though not all clauses are required for every query.
+
+<ol class="ol_lower_roman_1">
+<li id="sec_id_1_1">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">SELECT</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+SELECT [DISTINCT] column_1, column_2, ..., column_n
+</pre>
+The SELECT clause specifies which columns or expressions to retrieve from the database.
+This clause determines the structure and content of the result set.
+It must be the first clause in any SELECT statement.<br />
+<br />
+A column in the <code class="code1">SELECT</code> clause can be:
+<ul class="ul_square_1">
+<li>any column from the tables specified in the <code class="code1">FROM</code> clause;</li>
+<li>an aggregate function (COUNT, SUM, AVG, MIN, MAX, etc.);</li>
+<li>a scalar subquery (must return at most one row with a single column);</li>
+<li>any arithmetic or other valid expression (calculations, concatenations, functions);</li>
+<li>literal values or constants;</li>
+<li>pseudocolumns (ROWNUM, ROWID, etc.);</li>
+</ul><br />
+Note that subqueries in the <code class="code1">SELECT</code> list can be re-executed for each row returned by the main query, which may impact performance for large result sets.<br />
+<br />
+The "<code class="code1">DISTINCT</code>" operator removes duplicate rows from the result set.
+It applies to the entire combination of all columns listed in the <code class="code1">SELECT</code> clause, not individual columns.
+Use DISTINCT carefully as it requires Oracle to sort or hash the result set, which can affect performance.<br />
+<pre class="sql-code">
+SELECT
+        ROWNUM
+,       t1.id1
+,       NVL(t1.desc1, ' ') AS desc1
+,       (
+                SELECT  1
+                FROM    DUAL
+                WHERE   MOD(t1.id1, 2) = 0
+        ) AS "another column"
+FROM    table_select t1
+</pre>
+This example demonstrates multiple types of SELECT expressions: a pseudocolumn (ROWNUM), table columns (id1, desc1), a function (NVL), and a scalar subquery that returns 1 for even ID values and NULL for odd ones.<br />
+<br />
+Simple SELECT examples:
+<pre class="sql-code">
+-- Select all columns
+SELECT * FROM table_select;
+
+-- Select specific columns
+SELECT id1, desc1 FROM table_select;
+
+-- Select with DISTINCT
+SELECT DISTINCT desc1 FROM table_select;
+</pre>
+</div>
+</li>
+<li id="sec_id_1_2">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">FROM</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+FROM
+(
+    [table|view|subquery]
+    JOIN [table|view|subquery] ON (conditions)
+)
+</pre>
+The FROM clause specifies the data sources for the query.
+This can include tables, views, materialized views, or subqueries.
+The FROM clause also defines how multiple data sources are joined together using various JOIN operations.<br />
+<br />
+Data sources in the FROM clause can be:
+<ul class="ul_square_1">
+<li>Physical tables stored in the database</li>
+<li>Views (stored queries that act like tables)</li>
+<li>Inline views (subqueries in the FROM clause)</li>
+<li>Table functions</li>
+<li>External tables</li>
+</ul><br />
+When multiple tables are specified, Oracle supports various join types including INNER JOIN, LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN, and CROSS JOIN.
+Proper join conditions are essential for accurate results and optimal performance.<br />
+<br />
+Simple FROM examples:
+<pre class="sql-code">
+-- Single table
+SELECT * FROM table_select;
+
+-- Table with alias
+SELECT t.id1, t.desc1 FROM table_select t;
+
+-- Using DUAL for testing expressions
+SELECT SYSDATE FROM DUAL;
+</pre>
+</div>
+</li>
+<li id="sec_id_1_3">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">WHERE</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+WHERE
+(
+    conditions
+)
+</pre>
+The WHERE clause filters rows before any grouping occurs.
+It specifies conditions that must be met for a row to be included in the result set.<br />
+<br />
+WHERE conditions can include:
+<ul class="ul_square_1">
+<li>Comparison operators (=, !=, <, >, <=, >=)</li>
+<li>Logical operators (AND, OR, NOT)</li>
+<li>Pattern matching (LIKE, REGEXP_LIKE)</li>
+<li>Range tests (BETWEEN, IN)</li>
+<li>NULL tests (IS NULL, IS NOT NULL)</li>
+<li>Existence tests (EXISTS with subqueries)</li>
+</ul><br />
+Proper indexing on columns used in WHERE conditions can significantly improve query performance.
+Complex conditions should be written to take advantage of available indexes.<br />
+<br />
+Simple WHERE examples:
+<pre class="sql-code">
+-- Filter by exact value
+SELECT * FROM table_select WHERE desc1 = 'd1';
+
+-- Filter by range
+SELECT * FROM table_select WHERE id1 > 12;
+
+-- Multiple conditions
+SELECT * FROM table_select WHERE id1 >= 12 AND desc1 = 'd1';
+
+-- Pattern matching
+SELECT * FROM table_select WHERE desc1 LIKE 'd%';
+</pre>
+</div>
+</li>
+<li id="sec_id_1_4">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">GROUP BY</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+GROUP BY
+(
+    column_1, column_2, ..., column_n
+)
+</pre>
+The GROUP BY clause groups rows that have the same values in specified columns into summary rows.
+This clause is essential when using aggregate functions to calculate summary statistics for groups of data.<br />
+<br />
+Columns in the <code class="code1">GROUP BY</code> clause can be any column from the tables listed in the <code class="code1">FROM</code> clause, including columns not selected in the result set.<br />
+<br />
+It is not necessary for all columns in the <code class="code1">GROUP BY</code> clause to appear in the <code class="code1">SELECT</code> clause.
+However, all non-aggregate columns in the <code class="code1">SELECT</code> clause must appear in the <code class="code1">GROUP BY</code> clause,
+except for aggregate functions, constants, and subqueries that do not reference any columns from the <code class="code1">FROM</code> clause
+(except for columns already included in the <code class="code1">GROUP BY</code> clause).<br />
+<br />
+Oracle also supports advanced GROUP BY extensions including ROLLUP, CUBE, and GROUPING SETS for generating subtotals and cross-tabulations.<br />
+<pre class="sql-code">
+SELECT
+        t1.desc1
+,       COUNT(t1.desc1)
+,       'CONST'
+,       (SELECT 1 FROM DUAL)
+FROM    table_select t1
+GROUP BY t1.desc1
+</pre>
+This example groups rows by the desc1 column, counts occurrences in each group, and includes constant values that are allowed in SELECT with GROUP BY.<br />
+</pre>
+</div>
+</li>
+<li id="sec_id_1_5">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">HAVING</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+HAVING
+(
+    conditions
+)
+</pre>
+The HAVING clause filters groups created by the GROUP BY clause.
+Unlike the WHERE clause which filters individual rows, HAVING filters groups based on aggregate values or group characteristics.<br />
+<br />
+HAVING conditions typically involve:
+<ul class="ul_square_1">
+<li>Aggregate functions (COUNT, SUM, AVG, MIN, MAX)</li>
+<li>Conditions on grouped columns</li>
+<li>Complex expressions involving group-level calculations</li>
+</ul><br />
+The HAVING clause is processed after GROUP BY, so it can reference aggregate functions and grouped columns.
+It cannot be used without a GROUP BY clause, as there would be no groups to filter.<br />
+<br />
+For optimal performance, filter individual rows using WHERE when possible, and use HAVING only for conditions that require group-level analysis.<br />
+<br />
+Simple HAVING examples:
+<pre class="sql-code">
+-- Filter groups by count
+SELECT desc1, COUNT(*) FROM table_select GROUP BY desc1 HAVING COUNT(*) > 1;
+
+-- Filter groups by aggregate values
+SELECT desc1, AVG(id1) FROM table_select GROUP BY desc1 HAVING AVG(id1) > 15;
+
+-- Combine WHERE and HAVING
+SELECT desc1, COUNT(*) FROM table_select WHERE id1 > 11 GROUP BY desc1 HAVING COUNT(*) >= 2;
+</pre>
+</div>
+</li>
+<li id="sec_id_1_6">
+<span class="tutorialSubSectionTitleSpan1"><code class="code1">ORDER BY</code> Clause</span>
+<div class="tutorialSectionTextDiv1">
+<pre class="sql-code">
+ORDER BY column_1 [ASC|DESC], column_2 [ASC|DESC], ..., column_n [ASC|DESC]
+</pre>
+The ORDER BY clause sorts the final result set based on one or more columns or expressions.
+This clause is processed last and determines the sequence in which rows are returned to the client application.<br />
+<br />
+ORDER BY features include:
+<ul class="ul_square_1">
+<li>Multiple sort columns with different sort directions (ASC for ascending, DESC for descending)</li>
+<li>Sorting by column positions (ORDER BY 1, 2) instead of column names</li>
+<li>Sorting by expressions or functions</li>
+<li>NULLS FIRST or NULLS LAST options to control NULL value positioning</li>
+</ul><br />
+The default sort order is ascending (ASC), and NULL values are treated as the highest possible values by default.
+ORDER BY can reference any column in the SELECT list, including column aliases, and can also reference columns from the FROM clause that are not in the SELECT list.<br />
+<br />
+Simple ORDER BY examples:
+<pre class="sql-code">
+-- Sort by single column (ascending by default)
+SELECT * FROM table_select ORDER BY id1;
+
+-- Sort by multiple columns
+SELECT * FROM table_select ORDER BY desc1, id1 DESC;
+
+-- Sort by column position
+SELECT id1, desc1 FROM table_select ORDER BY 2, 1;
+
+-- Sort by expression
+SELECT id1, desc1 FROM table_select ORDER BY MOD(id1, 10);
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li id="sec_id_2">
+<span class="tutorialSubSectionTitleSpan1">Query Execution Order</span>
+<div class="tutorialSectionTextDiv1">
+Oracle processes clauses in a specific sequence, regardless of how they appear in the SQL text.<br />
+<br />
+The logical execution order is:
+
+<ol class="ol_lower_roman_1">
+<li><code class="code1">FROM</code> - Tables are identified and joins are performed.<br /></li>
+<li><code class="code1">WHERE</code> - Individual rows are filtered based on conditions.<br /></li>
+<li><code class="code1">GROUP BY</code> - Remaining rows are grouped by specified columns.<br /></li>
+<li><code class="code1">HAVING</code> - Groups are filtered based on aggregate conditions.<br /></li>
+<li><code class="code1">SELECT</code> - Columns and expressions are evaluated and result set is formed.<br /></li>
+<li><code class="code1">ORDER BY</code> - Final result set is sorted.<br /></li>
+</ol>
+This execution order explains why:
+<ul class="ul_square_1">
+<li>Column aliases defined in SELECT cannot be used in WHERE, GROUP BY, or HAVING clauses.<br /></li>
+<li>Aggregate functions cannot be used in WHERE clauses (use HAVING instead).<br /></li>
+<li>ORDER BY can reference SELECT clause aliases since it executes after SELECT.<br /></li>
+<li>HAVING can reference aggregate functions since it executes after GROUP BY.<br /></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="menuFooterDiv1">
+<div class="container">
+<div class="footer-content">
+<div class="copyright">
+<a href="/" class="footer-logo">
+<span class="logo-mti">mti</span><span class="logo-tek">tek</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
