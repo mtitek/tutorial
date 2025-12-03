@@ -9,31 +9,23 @@ color: var(--text-secondary);
 font-size: clamp(0.85rem, 2.5vw, 0.95rem);
 line-height: 1.6;
 box-shadow: var(--shadow-subtle);
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: border-color var(--transition-medium) var(--ease-out-cubic);
 overflow: hidden;
 position: relative;
 }
 .tutorialSectionDiv1::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-height: 4px;
-background: var(--primary-gradient);
-opacity: 0;
-transition: opacity var(--transition-medium) var(--ease-out-cubic);
+display: none;
 }
 .tutorialSectionDiv1:hover::before {
-opacity: 1;
+display: none;
 }
 .tutorialSectionDiv1:hover {
-transform: translateY(-2px);
-box-shadow: var(--shadow-medium);
+transform: none;
+box-shadow: var(--shadow-subtle);
 border-color: var(--accent-purple);
 }
 .tutorialSectionDiv1:focus-within {
-transform: translateY(-1px);
+transform: none;
 box-shadow: var(--shadow-medium);
 border-color: var(--accent-cyan);
 }
@@ -41,7 +33,7 @@ border-color: var(--accent-cyan);
 color: var(--accent-purple);
 text-decoration: none;
 font-weight: 600;
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: color var(--transition-medium) var(--ease-out-cubic);
 border-bottom: 1px solid transparent;
 position: relative;
 }
@@ -154,12 +146,12 @@ color: var(--text-secondary);
 line-height: 1.6;
 background: transparent;
 border-radius: 8px;
-transition: all var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ol_decimal_1 li:hover, .ol_upper_latin_1 li:hover, .ol_upper_roman_1 li:hover,
 .ol_lower_roman_1 li:hover, .ol_lower_latin_1 li:hover {
-background: rgba(139, 92, 246, 0.05);
-padding-left: 4px;
+background: transparent;
+padding-left: 0;
 }
 .ol_decimal_contents_1 li {
 margin: 4px 0;
@@ -170,11 +162,11 @@ color: var(--text-secondary);
 line-height: 1.5;
 background: transparent;
 border-radius: 8px;
-transition: all var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ol_decimal_contents_1 li:hover {
-background: rgba(139, 92, 246, 0.05);
-padding-left: 4px;
+background: transparent;
+padding-left: 0;
 }
 .ol_lower_roman_contents_1 li {
 margin: 3px 0;
@@ -185,11 +177,11 @@ color: var(--text-secondary);
 line-height: 1.5;
 background: transparent;
 border-radius: 8px;
-transition: all var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ol_lower_roman_contents_1 li:hover {
-background: rgba(139, 92, 246, 0.05);
-padding-left: 4px;
+background: transparent;
+padding-left: 0;
 }
 .ol_lower_latin_contents_1 li {
 margin: 3px 0;
@@ -200,11 +192,11 @@ color: var(--text-secondary);
 line-height: 1.4;
 background: transparent;
 border-radius: 8px;
-transition: all var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ol_lower_latin_contents_1 li:hover {
-background: rgba(139, 92, 246, 0.05);
-padding-left: 4px;
+background: transparent;
+padding-left: 0;
 }
 .ol_decimal_1>li::marker, .ol_decimal_contents_1>li::marker, .ol_upper_latin_1>li::marker,
 .ol_lower_latin_1>li::marker, .ol_lower_latin_contents_1>li::marker, .ol_upper_roman_1>li::marker,
@@ -241,11 +233,11 @@ color: var(--text-secondary);
 line-height: 1.5;
 position: relative;
 border-radius: 8px;
-transition: all var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ul_square_1 li:hover, .ul_circle_1 li:hover, .ul_disc_1 li:hover, .ul_none_2 li:hover {
-background: rgba(139, 92, 246, 0.05);
-padding-left: 4px;
+background: transparent;
+padding-left: 0;
 }
 .ul_square_1 li::before {
 content: '■';
@@ -254,10 +246,10 @@ font-weight: bold;
 position: absolute;
 left: -24px;
 font-size: 1.1em;
-transition: color var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ul_square_1 li:hover::before {
-color: var(--accent-cyan);
+color: var(--accent-purple);
 }
 .ul_circle_1 li::before {
 content: '○';
@@ -266,10 +258,10 @@ font-weight: bold;
 position: absolute;
 left: -24px;
 font-size: 1.1em;
-transition: color var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ul_circle_1 li:hover::before {
-color: var(--accent-purple);
+color: var(--accent-cyan);
 }
 .ul_disc_1 li::before {
 content: '●';
@@ -278,10 +270,10 @@ font-weight: bold;
 position: absolute;
 left: -24px;
 font-size: 1.1em;
-transition: color var(--transition-fast) var(--ease-out-cubic);
+transition: none;
 }
 .ul_disc_1 li:hover::before {
-color: var(--accent-purple);
+color: var(--accent-amber);
 }
 .ul_none_1 {
 margin: 16px 0 0 12px;
@@ -295,15 +287,15 @@ background: var(--subtle-bg);
 border-radius: 6px;
 font-size: clamp(0.7rem, 2vw, 0.8rem);
 display: inline-block;
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 font-weight: 600;
 border: 1px solid var(--border-subtle);
 }
 span.linkHintSpan1:hover {
-background: var(--card-bg);
-transform: translateY(-1px);
-border-color: var(--accent-purple);
-box-shadow: var(--shadow-subtle);
+background: var(--subtle-bg);
+transform: none;
+border-color: var(--border-subtle);
+box-shadow: none;
 }
 span.spanstyle1 {
 color: var(--accent-purple);
@@ -333,14 +325,14 @@ background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
 padding: 3px 6px;
 border-radius: 6px;
 display: inline-block;
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 box-shadow: var(--shadow-subtle);
 border: 1px solid rgba(245, 158, 11, 0.2);
 }
 span.highlightSpan1:hover {
-background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
-transform: translateY(-1px);
-box-shadow: var(--shadow-medium);
+background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+transform: none;
+box-shadow: var(--shadow-subtle);
 }
 div.divstyle1 {
 margin: 0 0 0 6px;
@@ -376,15 +368,15 @@ padding: 0;
 border-radius: 12px;
 box-shadow: var(--shadow-medium);
 background: transparent;
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 max-width: 100%;
 height: auto;
 border: 1px solid var(--border-subtle);
 }
 .img1:hover {
-box-shadow: var(--shadow-large);
-transform: translateY(-2px);
-border-color: var(--accent-purple);
+box-shadow: var(--shadow-medium);
+transform: none;
+border-color: var(--border-subtle);
 }
 .tutorialSectionHr1 {
 border: none;
@@ -416,13 +408,13 @@ max-width: 100%;
 height: auto;
 border-radius: 8px;
 box-shadow: var(--shadow-medium);
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 border: 1px solid var(--border-subtle);
 }
 img:hover {
-box-shadow: var(--shadow-large);
-transform: translateY(-1px);
-border-color: var(--accent-purple);
+box-shadow: var(--shadow-medium);
+transform: none;
+border-color: var(--border-subtle);
 }
 .section-navigation {
 display: flex;
@@ -478,25 +470,25 @@ padding: 16px 18px;
 margin: 12px 0;
 }
 .tutorialSectionTitleSpan1 {
-font-size: clamp(0.9rem, 2.5vw, 1rem);
+font-size: 0.95rem;
 }
 .tutorialSubSectionTitleSpan1 {
-font-size: clamp(1.1rem, 3vw, 1.2rem);
+font-size: 1.1rem;
 }
 .tutorialSectionTitleSeparatorSpan1 {
-font-size: clamp(1rem, 3vw, 1.1rem);
+font-size: 1.1rem;
 }
 a.tutorialMainPageA1 {
-font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+font-size: 1rem;
 }
 .ol_decimal_contents_1 li {
-font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+font-size: 0.85rem;
 }
 .ol_lower_roman_contents_1 li {
-font-size: clamp(0.75rem, 2vw, 0.85rem);
+font-size: 0.8rem;
 }
 .ol_lower_latin_contents_1 li {
-font-size: clamp(0.7rem, 2vw, 0.8rem);
+font-size: 0.75rem;
 }
 }
 @media (max-width: 768px) {
@@ -506,20 +498,20 @@ margin: 8px 0;
 border-radius: 8px;
 }
 .tutorialSectionTitleSpan1 {
-font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+font-size: 0.9rem;
 }
 .tutorialSubSectionTitleSpan1 {
-font-size: clamp(1.05rem, 3vw, 1.15rem);
+font-size: 1.05rem;
 }
 .tutorialSectionTitleSeparatorSpan1 {
-font-size: clamp(0.95rem, 3vw, 1.05rem);
+font-size: 1.0rem;
 margin: 0 4px;
 }
 .ol_decimal_1 li, .ol_upper_latin_1 li, .ol_upper_roman_1 li {
-font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+font-size: 0.8rem;
 }
 span.codeLinkSpan1 {
-font-size: clamp(0.75rem, 2vw, 0.85rem);
+font-size: 0.8rem;
 }
 .tutorialSectionAdInLeftDiv1 {
 float: none;
@@ -549,14 +541,14 @@ margin: 4px 0;
 .ul_square_1 li, .ul_circle_1 li, .ul_disc_1 li, .ul_none_2 li {
 margin: 2px 0;
 padding: 1px 0;
-font-size: clamp(0.75rem, 2.5vw, 0.85rem);
-line-height: 1.4;
+font-size: 0.8rem;
+line-height: 1.3;
 }
 .ul_square_1 li::before, .ul_circle_1 li::before {
 left: -20px;
 }
 .ul_disc_1 li::before {
-left: -20px;
+left: -12px;
 }
 .ol_decimal_1>li::marker, .ol_decimal_contents_1>li::marker,
 .ol_upper_latin_1>li::marker, .ol_lower_latin_1>li::marker,
@@ -565,7 +557,7 @@ left: -20px;
 font-size: 1rem;
 }
 a.tutorialMainPageA1 {
-font-size: clamp(0.9rem, 2.5vw, 1rem);
+font-size: 0.95rem;
 }
 .section-navigation {
 flex-direction: column;
@@ -576,50 +568,56 @@ width: 100%;
 justify-content: center;
 }
 .tutorialSectionDiv1:hover {
-transform: translateY(0) scale(1.01);
+transform: none;
 }
 .ol_decimal_1 li:hover, .ol_upper_latin_1 li:hover, .ol_upper_roman_1 li:hover,
 .ol_lower_roman_1 li:hover, .ol_lower_latin_1 li:hover,
 .ul_square_1 li:hover, .ul_circle_1 li:hover, .ul_disc_1 li:hover, .ul_none_2 li:hover {
-transform: translateX(0) scale(1.01);
+transform: none;
 }
 }
 @media (max-width: 576px) {
+a.tutorialMainPageA1 {
+font-size: 0.9rem;
+}
 .tutorialSectionDiv1 {
 padding: 12px;
 border-radius: 8px;
 }
 .tutorialSectionTextDiv1 {
-font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+font-size: 0.8rem;
 padding: 4px 0;
 }
 span.linkHintSpan1 {
-font-size: clamp(0.65rem, 2vw, 0.75rem);
-padding: 2px 4px;
+font-size: 0.7rem;
+padding: 1px 3px;
 }
 .ol_decimal_1 li, .ol_upper_latin_1 li, .ol_upper_roman_1 li {
 padding: 2px 0;
 margin: 4px 0;
 }
 a.tutorialMainPageA1 {
-font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+font-size: 0.9rem;
 }
 pre[class*="-code"] {
 font-size: 10px;
 padding: 8px;
 }
 .ul_square_1, .ul_circle_1, .ul_disc_1, .ul_none_2 {
-padding-left: 18px;
+padding-left: 14px;
 margin: 3px 0;
 }
 .ul_square_1 li, .ul_circle_1 li, .ul_disc_1 li, .ul_none_2 li {
 margin: 1px 0;
 padding: 1px 0;
-font-size: clamp(0.7rem, 2.5vw, 0.8rem);
-line-height: 1.3;
+font-size: 0.75rem;
+line-height: 1.2;
 }
-.ul_square_1 li::before, .ul_circle_1 li::before, .ul_disc_1 li::before {
-left: -18px;
+.ul_square_1 li::before, .ul_circle_1 li::before {
+left: -14px;
+}
+.ul_disc_1 li::before {
+left: -10px;
 }
 .ol_decimal_1>li::marker, .ol_decimal_contents_1>li::marker,
 .ol_upper_latin_1>li::marker, .ol_lower_latin_1>li::marker,
