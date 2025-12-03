@@ -163,7 +163,7 @@ font-size: 0.95rem;
 line-height: 1.6;
 font-weight: 400;
 box-shadow: var(--shadow-subtle);
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 position: relative;
 overflow: hidden;
 }
@@ -176,7 +176,7 @@ display: none;
 .tutorialReferencesDiv1:hover {
 transform: none;
 box-shadow: var(--shadow-subtle);
-border-color: var(--accent-amber);
+border-color: var(--border-subtle);
 }
 .tutorialReferencesDiv1 a:link, .tutorialReferencesDiv1 a:visited {
 color: var(--accent-amber);
@@ -380,7 +380,7 @@ margin-bottom: var(--spacing-lg);
 background: var(--subtle-bg);
 border: 1px solid var(--border-subtle);
 border-radius: var(--border-radius-md);
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 position: relative;
 overflow: hidden;
 }
@@ -394,7 +394,7 @@ display: none;
 background: var(--subtle-bg);
 box-shadow: none;
 transform: none;
-border-color: var(--accent-amber);
+border-color: var(--border-subtle);
 }
 .reference-item:last-child {
 margin-bottom: 0;
@@ -445,12 +445,12 @@ line-height: 1.4;
 letter-spacing: -0.01em;
 }
 .reference-title a {
-color: inherit;
+color: var(--accent-purple);
 text-decoration: none;
 transition: color var(--transition-medium) var(--ease-out-cubic);
 }
 .reference-title a:hover {
-color: var(--accent-purple);
+color: var(--accent-cyan);
 }
 .reference-meta {
 display: flex;
@@ -481,12 +481,12 @@ border: 1px solid rgba(124, 58, 237, 0.2);
 background: rgba(124, 58, 237, 0.05);
 }
 .reference-link:hover {
-color: white;
-border-color: var(--accent-purple);
+color: var(--accent-cyan);
+border-color: var(--accent-cyan);
 text-decoration: none;
 transform: none;
 box-shadow: none;
-background: var(--accent-purple);
+background: rgba(14, 165, 233, 0.08);
 }
 @media (max-width: 1200px) {
 .tutorialContentsDiv1, .tutorialAnnexesDiv1, .tutorialReferencesDiv1 {
