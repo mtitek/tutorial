@@ -233,16 +233,17 @@ margin: var(--spacing-sm) 0;
 margin: 0;
 padding: var(--spacing-sm) 0 var(--spacing-sm) var(--spacing-sm);
 font-size: clamp(0.9rem, 2.2vw, 1rem);
-color: var(--accent-purple);
+color: var(--text-primary);
 line-height: 1.7;
 position: relative;
-font-weight: 600;
+font-weight: 500;
 transition: none;
 border-radius: var(--border-radius-sm);
 }
 .ol_decimal_1 li:hover {
 background: transparent;
 padding-left: var(--spacing-sm);
+color: var(--text-primary);
 }
 .ol_decimal_1 li::marker {
 color: var(--accent-purple);
@@ -251,7 +252,7 @@ font-weight: 700;
 .ol_decimal_1 li a {
 font-size: clamp(0.85rem, 2.2vw, 0.95rem);
 transition: color var(--transition-medium) var(--ease-out-cubic);
-color: var(--text-secondary);
+color: var(--accent-purple);
 font-weight: 500;
 display: inline-block;
 padding: 2px 0;
@@ -264,15 +265,16 @@ transform: none;
 margin: 0;
 padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);
 font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-color: var(--accent-purple);
+color: var(--text-primary);
 line-height: 1.7;
-font-weight: 600;
+font-weight: 500;
 transition: none;
 border-radius: var(--border-radius-sm);
 }
 .ol_lower_roman_1 li:hover, .ol_lower_latin_1 li:hover {
 background: transparent;
 padding-left: var(--spacing-sm);
+color: var(--text-primary);
 }
 .ol_lower_roman_1 li::marker, .ol_lower_latin_1 li::marker {
 color: var(--accent-purple);
@@ -281,7 +283,7 @@ font-weight: 700;
 .ol_lower_roman_1 li a, .ol_lower_latin_1 li a {
 font-size: clamp(0.8rem, 2.2vw, 0.9rem);
 transition: color var(--transition-medium) var(--ease-out-cubic);
-color: var(--text-secondary);
+color: var(--accent-purple);
 font-weight: 500;
 display: inline-block;
 padding: 2px 0;
@@ -294,15 +296,16 @@ transform: none;
 margin: 0;
 padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);
 font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-color: var(--accent-purple);
+color: var(--text-primary);
 line-height: 1.7;
-font-weight: 600;
+font-weight: 500;
 transition: none;
 border-radius: var(--border-radius-sm);
 }
 .ol_upper_roman_1 li:hover {
 background: transparent;
 padding-left: var(--spacing-sm);
+color: var(--text-primary);
 }
 .ol_upper_roman_1 li::marker {
 color: var(--accent-purple);
@@ -311,7 +314,7 @@ font-weight: 700;
 .ol_upper_roman_1 li a {
 font-size: clamp(0.8rem, 2.2vw, 0.9rem);
 transition: color var(--transition-medium) var(--ease-out-cubic);
-color: var(--text-secondary);
+color: var(--accent-purple);
 font-weight: 500;
 display: inline-block;
 padding: 2px 0;
