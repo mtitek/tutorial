@@ -38,7 +38,7 @@ padding: 12px 0 0 4px;
 @keyframes fadeInUp {
 from {
 opacity: 0;
-transform: translateY(20px);
+transform: translateY(40px);
 }
 to {
 opacity: 1;
@@ -47,16 +47,16 @@ transform: translateY(0);
 }
 @keyframes float {
 0%, 100% {
-transform: translateY(0px);
+transform: translateY(0px) rotate(0deg);
 }
 50% {
-transform: translateY(-10px);
+transform: translateY(-20px) rotate(3deg);
 }
 }
 @keyframes slideInLeft {
 from {
 opacity: 0;
-transform: translateX(-20px);
+transform: translateX(-30px);
 }
 to {
 opacity: 1;
@@ -66,7 +66,7 @@ transform: translateX(0);
 @keyframes slideInRight {
 from {
 opacity: 0;
-transform: translateX(20px);
+transform: translateX(30px);
 }
 to {
 opacity: 1;
@@ -78,7 +78,7 @@ transform: translateX(0);
 opacity: 1;
 }
 50% {
-opacity: 0.9;
+opacity: 0.8;
 }
 }
 @media (max-width: 1200px) {
@@ -137,16 +137,16 @@ top: 100%;
 left: 0;
 right: 0;
 background: var(--card-bg);
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+box-shadow: var(--shadow-large);
+border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
 border: 1px solid var(--border-subtle);
 border-top: none;
 z-index: var(--z-mobile-nav);
-backdrop-filter: none;
+backdrop-filter: blur(20px);
 }
 .main-nav.active {
 display: block;
-animation: none;
+animation: slideInLeft var(--transition-medium) var(--ease-out-cubic);
 }
 .nav-list {
 flex-direction: column;
@@ -209,7 +209,7 @@ float: none;
 margin-bottom: 12px;
 }
 pre[class*="-code"] {
-font-size: 12px;
+font-size: 11px;
 padding: 12px;
 margin: 12px 0;
 border-radius: 6px;
@@ -294,7 +294,7 @@ a.tutorialMainPageA1 {
 font-size: 0.9rem;
 }
 pre[class*="-code"] {
-font-size: 11px;
+font-size: 10px;
 padding: 8px;
 }
 .ul_square_1, .ul_circle_1, .ul_disc_1, .ul_none_2 {
@@ -399,7 +399,7 @@ background: yellow;
 color: black;
 }
 pre[class*="-code"] {
-border-left-width: 4px;
+border-left-width: 6px;
 }
 .tutorialSectionDiv1 {
 border-width: 2px;
@@ -420,7 +420,7 @@ border-width: 2px;
 background: linear-gradient(135deg, var(--subtle-bg) 0%, #475569 50%, #64748b 100%);
 }
 .menuHeaderDiv1 {
-background: rgba(15, 23, 42, 0.98);
+background: rgba(15, 23, 42, 0.95);
 }
 .code1 {
 background: var(--subtle-bg);
@@ -474,8 +474,8 @@ a:focus, button:focus, .btn-base:focus {
 outline: none;
 }
 a:focus-visible, button:focus-visible, .btn-base:focus-visible {
-outline: 2px solid var(--accent-cyan);
-outline-offset: 2px;
+outline: 3px solid var(--accent-cyan);
+outline-offset: 3px;
 border-radius: var(--border-radius-sm);
 }
 }

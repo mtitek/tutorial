@@ -6,43 +6,51 @@ margin: 0 0 var(--spacing-md) 0;
 padding: var(--spacing-lg);
 background: var(--card-bg);
 border: 1px solid var(--border-subtle);
-border-radius: var(--border-radius-md);
+border-radius: var(--border-radius-lg);
 color: var(--text-primary);
 font-size: 1rem;
 line-height: 1.6;
 font-weight: 400;
-box-shadow: none;
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+box-shadow: var(--shadow-subtle);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 position: relative;
 overflow: hidden;
 }
 .tutorialContentsDiv1::before {
-display: none;
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: var(--primary-gradient);
+opacity: 0;
+transition: opacity var(--transition-medium) var(--ease-out-cubic);
 }
 .tutorialContentsDiv1:hover::before {
-display: none;
+opacity: 1;
 }
 .tutorialContentsDiv1:hover {
-transform: none;
-box-shadow: none;
+transform: translateY(-2px);
+box-shadow: var(--shadow-medium);
 border-color: var(--accent-purple);
 }
 .tutorialContentsDiv1 a:link, .tutorialContentsDiv1 a:visited {
 color: var(--accent-purple);
 text-decoration: none;
-transition: color var(--transition-medium) var(--ease-out-cubic);
-border-bottom: none;
+transition: all var(--transition-medium) var(--ease-out-cubic);
+border-bottom: 1px solid transparent;
 font-weight: 500;
 position: relative;
 }
 .tutorialContentsDiv1 a:hover {
 color: var(--accent-cyan);
 text-decoration: none;
-border-bottom-color: transparent;
+border-bottom-color: var(--accent-cyan);
 }
 .tutorialContentsDiv1 a:focus-visible {
-outline: 2px solid var(--accent-cyan);
-outline-offset: 2px;
+outline: 3px solid var(--accent-cyan);
+outline-offset: 3px;
 border-radius: var(--border-radius-sm);
 }
 .tutorialContentsSpan1 {
@@ -51,7 +59,7 @@ padding: 0 0 var(--spacing-md) 0;
 background: transparent;
 color: var(--text-primary);
 font-size: clamp(1.3rem, 2.8vw, 1.5rem);
-font-weight: 700;
+font-weight: 800;
 display: block;
 position: relative;
 letter-spacing: -0.01em;
@@ -62,9 +70,9 @@ content: '';
 position: absolute;
 bottom: 0;
 left: 0;
-width: 60px;
-height: 3px;
-background: var(--accent-purple);
+width: var(--accent-line-width);
+height: var(--accent-line-height);
+background: var(--primary-gradient);
 border-radius: 2px;
 }
 .tutorialContentsHr1 {
@@ -82,42 +90,50 @@ margin: 0 0 var(--spacing-md) 0;
 padding: var(--spacing-lg);
 background: var(--card-bg);
 border: 1px solid var(--border-subtle);
-border-radius: var(--border-radius-md);
+border-radius: var(--border-radius-lg);
 color: var(--text-primary);
 font-size: 1rem;
 line-height: 1.6;
 font-weight: 400;
-box-shadow: none;
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+box-shadow: var(--shadow-subtle);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 position: relative;
 overflow: hidden;
 }
 .tutorialAnnexesDiv1::before {
-display: none;
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: var(--secondary-gradient);
+opacity: 0;
+transition: opacity var(--transition-medium) var(--ease-out-cubic);
 }
 .tutorialAnnexesDiv1:hover::before {
-display: none;
+opacity: 1;
 }
 .tutorialAnnexesDiv1:hover {
-transform: none;
-box-shadow: none;
+transform: translateY(-2px);
+box-shadow: var(--shadow-medium);
 border-color: var(--accent-cyan);
 }
 .tutorialAnnexesDiv1 a:link, .tutorialAnnexesDiv1 a:visited {
 color: var(--accent-cyan);
 text-decoration: none;
-transition: color var(--transition-medium) var(--ease-out-cubic);
-border-bottom: none;
+transition: all var(--transition-medium) var(--ease-out-cubic);
+border-bottom: 1px solid transparent;
 font-weight: 500;
 }
 .tutorialAnnexesDiv1 a:hover {
 color: var(--accent-purple);
 text-decoration: none;
-border-bottom-color: transparent;
+border-bottom-color: var(--accent-purple);
 }
 .tutorialAnnexesDiv1 a:focus-visible {
-outline: 2px solid var(--accent-cyan);
-outline-offset: 2px;
+outline: 3px solid var(--accent-cyan);
+outline-offset: 3px;
 border-radius: var(--border-radius-sm);
 }
 .tutorialAnnexesSpan1 {
@@ -126,7 +142,7 @@ padding: 0 0 var(--spacing-md) 0;
 background: transparent;
 color: var(--text-primary);
 font-size: clamp(1.3rem, 2.8vw, 1.5rem);
-font-weight: 700;
+font-weight: 800;
 display: block;
 position: relative;
 letter-spacing: -0.01em;
@@ -137,9 +153,9 @@ content: '';
 position: absolute;
 bottom: 0;
 left: 0;
-width: 60px;
-height: 3px;
-background: var(--accent-cyan);
+width: var(--accent-line-width);
+height: var(--accent-line-height);
+background: var(--secondary-gradient);
 border-radius: 2px;
 }
 .tutorialAnnexesHr1 {
@@ -157,42 +173,50 @@ margin: 0 0 var(--spacing-md) 0;
 padding: var(--spacing-lg);
 background: var(--card-bg);
 border: 1px solid var(--border-subtle);
-border-radius: var(--border-radius-md);
+border-radius: var(--border-radius-lg);
 color: var(--text-secondary);
 font-size: 0.95rem;
 line-height: 1.6;
 font-weight: 400;
-box-shadow: none;
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+box-shadow: var(--shadow-subtle);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 position: relative;
 overflow: hidden;
 }
 .tutorialReferencesDiv1::before {
-display: none;
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: var(--accent-gradient);
+opacity: 0;
+transition: opacity var(--transition-medium) var(--ease-out-cubic);
 }
 .tutorialReferencesDiv1:hover::before {
-display: none;
+opacity: 1;
 }
 .tutorialReferencesDiv1:hover {
-transform: none;
-box-shadow: none;
+transform: translateY(-2px);
+box-shadow: var(--shadow-medium);
 border-color: var(--accent-amber);
 }
 .tutorialReferencesDiv1 a:link, .tutorialReferencesDiv1 a:visited {
 color: var(--accent-amber);
 text-decoration: none;
-transition: color var(--transition-medium) var(--ease-out-cubic);
-border-bottom: none;
+transition: all var(--transition-medium) var(--ease-out-cubic);
+border-bottom: 1px solid transparent;
 font-weight: 500;
 }
 .tutorialReferencesDiv1 a:hover {
 color: var(--accent-purple);
 text-decoration: none;
-border-bottom-color: transparent;
+border-bottom-color: var(--accent-purple);
 }
 .tutorialReferencesDiv1 a:focus-visible {
-outline: 2px solid var(--accent-cyan);
-outline-offset: 2px;
+outline: 3px solid var(--accent-cyan);
+outline-offset: 3px;
 border-radius: var(--border-radius-sm);
 }
 .tutorialReferencesSpan1 {
@@ -201,7 +225,7 @@ padding: 0 0 var(--spacing-md) 0;
 background: transparent;
 color: var(--text-primary);
 font-size: clamp(1.3rem, 2.8vw, 1.5rem);
-font-weight: 700;
+font-weight: 800;
 display: block;
 position: relative;
 letter-spacing: -0.01em;
@@ -212,9 +236,9 @@ content: '';
 position: absolute;
 bottom: 0;
 left: 0;
-width: 60px;
-height: 3px;
-background: var(--accent-amber);
+width: var(--accent-line-width);
+height: var(--accent-line-height);
+background: var(--accent-gradient);
 border-radius: 2px;
 }
 .tutorialReferencesHr1 {
@@ -237,12 +261,12 @@ color: var(--accent-purple);
 line-height: 1.7;
 position: relative;
 font-weight: 600;
-transition: none;
+transition: all var(--transition-fast) var(--ease-out-cubic);
 border-radius: var(--border-radius-sm);
 }
 .ol_decimal_1 li:hover {
-background: transparent;
-padding-left: var(--spacing-sm);
+background: rgba(124, 58, 237, 0.05);
+padding-left: var(--spacing-md);
 }
 .ol_decimal_1 li::marker {
 color: var(--accent-purple);
@@ -250,7 +274,7 @@ font-weight: 700;
 }
 .ol_decimal_1 li a {
 font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-transition: color var(--transition-medium) var(--ease-out-cubic);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 color: var(--text-secondary);
 font-weight: 500;
 display: inline-block;
@@ -258,7 +282,7 @@ padding: 2px 0;
 }
 .ol_decimal_1 li a:hover {
 color: var(--accent-cyan);
-transform: none;
+transform: translateX(4px);
 }
 .ol_lower_roman_1 li, .ol_lower_latin_1 li {
 margin: 0;
@@ -267,12 +291,12 @@ font-size: clamp(0.85rem, 2.2vw, 0.95rem);
 color: var(--accent-purple);
 line-height: 1.7;
 font-weight: 600;
-transition: none;
+transition: all var(--transition-fast) var(--ease-out-cubic);
 border-radius: var(--border-radius-sm);
 }
 .ol_lower_roman_1 li:hover, .ol_lower_latin_1 li:hover {
-background: transparent;
-padding-left: var(--spacing-sm);
+background: rgba(124, 58, 237, 0.05);
+padding-left: var(--spacing-md);
 }
 .ol_lower_roman_1 li::marker, .ol_lower_latin_1 li::marker {
 color: var(--accent-purple);
@@ -280,7 +304,7 @@ font-weight: 700;
 }
 .ol_lower_roman_1 li a, .ol_lower_latin_1 li a {
 font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-transition: color var(--transition-medium) var(--ease-out-cubic);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 color: var(--text-secondary);
 font-weight: 500;
 display: inline-block;
@@ -288,7 +312,7 @@ padding: 2px 0;
 }
 .ol_lower_roman_1 li a:hover, .ol_lower_latin_1 li a:hover {
 color: var(--accent-cyan);
-transform: none;
+transform: translateX(4px);
 }
 .ol_upper_roman_1 li {
 margin: 0;
@@ -297,12 +321,12 @@ font-size: clamp(0.8rem, 2.2vw, 0.9rem);
 color: var(--accent-purple);
 line-height: 1.7;
 font-weight: 600;
-transition: none;
+transition: all var(--transition-fast) var(--ease-out-cubic);
 border-radius: var(--border-radius-sm);
 }
 .ol_upper_roman_1 li:hover {
-background: transparent;
-padding-left: var(--spacing-sm);
+background: rgba(124, 58, 237, 0.05);
+padding-left: var(--spacing-md);
 }
 .ol_upper_roman_1 li::marker {
 color: var(--accent-purple);
@@ -310,7 +334,7 @@ font-weight: 700;
 }
 .ol_upper_roman_1 li a {
 font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-transition: color var(--transition-medium) var(--ease-out-cubic);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 color: var(--text-secondary);
 font-weight: 500;
 display: inline-block;
@@ -318,7 +342,7 @@ padding: 2px 0;
 }
 .ol_upper_roman_1 li a:hover {
 color: var(--accent-cyan);
-transform: none;
+transform: translateX(4px);
 }
 .ul_none_1 {
 margin: var(--spacing-sm) 0 0 0;
@@ -330,22 +354,22 @@ padding: var(--spacing-xs) 0;
 line-height: 1.6;
 }
 .code1 {
-font-size: 0.9rem;
+font-size: 0.875rem;
 font-family: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Monaco, 'Roboto Mono', Consolas, 'Courier New', monospace;
 color: var(--accent-purple);
 background: var(--subtle-bg);
 padding: var(--spacing-xs) var(--spacing-sm);
 border-radius: var(--border-radius-sm);
-border: 1px solid var(--border-light);
-transition: none;
+border: 1px solid var(--border-subtle);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 font-feature-settings: 'liga' 1, 'calt' 1;
 font-weight: 500;
 }
 .code1:hover {
-background: var(--subtle-bg);
-border-color: var(--border-light);
-box-shadow: none;
-transform: none;
+background: var(--card-bg);
+border-color: var(--accent-purple);
+box-shadow: var(--shadow-subtle);
+transform: translateY(-1px);
 }
 .references-category {
 margin-bottom: var(--spacing-lg);
@@ -370,7 +394,7 @@ bottom: -2px;
 left: 0;
 width: 60px;
 height: 2px;
-background: var(--accent-amber);
+background: var(--accent-gradient);
 }
 .reference-item {
 display: flex;
@@ -379,21 +403,29 @@ padding: var(--spacing-lg);
 margin-bottom: var(--spacing-lg);
 background: var(--subtle-bg);
 border: 1px solid var(--border-subtle);
-border-radius: var(--border-radius-sm);
-transition: border-color var(--transition-medium) var(--ease-out-cubic);
+border-radius: var(--border-radius-md);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 position: relative;
 overflow: hidden;
 }
 .reference-item::before {
-display: none;
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+bottom: 0;
+width: 4px;
+background: var(--accent-gradient);
+opacity: 0;
+transition: opacity var(--transition-medium) var(--ease-out-cubic);
 }
 .reference-item:hover::before {
-display: none;
+opacity: 1;
 }
 .reference-item:hover {
 background: var(--card-bg);
-box-shadow: none;
-transform: none;
+box-shadow: var(--shadow-medium);
+transform: translateY(-1px);
 border-color: var(--accent-amber);
 }
 .reference-item:last-child {
@@ -409,26 +441,26 @@ max-height: 80px;
 max-width: 60px;
 object-fit: cover;
 border-radius: var(--border-radius-sm);
-box-shadow: none;
-transition: none;
+box-shadow: var(--shadow-subtle);
+transition: box-shadow var(--transition-medium) var(--ease-out-cubic);
 }
 .reference-item:hover .reference-visual img {
-box-shadow: none;
+box-shadow: var(--shadow-medium);
 }
 .reference-icon {
 width: 48px;
 height: 48px;
-background: var(--accent-purple);
-border-radius: var(--border-radius-sm);
+background: var(--primary-gradient);
+border-radius: var(--border-radius-md);
 display: flex;
 align-items: center;
 justify-content: center;
 color: white;
 font-size: 1.5rem;
-transition: none;
+transition: transform var(--transition-medium) var(--ease-out-cubic);
 }
 .reference-item:hover .reference-icon {
-transform: none;
+transform: scale(1.05);
 }
 .reference-content {
 flex: 1;
@@ -473,7 +505,7 @@ color: var(--accent-purple);
 text-decoration: none;
 font-size: clamp(0.85rem, 1.8vw, 0.95rem);
 font-weight: 500;
-transition: color var(--transition-medium) var(--ease-out-cubic);
+transition: all var(--transition-medium) var(--ease-out-cubic);
 padding: var(--spacing-xs) var(--spacing-sm);
 border-radius: var(--border-radius-sm);
 border: 1px solid rgba(124, 58, 237, 0.2);
@@ -483,9 +515,8 @@ background: rgba(124, 58, 237, 0.05);
 color: white;
 border-color: var(--accent-purple);
 text-decoration: none;
-transform: none;
-box-shadow: none;
-background: var(--accent-purple);
+transform: translateY(-1px);
+box-shadow: var(--shadow-subtle);
 }
 @media (max-width: 1200px) {
 .tutorialContentsDiv1, .tutorialAnnexesDiv1, .tutorialReferencesDiv1 {
@@ -516,7 +547,7 @@ padding-left: var(--spacing-lg);
 .tutorialContentsDiv1, .tutorialAnnexesDiv1, .tutorialReferencesDiv1 {
 padding: var(--spacing-md);
 margin: var(--spacing-md) 0;
-border-radius: var(--border-radius-sm);
+border-radius: var(--border-radius-md);
 }
 .tutorialContentsSpan1, .tutorialAnnexesSpan1, .tutorialReferencesSpan1 {
 font-size: clamp(1rem, 2.8vw, 1.2rem);
@@ -540,16 +571,16 @@ align-self: center;
 align-items: center;
 }
 .ol_decimal_1 li:hover, .ol_lower_roman_1 li:hover, .ol_lower_latin_1 li:hover, .ol_upper_roman_1 li:hover {
-transform: none;
+transform: translateX(0) scale(1.01);
 }
 .ol_decimal_1 li a:hover, .ol_lower_roman_1 li a:hover, .ol_lower_latin_1 li a:hover, .ol_upper_roman_1 li a:hover {
-transform: none;
+transform: translateX(0);
 }
 }
 @media (max-width: 576px) {
 .tutorialContentsDiv1, .tutorialAnnexesDiv1, .tutorialReferencesDiv1 {
 padding: var(--spacing-sm);
-border-radius: var(--border-radius-sm);
+border-radius: var(--border-radius-md);
 }
 .tutorialContentsSpan1, .tutorialAnnexesSpan1, .tutorialReferencesSpan1 {
 font-size: clamp(0.95rem, 2.8vw, 1.1rem);
