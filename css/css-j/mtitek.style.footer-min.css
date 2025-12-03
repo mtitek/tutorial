@@ -17,8 +17,8 @@ position: absolute;
 top: 0;
 left: 0;
 right: 0;
-height: 4px;
-background: var(--secondary-gradient);
+height: 2px;
+background: var(--accent-purple);
 opacity: 1;
 }
 .footer-content {
@@ -45,35 +45,35 @@ font-weight: 500;
 }
 .footer-logo {
 text-decoration: none;
-transition: transform var(--transition-medium) var(--ease-out-cubic);
+transition: none;
 display: inline-block;
-will-change: transform;
+will-change: auto;
 }
 .footer-logo:hover {
-transform: scale(1.05);
+transform: none;
 text-decoration: none;
 }
 .footer-logo:focus-visible {
-outline: 3px solid var(--accent-cyan);
-outline-offset: 3px;
+outline: 2px solid var(--accent-cyan);
+outline-offset: 2px;
 border-radius: var(--border-radius-sm);
 }
 .logo-mti {
 color: var(--text-primary);
 font-size: clamp(1.1rem, 3vw, 1.25rem);
-font-weight: 800;
+font-weight: 700;
 letter-spacing: -0.01em;
 }
 .logo-tek {
 color: var(--accent-purple);
 font-size: clamp(1.1rem, 3vw, 1.25rem);
-font-weight: 800;
+font-weight: 700;
 letter-spacing: -0.01em;
 }
 .menuFooterDiv1 a:link, .menuFooterDiv1 a:visited {
 color: var(--accent-purple);
 text-decoration: none;
-transition: all var(--transition-medium) var(--ease-out-cubic);
+transition: color var(--transition-medium) var(--ease-out-cubic);
 position: relative;
 }
 .menuFooterDiv1 a:hover {
@@ -81,7 +81,7 @@ color: var(--accent-cyan);
 text-decoration: none;
 }
 .menuFooterDiv1 a:focus-visible {
-outline: 3px solid var(--accent-cyan);
+outline: 2px solid var(--accent-cyan);
 outline-offset: 2px;
 border-radius: var(--border-radius-sm);
 }
@@ -114,20 +114,21 @@ background: var(--card-bg);
 border: 1px solid var(--border-subtle);
 color: var(--text-secondary);
 text-decoration: none;
-transition: all var(--transition-medium) var(--ease-out-cubic);
-box-shadow: var(--shadow-subtle);
+transition: background-color var(--transition-medium) var(--ease-out-cubic),
+            color var(--transition-medium) var(--ease-out-cubic);
+box-shadow: none;
 }
 .footer-social-link:hover {
 background: var(--accent-purple);
 color: white;
-transform: translateY(-2px);
-box-shadow: var(--shadow-medium);
+transform: none;
+box-shadow: none;
 border-color: var(--accent-purple);
 text-decoration: none;
 }
 .footer-social-link:focus-visible {
-outline: 3px solid var(--accent-cyan);
-outline-offset: 3px;
+outline: 2px solid var(--accent-cyan);
+outline-offset: 2px;
 }
 @media (max-width: 1200px) {
 .footer-content {
@@ -214,7 +215,7 @@ border: 2px solid var(--border-subtle);
 border: 2px solid var(--accent-purple);
 }
 .logo-mti, .logo-tek {
-font-weight: 900;
+font-weight: 800;
 }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -227,6 +228,6 @@ transform: none !important;
 }
 @supports (backdrop-filter: blur(10px)) {
 .menuFooterDiv1 {
-backdrop-filter: blur(10px);
+backdrop-filter: none;
 }
 }
